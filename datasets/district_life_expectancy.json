@@ -1,0 +1,302 @@
+{
+  "Angul": {
+    "male": {
+      "nfhs4": 68.17,
+      "nfhs5": 72.59
+    },
+    "female": {
+      "nfhs4": 69.13,
+      "nfhs5": 73.89
+    }
+  },
+  "Balangir": {
+    "male": {
+      "nfhs4": 68.54,
+      "nfhs5": 70.63
+    },
+    "female": {
+      "nfhs4": 69.51,
+      "nfhs5": 71.87
+    }
+  },
+  "Baleshwar": {
+    "male": {
+      "nfhs4": 72.79,
+      "nfhs5": 75.76
+    },
+    "female": {
+      "nfhs4": 73.89,
+      "nfhs5": 77.19
+    }
+  },
+  "Bargarh": {
+    "male": {
+      "nfhs4": 69.02,
+      "nfhs5": 75.23
+    },
+    "female": {
+      "nfhs4": 70.0,
+      "nfhs5": 76.63
+    }
+  },
+  "Boudh": {
+    "male": {
+      "nfhs4": 66.41,
+      "nfhs5": 70.39
+    },
+    "female": {
+      "nfhs4": 67.33,
+      "nfhs5": 71.61
+    }
+  },
+  "Bhadrak": {
+    "male": {
+      "nfhs4": 69.9,
+      "nfhs5": 74.18
+    },
+    "female": {
+      "nfhs4": 70.91,
+      "nfhs5": 75.54
+    }
+  },
+  "Cuttack": {
+    "male": {
+      "nfhs4": 72.64,
+      "nfhs5": 76.77
+    },
+    "female": {
+      "nfhs4": 73.74,
+      "nfhs5": 78.23
+    }
+  },
+  "Debagarh": {
+    "male": {
+      "nfhs4": 67.01,
+      "nfhs5": 69.44
+    },
+    "female": {
+      "nfhs4": 67.94,
+      "nfhs5": 70.63
+    }
+  },
+  "Dhenkanal": {
+    "male": {
+      "nfhs4": 67.8,
+      "nfhs5": 73.41
+    },
+    "female": {
+      "nfhs4": 68.75,
+      "nfhs5": 74.75
+    }
+  },
+  "Gajapati": {
+    "male": {
+      "nfhs4": 67.91,
+      "nfhs5": 70.16
+    },
+    "female": {
+      "nfhs4": 68.87,
+      "nfhs5": 71.38
+    }
+  },
+  "Ganjam": {
+    "male": {
+      "nfhs4": 69.34,
+      "nfhs5": 74.85
+    },
+    "female": {
+      "nfhs4": 70.34,
+      "nfhs5": 76.24
+    }
+  },
+  "Jagatsinghapur": {
+    "male": {
+      "nfhs4": 68.16,
+      "nfhs5": 73.61
+    },
+    "female": {
+      "nfhs4": 69.13,
+      "nfhs5": 74.96
+    }
+  },
+  "Jajapur": {
+    "male": {
+      "nfhs4": 68.64,
+      "nfhs5": 71.1
+    },
+    "female": {
+      "nfhs4": 69.61,
+      "nfhs5": 72.35
+    }
+  },
+  "Jharsuguda": {
+    "male": {
+      "nfhs4": 68.19,
+      "nfhs5": 73.33
+    },
+    "female": {
+      "nfhs4": 69.15,
+      "nfhs5": 74.67
+    }
+  },
+  "Kalahandi": {
+    "male": {
+      "nfhs4": 66.24,
+      "nfhs5": 69.44
+    },
+    "female": {
+      "nfhs4": 67.15,
+      "nfhs5": 70.63
+    }
+  },
+  "Kandhamal": {
+    "male": {
+      "nfhs4": 67.33,
+      "nfhs5": 71.81
+    },
+    "female": {
+      "nfhs4": 68.26,
+      "nfhs5": 73.08
+    }
+  },
+  "Kendrapara": {
+    "male": {
+      "nfhs4": 66.97,
+      "nfhs5": 69.41
+    },
+    "female": {
+      "nfhs4": 67.9,
+      "nfhs5": 70.6
+    }
+  },
+  "Kendujhar": {
+    "male": {
+      "nfhs4": 67.18,
+      "nfhs5": 69.38
+    },
+    "female": {
+      "nfhs4": 68.11,
+      "nfhs5": 70.57
+    }
+  },
+  "Khordha": {
+    "male": {
+      "nfhs4": 71.27,
+      "nfhs5": 74.32
+    },
+    "female": {
+      "nfhs4": 72.32,
+      "nfhs5": 75.69
+    }
+  },
+  "Koraput": {
+    "male": {
+      "nfhs4": 67.96,
+      "nfhs5": 71.66
+    },
+    "female": {
+      "nfhs4": 68.92,
+      "nfhs5": 72.93
+    }
+  },
+  "Malkangiri": {
+    "male": {
+      "nfhs4": 69.59,
+      "nfhs5": 71.54
+    },
+    "female": {
+      "nfhs4": 70.59,
+      "nfhs5": 72.8
+    }
+  },
+  "Mayurbhanj": {
+    "male": {
+      "nfhs4": 67.96,
+      "nfhs5": 70.56
+    },
+    "female": {
+      "nfhs4": 68.92,
+      "nfhs5": 71.79
+    }
+  },
+  "Nabarangapur": {
+    "male": {
+      "nfhs4": 67.52,
+      "nfhs5": 69.82
+    },
+    "female": {
+      "nfhs4": 68.46,
+      "nfhs5": 71.02
+    }
+  },
+  "Nayagarh": {
+    "male": {
+      "nfhs4": 67.33,
+      "nfhs5": 69.68
+    },
+    "female": {
+      "nfhs4": 68.27,
+      "nfhs5": 70.88
+    }
+  },
+  "Nuapada": {
+    "male": {
+      "nfhs4": 70.06,
+      "nfhs5": 70.66
+    },
+    "female": {
+      "nfhs4": 71.07,
+      "nfhs5": 71.9
+    }
+  },
+  "Puri": {
+    "male": {
+      "nfhs4": 71.84,
+      "nfhs5": 74.88
+    },
+    "female": {
+      "nfhs4": 72.91,
+      "nfhs5": 76.27
+    }
+  },
+  "Rayagada": {
+    "male": {
+      "nfhs4": 66.95,
+      "nfhs5": 69.73
+    },
+    "female": {
+      "nfhs4": 67.87,
+      "nfhs5": 70.93
+    }
+  },
+  "Sambalpur": {
+    "male": {
+      "nfhs4": 70.26,
+      "nfhs5": 73.97
+    },
+    "female": {
+      "nfhs4": 71.28,
+      "nfhs5": 75.32
+    }
+  },
+  "Subarnapur": {
+    "male": {
+      "nfhs4": 67.21,
+      "nfhs5": 69.0
+    },
+    "female": {
+      "nfhs4": 68.14,
+      "nfhs5": 70.17
+    }
+  },
+  "Sundargarh": {
+    "male": {
+      "nfhs4": 70.64,
+      "nfhs5": 73.07
+    },
+    "female": {
+      "nfhs4": 71.68,
+      "nfhs5": 74.4
+    }
+  }
+}

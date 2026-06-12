@@ -1,0 +1,1694 @@
+{
+  "population_trends": [
+    {
+      "year": 1901,
+      "male": 5058100,
+      "female": 5244817,
+      "total": 10302917,
+      "sex_ratio": 1036.9144540440088,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1911,
+      "male": 5535632,
+      "female": 5843243,
+      "total": 11378875,
+      "sex_ratio": 1055.5692647199091,
+      "annual_growth_rate": 1.0443236609593185
+    },
+    {
+      "year": 1921,
+      "male": 5350227,
+      "female": 5808359,
+      "total": 11158586,
+      "sex_ratio": 1085.6285163227656,
+      "annual_growth_rate": -0.19359470949456775
+    },
+    {
+      "year": 1931,
+      "male": 6042255,
+      "female": 6448801,
+      "total": 12491056,
+      "sex_ratio": 1067.283820361769,
+      "annual_growth_rate": 1.1941208321556154
+    },
+    {
+      "year": 1936,
+      "male": 6365713,
+      "female": 6748201,
+      "total": 13113989,
+      "sex_ratio": 1060.0855917587683,
+      "annual_growth_rate": 0.9974065633656274
+    },
+    {
+      "year": 1941,
+      "male": 6706487,
+      "female": 7061501,
+      "total": 13767988,
+      "sex_ratio": 1052.9359111558706,
+      "annual_growth_rate": 1.0222770596817434
+    },
+    {
+      "year": 1951,
+      "male": 7242892,
+      "female": 7403054,
+      "total": 14645946,
+      "sex_ratio": 1022.1129902254513,
+      "annual_growth_rate": 0.6376806836263949
+    },
+    {
+      "year": 1961,
+      "male": 8770586,
+      "female": 8778260,
+      "total": 17548846,
+      "sex_ratio": 1000.8749700419106,
+      "annual_growth_rate": 1.9820501864474989
+    },
+    {
+      "year": 1971,
+      "male": 11041083,
+      "female": 10903532,
+      "total": 21944615,
+      "sex_ratio": 987.5418924031275,
+      "annual_growth_rate": 2.504876389022959
+    },
+    {
+      "year": 1981,
+      "male": 13309786,
+      "female": 13060485,
+      "total": 26370271,
+      "sex_ratio": 981.2693457280229,
+      "annual_growth_rate": 2.0167389585098667
+    },
+    {
+      "year": 1991,
+      "male": 16064146,
+      "female": 15595590,
+      "total": 31659736,
+      "sex_ratio": 970.8321874066633,
+      "annual_growth_rate": 2.005844005167789
+    },
+    {
+      "year": 2001,
+      "male": 18660570,
+      "female": 18144090,
+      "total": 36804660,
+      "sex_ratio": 972.322388865935,
+      "annual_growth_rate": 1.6250685097310982
+    },
+    {
+      "year": 2011,
+      "male": 21212136,
+      "female": 20762082,
+      "total": 41974218,
+      "sex_ratio": 978.7831833625808,
+      "annual_growth_rate": 1.4045933313879275
+    },
+    {
+      "year": 2021,
+      "male": 23265608,
+      "female": 22988666,
+      "total": 46254277,
+      "sex_ratio": 988.0965070846204,
+      "annual_growth_rate": 1.01968760918905
+    },
+    {
+      "year": 2026,
+      "male": 24256929,
+      "female": 24095995,
+      "total": 48352923,
+      "sex_ratio": 993.3654420969777,
+      "annual_growth_rate": 0.9074386785896579
+    },
+    {
+      "year": 2031,
+      "male": 25078402,
+      "female": 25047084,
+      "total": 50125485,
+      "sex_ratio": 998.7511963481564,
+      "annual_growth_rate": 0.7331767719606114
+    },
+    {
+      "year": 2036,
+      "male": 25702987,
+      "female": 25804176,
+      "total": 51507161,
+      "sex_ratio": 1003.9368576111407,
+      "annual_growth_rate": 0.5512868354291236
+    },
+    {
+      "year": 1901,
+      "male": 1,
+      "female": null,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1911,
+      "male": 1,
+      "female": 1,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1921,
+      "male": 1,
+      "female": 0,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1931,
+      "male": 1,
+      "female": 1,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1941,
+      "male": 1,
+      "female": 1,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1951,
+      "male": 1,
+      "female": 1,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1961,
+      "male": 2,
+      "female": 2,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1971,
+      "male": 2,
+      "female": 3,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1981,
+      "male": 3,
+      "female": 2,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1991,
+      "male": 3,
+      "female": 2,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2001,
+      "male": 4,
+      "female": 2,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2011,
+      "male": 4,
+      "female": 1,
+      "total": 1,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2021,
+      "male": 5,
+      "female": 1,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2026,
+      "male": 5,
+      "female": 1,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2031,
+      "male": 5,
+      "female": 1,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2036,
+      "male": 5,
+      "female": 1,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1951,
+      "male": 17,
+      "female": 4,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1961,
+      "male": 18,
+      "female": 6,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1971,
+      "male": 20,
+      "female": 8,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1981,
+      "male": 23,
+      "female": 12,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 1991,
+      "male": 26,
+      "female": 13,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2001,
+      "male": 28,
+      "female": 15,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2011,
+      "male": 31,
+      "female": 17,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2021,
+      "male": 34,
+      "female": 18,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2031,
+      "male": 38,
+      "female": 20,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    },
+    {
+      "year": 2036,
+      "male": 39,
+      "female": 21,
+      "total": null,
+      "sex_ratio": null,
+      "annual_growth_rate": null
+    }
+  ],
+  "pyramids": {
+    "1991": [
+      {
+        "age": "0-4",
+        "male": 1829920,
+        "female": 1782760,
+        "total": 3612680
+      },
+      {
+        "age": "5-9",
+        "male": 2096729,
+        "female": 2034842,
+        "total": 4131571
+      },
+      {
+        "age": "10-14",
+        "male": 1793792,
+        "female": 1779398,
+        "total": 3573190
+      },
+      {
+        "age": "15-19",
+        "male": 1477845,
+        "female": 1533953,
+        "total": 3011798
+      },
+      {
+        "age": "20-24",
+        "male": 1417665,
+        "female": 1407160,
+        "total": 2824825
+      },
+      {
+        "age": "25-29",
+        "male": 1340488,
+        "female": 1333166,
+        "total": 2673654
+      },
+      {
+        "age": "30-34",
+        "male": 1105439,
+        "female": 1070338,
+        "total": 2175777
+      },
+      {
+        "age": "35-39",
+        "male": 1063408,
+        "female": 956240,
+        "total": 2019648
+      },
+      {
+        "age": "40-44",
+        "male": 827851,
+        "female": 767198,
+        "total": 1595049
+      },
+      {
+        "age": "45-49",
+        "male": 749830,
+        "female": 695446,
+        "total": 1445276
+      },
+      {
+        "age": "50-54",
+        "male": 660251,
+        "female": 599381,
+        "total": 1259632
+      },
+      {
+        "age": "55-59",
+        "male": 456474,
+        "female": 440735,
+        "total": 897209
+      },
+      {
+        "age": "60-64",
+        "male": 469671,
+        "female": 454059,
+        "total": 923730
+      },
+      {
+        "age": "65-69",
+        "male": 258247,
+        "female": 259322,
+        "total": 517569
+      },
+      {
+        "age": "70-74",
+        "male": 215061,
+        "female": 218836,
+        "total": 433897
+      },
+      {
+        "age": "75-79",
+        "male": 85880,
+        "female": 85744,
+        "total": 171624
+      },
+      {
+        "age": "80+",
+        "male": 124231,
+        "female": 109905,
+        "total": 234136
+      },
+      {
+        "age": "Cumulative Frequency",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "2021",
+        "male": 2026,
+        "female": 2031,
+        "total": 4057
+      },
+      {
+        "age": "3715839",
+        "male": 3765460,
+        "female": 3596229,
+        "total": 7361689
+      },
+      {
+        "age": "7224399",
+        "male": 7430073,
+        "female": 7317157,
+        "total": 14747230
+      },
+      {
+        "age": "10796767",
+        "male": 10927219,
+        "female": 10971784,
+        "total": 21899003
+      },
+      {
+        "age": "14838525",
+        "male": 14491200,
+        "female": 14462199,
+        "total": 28953399
+      },
+      {
+        "age": "19156255",
+        "male": 18521185,
+        "female": 18017505,
+        "total": 36538690
+      },
+      {
+        "age": "23058279",
+        "male": 22823810,
+        "female": 22035489,
+        "total": 44859299
+      },
+      {
+        "age": "26811903",
+        "male": 26708959,
+        "female": 26322112,
+        "total": 53031071
+      },
+      {
+        "age": "30347287",
+        "male": 30440824,
+        "female": 30187579,
+        "total": 60628403
+      },
+      {
+        "age": "33401478",
+        "male": 33945495,
+        "female": 33890476,
+        "total": 67835971
+      },
+      {
+        "age": "36379296",
+        "male": 36957637,
+        "female": 37351388,
+        "total": 74309025
+      },
+      {
+        "age": "38964168",
+        "male": 39866438,
+        "female": 40299243,
+        "total": 80165681
+      },
+      {
+        "age": "41143502",
+        "male": 42350006,
+        "female": 43101697,
+        "total": 85451703
+      },
+      {
+        "age": "42790548",
+        "male": 44386861,
+        "female": 45431751,
+        "total": 89818612
+      },
+      {
+        "age": "44016427",
+        "male": 45860780,
+        "female": 47264215,
+        "total": 93124995
+      },
+      {
+        "age": "45099369",
+        "male": 46887280,
+        "female": 48508938,
+        "total": 95396218
+      },
+      {
+        "age": "45707787",
+        "male": 47709539,
+        "female": 49296998,
+        "total": 97006537
+      },
+      {
+        "age": "46254275",
+        "male": 48352931,
+        "female": 50125494,
+        "total": 98478425
+      },
+      {
+        "age": "29.59172269252328",
+        "male": 31,
+        "female": 33,
+        "total": 64
+      }
+    ],
+    "2011": [
+      {
+        "age": "0-4",
+        "male": 1878127,
+        "female": 1774902,
+        "total": 3653029
+      },
+      {
+        "age": "5-9",
+        "male": 2085339,
+        "female": 1989429,
+        "total": 4074768
+      },
+      {
+        "age": "10-14",
+        "male": 2203535,
+        "female": 2145090,
+        "total": 4348625
+      },
+      {
+        "age": "15-19",
+        "male": 1972684,
+        "female": 1952714,
+        "total": 3925398
+      },
+      {
+        "age": "20-24",
+        "male": 1870939,
+        "female": 1912588,
+        "total": 3783527
+      },
+      {
+        "age": "25-29",
+        "male": 1772876,
+        "female": 1801161,
+        "total": 3574037
+      },
+      {
+        "age": "30-34",
+        "male": 1542233,
+        "female": 1560758,
+        "total": 3102991
+      },
+      {
+        "age": "35-39",
+        "male": 1528685,
+        "female": 1522503,
+        "total": 3051188
+      },
+      {
+        "age": "40-44",
+        "male": 1387920,
+        "female": 1303554,
+        "total": 2691474
+      },
+      {
+        "age": "45-49",
+        "male": 1212366,
+        "female": 1121664,
+        "total": 2334030
+      },
+      {
+        "age": "50-54",
+        "male": 957524,
+        "female": 890288,
+        "total": 1847812
+      },
+      {
+        "age": "55-59",
+        "male": 744291,
+        "female": 739429,
+        "total": 1483720
+      },
+      {
+        "age": "60-64",
+        "male": 737635,
+        "female": 736426,
+        "total": 1474061
+      },
+      {
+        "age": "65-69",
+        "male": 487849,
+        "female": 491676,
+        "total": 979525
+      },
+      {
+        "age": "70-74",
+        "male": 380635,
+        "female": 387435,
+        "total": 768070
+      },
+      {
+        "age": "75-79",
+        "male": 183294,
+        "female": 181506,
+        "total": 364800
+      },
+      {
+        "age": "80+",
+        "male": 204857,
+        "female": 193135,
+        "total": 397992
+      },
+      {
+        "age": "Cumulative Frequency",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "2021",
+        "male": 2036,
+        "female": 0,
+        "total": 2036
+      },
+      {
+        "age": "3715839",
+        "male": 3359616,
+        "female": 0,
+        "total": 3359616
+      },
+      {
+        "age": "7224399",
+        "male": 6919397,
+        "female": 0,
+        "total": 6919397
+      },
+      {
+        "age": "10796767",
+        "male": 10631387,
+        "female": 0,
+        "total": 10631387
+      },
+      {
+        "age": "14838525",
+        "male": 14279737,
+        "female": 0,
+        "total": 14279737
+      },
+      {
+        "age": "19156255",
+        "male": 17762601,
+        "female": 0,
+        "total": 17762601
+      },
+      {
+        "age": "23058279",
+        "male": 21308495,
+        "female": 0,
+        "total": 21308495
+      },
+      {
+        "age": "26811903",
+        "male": 25313103,
+        "female": 0,
+        "total": 25313103
+      },
+      {
+        "age": "30347287",
+        "male": 29580204,
+        "female": 0,
+        "total": 29580204
+      },
+      {
+        "age": "33401478",
+        "male": 33418484,
+        "female": 0,
+        "total": 33418484
+      },
+      {
+        "age": "36379296",
+        "male": 37078937,
+        "female": 0,
+        "total": 37078937
+      },
+      {
+        "age": "38964168",
+        "male": 40471526,
+        "female": 0,
+        "total": 40471526
+      },
+      {
+        "age": "41143502",
+        "male": 43318761,
+        "female": 0,
+        "total": 43318761
+      },
+      {
+        "age": "42790548",
+        "male": 45957978,
+        "female": 0,
+        "total": 45957978
+      },
+      {
+        "age": "44016427",
+        "male": 48065447,
+        "female": 0,
+        "total": 48065447
+      },
+      {
+        "age": "45099369",
+        "male": 49624497,
+        "female": 0,
+        "total": 49624497
+      },
+      {
+        "age": "45707787",
+        "male": 50591548,
+        "female": 0,
+        "total": 50591548
+      },
+      {
+        "age": "46254275",
+        "male": 51507165,
+        "female": 0,
+        "total": 51507165
+      },
+      {
+        "age": "29.59172269252328",
+        "male": 35,
+        "female": 0,
+        "total": 35
+      }
+    ],
+    "2021": [
+      {
+        "age": "0-4",
+        "male": 1869354,
+        "female": 1846485,
+        "total": 3715839
+      },
+      {
+        "age": "5-9",
+        "male": 1767439,
+        "female": 1741121,
+        "total": 3508560
+      },
+      {
+        "age": "10-14",
+        "male": 1837200,
+        "female": 1735168,
+        "total": 3572368
+      },
+      {
+        "age": "15-19",
+        "male": 2069939,
+        "female": 1971819,
+        "total": 4041758
+      },
+      {
+        "age": "20-24",
+        "male": 2189039,
+        "female": 2128691,
+        "total": 4317730
+      },
+      {
+        "age": "25-29",
+        "male": 1962076,
+        "female": 1939948,
+        "total": 3902024
+      },
+      {
+        "age": "30-34",
+        "male": 1857391,
+        "female": 1896233,
+        "total": 3753624
+      },
+      {
+        "age": "35-39",
+        "male": 1753150,
+        "female": 1782234,
+        "total": 3535384
+      },
+      {
+        "age": "40-44",
+        "male": 1516485,
+        "female": 1537706,
+        "total": 3054191
+      },
+      {
+        "age": "45-49",
+        "male": 1487319,
+        "female": 1490499,
+        "total": 2977818
+      },
+      {
+        "age": "50-54",
+        "male": 1324240,
+        "female": 1260632,
+        "total": 2584872
+      },
+      {
+        "age": "55-59",
+        "male": 1118429,
+        "female": 1060905,
+        "total": 2179334
+      },
+      {
+        "age": "60-64",
+        "male": 837558,
+        "female": 809488,
+        "total": 1647046
+      },
+      {
+        "age": "65-69",
+        "male": 597333,
+        "female": 628546,
+        "total": 1225879
+      },
+      {
+        "age": "70-74",
+        "male": 521205,
+        "female": 561737,
+        "total": 1082942
+      },
+      {
+        "age": "75-79",
+        "male": 289340,
+        "female": 319078,
+        "total": 608418
+      },
+      {
+        "age": "80+",
+        "male": 268108,
+        "female": 278380,
+        "total": 546488
+      },
+      {
+        "age": "Cumulative Frequency",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "2021",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "3715839",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "7224399",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "10796767",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "14838525",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "19156255",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "23058279",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "26811903",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "30347287",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "33401478",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "36379296",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "38964168",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "41143502",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "42790548",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "44016427",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "45099369",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "45707787",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "46254275",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "29.59172269252328",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      }
+    ],
+    "2026": [
+      {
+        "age": "0-4",
+        "male": 1890884,
+        "female": 1874576,
+        "total": 3765460
+      },
+      {
+        "age": "5-9",
+        "male": 1842353,
+        "female": 1822260,
+        "total": 3664613
+      },
+      {
+        "age": "10-14",
+        "male": 1761269,
+        "female": 1735877,
+        "total": 3497146
+      },
+      {
+        "age": "15-19",
+        "male": 1832670,
+        "female": 1731311,
+        "total": 3563981
+      },
+      {
+        "age": "20-24",
+        "male": 2063530,
+        "female": 1966455,
+        "total": 4029985
+      },
+      {
+        "age": "25-29",
+        "male": 2180704,
+        "female": 2121921,
+        "total": 4302625
+      },
+      {
+        "age": "30-34",
+        "male": 1952793,
+        "female": 1932356,
+        "total": 3885149
+      },
+      {
+        "age": "35-39",
+        "male": 1845419,
+        "female": 1886446,
+        "total": 3731865
+      },
+      {
+        "age": "40-44",
+        "male": 1735647,
+        "female": 1769024,
+        "total": 3504671
+      },
+      {
+        "age": "45-49",
+        "male": 1491785,
+        "female": 1520357,
+        "total": 3012142
+      },
+      {
+        "age": "50-54",
+        "male": 1445790,
+        "female": 1463011,
+        "total": 2908801
+      },
+      {
+        "age": "55-59",
+        "male": 1262466,
+        "female": 1221102,
+        "total": 2483568
+      },
+      {
+        "age": "60-64",
+        "male": 1032737,
+        "female": 1004118,
+        "total": 2036855
+      },
+      {
+        "age": "65-69",
+        "male": 736647,
+        "female": 737272,
+        "total": 1473919
+      },
+      {
+        "age": "70-74",
+        "male": 488854,
+        "female": 537646,
+        "total": 1026500
+      },
+      {
+        "age": "75-79",
+        "male": 385285,
+        "female": 436974,
+        "total": 822259
+      },
+      {
+        "age": "80+",
+        "male": 308090,
+        "female": 335302,
+        "total": 643392
+      },
+      {
+        "age": "Cumulative Frequency",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "2021",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "3715839",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "7224399",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "10796767",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "14838525",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "19156255",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "23058279",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "26811903",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "30347287",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "33401478",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "36379296",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "38964168",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "41143502",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "42790548",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "44016427",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "45099369",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "45707787",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "46254275",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "29.59172269252328",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      }
+    ],
+    "2031": [
+      {
+        "age": "0-4",
+        "male": 1802404,
+        "female": 1793825,
+        "total": 3596229
+      },
+      {
+        "age": "5-9",
+        "male": 1867326,
+        "female": 1853602,
+        "total": 3720928
+      },
+      {
+        "age": "10-14",
+        "male": 1836764,
+        "female": 1817863,
+        "total": 3654627
+      },
+      {
+        "age": "15-19",
+        "male": 1757455,
+        "female": 1732960,
+        "total": 3490415
+      },
+      {
+        "age": "20-24",
+        "male": 1827692,
+        "female": 1727614,
+        "total": 3555306
+      },
+      {
+        "age": "25-29",
+        "male": 2056541,
+        "female": 1961443,
+        "total": 4017984
+      },
+      {
+        "age": "30-34",
+        "male": 2171498,
+        "female": 2115125,
+        "total": 4286623
+      },
+      {
+        "age": "35-39",
+        "male": 1941541,
+        "female": 1923927,
+        "total": 3865468
+      },
+      {
+        "age": "40-44",
+        "male": 1828659,
+        "female": 1874237,
+        "total": 3702896
+      },
+      {
+        "age": "45-49",
+        "male": 1709672,
+        "female": 1751240,
+        "total": 3460912
+      },
+      {
+        "age": "50-54",
+        "male": 1453004,
+        "female": 1494852,
+        "total": 2947856
+      },
+      {
+        "age": "55-59",
+        "male": 1381908,
+        "female": 1420545,
+        "total": 2802453
+      },
+      {
+        "age": "60-64",
+        "male": 1169971,
+        "female": 1160084,
+        "total": 2330055
+      },
+      {
+        "age": "65-69",
+        "male": 912888,
+        "female": 919575,
+        "total": 1832463
+      },
+      {
+        "age": "70-74",
+        "male": 608142,
+        "female": 636581,
+        "total": 1244723
+      },
+      {
+        "age": "75-79",
+        "male": 364951,
+        "female": 423109,
+        "total": 788060
+      },
+      {
+        "age": "80+",
+        "male": 387995,
+        "female": 440501,
+        "total": 828496
+      },
+      {
+        "age": "Cumulative Frequency",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "2021",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "3715839",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "7224399",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "10796767",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "14838525",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "19156255",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "23058279",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "26811903",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "30347287",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "33401478",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "36379296",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "38964168",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "41143502",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "42790548",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "44016427",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "45099369",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "45707787",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "46254275",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "29.59172269252328",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      }
+    ],
+    "2036": [
+      {
+        "age": "0-4",
+        "male": 1682749,
+        "female": 1676867,
+        "total": 3359616
+      },
+      {
+        "age": "5-9",
+        "male": 1783390,
+        "female": 1776391,
+        "total": 3559781
+      },
+      {
+        "age": "10-14",
+        "male": 1862513,
+        "female": 1849477,
+        "total": 3711990
+      },
+      {
+        "age": "15-19",
+        "male": 1833381,
+        "female": 1814969,
+        "total": 3648350
+      },
+      {
+        "age": "20-24",
+        "male": 1753310,
+        "female": 1729554,
+        "total": 3482864
+      },
+      {
+        "age": "25-29",
+        "male": 1822339,
+        "female": 1723555,
+        "total": 3545894
+      },
+      {
+        "age": "30-34",
+        "male": 2048909,
+        "female": 1955699,
+        "total": 4004608
+      },
+      {
+        "age": "35-39",
+        "male": 2160384,
+        "female": 2106717,
+        "total": 4267101
+      },
+      {
+        "age": "40-44",
+        "male": 1925728,
+        "female": 1912552,
+        "total": 3838280
+      },
+      {
+        "age": "45-49",
+        "male": 1803588,
+        "female": 1856865,
+        "total": 3660453
+      },
+      {
+        "age": "50-54",
+        "male": 1668477,
+        "female": 1724112,
+        "total": 3392589
+      },
+      {
+        "age": "55-59",
+        "male": 1392719,
+        "female": 1454516,
+        "total": 2847235
+      },
+      {
+        "age": "60-64",
+        "male": 1285331,
+        "female": 1353886,
+        "total": 2639217
+      },
+      {
+        "age": "65-69",
+        "male": 1039622,
+        "female": 1067847,
+        "total": 2107469
+      },
+      {
+        "age": "70-74",
+        "male": 759069,
+        "female": 799981,
+        "total": 1559050
+      },
+      {
+        "age": "75-79",
+        "male": 459399,
+        "female": 507652,
+        "total": 967051
+      },
+      {
+        "age": "80+",
+        "male": 422081,
+        "female": 493536,
+        "total": 915617
+      },
+      {
+        "age": "Cumulative Frequency",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "2021",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "3715839",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "7224399",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "10796767",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "14838525",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "19156255",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "23058279",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "26811903",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "30347287",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "33401478",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "36379296",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "38964168",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "41143502",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "42790548",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "44016427",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "45099369",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "45707787",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "46254275",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      },
+      {
+        "age": "29.59172269252328",
+        "male": 0,
+        "female": 0,
+        "total": 0
+      }
+    ]
+  }
+}

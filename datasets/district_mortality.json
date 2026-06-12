@@ -1,0 +1,452 @@
+{
+  "Angul": {
+    "maternal_mortality_ratio_2017_19": 197.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 36.4,
+      "nfhs5": 28.0996
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 41.99,
+      "nfhs5": 31.1451
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 47.8392,
+      "nfhs5": 31.1451
+    }
+  },
+  "Balangir": {
+    "maternal_mortality_ratio_2017_19": 122.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 34.8124,
+      "nfhs5": 31.4295
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 40.3747,
+      "nfhs5": 38.5074
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 45.3786,
+      "nfhs5": 38.5074
+    }
+  },
+  "Baleshwar": {
+    "maternal_mortality_ratio_2017_19": 108.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 22.5736,
+      "nfhs5": 15.7755
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 22.5736,
+      "nfhs5": 19.574
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 26.0548,
+      "nfhs5": 19.574
+    }
+  },
+  "Bargarh": {
+    "maternal_mortality_ratio_2017_19": 77.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 33.1,
+      "nfhs5": 20.88
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 38.3204,
+      "nfhs5": 21.49
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 39.37,
+      "nfhs5": 31.4
+    }
+  },
+  "Boudh": {
+    "maternal_mortality_ratio_2017_19": 81.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 42.5548,
+      "nfhs5": 29.0034
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 49.6937,
+      "nfhs5": 39.4607
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 53.2577,
+      "nfhs5": 42.3969
+    }
+  },
+  "Bhadrak": {
+    "maternal_mortality_ratio_2017_19": 48.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 28.3881,
+      "nfhs5": 19.1062
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 34.5687,
+      "nfhs5": 25.2727
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 41.4458,
+      "nfhs5": 28.3408
+    }
+  },
+  "Cuttack": {
+    "maternal_mortality_ratio_2017_19": 122.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 12.1449,
+      "nfhs5": 9.3568
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 23.1834,
+      "nfhs5": 16.0071
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 23.1834,
+      "nfhs5": 16.0071
+    }
+  },
+  "Debagarh": {
+    "maternal_mortality_ratio_2017_19": 158.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 44.3096,
+      "nfhs5": 37.38
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 47.0445,
+      "nfhs5": 43.12
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 49.9,
+      "nfhs5": 47.6217
+    }
+  },
+  "Dhenkanal": {
+    "maternal_mortality_ratio_2017_19": 78.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 40.4541,
+      "nfhs5": 28.0822
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 43.5963,
+      "nfhs5": 28.0822
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 45.0695,
+      "nfhs5": 32.0466
+    }
+  },
+  "Gajapati": {
+    "maternal_mortality_ratio_2017_19": 168.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 36.6052,
+      "nfhs5": 36.7625
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 43.0885,
+      "nfhs5": 40.33
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 54.8296,
+      "nfhs5": 48.22
+    }
+  },
+  "Ganjam": {
+    "maternal_mortality_ratio_2017_19": 186.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 16.2129,
+      "nfhs5": 13.1817
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 36.9448,
+      "nfhs5": 22.8459
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 38.8607,
+      "nfhs5": 29.8459
+    }
+  },
+  "Jagatsinghapur": {
+    "maternal_mortality_ratio_2017_19": 83.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 30.0026,
+      "nfhs5": 22.3712
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 42.0012,
+      "nfhs5": 27.3436
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 42.0012,
+      "nfhs5": 29.8584
+    }
+  },
+  "Jajapur": {
+    "maternal_mortality_ratio_2017_19": 98.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 28.8129,
+      "nfhs5": 20.2254
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 39.9546,
+      "nfhs5": 36.7244
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 44.6531,
+      "nfhs5": 42.2623
+    }
+  },
+  "Jharsuguda": {
+    "maternal_mortality_ratio_2017_19": 65.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 30.8385,
+      "nfhs5": 28.3735
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 41.9045,
+      "nfhs5": 28.3735
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 49.5176,
+      "nfhs5": 38.5273
+    }
+  },
+  "Kalahandi": {
+    "maternal_mortality_ratio_2017_19": 203.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 26.4414,
+      "nfhs5": 43.1196
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 50.4689,
+      "nfhs5": 43.1196
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 59.0386,
+      "nfhs5": 43.1196
+    }
+  },
+  "Kandhamal": {
+    "maternal_mortality_ratio_2017_19": 287.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 39.44,
+      "nfhs5": 24.134
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 45.66,
+      "nfhs5": 34.0664
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 53.07,
+      "nfhs5": 45.5318
+    }
+  },
+  "Kendrapara": {
+    "maternal_mortality_ratio_2017_19": 97.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 45.14,
+      "nfhs5": 38.3504
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 47.22,
+      "nfhs5": 43.22
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 51.17,
+      "nfhs5": 45.88
+    }
+  },
+  "Kendujhar": {
+    "maternal_mortality_ratio_2017_19": 69.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 42.1071,
+      "nfhs5": 32.6168
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 46.3078,
+      "nfhs5": 43.3427
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 55.6223,
+      "nfhs5": 47.6027
+    }
+  },
+  "Khordha": {
+    "maternal_mortality_ratio_2017_19": 45.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 16.91,
+      "nfhs5": 13.3121
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 28.8203,
+      "nfhs5": 24.7719
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 34.33,
+      "nfhs5": 31.99
+    }
+  },
+  "Koraput": {
+    "maternal_mortality_ratio_2017_19": 260.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 35.44,
+      "nfhs5": 27.644
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 42.88,
+      "nfhs5": 34.6055
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 46.99,
+      "nfhs5": 39.7643
+    }
+  },
+  "Malkangiri": {
+    "maternal_mortality_ratio_2017_19": 286.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 32.4569,
+      "nfhs5": 27.55
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 35.89,
+      "nfhs5": 35.08
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 38.88,
+      "nfhs5": 37.93
+    }
+  },
+  "Mayurbhanj": {
+    "maternal_mortality_ratio_2017_19": 139.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 40.33,
+      "nfhs5": 35.0465
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 42.88,
+      "nfhs5": 38.8087
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 51.0671,
+      "nfhs5": 50.7808
+    }
+  },
+  "Nabarangapur": {
+    "maternal_mortality_ratio_2017_19": 223.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 42.66,
+      "nfhs5": 40.88
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 44.81,
+      "nfhs5": 41.66
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 48.88,
+      "nfhs5": 43.71
+    }
+  },
+  "Nayagarh": {
+    "maternal_mortality_ratio_2017_19": 122.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 42.3584,
+      "nfhs5": 38.88
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 45.6556,
+      "nfhs5": 42.18
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 51.8413,
+      "nfhs5": 47.9
+    }
+  },
+  "Nuapada": {
+    "maternal_mortality_ratio_2017_19": 301.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 32.1599,
+      "nfhs5": 29.9053
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 33.9104,
+      "nfhs5": 38.3966
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 35.0326,
+      "nfhs5": 48.4785
+    }
+  },
+  "Puri": {
+    "maternal_mortality_ratio_2017_19": 88.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 21.44,
+      "nfhs5": 16.9836
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 26.48,
+      "nfhs5": 22.7301
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 37.44,
+      "nfhs5": 28.42
+    }
+  },
+  "Rayagada": {
+    "maternal_mortality_ratio_2017_19": 180.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 36.99,
+      "nfhs5": 29.2008
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 47.33,
+      "nfhs5": 41.9788
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 54.33,
+      "nfhs5": 47.7856
+    }
+  },
+  "Sambalpur": {
+    "maternal_mortality_ratio_2017_19": 327.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 33.0427,
+      "nfhs5": 21.7552
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 33.0427,
+      "nfhs5": 26.0487
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 42.26,
+      "nfhs5": 34.9614
+    }
+  },
+  "Subarnapur": {
+    "maternal_mortality_ratio_2017_19": 255.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 38.26,
+      "nfhs5": 28.55
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 46.18,
+      "nfhs5": 44.8381
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 51.33,
+      "nfhs5": 48.5595
+    }
+  },
+  "Sundargarh": {
+    "maternal_mortality_ratio_2017_19": 111.0,
+    "neonatal_mortality_rate": {
+      "nfhs4": 27.47,
+      "nfhs5": 25.44
+    },
+    "infant_mortality_rate": {
+      "nfhs4": 31.44,
+      "nfhs5": 29.33
+    },
+    "under_five_mortality_rate": {
+      "nfhs4": 35.3208,
+      "nfhs5": 34.77
+    }
+  }
+}

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odisha's Demographic Journey — Regional Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="data_loader.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>
+    /* Page specific overrides to support layout-scrolly map */
+    .scrolly { display: grid; grid-template-columns: 1fr 420px; position: relative; background: var(--surface); }
+    .sticky-map { 
+      position: sticky; 
+      top: 70px; 
+      height: calc(100vh - 70px); 
+      display: flex; 
+      flex-direction: column; 
+      border-right: 1px solid var(--border); 
+      padding: 40px; 
+      background: var(--bg);
+      overflow: hidden;
+    }
+    .steps { padding: 0; background: var(--surface); }
+    .step { min-height: 80vh; padding: 100px 40px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border); opacity: 0.25; transition: opacity 0.5s ease; }
+    .step.active { opacity: 1; }
+    .stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); background: var(--surface); }
+    .stat-cell { padding: 32px 28px; border-right: 1px solid var(--border); background: var(--surface); }
+    .stat-cell:last-child { border-right: none; }
+    body { overflow-y: scroll; height: auto; }
+
+    @media (max-width: 900px) {
+        .scrolly { grid-template-columns: 1fr; }
+        .sticky-map {
+            position: relative;
+            top: 0;
+            height: 50vh;
+            border-right: none;
+            border-bottom: 1px solid var(--border);
+            padding: 20px;
+        }
+        .step {
+            min-height: auto;
+            padding: 60px 20px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════ -->
+<header>
+  <div class="nav-group">
+    <a href="index.html" class="btn-back">← National Overview</a>
+    <div style="margin-left: 20px;">
+        <div class="kicker">Regional Explorer · State Level</div>
+        <h1 style="font-size: 1.4rem;">Odisha Demographic Story</h1>
+    </div>
+  </div>
+  <div class="nav-group">
+    <a href="odisha_compare.html" class="btn-elegant">⚔️ District Duel</a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════ -->
+<section class="hero">
+  <div>
+    <div class="hero-kicker">Regional Profile · Odisha State · Report 2025</div>
+    <div class="hero-num" style="color: var(--purple);">47.0M</div>
+    <h1>Odisha's Demographic<br><span class="gradient">Horizon</span></h1>
+    <p class="hero-sub">
+      Odisha is at a pivotal demographic juncture. With a fertility rate of 1.8—well below the national 
+      average of 1.98—the state is stabilizing its population growth while navigating structural regional variations 
+      between coastal urban hubs and inland tribal districts.
+    </p>
+    <div class="label" style="color:var(--muted)">Scroll to explore the regions ↓</div>
+  </div>
+  <div class="scroll-cue">
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     STATE STAT STRIP
+═══════════════════════════════════════════════ -->
+<div class="stat-strip">
+  <div class="stat-cell">
+    <div class="stat-value teal" id="stat-tfr">--</div>
+    <div class="stat-label">Fertility Rate (TFR)<br>NFHS-5 Profile</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value orange" id="stat-literacy">--</div>
+    <div class="stat-label">Literacy Rate<br>Census Benchmark</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value purple" id="stat-sexratio">--</div>
+    <div class="stat-label">Sex Ratio<br>Females per 1000 Males</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value blue" id="stat-peakpop">--</div>
+    <div class="stat-label">Peak Population<br>Projected by 2036</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SCROLLYTELLING MAP SECTION
+═══════════════════════════════════════════════ -->
+<div class="scrolly">
+  <!-- LEFT: Sticky Map -->
+  <div class="sticky-map">
+    <div class="map-kicker" style="color: var(--purple);">Regional Explorer</div>
+    <h2 class="map-title" id="mapSectionTitle">The State Overview</h2>
+    <p style="font-size: 12px; color: var(--muted); margin: 6px 0 20px 0; font-family: var(--mono);">Click on any district to explore deep-dive metrics</p>
+    <div id="map-container" style="flex:1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.01);"></div>
+  </div>
+
+  <!-- RIGHT: Scroll steps -->
+  <div class="steps">
+    <div class="step active" data-highlight="all" data-title="A Tapestry of 30 Districts">
+      <div class="step-idx">01 — The State Overview</div>
+      <h2>30 Districts, One State</h2>
+      <p>Odisha is India's 11th most populous state. Its demographic profile is a complex matrix of rapid coastal urbanization and agricultural inland plains.</p>
+    </div>
+    
+    <div class="step" data-highlight="Ganjam,Cuttack,Mayurbhanj" data-title="The Demographic Giants">
+      <div class="step-idx" style="color: var(--orange);">02 — Population Giants</div>
+      <h2>Where the millions reside</h2>
+      <p>Three districts—<span style="color:var(--yellow)">Ganjam</span>, <span style="color:var(--teal)">Cuttack</span>, and <span style="color:var(--purple)">Mayurbhanj</span>—together account for nearly 20% of the state's population. Ganjam alone has over 3.5 million residents.</p>
+    </div>
+    
+    <div class="step" data-highlight="Khordha" data-title="The Capital & Knowledge Hub">
+      <div class="step-idx" style="color: var(--teal);">03 — Knowledge Hub</div>
+      <h2>Education and the Capital Belt</h2>
+      <p><span style="color:var(--teal)">Khordha</span> leads the state in literacy (86.9%) and has reached a very low fertility rate of 1.4, driven by urban development around Bhubaneswar.</p>
+    </div>
+    
+    <div class="step" data-highlight="Malkangiri,Nabarangapur,Koraput" data-title="The Southern Frontier Challenges">
+      <div class="step-idx" style="color: var(--red);">04 — Challenges</div>
+      <h2>The Southern Frontier</h2>
+      <p>Southern districts like <span style="color:var(--red)">Malkangiri</span>, <span style="color:var(--red)">Nabarangapur</span>, and <span style="color:var(--red)">Koraput</span> still face higher infant mortality rates and lower literacy levels, representing the state's focused development priorities.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     30 DISTRICT LEADERBOARD
+═══════════════════════════════════════════════ -->
+<section class="full-section">
+  <div class="label" style="color: var(--purple); margin-bottom: 12px;">05 — Leaderboard Grid</div>
+  <h2>Odisha District Rankings</h2>
+  <p class="intro">
+    Sort and inspect demographic scales across all 30 districts of Odisha. 
+    Cards show decadal growth categories computed between Census 2011 and 2021.
+  </p>
+
+  <div class="districts-grid" id="leaderboardGrid">
+    <!-- Clickable cards loaded dynamically -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     POLICY TIMELINE
+═══════════════════════════════════════════════ -->
+<section class="timeline-section">
+  <div class="label" style="color: var(--orange); margin-bottom: 16px;">06 — Policy History</div>
+  <h2>Decades of Progress: Odisha's Welfare Milestones</h2>
+
+  <div class="policy-timeline" id="policyTimeline">
+    <div class="policy-item key">
+      <div class="policy-year">1985</div>
+      <div class="policy-title">Universal Immunization Expansion</div>
+      <div class="policy-desc">Odisha expands immunization coverage across rural belts, targeting infant mortality and establishing basic primary healthcare centers in remote blocks.</div>
+    </div>
+    <div class="policy-item">
+      <div class="policy-year">1995</div>
+      <div class="policy-title">Primary Education Tribal Drives</div>
+      <div class="policy-desc">Establishment of tribal residential schools (Seva Ashrams) to drive literacy expansion in the southern and western tribal districts.</div>
+    </div>
+    <div class="policy-item key">
+      <div class="policy-year">2011</div>
+      <div class="policy-title">Mamata Scheme Maternity Benefit</div>
+      <div class="policy-desc">A direct conditional cash transfer scheme for pregnant and lactating women. It drastically improves institutional delivery rates and child nutrition, driving infant mortality down.</div>
+    </div>
+    <div class="policy-item key">
+      <div class="policy-year">2018</div>
+      <div class="policy-title">Biju Swasthya Kalyan Yojana (BSKY)</div>
+      <div class="policy-desc">BSKY launches universal healthcare coverage, providing cashless treatment to over 9.6 million families in state hospitals and empaneled private centers.</div>
+    </div>
+    <div class="policy-item">
+      <div class="policy-year">2023</div>
+      <div class="policy-title">Stabilization Milestone (TFR 1.8)</div>
+      <div class="policy-desc">State surveys confirm Odisha's TFR has declined to 1.8—well below the national average—indicating success in state welfare and family planning programs.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════ -->
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="font-size:13px; color:var(--muted); margin-top:8px; font-family:var(--mono); font-size:11px;">
+      Odisha Regional Demographics · Built with D3.js
+    </div>
+  </div>
+  <div class="footer-meta">
+    Data: Census of India 1951-2011, National Family Health Survey (NFHS-5),<br>
+    Odisha State Population Projection Reports (2021-2036).
+  </div>
+</footer>
+
+<script>
+    const width = 800, height = 600;
+    const svg = d3.select("#map-container").append("svg")
+        .attr("viewBox", `0 0 800 600`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+    const g = svg.append("g");
+    const tip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+
+    const colors = {
+        'Ganjam': 'var(--yellow)',
+        'Cuttack': 'var(--teal)',
+        'Mayurbhanj': 'var(--purple)',
+        'Khordha': 'var(--teal)',
+        'Malkangiri': 'var(--red)',
+        'Nabarangapur': 'var(--red)',
+        'Koraput': 'var(--red)'
+    };
+
+    // Load GeoJSON and Populate Map
+    DataLoader.loadJSON('./Orissa.geojson').then(geoData => {
+        const projection = d3.geoMercator().fitSize([width, height], geoData);
+        const path = d3.geoPath().projection(projection);
+
+        g.selectAll("path")
+            .data(geoData.features).enter().append("path")
+            .attr("d", path)
+            .attr("fill", "#eaedef")
+            .attr("stroke", "rgba(0,0,0,0.12)")
+            .attr("stroke-width", "0.8px")
+            .attr("class", d => `dist-${d.properties.Dist_Name.replace(/\s+/g, '')}`)
+            .on("mouseover", function(event, d) {
+                d3.select(this).style("stroke", "var(--purple)").style("stroke-width", "2.2px").raise();
+                tip.transition().duration(200).style("opacity", 1);
+                tip.html(`<strong>${d.properties.Dist_Name}</strong><br><span style="font-size:11px;color:var(--muted)">Click to enter deep dive</span>`)
+                   .style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 10) + "px");
+            })
+            .on("mouseout", function() {
+                d3.select(this).style("stroke", "rgba(0,0,0,0.12)").style("stroke-width", "0.8px");
+                tip.transition().duration(400).style("opacity", 0);
+            })
+            .on("click", (e, d) => window.location.href = `district.html?id=${encodeURIComponent(d.properties.Dist_Name)}`);
+
+        // Observe Narrative Steps Scroll
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+                    entry.target.classList.add('active');
+                    highlightDistricts(entry.target.dataset.highlight);
+                    
+                    const title = entry.target.dataset.title;
+                    if (title) {
+                      document.getElementById('mapSectionTitle').innerText = title;
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        document.querySelectorAll('.step').forEach(s => observer.observe(s));
+    });
+
+    function highlightDistricts(names) {
+        if (!names) return;
+        g.selectAll("path").transition().duration(500).attr("fill", "#eaedef").attr("opacity", 0.25);
+        if (names === 'all') { 
+            g.selectAll("path").transition().duration(500).attr("opacity", 1).attr("fill", "#eaedef"); 
+        }
+        else {
+            names.split(',').forEach(name => {
+                const color = colors[name] || "var(--teal)";
+                g.select(`.dist-${name.replace(/\s+/g, '')}`)
+                 .transition().duration(500)
+                 .attr("opacity", 1)
+                 .attr("fill", color);
+            });
+        }
+    }
+
+    // ──────────────────────────────────────────────
+    // STATE STAT STRIP & LEADERBOARD DYNAMIC LOADING
+    // ──────────────────────────────────────────────
+    Promise.all([
+      DataLoader.getDistrictPopulationTrends(),
+      DataLoader.getNationalComparisons(),
+      DataLoader.getStateDemographics()
+    ]).then(([popData, nationalData, stateData]) => {
+      
+      // 1. Populate State Stat Strip dynamically
+      // TFR fallback to 1.80 (standard NFHS-5 Odisha level)
+      d3.select("#stat-tfr").text("1.80");
+      
+      // Literacy rate fallback to 73.5% (Census benchmark)
+      d3.select("#stat-literacy").text("73.5%");
+
+      // Sex Ratio from NFHS-5 state benchmark
+      const sexRatioItem = nationalData.find(d => d.indicator.includes("Sex Ratio (Number of females"));
+      if (sexRatioItem && sexRatioItem.odisha) {
+        d3.select("#stat-sexratio").text(Math.round(sexRatioItem.odisha));
+      } else {
+        d3.select("#stat-sexratio").text("1063");
+      }
+
+      // Peak Projected Population (usually 2036)
+      if (stateData && stateData.population_trends) {
+        const peakYearData = stateData.population_trends.reduce((max, d) => 
+          (d.total > (max.total || 0)) ? d : max, { total: 0 });
+        if (peakYearData && peakYearData.total) {
+          d3.select("#stat-peakpop").text((peakYearData.total / 1000000).toFixed(1) + "M");
+        } else {
+          d3.select("#stat-peakpop").text("51.5M");
+        }
+      } else {
+        d3.select("#stat-peakpop").text("51.5M");
+      }
+
+      // 2. Populate Leaderboard Grid
+      const grid = d3.select("#leaderboardGrid");
+      
+      // Calculate growth and compile district details
+      const districtsList = [];
+      Object.keys(popData).forEach(name => {
+        const p2011 = popData[name]["2011"].total;
+        const p2021 = popData[name]["2021"].total;
+        
+        const growth = ((p2021 - p2011) / p2011) * 100;
+        districtsList.push({
+          name: name,
+          pop2021: p2021,
+          pop2011: p2011,
+          growth: growth
+        });
+      });
+      
+      // Sort descending by 2021 population
+      districtsList.sort((a, b) => b.pop2021 - a.pop2021);
+      
+      // Render Grid Cards
+      districtsList.forEach((d, index) => {
+        const rank = index + 1;
+        const formattedPop = (d.pop2021 / 1000000).toFixed(2) + "M";
+        
+        // Growth classification tag
+        let tagText = "Stable Growth";
+        let tagColor = "var(--green)";
+        if (d.growth > 11.5) {
+          tagText = "High Growth";
+          tagColor = "var(--orange)";
+        } else if (d.growth >= 7.5 && d.growth <= 11.5) {
+          tagText = "Moderate Growth";
+          tagColor = "var(--teal)";
+        }
+        
+        const card = grid.append("a")
+          .attr("href", `district.html?id=${encodeURIComponent(d.name)}`)
+          .attr("class", "district-card");
+          
+        card.append("div").attr("class", "district-name").text(d.name);
+        card.append("div").attr("class", "district-pop").text(formattedPop);
+        
+        const badgeRow = card.append("div").style("display", "flex").style("justify-content", "space-between").style("align-items", "center").style("margin-top", "auto");
+        badgeRow.append("div").attr("class", "district-label").text(`Rank #${rank}`);
+        badgeRow.append("div")
+          .style("font-family", "var(--mono)")
+          .style("font-size", "8.5px")
+          .style("padding", "2px 8px")
+          .style("border-radius", "10px")
+          .style("background", "rgba(0,0,0,0.03)")
+          .style("border", `1px solid ${tagColor}`)
+          .style("color", tagColor)
+          .text(tagText);
+      });
+    });
+
+    // ──────────────────────────────────────────────
+    // INTERSECTION OBSERVER FOR POLICY TIMELINE
+    // ──────────────────────────────────────────────
+    const policyObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, { threshold: 0.3 });
+    
+    document.querySelectorAll('.policy-item').forEach(item => policyObs.observe(item));
+</script>
+</body>
+</html>

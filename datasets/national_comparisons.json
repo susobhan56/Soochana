@@ -1,0 +1,112 @@
+[
+  {
+    "indicator": "Population (Actual)",
+    "year": "2011",
+    "india": 1210193422.0,
+    "odisha": 41974218.0,
+    "bihar": 104099452.0,
+    "jharkhand": 32988134.0,
+    "chhattisgarh": 25545198.0,
+    "telangana": null,
+    "source": "Census 2011"
+  },
+  {
+    "indicator": "Population (Projected)",
+    "year": "2021",
+    "india": 1363006000.0,
+    "odisha": 45696000.0,
+    "bihar": 123083000.0,
+    "jharkhand": 38471000.0,
+    "chhattisgarh": 29493000.0,
+    "telangana": 37725000.0,
+    "source": "ORGI, Population Projection"
+  },
+  {
+    "indicator": "Decadal Population Growth Rate",
+    "year": "2011- 21",
+    "india": 12.627120195997893,
+    "odisha": 8.866828680405673,
+    "bihar": 18.235973038551634,
+    "jharkhand": 16.62072186320087,
+    "chhattisgarh": 15.454184383303666,
+    "telangana": null,
+    "source": "Calculated"
+  },
+  {
+    "indicator": "Population Density (Population per Sq. km)",
+    "year": "2021",
+    "india": 415.0,
+    "odisha": 293.0,
+    "bihar": 1307.0,
+    "jharkhand": 483.0,
+    "chhattisgarh": 218.0,
+    "telangana": 337.0,
+    "source": "ORGI, Population Projection"
+  },
+  {
+    "indicator": "ST Population",
+    "year": "2011",
+    "india": 104545716.0,
+    "odisha": 9590756.0,
+    "bihar": 1336573.0,
+    "jharkhand": 8645042.0,
+    "chhattisgarh": 7822902.0,
+    "telangana": null,
+    "source": "Census 2011"
+  },
+  {
+    "indicator": "ST Population Share (%)",
+    "year": "2011",
+    "india": 8.6,
+    "odisha": 22.85,
+    "bihar": 1.28,
+    "jharkhand": 26.21,
+    "chhattisgarh": 30.62,
+    "telangana": null,
+    "source": "Census 2011"
+  },
+  {
+    "indicator": "Sex Ratio (Number of females per 1000 Males)",
+    "year": "2019-21",
+    "india": 1020.0,
+    "odisha": 1063.0,
+    "bihar": 1090.0,
+    "jharkhand": 1050.0,
+    "chhattisgarh": 1015.0,
+    "telangana": 1049.0,
+    "source": "NFHS-5"
+  },
+  {
+    "indicator": "Sex Ratio at Birth (Number of Female births per  1000 Male Births)",
+    "year": "2019-21",
+    "india": 929.0,
+    "odisha": 894.0,
+    "bihar": 908.0,
+    "jharkhand": 899.0,
+    "chhattisgarh": 960.0,
+    "telangana": 894.0,
+    "source": "NFHS-5"
+  },
+  {
+    "indicator": "LFPR_ 15-59 (% of working or actively seeking work population)",
+    "year": "2023-24",
+    "india": 64.3,
+    "odisha": 69.2,
+    "bihar": 55.0,
+    "jharkhand": 67.8,
+    "chhattisgarh": 75.3,
+    "telangana": 68.7,
+    "source": "PLFS"
+  },
+  {
+    "indicator": "FLFPR_ 15-59 (% of female working or actively seeking work population)",
+    "year": "2023-24",
+    "india": 45.2,
+    "odisha": 53.5,
+    "bihar": 32.0,
+    "jharkhand": 53.4,
+    "chhattisgarh": 63.6,
+    "telangana": 52.7,
+    "source": "PLFS"
+  }
+]

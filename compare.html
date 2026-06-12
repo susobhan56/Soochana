@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>State Duel — Demographic Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="data_loader.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>
+    body { overflow-y: auto; height: auto; }
+    .compare-wrap { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+    
+    .selector-bar { 
+        display: flex; justify-content: center; align-items: center; gap: 40px; 
+        margin-bottom: 60px; padding: 30px; background: var(--panel); border-radius: 20px;
+        border: 1px solid var(--border);
+    }
+    
+    select { 
+        background: var(--bg); border: 1px solid var(--teal); color: var(--text); 
+        padding: 12px 24px; border-radius: 30px; font-family: var(--mono); font-size: 14px;
+        outline: none; cursor: pointer; min-width: 200px;
+    }
+    select option {
+        background: var(--surface);
+        color: var(--text);
+    }
+
+    .vs-circle {
+        width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center;
+        font-family: var(--serif); font-weight: 900; color: var(--muted); background: var(--bg);
+    }
+
+    .comparison-grid { display: flex; flex-direction: column; gap: 50px; }
+    .comp-row { display: grid; grid-template-columns: 1fr 180px 1fr; align-items: center; }
+
+    .comp-label { text-align: center; font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.1em; line-height: 1.4; }
+    
+    .bar-container { height: 40px; background: var(--panel); border-radius: 4px; position: relative; overflow: hidden; }
+    .bar-fill { height: 100%; transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
+    
+    .left-bar { display: flex; flex-direction: row-reverse; align-items: center; gap: 15px; }
+    .right-bar { display: flex; align-items: center; gap: 15px; }
+
+    .bar-val { font-family: var(--mono); font-weight: 700; font-size: 1.2rem; }
+    .state-header { font-family: var(--serif); font-size: 2.5rem; margin-bottom: 5px; }
+
+    @media (max-width: 768px) {
+        .selector-bar {
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        .vs-circle {
+            transform: rotate(90deg);
+        }
+        .comp-row {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 24px;
+        }
+        .comp-label {
+            order: -1;
+            text-align: left;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        .left-bar, .right-bar {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        .bar-container {
+            flex: 1 !important;
+            height: 24px;
+        }
+        .bar-fill {
+            float: left !important;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="nav-group">
+        <a href="index.html" class="btn-back">← National Map</a>
+        <div style="margin-left: 20px;">
+            <div class="kicker">Comparative Analysis · State Duel</div>
+            <h1 style="font-size: 1.2rem; font-family: var(--serif);">Interactive Comparison</h1>
+        </div>
+    </div>
+    <div class="nav-group">
+        <a href="index.html" class="btn-elegant">🏠 Home</a>
+    </div>
+</header>
+
+<div class="compare-wrap">
+    <div class="selector-bar">
+        <div>
+            <div class="label" style="margin-bottom:10px; font-family:var(--mono); font-size:10px; color:var(--teal)">Select State A</div>
+            <select id="stateA-select"></select>
+        </div>
+        <div class="vs-circle">VS</div>
+        <div>
+            <div class="label" style="margin-bottom:10px; text-align:right; font-family:var(--mono); font-size:10px; color:var(--orange)">Select State B</div>
+            <select id="stateB-select"></select>
+        </div>
+    </div>
+
+    <div class="comparison-grid">
+        <!-- POPULATION -->
+        <div class="comp-row">
+            <div class="left-bar">
+                <div class="bar-val" id="popA-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="popA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
+            </div>
+            <div class="comp-label">Projected Population<br>(Millions, 2021)</div>
+            <div class="right-bar">
+                <div class="bar-container" style="flex:1"><div id="popB-bar" class="bar-fill" style="background:var(--orange); width:0"></div></div>
+                <div class="bar-val" id="popB-val">--</div>
+            </div>
+        </div>
+
+        <!-- DENSITY -->
+        <div class="comp-row">
+            <div class="left-bar">
+                <div class="bar-val" id="denA-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="denA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
+            </div>
+            <div class="comp-label">Population Density<br>(per Sq. km, 2021)</div>
+            <div class="right-bar">
+                <div class="bar-container" style="flex:1"><div id="denB-bar" class="bar-fill" style="background:var(--orange); width:0"></div></div>
+                <div class="bar-val" id="denB-val">--</div>
+            </div>
+        </div>
+
+        <!-- DECADAL GROWTH -->
+        <div class="comp-row">
+            <div class="left-bar">
+                <div class="bar-val" id="groA-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="groA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
+            </div>
+            <div class="comp-label">Decadal Growth<br>(2011-21, %)</div>
+            <div class="right-bar">
+                <div class="bar-container" style="flex:1"><div id="groB-bar" class="bar-fill" style="background:var(--orange); width:0"></div></div>
+                <div class="bar-val" id="groB-val">--</div>
+            </div>
+        </div>
+
+        <!-- ST POPULATION SHARE -->
+        <div class="comp-row">
+            <div class="left-bar">
+                <div class="bar-val" id="stA-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="stA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
+            </div>
+            <div class="comp-label">ST Population Share<br>(2011, %)</div>
+            <div class="right-bar">
+                <div class="bar-container" style="flex:1"><div id="stB-bar" class="bar-fill" style="background:var(--orange); width:0"></div></div>
+                <div class="bar-val" id="stB-val">--</div>
+            </div>
+        </div>
+
+        <!-- SEX RATIO -->
+        <div class="comp-row">
+            <div class="left-bar">
+                <div class="bar-val" id="sexA-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="sexA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
+            </div>
+            <div class="comp-label">Sex Ratio<br>(NFHS-5, F per 1000 M)</div>
+            <div class="right-bar">
+                <div class="bar-container" style="flex:1"><div id="sexB-bar" class="bar-fill" style="background:var(--orange); width:0"></div></div>
+                <div class="bar-val" id="sexB-val">--</div>
+            </div>
+        </div>
+
+        <!-- LFPR -->
+        <div class="comp-row">
+            <div class="left-bar">
+                <div class="bar-val" id="lfprA-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="lfprA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
+            </div>
+            <div class="comp-label">Labor Force LFPR<br>(15-59 Years, %)</div>
+            <div class="right-bar">
+                <div class="bar-container" style="flex:1"><div id="lfprB-bar" class="bar-fill" style="background:var(--orange); width:0"></div></div>
+                <div class="bar-val" id="lfprB-val">--</div>
+            </div>
+        </div>
+
+        <!-- FLFPR -->
+        <div class="comp-row">
+            <div class="left-bar">
+                <div class="bar-val" id="flfprA-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="flfprA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
+            </div>
+            <div class="comp-label">Female LFPR<br>(15-59 Years, %)</div>
+            <div class="right-bar">
+                <div class="bar-container" style="flex:1"><div id="flfprB-bar" class="bar-fill" style="background:var(--orange); width:0"></div></div>
+                <div class="bar-val" id="flfprB-val">--</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const selectA = d3.select("#stateA-select");
+    const selectB = d3.select("#stateB-select");
+
+    const statesList = [
+        { label: "India", key: "india" },
+        { label: "Odisha", key: "odisha" },
+        { label: "Bihar", key: "bihar" },
+        { label: "Jharkhand", key: "jharkhand" },
+        { label: "Chhattisgarh", key: "chhattisgarh" },
+        { label: "Telangana", key: "telangana" }
+    ];
+
+    // Load dynamic national comparisons
+    DataLoader.getNationalComparisons().then(data => {
+
+        // Populate drop-downs
+        statesList.forEach(s => {
+            selectA.append("option").text(s.label).attr("value", s.key);
+            selectB.append("option").text(s.label).attr("value", s.key);
+        });
+
+        // Set defaults
+        selectA.property("value", "odisha");
+        selectB.property("value", "india");
+
+        // Set change events
+        selectA.on("change", updateComparison);
+        selectB.on("change", updateComparison);
+
+        updateComparison();
+
+        function getVal(indicatorName, stateKey) {
+            const item = data.find(d => d.indicator === indicatorName);
+            return item ? item[stateKey] : null;
+        }
+
+        function updateComparison() {
+            const sA = selectA.property("value");
+            const sB = selectB.property("value");
+
+            // 1. Population (2021)
+            const popA = getVal("Population (Projected)", sA) ? getVal("Population (Projected)", sA) / 1000000 : null;
+            const popB = getVal("Population (Projected)", sB) ? getVal("Population (Projected)", sB) / 1000000 : null;
+            animateMetric("pop", popA, popB, Math.max(popA || 0, popB || 0), "M", 1);
+
+            // 2. Density (2021)
+            const denA = getVal("Population Density (Population per Sq. km)", sA);
+            const denB = getVal("Population Density (Population per Sq. km)", sB);
+            animateMetric("den", denA, denB, Math.max(denA || 0, denB || 0), "", 0);
+
+            // 3. Decadal Growth (2011-21)
+            const groA = getVal("Decadal Population Growth Rate", sA);
+            const groB = getVal("Decadal Population Growth Rate", sB);
+            animateMetric("gro", groA, groB, Math.max(groA || 0, groB || 0), "%", 1);
+
+            // 4. ST Share (2011)
+            const stA = getVal("ST Population Share (%)", sA);
+            const stB = getVal("ST Population Share (%)", sB);
+            animateMetric("st", stA, stB, Math.max(stA || 0, stB || 0) || 1, "%", 1);
+
+            // 5. Sex Ratio (NFHS-5)
+            const sexA = getVal("Sex Ratio (Number of females per 1000 Males)", sA);
+            const sexB = getVal("Sex Ratio (Number of females per 1000 Males)", sB);
+            animateMetric("sex", sexA, sexB, Math.max(sexA || 0, sexB || 0), "", 0);
+
+            // 6. LFPR (2023-24)
+            const lfprA = getVal("LFPR_ 15-59 (% of working or actively seeking work population)", sA);
+            const lfprB = getVal("LFPR_ 15-59 (% of working or actively seeking work population)", sB);
+            animateMetric("lfpr", lfprA, lfprB, Math.max(lfprA || 0, lfprB || 0), "%", 1);
+
+            // 7. FLFPR (2023-24)
+            const flfprA = getVal("FLFPR_ 15-59 (% of female working or actively seeking work population)", sA);
+            const flfprB = getVal("FLFPR_ 15-59 (% of female working or actively seeking work population)", sB);
+            animateMetric("flfpr", flfprA, flfprB, Math.max(flfprA || 0, flfprB || 0), "%", 1);
+        }
+
+        function animateMetric(id, valA, valB, max, unit, decimals = 1) {
+            const textA = (valA !== null && valA !== undefined) ? valA.toFixed(decimals) + unit : "N/A";
+            const textB = (valB !== null && valB !== undefined) ? valB.toFixed(decimals) + unit : "N/A";
+
+            d3.select(`#${id}A-val`).text(textA);
+            d3.select(`#${id}B-val`).text(textB);
+
+            const pctA = (valA !== null && valA !== undefined && max > 0) ? (valA / max * 100) : 0;
+            const pctB = (valB !== null && valB !== undefined && max > 0) ? (valB / max * 100) : 0;
+
+            d3.select(`#${id}A-bar`).transition().duration(1000).style("width", pctA + "%");
+            d3.select(`#${id}B-bar`).transition().duration(1000).style("width", pctB + "%");
+        }
+
+    }).catch(err => {
+        console.error("Error loading national comparison datasets:", err);
+    });
+</script>
+</body>
+</html>
