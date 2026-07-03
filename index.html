@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>India & Odisha: Parallel Demographic Journeys</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="data_loader.js"></script>
@@ -16,15 +17,17 @@
 ═══════════════════════════════════════════════ -->
 <header>
   <div class="nav-group">
-    <div style="display: flex; align-items: center; gap: 12px;">
+    <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
-      <div class="kicker" style="margin: 0; color: var(--blue);">National Portal</div>
-    </div>
-    <h1 style="margin-left: 20px; font-size: 1.25rem;">Demographic Storytelling</h1>
+      <h1>Odisha Demographics</h1>
+    </a>
   </div>
-  <div class="nav-group">
-    <a href="compare.html" class="btn-elegant">⚔️ State Duel</a>
-    <a href="odisha.html" class="btn-elegant" style="background: var(--teal); color: white; border-color: var(--teal);">Odisha Explorer →</a>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="index.html" class="btn-elegant" style="background: var(--teal); color: white; border-color: var(--teal);">🏠 Home</a>
+    <a href="odisha.html" class="btn-elegant">🗺️ Map Explorer</a>
+    <a href="themes.html" class="btn-elegant">📊 Themes</a>
+    <a href="repository.html" class="btn-elegant">📁 Repository</a>
+    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
   </div>
 </header>
 
@@ -1311,5 +1314,6 @@ window.addEventListener('resize', () => {
   triggerPyramids(currentPyramidYear);
 });
 </script>
+<script src="chatbot.js"></script>
 </body>
 </html>
