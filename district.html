@@ -4,10 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>District Insight · Demographic Deep Dive</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="data_loader.js"></script>
 <link rel="stylesheet" href="style.css">
+<script src="ui.js"></script>
 <style>
     :root {
         --accent: var(--teal);
@@ -33,7 +35,7 @@
         top: 20%;
         font-family: var(--serif);
         font-size: 25vw;
-        font-weight: 900;
+        font-weight: var(--wt-display);
         color: rgba(0, 0, 0, 0.03);
         line-height: 1;
         pointer-events: none;
@@ -41,7 +43,7 @@
     }
 
     .hero-editorial h1 {
-        font-size: 8rem;
+        font-size: var(--fs-display);
         margin: 0;
         letter-spacing: -0.04em;
         z-index: 1;
@@ -55,8 +57,8 @@
     }
 
     .meta-item { border-left: 1px solid var(--accent); padding-left: 20px; }
-    .meta-val { font-family: var(--serif); font-size: 2.5rem; font-weight: 700; }
-    .meta-label { font-family: var(--mono); font-size: 10px; color: var(--muted); text-transform: uppercase; margin-top: 5px; }
+    .meta-val { font-family: var(--serif); font-size: var(--fs-h2); font-weight: var(--wt-display); }
+    .meta-label { font-family: var(--mono); font-size: var(--fs-micro); color: var(--muted); text-transform: uppercase; margin-top: 5px; }
 
     /* Scrollytelling Refined */
     .scrolly-container {
@@ -101,18 +103,20 @@
         transform: translateY(0);
     }
 
-    .story-step h2 { font-family: var(--serif); font-size: 3rem; margin-bottom: 25px; line-height: 1.1; }
-    .story-step p { font-size: 1.1rem; line-height: 1.8; color: var(--muted); max-width: 380px; }
+    .story-step h2 { font-family: var(--serif); font-size: var(--fs-h2); margin-bottom: 25px; line-height: 1.1; }
+    .story-step p { font-size: var(--fs-body); line-height: 1.8; color: var(--muted); max-width: 380px; }
 
     /* Chart Elements */
     .line-path { fill: none; stroke-width: 4; stroke-linecap: round; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.05)); }
     .area-path { opacity: 0.08; }
     .axis-custom line, .axis-custom path { stroke: var(--border); }
-    .axis-custom text { font-family: var(--mono); font-size: 11px; fill: var(--dimmed); }
+    /* This SVG sits in a viewBox that renders at ~0.78 scale, so a CSS size
+       here lands ~22% smaller on screen. Sized up one step to compensate. */
+    .axis-custom text { font-family: var(--mono); font-size: var(--fs-body); fill: var(--muted); }
     
     .chart-title-hud {
         font-family: var(--mono);
-        font-size: 12px;
+        font-size: var(--fs-caption);
         text-transform: uppercase;
         color: var(--accent);
         letter-spacing: 0.2em;
@@ -120,7 +124,7 @@
     }
 
     .nav-header-fixed {
-        position: fixed;
+        position: sticky;
         top: 0; width: 100%;
         z-index: 1000;
     }
@@ -131,7 +135,7 @@
         gap: 20px;
         margin-top: 15px;
         font-family: var(--mono);
-        font-size: 10px;
+        font-size: var(--fs-micro);
         color: var(--muted);
     }
 
@@ -159,7 +163,7 @@
             padding: 140px 20px 80px;
         }
         .hero-editorial h1 {
-            font-size: 4rem;
+            font-size: var(--fs-display);
         }
         .hero-meta {
             flex-direction: column;
@@ -170,7 +174,7 @@
             padding-left: 15px;
         }
         .meta-val {
-            font-size: 1.8rem;
+            font-size: var(--fs-h3);
         }
     }
 </style>
@@ -178,13 +182,20 @@
 <body>
 
 <header class="nav-header-fixed">
-    <div class="nav-group">
-        <a href="odisha.html" class="btn-back">← Odisha State Story</a>
-    </div>
-    <div class="nav-group">
-        <a href="odisha_compare.html" class="btn-elegant">⚔️ Compare Districts</a>
-        <a href="index.html" class="btn-elegant">Home</a>
-    </div>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <h1>Soochana</h1>
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="index.html" class="btn-elegant">🏠 Home</a>
+    <a href="journeys.html" class="btn-elegant">📈 The Story</a>
+    <a href="odisha.html" class="btn-elegant" aria-current="page">🗺️ Map Explorer</a>
+    <a href="themes.html" class="btn-elegant">📊 Themes</a>
+    <a href="repository.html" class="btn-elegant">📁 Repository</a>
+    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
+  </div>
 </header>
 
 <div class="hero-editorial">
@@ -253,7 +264,7 @@
 <section class="full-section" style="background: var(--bg); border-top: 1px solid var(--border);">
     <div class="label" style="color: var(--purple); margin-bottom: 12px;">V — Age Structure</div>
     <h2>Population Pyramid Projections</h2>
-    <p class="intro">
+    <p class="intro-text">
         Track the shifting age distribution of <span id="pyramid-dist-name" style="font-weight:700; color:var(--teal)"></span> from 2011 to 2036. Toggling years reveals the shrinking youth base (declining births) and the widening working-age cohorts.
     </p>
     
@@ -522,7 +533,7 @@
               .html(`
                 <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">Year ${d.year}</div>
                 <div style="font-size:16px; font-weight:bold; font-family:var(--serif); color:var(--blue);">${(d.value / 1000000).toFixed(3)}M Total</div>
-                <div style="margin-top:6px; border-top:1px solid var(--border); padding-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:11px;">
+                <div style="margin-top:6px; border-top:1px solid var(--border); padding-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:var(--fs-caption);">
                   <div><span style="color:var(--teal); font-weight:bold;">♂ Male:</span> ${(malePop / 1000000).toFixed(3)}M</div>
                   <div><span style="color:var(--orange); font-weight:bold;">♀ Female:</span> ${(femalePop / 1000000).toFixed(3)}M</div>
                 </div>
@@ -580,7 +591,7 @@
             .attr("text-anchor", "end")
             .attr("fill", "var(--orange)")
             .attr("font-family", "var(--mono)")
-            .attr("font-size", "9px")
+            .attr("font-size", "14px")
             .text("REPLACEMENT LEVEL 2.1");
 
         // Vertical lollipops stems
@@ -627,7 +638,7 @@
             .attr("y", d => y(d.value) - 10)
             .attr("text-anchor", "middle")
             .attr("fill", "var(--orange)")
-            .attr("font-size", "10px")
+            .attr("font-size", "13px")
             .attr("font-weight", "bold")
             .attr("font-family", "var(--mono)")
             .text(d => d.value.toFixed(2))
@@ -706,7 +717,7 @@
                 .attr("text-anchor", "middle")
                 .attr("fill", "var(--text)")
                 .attr("font-family", "var(--mono)")
-                .attr("font-size", "11px")
+                .attr("font-size", "14px")
                 .style("opacity", 0)
                 .text(cat)
                 .transition()
@@ -769,7 +780,7 @@
                     .attr("text-anchor", isLeft ? "end" : "start")
                     .attr("fill", "var(--text)")
                     .attr("font-family", "var(--mono)")
-                    .attr("font-size", "11px")
+                    .attr("font-size", "14px")
                     .attr("font-weight", "bold")
                     .style("opacity", 0)
                     .text(`${pt.val.toFixed(1)} yrs`);
@@ -788,7 +799,7 @@
                 .attr("fill", lineObj.color)
                 .attr("font-family", "var(--sans)")
                 .attr("font-weight", "600")
-                .attr("font-size", "11px")
+                .attr("font-size", "14px")
                 .style("opacity", 0)
                 .text(lineObj.gender)
                 .transition()
@@ -899,7 +910,7 @@
                 .attr("text-anchor", "end")
                 .attr("fill", "var(--dimmed)")
                 .attr("font-family", "var(--mono)")
-                .attr("font-size", "10px")
+                .attr("font-size", "13px")
                 .text(d.nfhs4.toFixed(1))
                 .style("opacity", 0)
                 .transition()
@@ -915,7 +926,7 @@
                 .attr("fill", "var(--red)")
                 .attr("font-weight", "bold")
                 .attr("font-family", "var(--mono)")
-                .attr("font-size", "11px")
+                .attr("font-size", "14px")
                 .text(d.nfhs5.toFixed(1))
                 .style("opacity", 0)
                 .transition()
@@ -944,7 +955,7 @@
                 .attr("y", 11)
                 .attr("text-anchor", "middle")
                 .attr("fill", "var(--green)")
-                .attr("font-size", "8px")
+                .attr("font-size", "14px")
                 .attr("font-weight", "bold")
                 .attr("font-family", "var(--mono)")
                 .text(`${reduction.toFixed(0)}%`);
@@ -1076,7 +1087,7 @@
                         .attr("y", yPos + barH/2 + 3)
                         .attr("text-anchor", "middle")
                         .attr("fill", "var(--text)")
-                        .attr("font-size", "9px")
+                        .attr("font-size", "14px")
                         .attr("font-weight", "500")
                         .attr("font-family", "var(--mono)")
                         .text(label);
@@ -1085,10 +1096,10 @@
 
             // Genders
             pSvg.append("text").attr("x", pw/4).attr("y", -6).attr("text-anchor","middle")
-                .attr("fill","var(--teal)").attr("font-family","var(--mono)").attr("font-size","10px").attr("font-weight","bold").text("MALE %");
+                .attr("fill","var(--teal)").attr("font-family","var(--mono)").attr("font-size","13px").attr("font-weight","bold").text("MALE %");
 
             pSvg.append("text").attr("x", 3*pw/4).attr("y", -6).attr("text-anchor","middle")
-                .attr("fill","var(--orange)").attr("font-family","var(--mono)").attr("font-size","10px").attr("font-weight","bold").text("FEMALE %");
+                .attr("fill","var(--orange)").attr("font-family","var(--mono)").attr("font-size","13px").attr("font-weight","bold").text("FEMALE %");
 
             // Middle Divider
             pSvg.append("line").attr("x1", pw/2).attr("x2", pw/2).attr("y1", 0).attr("y2", ph)
@@ -1097,9 +1108,10 @@
             // Bottom scale lines
             pSvg.append("line").attr("x1", 0).attr("x2", pw).attr("y1", ph + 6).attr("y2", ph + 6).attr("stroke", "var(--border)");
             pSvg.append("text").attr("x", pw/2).attr("y", ph + 22).attr("text-anchor", "middle")
-                .attr("fill", "var(--dimmed)").attr("font-family", "var(--mono)").attr("font-size", "9px").text("Percentage of Total District Population (%)");
+                .attr("fill", "var(--dimmed)").attr("font-family", "var(--mono)").attr("font-size", "14px").text("Percentage of Total District Population (%)");
         }
     }
 </script>
+<script src="chatbot.js"></script>
 </body>
 </html>

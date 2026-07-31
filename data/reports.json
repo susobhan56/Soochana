@@ -1,0 +1,292 @@
+{
+  "reports": [
+    {
+      "id": "emp-report-9",
+      "name": "Odisha Economic Survey_2024-25",
+      "theme": "employment",
+      "description": "Snapshot of odisha Economy,Growth & Devlopment.",
+      "thumbnail": "/images/emp8.jpg",
+      "file": "https://drive.google.com/file/d/1uN2GhhoXDvyo2OhPg5NGpfmoD8rgtzmT/view?usp=sharing",
+      "lastUpdated": "2025-07-03"
+    },
+    {
+      "id": "demographic-analysis-2024",
+      "name": "Emeregent Odisha: Demography and Development",
+      "theme": "demography",
+      "description": "Comprehensive analysis of population trends.",
+      "thumbnail": "/images/dem1.png",
+      "file": "https://drive.google.com/file/d/1mOpNlOak68mLd3Wcd4LRu-Do--7dxxCZ/view?usp=sharing",
+      "lastUpdated": "2025-06-01"
+    },
+    {
+      "id": "district-population-projections-2021-2026",
+      "name": "District Level Population Projections in Selected States of India (MP, Bihar, Odisha, Rajasthan), 2021 & 2026, UNFP",
+      "theme": "demography",
+      "description": "District Level projections",
+      "thumbnail": "/images/District Level Population Projections in Selected States of India (MP, Bihar, Odisha, Rajasthan), 2021 & 2026, UNFPA.jpg",
+      "file": "https://drive.google.com/file/d/1ilPkY-Iie9Kej110YE-IG_9T2QUy6iar/view?usp=sharing",
+      "lastUpdated": "2025-06-01"
+    },
+    {
+      "id": "undesa-india-overtakes",
+      "name": "UNDESA_India overtakes China as the world\u2019s most populous country",
+      "theme": "demography",
+      "description": "District Level projections",
+      "thumbnail": "/images/UNDESA_India overtakes.png",
+      "file": "https://drive.google.com/file/d/1y78vgp9FnWpfc7wG9btKjGSYsNE_5Z4r/view?usp=sharing",
+      "lastUpdated": "2025-06-01"
+    },
+    {
+      "id": "health-report-1",
+      "name": "Health of the Nation 2024",
+      "theme": "health",
+      "description": "Decoding The Indian Health Quotient.",
+      "thumbnail": "/images/health of the Nation 2024_Apollo.jpg",
+      "file": "https://drive.google.com/file/d/1SC-bByc2hsPhi5K40pa_WuOQMJMkmsF_/view?usp=sharing",
+      "lastUpdated": "2025-05-15"
+    },
+    {
+      "id": "health-report-2",
+      "name": "Rural Health Statistics_RHS 2021-22",
+      "theme": "health",
+      "description": "A comprehensive overview of the rural health system in India, including data on healthcare facilities, human resources, and health indicators.",
+      "thumbnail": "/images/rural health Statistics 2021-22.jpg",
+      "file": "https://drive.google.com/file/d/1-VsA7SU4xetj9AGVHBPAejcZQoS5GQ4C/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "emp-report-1",
+      "name": "Periodic Labour Force Survey (PLFS) 2025",
+      "theme": "employment",
+      "description": "Change in Periodic Labour Force Survey from 2025.",
+      "thumbnail": "/images/plfs.png",
+      "file": "https://drive.google.com/file/d/1nITHVFcYm4ZRSzR6SXCoZ8gS1hlO8Opg/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "emp-report-2",
+      "name": "Annual Report_PLFS_2019_20",
+      "theme": "employment",
+      "description": "Periodic Labour Force Survey.",
+      "thumbnail": "/images/emp2.jpg",
+      "file": "https://drive.google.com/file/d/1FreGsd8r4I57txmGrJN0w6CqY1SPv-xw/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "emp-report-3",
+      "name": "Annual Report_PLFS_2021-22",
+      "theme": "employment",
+      "description": "Periodic Labour Force Survey.",
+      "thumbnail": "/images/emp3.jpg",
+      "file": "https://drive.google.com/file/d/1K7SUiNZOtxuD1eIFocUOkVOT2vIre1tr/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "emp-report-4",
+      "name": "ILO, India Employment report- 2024",
+      "theme": "employment",
+      "description": "Youth employment challenges and policy priorities in India.",
+      "thumbnail": "/images/emp4.jpg",
+      "file": "https://drive.google.com/file/d/1OoNrW70ok34UtNy1UrP_I82zzvBSbRaR/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "emp-report-6",
+      "name": "Odisha Economic Survey_2022-23",
+      "theme": "employment",
+      "description": "Snapshot of odisha Economy,Growth & Devlopment.",
+      "thumbnail": "/images/emp6.jpg",
+      "file": "https://drive.google.com/file/d/19vwgcVApq3Joo338Pxoo8N_jL1kZbsNi/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "edu-report-1",
+      "name": "Annual Status of Education Report(Rural)2024",
+      "theme": "education",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/edu1.jpg",
+      "file": "https://drive.google.com/file/d/1G4m_maC3CdA383IENxjo_rDYywls0F1t/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "edu-report-2",
+      "name": "Educational Statistics at a Glance-2016",
+      "theme": "education",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/edu2.jpg",
+      "file": "https://drive.google.com/file/d/1ib_5k9-kbGeymr86lAvcN95l3qsrgVS5/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "edu-report-3",
+      "name": "Impact of Pandemic on School Dropouts among Tribal",
+      "theme": "education",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/edu3.jpg",
+      "file": "https://drive.google.com/file/d/1dROX914IalgKa5TOaXani5xSZio16gXM/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "edu-report-4",
+      "name": "UDISE_Report_2022_23_NEP_Structure",
+      "theme": "education",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/edu4.jpg",
+      "file": "https://drive.google.com/file/d/1uxSDEyhT_hzC_sYURuu8qukIwPL0Nfwc/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "edu-report-5",
+      "name": "UDISE+_2024-25-A-Snap shot Of Indias Evolving School Education Landscape",
+      "theme": "education",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/edu5.jpg",
+      "file": "https://drive.google.com/file/d/1vjs5f1Nx6JzeQ6UqyYRVYMpavQfZf-Ks/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "edu-report-7",
+      "name": "UDISE+Report_2023_24",
+      "theme": "education",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/edu7.jpg",
+      "file": "https://drive.google.com/file/d/1aMBcMd66Q0GdsqmqTA57PunLuQ5Wkkvv/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "edu-report-8",
+      "name": "Performance Grading Index for Districts of India(PGI-D) for 2022-23 & 2023-24",
+      "theme": "education",
+      "description": "The schools having active UDISE+ codes in the academic year 2023-24.",
+      "thumbnail": "/images/edu11.png",
+      "file": "https://drive.google.com/file/d/1cYraXI-CCXz1rw0aVVmYKzk5ONMzuNRK/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "edu-report-9",
+      "name": "UDISE+Report_2023_24 Report NEP",
+      "theme": "education",
+      "description": "The schools having active UDISE+ codes in the academic year 2023-24.",
+      "thumbnail": "/images/edun.jpg",
+      "file": "https://drive.google.com/file/d/1uxSDEyhT_hzC_sYURuu8qukIwPL0Nfwc/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "mig-report-5",
+      "name": "India Migration Report 2023",
+      "theme": "migration",
+      "description": "Student Migration.",
+      "thumbnail": "/images/mig10.png",
+      "file": "https://drive.google.com/file/d/105CoDtTTKMuYEen5huK6UGowe4e8P9Ho/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "mig-report-1",
+      "name": "Migration in India, trends and characteristics_ Dharmendra Pratap Singh and Rejeshwari Biradar",
+      "theme": "migration",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/mig1.jpg",
+      "file": "https://drive.google.com/file/d/12jXMKMfYGuNLc4HG3TjwKVw7oRd_TAG2/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "mig-report-2",
+      "name": "Migration in India_PLFS_ 2020-21",
+      "theme": "migration",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/mig2.jpg",
+      "file": "https://drive.google.com/file/d/1pu8qHFHCvPKgcXwSj_tdb2Mnjn2WePGp/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "mig-report-3",
+      "name": "Social Mapping of Migrant Workers in Odisha",
+      "theme": "migration",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/mig3.jpg",
+      "file": "https://drive.google.com/file/d/1qc6BkwPVSOdaDunWg8ju1b_qgxuvo48O/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "mig-report-4",
+      "name": "Studies, Stories and a Canvas_ Seasonal Labor Migration and Migrant Workers from Odisha_ 2014",
+      "theme": "migration",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/mi4.png",
+      "file": "https://drive.google.com/file/d/1OX-CaOvzYXFnPH7C4M7Jwv3vT9l5k5py/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "age-report-1",
+      "name": "India Ageing Report-2023",
+      "theme": "ageing",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/age1.jpg",
+      "file": "https://drive.google.com/file/d/1P4Zv9Mr-CXxubOdWRuZaZLO7HD5EOA6M/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "age-report-2",
+      "name": "LASI_Wave-1_India Report",
+      "theme": "ageing",
+      "description": "Empowering Odisha's youth through skills, innovation, and jobs.",
+      "thumbnail": "/images/age2.jpg",
+      "file": "https://drive.google.com/file/d/1lXMqDc_lV2XJe3qncTw5Zt2dPogY87t7/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "age-report-3",
+      "name": "Ageing-in-India-Exploring-Preparedness-Response-to-Care-Challenges.",
+      "theme": "ageing",
+      "description": "A-HelpAge-India-Report 2024",
+      "thumbnail": "/images/hage1.png",
+      "file": "https://drive.google.com/file/d/1zcpisbOOpMIAmy0eKZi7B2BAhnyvtHRo/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "age-report-4",
+      "name": "The India Intergenerational Bonds INBO",
+      "theme": "ageing",
+      "description": "A-HelpAge-India-Report 2025",
+      "thumbnail": "/images/hage2.png",
+      "file": "https://drive.google.com/file/d/1AsOb0TVFSXLx7QPxGTxr3hA5ydODCIXs/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "age-report-5",
+      "name": "Women Ageing Invisible or Empowered",
+      "theme": "ageing",
+      "description": "A-HelpAge-India-Report 2023",
+      "thumbnail": "/images/hage3.png",
+      "file": "https://drive.google.com/file/d/1aEjHteMOgw_B1oBFoFT2ebrP31uvhaxW/view?usp=drive_link",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "dev-report-1",
+      "name": "Odisha Developement Report 2020",
+      "theme": "development",
+      "description": "A-Report by Odisha Development Initiative",
+      "thumbnail": "/images/dev1.jpg",
+      "file": "https://drive.google.com/file/d/1YoxosGnWUpoEMI6tAiyKzfO8fDnb3jko/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "dev-report-2",
+      "name": "National Multi-Dimensional Poverty Index (MPI) Report 2015-16",
+      "theme": "development",
+      "description": "A-Report by Niti Aayog",
+      "thumbnail": "/images/dev2.jpg",
+      "file": "https://drive.google.com/file/d/1EF4Co71hg01ogDxLmF9xW7MRvEVv8TQZ/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "dev-report-3",
+      "name": "India-National-Multidimentional-Poverty-Index-2023",
+      "theme": "development",
+      "description": "A-Report by Niti Aayog",
+      "thumbnail": "/images/dev3.jpg",
+      "file": "https://drive.google.com/file/d/1zUfNVJ4HUbFXrZ8uKtdhQDd6ag9NYm6U/view?usp=sharing",
+      "lastUpdated": "2025-04-20"
+    }
+  ]
+}

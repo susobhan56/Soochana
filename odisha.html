@@ -4,10 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Odisha's Demographic Journey — Regional Explorer</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="data_loader.js"></script>
 <link rel="stylesheet" href="style.css">
+<script src="ui.js"></script>
 <style>
     /* Page specific overrides to support layout-scrolly map */
     .scrolly { display: grid; grid-template-columns: 1fr 420px; position: relative; background: var(--surface); }
@@ -25,10 +27,86 @@
     .steps { padding: 0; background: var(--surface); }
     .step { min-height: 80vh; padding: 100px 40px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border); opacity: 0.25; transition: opacity 0.5s ease; }
     .step.active { opacity: 1; }
-    .stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); background: var(--surface); }
-    .stat-cell { padding: 32px 28px; border-right: 1px solid var(--border); background: var(--surface); }
-    .stat-cell:last-child { border-right: none; }
+    /* .stat-strip / .stat-cell intentionally NOT redefined here. This inline
+       <style> loads after style.css, so a copy of the base rule would win over
+       style.css's responsive media queries and the strip would stay 4-up on a
+       phone, overflowing the viewport. style.css owns these. */
+    .stat-cell { padding: 32px 28px; }
     body { overflow-y: scroll; height: auto; }
+
+    /* ── Hero dot field ──────────────────────────────────────────────
+       Occupies the slot that images/banner.gif used to fill: a framed
+       panel between the standfirst and the scroll cue. The banner was
+       17.4 MB (1366×768, 288 frames) — 70–140s on a rural 3G line
+       before the hero looked right. This draws from the 1.4 KB of age
+       structure inlined in dotfield.js instead, so the hero is complete
+       on first paint.
+
+       Page-scoped id and classes on purpose. style.css's #dotfield and
+       .lander-readout are tuned for the landing hero, where the canvas
+       is a 0.17-opacity wash behind display type and the readout stays
+       at opacity 0 until .lander gains .in from the intro curtain.
+       Neither is true here — this is foreground content, and this page
+       has no curtain to add that class. */
+
+    /* .hero is `display:grid; place-items:center`, so its single child is
+       shrink-to-fit — its width came out as whatever the widest line of text
+       measured, which is .hero-sub's `max-width:34em` resolved against
+       --fs-lead. That makes the hero column 748px at normal text size and
+       ~860px at A++, i.e. the reader's text-size control silently resized the
+       banner. Pin the column to the viewport instead so the panel below is a
+       stable 900px, and .hero-sub keeps centring itself inside it.
+       Classed rather than `.hero > div`, which also matches .scroll-cue. */
+    .hero-inner { width: min(900px, 100%); }
+
+    /* The wrapper is the positioning context, so the readout can be absolute
+       inside the frame at wide widths and simply flow below it at narrow ones
+       without the frame's fixed height trapping it. */
+    .hero-field-wrap {
+      position: relative;
+      max-width: 900px;
+      margin: 40px auto 14px;
+    }
+
+    .hero-field {
+      position: relative;
+      /* Definite height, not aspect-ratio: dotfield() measures the box and
+         bails out when either dimension is 0, so the frame has to be sized
+         by CSS rather than by its content. */
+      height: clamp(240px, 34vw, 420px);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 40px rgba(31, 56, 92, 0.06);
+      background: var(--bg);
+    }
+
+    #heroField { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* Top-right: the pyramid is bottom-weighted, so the narrow 85+ bands
+       leave this corner clear at every viewport width. */
+    .hero-field-readout {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      text-align: right;
+      font-family: var(--mono);
+      font-size: var(--fs-micro);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      line-height: 2;
+      color: var(--dimmed);
+    }
+
+    .hero-field-readout b { color: var(--teal); font-weight: 600; }
+
+    .hero-field-caption {
+      font-family: var(--mono);
+      font-size: var(--fs-caption);
+      color: var(--dimmed);
+      max-width: 900px;
+      margin: 0 auto 40px;
+    }
 
     @media (max-width: 900px) {
         .scrolly { grid-template-columns: 1fr; }
@@ -45,6 +123,22 @@
             padding: 60px 20px;
         }
     }
+
+    /* Below roughly 500px of panel the readout starts landing on the 75+ rows,
+       and enlarged text brings that forward — so drop it out of the panel and
+       centre it underneath, the way style.css does for .lander-readout. */
+    @media (max-width: 620px) {
+        .hero-field-readout {
+            position: static;
+            display: flex;
+            justify-content: center;
+            gap: 22px;
+            flex-wrap: wrap;
+            text-align: center;
+            line-height: 1.8;
+            margin-top: 12px;
+        }
+    }
 </style>
 </head>
 <body>
@@ -54,14 +148,18 @@
 ═══════════════════════════════════════════════ -->
 <header>
   <div class="nav-group">
-    <a href="index.html" class="btn-back">← National Overview</a>
-    <div style="margin-left: 20px;">
-        <div class="kicker">Regional Explorer · State Level</div>
-        <h1 style="font-size: 1.4rem;">Odisha Demographic Story</h1>
-    </div>
+    <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <h1>Soochana</h1>
+    </a>
   </div>
-  <div class="nav-group">
-    <a href="odisha_compare.html" class="btn-elegant">⚔️ District Duel</a>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="index.html" class="btn-elegant">🏠 Home</a>
+    <a href="journeys.html" class="btn-elegant">📈 The Story</a>
+    <a href="odisha.html" class="btn-elegant" aria-current="page">🗺️ Map Explorer</a>
+    <a href="themes.html" class="btn-elegant">📊 Themes</a>
+    <a href="repository.html" class="btn-elegant">📁 Repository</a>
+    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
   </div>
 </header>
 
@@ -69,7 +167,7 @@
      HERO SECTION
 ═══════════════════════════════════════════════ -->
 <section class="hero">
-  <div>
+  <div class="hero-inner">
     <div class="hero-kicker">Regional Profile · Odisha State · Report 2025</div>
     <div class="hero-num" style="color: var(--purple);">47.0M</div>
     <h1>Odisha's Demographic<br><span class="gradient">Horizon</span></h1>
@@ -78,6 +176,22 @@
       average of 1.98—the state is stabilizing its population growth while navigating structural regional variations 
       between coastal urban hubs and inland tribal districts.
     </p>
+    <div class="hero-field-wrap">
+      <div class="hero-field">
+        <canvas id="heroField" aria-hidden="true"></canvas>
+      </div>
+      <div class="hero-field-readout" aria-hidden="true">
+        <div>Age structure <b id="hfYear">2021</b></div>
+        <div>Share aged 60+ <b id="hfShare">11.1%</b></div>
+      </div>
+      <p class="sr-only">
+        A halftone chart of Odisha's age structure, cycling through 1991, 2011,
+        2021 and the projections for 2026, 2031 and 2036. The share of residents
+        aged 60 and over climbs from 7.2% in 1991 to 15.9% by 2036, while the
+        under-five base narrows from 5.8% to 3.3%.
+      </p>
+    </div>
+    <div class="hero-field-caption">Odisha's age structure, 1991–2036 · one dot ≈ 123,000 people</div>
     <div class="label" style="color:var(--muted)">Scroll to explore the regions ↓</div>
   </div>
   <div class="scroll-cue">
@@ -115,7 +229,7 @@
   <div class="sticky-map">
     <div class="map-kicker" style="color: var(--purple);">Regional Explorer</div>
     <h2 class="map-title" id="mapSectionTitle">The State Overview</h2>
-    <p style="font-size: 12px; color: var(--muted); margin: 6px 0 20px 0; font-family: var(--mono);">Click on any district to explore deep-dive metrics</p>
+    <p style="font-size: var(--fs-caption); color: var(--muted); margin: 6px 0 20px 0; font-family: var(--mono);">Click on any district to explore deep-dive metrics</p>
     <div id="map-container" style="flex:1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.01);"></div>
   </div>
 
@@ -153,7 +267,7 @@
 <section class="full-section">
   <div class="label" style="color: var(--purple); margin-bottom: 12px;">05 — Leaderboard Grid</div>
   <h2>Odisha District Rankings</h2>
-  <p class="intro">
+  <p class="intro-text">
     Sort and inspect demographic scales across all 30 districts of Odisha. 
     Cards show decadal growth categories computed between Census 2011 and 2021.
   </p>
@@ -205,7 +319,7 @@
 <footer>
   <div>
     <div class="footer-brand">Demographic <span>Insights</span></div>
-    <div style="font-size:13px; color:var(--muted); margin-top:8px; font-family:var(--mono); font-size:11px;">
+    <div style="font-size: var(--fs-small); color:var(--muted); margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption);">
       Odisha Regional Demographics · Built with D3.js
     </div>
   </div>
@@ -214,6 +328,16 @@
     Odisha State Population Projection Reports (2021-2036).
   </div>
 </footer>
+
+<script src="dotfield.js"></script>
+<script>
+    /* Hero dot field. Pauses when the tab is hidden and freezes on a static
+       2021 frame under prefers-reduced-motion — both handled inside dotfield(). */
+    dotfield(document.getElementById('heroField'), {
+      yearEl:  document.getElementById('hfYear'),
+      shareEl: document.getElementById('hfShare')
+    });
+</script>
 
 <script>
     const width = 800, height = 600;
@@ -248,7 +372,7 @@
             .on("mouseover", function(event, d) {
                 d3.select(this).style("stroke", "var(--purple)").style("stroke-width", "2.2px").raise();
                 tip.transition().duration(200).style("opacity", 1);
-                tip.html(`<strong>${d.properties.Dist_Name}</strong><br><span style="font-size:11px;color:var(--muted)">Click to enter deep dive</span>`)
+                tip.html(`<strong>${d.properties.Dist_Name}</strong><br><span style="font-size:var(--fs-caption);color:var(--muted)">Click to enter deep dive</span>`)
                    .style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 10) + "px");
             })
             .on("mouseout", function() {
@@ -378,7 +502,7 @@
         badgeRow.append("div").attr("class", "district-label").text(`Rank #${rank}`);
         badgeRow.append("div")
           .style("font-family", "var(--mono)")
-          .style("font-size", "8.5px")
+          .style("font-size", "14px")
           .style("padding", "2px 8px")
           .style("border-radius", "10px")
           .style("background", "rgba(0,0,0,0.03)")
@@ -401,5 +525,6 @@
     
     document.querySelectorAll('.policy-item').forEach(item => policyObs.observe(item));
 </script>
+<script src="chatbot.js"></script>
 </body>
 </html>

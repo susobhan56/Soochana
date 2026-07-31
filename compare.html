@@ -4,10 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>State Duel — Demographic Comparison</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="data_loader.js"></script>
 <link rel="stylesheet" href="style.css">
+<script src="ui.js"></script>
 <style>
     body { overflow-y: auto; height: auto; }
     .compare-wrap { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
@@ -20,7 +22,7 @@
     
     select { 
         background: var(--bg); border: 1px solid var(--teal); color: var(--text); 
-        padding: 12px 24px; border-radius: 30px; font-family: var(--mono); font-size: 14px;
+        padding: 12px 24px; border-radius: 30px; font-family: var(--mono); font-size: var(--fs-small);
         outline: none; cursor: pointer; min-width: 200px;
     }
     select option {
@@ -31,13 +33,13 @@
     .vs-circle {
         width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--border);
         display: flex; align-items: center; justify-content: center;
-        font-family: var(--serif); font-weight: 900; color: var(--muted); background: var(--bg);
+        font-family: var(--serif); font-weight: var(--wt-display); color: var(--muted); background: var(--bg);
     }
 
     .comparison-grid { display: flex; flex-direction: column; gap: 50px; }
     .comp-row { display: grid; grid-template-columns: 1fr 180px 1fr; align-items: center; }
 
-    .comp-label { text-align: center; font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.1em; line-height: 1.4; }
+    .comp-label { text-align: center; font-family: var(--mono); font-size: var(--fs-caption); text-transform: uppercase; color: var(--muted); letter-spacing: 0.1em; line-height: 1.4; }
     
     .bar-container { height: 40px; background: var(--panel); border-radius: 4px; position: relative; overflow: hidden; }
     .bar-fill { height: 100%; transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -45,8 +47,8 @@
     .left-bar { display: flex; flex-direction: row-reverse; align-items: center; gap: 15px; }
     .right-bar { display: flex; align-items: center; gap: 15px; }
 
-    .bar-val { font-family: var(--mono); font-weight: 700; font-size: 1.2rem; }
-    .state-header { font-family: var(--serif); font-size: 2.5rem; margin-bottom: 5px; }
+    .bar-val { font-family: var(--mono); font-weight: 700; font-size: var(--fs-lead); }
+    .state-header { font-family: var(--serif); font-size: var(--fs-h2); margin-bottom: 5px; }
 
     @media (max-width: 768px) {
         .selector-bar {
@@ -68,7 +70,7 @@
             order: -1;
             text-align: left;
             font-weight: bold;
-            font-size: 12px;
+            font-size: var(--fs-caption);
             margin-bottom: 4px;
         }
         .left-bar, .right-bar {
@@ -92,27 +94,31 @@
 <body>
 
 <header>
-    <div class="nav-group">
-        <a href="index.html" class="btn-back">← National Map</a>
-        <div style="margin-left: 20px;">
-            <div class="kicker">Comparative Analysis · State Duel</div>
-            <h1 style="font-size: 1.2rem; font-family: var(--serif);">Interactive Comparison</h1>
-        </div>
-    </div>
-    <div class="nav-group">
-        <a href="index.html" class="btn-elegant">🏠 Home</a>
-    </div>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <h1>Soochana</h1>
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="index.html" class="btn-elegant">🏠 Home</a>
+    <a href="journeys.html" class="btn-elegant" aria-current="page">📈 The Story</a>
+    <a href="odisha.html" class="btn-elegant">🗺️ Map Explorer</a>
+    <a href="themes.html" class="btn-elegant">📊 Themes</a>
+    <a href="repository.html" class="btn-elegant">📁 Repository</a>
+    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
+  </div>
 </header>
 
 <div class="compare-wrap">
     <div class="selector-bar">
         <div>
-            <div class="label" style="margin-bottom:10px; font-family:var(--mono); font-size:10px; color:var(--teal)">Select State A</div>
+            <div class="label" style="margin-bottom:10px; font-family:var(--mono); font-size: var(--fs-micro); color:var(--teal)">Select State A</div>
             <select id="stateA-select"></select>
         </div>
         <div class="vs-circle">VS</div>
         <div>
-            <div class="label" style="margin-bottom:10px; text-align:right; font-family:var(--mono); font-size:10px; color:var(--orange)">Select State B</div>
+            <div class="label" style="margin-bottom:10px; text-align:right; font-family:var(--mono); font-size: var(--fs-micro); color:var(--orange)">Select State B</div>
             <select id="stateB-select"></select>
         </div>
     </div>
@@ -306,5 +312,6 @@
         console.error("Error loading national comparison datasets:", err);
     });
 </script>
+<script src="chatbot.js"></script>
 </body>
 </html>

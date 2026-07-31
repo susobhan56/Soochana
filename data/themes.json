@@ -1,0 +1,46 @@
+{
+  "themes": [
+    {
+      "id": "demography",
+      "name": "Demography",
+      "slug": "demography",
+      "icon": "demography",
+      "description": "Population statistics and demographic trends in Odisha"
+    },
+    {
+      "id": "health",
+      "name": "Health",
+      "slug": "health",
+      "icon": "health",
+      "description": "Healthcare indicators and health statistics"
+    },
+    {
+      "id": "education",
+      "name": "Education",
+      "slug": "education",
+      "icon": "education",
+      "description": "Educational metrics and learning outcomes"
+    },
+    {
+      "id": "ageing",
+      "name": "Ageing",
+      "slug": "ageing",
+      "icon": "ageing",
+      "description": "Elderly population trends and support systems"
+    },
+    {
+      "id": "migration",
+      "name": "Migration & Urbanization",
+      "slug": "migration",
+      "icon": "urban",
+      "description": "Population movement and urban development patterns"
+    },
+    {
+      "id": "employment",
+      "name": "Employment",
+      "slug": "employment",
+      "icon": "employement",
+      "description": "Workforce participation and employment statistics"
+    }
+  ]
+}

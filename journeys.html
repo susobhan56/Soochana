@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India & Odisha: Parallel Demographic Journeys</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="data_loader.js"></script>
+<link rel="stylesheet" href="style.css">
+<script src="ui.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════ -->
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <h1>Soochana</h1>
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="index.html" class="btn-elegant">🏠 Home</a>
+    <a href="journeys.html" class="btn-elegant" aria-current="page">📈 The Story</a>
+    <a href="odisha.html" class="btn-elegant">🗺️ Map Explorer</a>
+    <a href="themes.html" class="btn-elegant">📊 Themes</a>
+    <a href="repository.html" class="btn-elegant">📁 Repository</a>
+    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════ -->
+<section class="hero">
+  <div>
+    <div class="hero-kicker">Data Journalism · Demographic Transition · 2025</div>
+    <div class="hero-num">1.43B</div>
+    <h1>A Nation & A State,<br>Two <span class="gradient">Parallel</span><br>Demographic Journeys</h1>
+    <p class="hero-sub">
+      India has crossed the 1.4 billion threshold, becoming the world's most populous nation. 
+      Meanwhile, Odisha—with 47 million residents—mirrors the national transition while pacing ahead 
+      in stabilizing its population. Both achieved below-replacement fertility in 2023.
+    </p>
+    <div class="label" style="color:var(--muted)">Scroll to explore the data ↓</div>
+  </div>
+  <div class="scroll-cue">
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     STAT STRIP (INDIA vs ODISHA)
+═══════════════════════════════════════════════ -->
+<div class="stat-strip dual-region">
+  <!-- INDIA -->
+  <div class="stat-region">
+    <div class="stat-region-title green" style="color: var(--green);">India Overview</div>
+    <div class="stat-row">
+      <div class="stat-cell">
+        <div class="stat-value green">1.428B</div>
+        <div class="stat-label">Population<br>(2023)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value teal">1.98</div>
+        <div class="stat-label">Fertility Rate<br>(NFHS-5)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value yellow">29.8</div>
+        <div class="stat-label">Median Age<br>(years)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value orange">415</div>
+        <div class="stat-label">Density<br>(per km²)</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ODISHA -->
+  <div class="stat-region">
+    <div class="stat-region-title purple" style="color: var(--purple);">Odisha Overview</div>
+    <div class="stat-row">
+      <div class="stat-cell">
+        <div class="stat-value purple">46.2M</div>
+        <div class="stat-label">Population<br>(2021)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value red">1.80</div>
+        <div class="stat-label">Fertility Rate<br>(NFHS-5)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value orange">1063</div>
+        <div class="stat-label">Sex Ratio<br>(NFHS-5)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value blue">293</div>
+        <div class="stat-label">Density<br>(per km²)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SCROLLYTELLING — INDIA DEMOGRAPHICS
+═══════════════════════════════════════════════ -->
+<div class="scrolly" id="scrollySection">
+  <!-- LEFT: sticky chart -->
+  <div class="sticky-chart">
+    <div class="chart-header">
+      <div class="chart-title" id="chartTitle">India's Population Growth, 1950–2100</div>
+      <div class="chart-subtitle label" id="chartSub">Total population (billions) · UN projections</div>
+    </div>
+    <div class="chart-body">
+      <svg id="mainChart"></svg>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item" id="legendLineA">
+        <div class="legend-dot" style="background:var(--green)"></div>
+        <span id="legendTextA">INDIA POPULATION</span>
+      </div>
+      <div class="legend-item" id="legendLineB" style="display:none">
+        <div class="legend-dot" style="background:var(--teal)"></div>
+        <span>FERTILITY (TFR)</span>
+      </div>
+      <div class="legend-item" id="legendLineC">
+        <div class="legend-dot" style="background:var(--dimmed)"></div>
+        <span>UN PROJECTION</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: scroll steps -->
+  <div class="steps">
+    <div class="step active" data-chart="india-total">
+      <div class="step-idx">01 — The Scale</div>
+      <h2>The rise to the world's largest population</h2>
+      <p>
+        India's population grew from 376 million in 1950 to 1.428 billion in 2023. Unlike China, whose population has begun to decline, India will continue growing until peaking around 2060.
+      </p>
+      <div class="big-num green">1.428B</div>
+      <div class="big-num-label">Peak scale reached · 2023</div>
+    </div>
+
+    <div class="step" data-chart="india-fertility">
+      <div class="step-idx">02 — The Transition</div>
+      <h2>Below replacement for the first time</h2>
+      <p>
+        A country needs a total fertility rate of 2.1 to maintain a stable population. India's fertility rate fell to 1.98 in 2023, signaling that population stabilization is on the horizon.
+      </p>
+      <div class="big-num teal">1.98</div>
+      <div class="big-num-label">Fertility rate (TFR) · replacement = 2.1</div>
+    </div>
+
+    <div class="step" data-chart="india-states">
+      <div class="step-idx">03 — Regional Disparity</div>
+      <h2>A divide in demographic speed</h2>
+      <p>
+        While southern states like Kerala (TFR 1.5) and Odisha (TFR 1.8) stabilized early, northern states like Bihar (TFR 2.8) continue to drive growth.
+      </p>
+      <div class="mini-bar-wrap">
+        <div class="mini-bar-row">
+          <span class="mini-bar-label">Kerala</span>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--green)" data-w="54%"></div></div>
+          <span class="mini-bar-val">1.5</span>
+        </div>
+        <div class="mini-bar-row">
+          <span class="mini-bar-label">Odisha</span>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--purple)" data-w="64%"></div></div>
+          <span class="mini-bar-val">1.8</span>
+        </div>
+        <div class="mini-bar-row">
+          <span class="mini-bar-label">National Avg</span>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--teal)" data-w="70%"></div></div>
+          <span class="mini-bar-val">1.98</span>
+        </div>
+        <div class="mini-bar-row">
+          <span class="mini-bar-label">Bihar</span>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--red)" data-w="100%"></div></div>
+          <span class="mini-bar-val red">2.8</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-chart="india-labor">
+      <div class="step-idx">04 — Labor Forces</div>
+      <h2>Labor Force Participation (LFPR)</h2>
+      <p>
+        Odisha outperforms the national average in Labor Force Participation Rate (LFPR) and Female Labor Force Participation (FLFPR) for the 15–59 age group.
+      </p>
+      <div class="mini-bar-wrap">
+        <div class="mini-bar-row">
+          <span class="mini-bar-label">Odisha LFPR</span>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--purple)" data-w="69%"></div></div>
+          <span class="mini-bar-val">69.2%</span>
+        </div>
+        <div class="mini-bar-row">
+          <span class="mini-bar-label">India LFPR</span>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--green)" data-w="64%"></div></div>
+          <span class="mini-bar-val">64.3%</span>
+        </div>
+        <div class="mini-bar-row">
+          <span class="mini-bar-label">Odisha FLFPR</span>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--orange)" data-w="53%"></div></div>
+          <span class="mini-bar-val">53.5%</span>
+        </div>
+        <div class="mini-bar-row">
+          <span class="mini-bar-label">India FLFPR</span>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--teal)" data-w="45%"></div></div>
+          <span class="mini-bar-val">45.2%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     POPULATION PYRAMIDS — DUAL
+═══════════════════════════════════════════════ -->
+<section class="full-section">
+  <div class="label" style="margin-bottom:12px">05 — Age Structure Comparison</div>
+  <h2>Youth vs Aging: India and Odisha Side-by-Side</h2>
+  <p class="intro-text">
+    Both India and Odisha exhibit a transitional age structure. As fertility declines, the base of the pyramids (young children) is shrinking, while the middle working-age bulge grows. Select a projection milestone to view.
+  </p>
+
+  <div class="yr-btn-group">
+    <button class="yr-btn active" data-year="2011" onclick="setPyramidYear(2011, this)">2011 (Census)</button>
+    <button class="yr-btn" data-year="2021" onclick="setPyramidYear(2021, this)">2021</button>
+    <button class="yr-btn" data-year="2026" onclick="setPyramidYear(2026, this)">2026 (Projected)</button>
+    <button class="yr-btn" data-year="2031" onclick="setPyramidYear(2031, this)">2031 (Projected)</button>
+    <button class="yr-btn" data-year="2036" onclick="setPyramidYear(2036, this)">2036 (Projected)</button>
+  </div>
+
+  <div class="pyramid-dual">
+    <div class="pyramid-panel">
+      <div class="pyramid-header green" style="color: var(--green);">India Pyramid (%)</div>
+      <svg id="pyramidIndia"></svg>
+    </div>
+    <div class="pyramid-panel">
+      <div class="pyramid-header purple" style="color: var(--purple);">Odisha Pyramid (%)</div>
+      <svg id="pyramidOdisha"></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     MAP GATEWAY SECTION
+═══════════════════════════════════════════════ -->
+<!-- The two-column split lives in style.css as .map-gateway, not inline: an
+     inline grid-template-columns cannot be overridden by a media query, so it
+     stayed 2-up on phones and pushed the page 148px past the viewport. -->
+<section class="full-section map-gateway">
+  <div>
+    <div class="map-kicker">Gateway to State Story</div>
+    <h2 class="map-title">Explore Odisha's Regional Diversity</h2>
+    <p class="intro-text" style="margin-bottom: 24px;">
+      Odisha's 30 districts present widely divergent demographic profiles. 
+      Coastal hubs like Cuttack and Khordha have low fertility rates and high literacy, 
+      while southern tribal belts continue to face child mortality and developmental challenges.
+    </p>
+    <a href="odisha.html" class="btn-elegant" style="background: var(--orange); color: white; border-color: var(--orange);">
+      Open Odisha Regional Explorer →
+    </a>
+  </div>
+  <div id="india-map-container" style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); height: 500px; position: relative;">
+    <div style="position: absolute; top: 20px; left: 20px; z-index: 10;">
+      <div class="kicker" style="color: var(--orange); margin: 0;">Interactive Map</div>
+      <h3 style="font-family: var(--serif); font-size: 1.2rem; margin: 4px 0 0 0;">Click on Odisha to zoom in</h3>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════ -->
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="font-size: var(--fs-small); color:var(--muted); margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption);">
+      India & Odisha Demographic Storytelling Portal
+    </div>
+  </div>
+  <div class="footer-meta">
+    Data Sources: UN World Population Prospects 2024, Census of India 2011,<br>
+    NFHS-4 (2015-16), NFHS-5 (2019-21), and ORGI Population Projections (1951-2036).
+  </div>
+</footer>
+
+<script>
+// ──────────────────────────────────────────────
+// STATIC/DIVERGING TREND ARRAYS
+// ──────────────────────────────────────────────
+const indiaPopData = [
+  {y:1950,v:0.376},{y:1960,v:0.450},{y:1970,v:0.555},{y:1980,v:0.698},
+  {y:1990,v:0.873},{y:2000,v:1.056},{y:2010,v:1.234},{y:2020,v:1.380},
+  {y:2023,v:1.428},{y:2030,v:1.514},{y:2040,v:1.597},{y:2050,v:1.670},
+  {y:2060,v:1.698},{y:2070,v:1.678},{y:2080,v:1.628},{y:2090,v:1.551},{y:2100,v:1.450}
+];
+
+const indiaFertilityData = [
+  {y:1950,v:5.90},{y:1960,v:5.90},{y:1970,v:5.60},{y:1980,v:4.70},
+  {y:1990,v:3.90},{y:2000,v:3.20},{y:2010,v:2.60},{y:2015,v:2.30},
+  {y:2020,v:2.00},{y:2023,v:1.98}
+];
+
+// India population pyramid percentages (Census and projections)
+const indiaPyramidData = {
+  "2011": {
+    m: [4.9, 5.2, 5.5, 5.1, 4.7, 4.4, 4.0, 3.7, 3.3, 2.9, 2.4, 2.0, 1.6, 1.2, 0.9, 0.6, 0.4],
+    f: [4.5, 4.8, 5.1, 4.7, 4.4, 4.1, 3.8, 3.5, 3.1, 2.8, 2.3, 1.9, 1.6, 1.2, 0.9, 0.6, 0.5]
+  },
+  "2021": {
+    m: [4.2, 4.5, 4.8, 4.9, 4.7, 4.5, 4.2, 3.9, 3.6, 3.2, 2.8, 2.3, 1.9, 1.4, 1.0, 0.7, 0.5],
+    f: [3.9, 4.1, 4.4, 4.5, 4.3, 4.2, 3.9, 3.7, 3.4, 3.1, 2.7, 2.2, 1.8, 1.4, 1.0, 0.7, 0.6]
+  },
+  "2026": {
+    m: [3.8, 4.1, 4.4, 4.6, 4.7, 4.5, 4.3, 4.0, 3.7, 3.4, 3.0, 2.5, 2.0, 1.5, 1.1, 0.7, 0.5],
+    f: [3.5, 3.8, 4.1, 4.3, 4.4, 4.2, 4.0, 3.8, 3.5, 3.2, 2.9, 2.4, 2.0, 1.5, 1.1, 0.8, 0.6]
+  },
+  "2031": {
+    m: [3.5, 3.8, 4.1, 4.3, 4.5, 4.6, 4.4, 4.1, 3.8, 3.5, 3.2, 2.7, 2.2, 1.7, 1.2, 0.8, 0.6],
+    f: [3.2, 3.5, 3.8, 4.0, 4.2, 4.3, 4.1, 3.9, 3.6, 3.3, 3.1, 2.6, 2.1, 1.6, 1.2, 0.8, 0.7]
+  },
+  "2036": {
+    m: [3.2, 3.5, 3.8, 4.0, 4.2, 4.4, 4.4, 4.2, 3.9, 3.6, 3.3, 2.9, 2.4, 1.9, 1.4, 0.9, 0.7],
+    f: [2.9, 3.2, 3.5, 3.7, 3.9, 4.1, 4.1, 3.9, 3.7, 3.4, 3.2, 2.8, 2.3, 1.8, 1.3, 0.9, 0.8]
+  }
+};
+
+const ageLabels = ['0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'];
+
+let odishaPyramidData = {};
+let currentMode = 'india-total';
+let currentPyramidYear = 2011;
+
+// ──────────────────────────────────────────────
+// FETCH & INITIALIZE DATA
+// ──────────────────────────────────────────────
+Promise.all([
+  DataLoader.getStateDemographics(),
+  DataLoader.getNationalComparisons()
+]).then(([stateDemo, natComp]) => {
+  
+  // 1. Process Odisha Pyramid Data (convert absolute population numbers to percentages)
+  const rawPyramids = stateDemo.pyramids;
+  Object.keys(rawPyramids).forEach(year => {
+    // filter out cumulative frequency entries or text summaries
+    const validCohorts = rawPyramids[year].filter(c => {
+      return ageLabels.includes(c.age);
+    });
+    
+    // Compute total population for this pyramid
+    const total = d3.sum(validCohorts, c => c.male + c.female);
+    
+    // Sort cohorts according to our canonical order to ensure match
+    validCohorts.sort((a,b) => ageLabels.indexOf(a.age) - ageLabels.indexOf(b.age));
+    
+    odishaPyramidData[year] = {
+      m: validCohorts.map(c => (c.male / total) * 100),
+      f: validCohorts.map(c => (c.female / total) * 100)
+    };
+  });
+  
+  // Initialize Chart drawing
+  drawIndiaChart('india-total');
+  
+  // Render Pyramids side-by-side
+  triggerPyramids(2011);
+  
+}).catch(err => {
+  console.error("Error loading JSON datasets:", err);
+});
+
+// ──────────────────────────────────────────────
+// INDIA MAIN CHART RENDERING
+// ──────────────────────────────────────────────
+// ──────────────────────────────────────────────
+// INDIA MAIN CHART RENDERING
+// ──────────────────────────────────────────────
+function drawIndiaChart(mode) {
+  const el = document.getElementById('mainChart');
+  const W = el.clientWidth || 500;
+  const H = el.clientHeight || 360;
+  
+  const isRadial = false;
+  const m = {
+    top: isRadial ? 20 : 40,
+    right: 40,
+    bottom: 50,
+    left: (mode === 'india-labor') ? 110 : 60
+  };
+  const w = W - m.left - m.right;
+  const h = H - m.top - m.bottom;
+
+  const svgEl = d3.select('#mainChart').attr('viewBox', `0 0 ${W} ${H}`);
+  
+  // Clean-up previous chart with fade-out
+  svgEl.selectAll('.chart-group').transition().duration(250).style('opacity', 0).remove();
+
+  // Create new chart group
+  const svg = svgEl.append('g')
+    .attr('class', 'chart-group')
+    .attr('transform', `translate(${isRadial ? W/2 : m.left},${isRadial ? H/2 : m.top})`)
+    .style('opacity', 0);
+
+  svg.transition().duration(400).style('opacity', 1);
+
+  const gridColor = 'rgba(0,0,0,0.06)';
+  const chartTooltip = d3.select("body").selectAll(".chart-tooltip").data([null]).join("div").attr("class", "tooltip chart-tooltip").style("opacity", 0);
+
+  // Setup gradient defs
+  const defs = svgEl.selectAll('defs').data([null]).join('defs');
+  
+  if (mode === 'india-total') {
+    document.getElementById('chartTitle').textContent = 'India\'s Population Growth, 1950–2100';
+    document.getElementById('chartSub').textContent = 'Total population (billions) · UN projections';
+    d3.select('#legendLineA').style('display', 'flex');
+    d3.select('#legendTextA').text('INDIA POPULATION');
+    d3.select('#legendLineA .legend-dot').style('background', 'var(--green)');
+    d3.select('#legendLineB').style('display', 'none');
+    d3.select('#legendLineC').style('display', 'flex');
+
+    const x = d3.scaleLinear().domain([1950, 2100]).range([0, w]);
+    const y = d3.scaleLinear().domain([0, 2.0]).range([h, 0]);
+
+    // Gridlines
+    [0.5, 1.0, 1.5, 2.0].forEach(v => {
+      svg.append('line').attr('x1', 0).attr('x2', w)
+        .attr('y1', y(v)).attr('y2', y(v))
+        .attr('stroke', gridColor).attr('stroke-dasharray', '3,3');
+    });
+
+    const histData = indiaPopData.filter(d => d.y <= 2023);
+    const projData = indiaPopData.filter(d => d.y >= 2023);
+
+    // Gradient definitions
+    const gradHist = defs.selectAll('#grad-hist-pop').data([null]).join('linearGradient').attr('id', 'grad-hist-pop').attr('x1', '0%').attr('y1', '0%').attr('x2', '0%').attr('y2', '100%');
+    gradHist.selectAll('stop').data([
+      { offset: '0%', color: 'var(--green)', opacity: 0.18 },
+      { offset: '100%', color: 'var(--green)', opacity: 0.00 }
+    ]).join('stop')
+      .attr('offset', d => d.offset)
+      .attr('stop-color', d => d.color)
+      .attr('stop-opacity', d => d.opacity);
+
+    // Area path rising from bottom
+    const areaStart = d3.area().x(d => x(d.y)).y0(h).y1(h).curve(d3.curveMonotoneX);
+    const area = d3.area().x(d => x(d.y)).y0(h).y1(d => y(d.v)).curve(d3.curveMonotoneX);
+    
+    svg.append('path')
+      .datum(histData)
+      .attr('fill', 'url(#grad-hist-pop)')
+      .attr('d', areaStart)
+      .transition()
+      .duration(1000)
+      .ease(d3.easeCubicOut)
+      .attr('d', area);
+      
+    svg.append('path')
+      .datum(projData)
+      .attr('fill', 'rgba(0,0,0,0.02)')
+      .attr('d', areaStart)
+      .transition()
+      .duration(1000)
+      .ease(d3.easeCubicOut)
+      .attr('d', area);
+
+    // Line Path
+    const line = d3.line().x(d => x(d.y)).y(d => y(d.v)).curve(d3.curveMonotoneX);
+    const lp = svg.append('path').datum(histData)
+      .attr('fill', 'none').attr('stroke', 'var(--green)')
+      .attr('stroke-width', 3).attr('d', line);
+      
+    const len = lp.node().getTotalLength();
+    lp.attr('stroke-dasharray', len).attr('stroke-dashoffset', len)
+      .transition().duration(1000).ease(d3.easeCubicOut).attr('stroke-dashoffset', 0);
+
+    // Projection Line Fading In
+    svg.append('path').datum(projData)
+      .attr('fill', 'none').attr('stroke', 'var(--dimmed)')
+      .attr('stroke-width', 2).attr('stroke-dasharray', '5,4')
+      .attr('d', line)
+      .style('opacity', 0)
+      .transition()
+      .delay(400)
+      .duration(600)
+      .style('opacity', 1);
+
+    // Peak Marker Dot
+    const peakDot = svg.append('circle').attr('cx', x(2023)).attr('cy', y(1.428))
+      .attr('r', 0)
+      .attr('fill', 'var(--green)').attr('stroke', 'var(--bg)').attr('stroke-width', 2.5);
+    
+    peakDot.transition()
+      .delay(800)
+      .duration(400)
+      .attr('r', 5);
+
+    // Interactive Hover Scrub
+    const scrubLine = svg.append('line')
+      .attr('y1', 0).attr('y2', h)
+      .attr('stroke', 'var(--border)')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', '4,4')
+      .style('opacity', 0);
+
+    const scrubDot = svg.append('circle')
+      .attr('r', 6)
+      .attr('fill', 'var(--green)')
+      .attr('stroke', 'var(--bg)')
+      .attr('stroke-width', 2.5)
+      .style('opacity', 0);
+
+    svg.append('rect')
+      .attr('width', w)
+      .attr('height', h)
+      .attr('fill', 'none')
+      .attr('pointer-events', 'all')
+      .on('mouseover', () => {
+        scrubLine.style('opacity', 1);
+        scrubDot.style('opacity', 1);
+        chartTooltip.style('opacity', 1);
+      })
+      .on('mouseout', () => {
+        scrubLine.style('opacity', 0);
+        scrubDot.style('opacity', 0);
+        chartTooltip.style('opacity', 0);
+      })
+      .on('mousemove', (event) => {
+        const mouseX = d3.pointer(event)[0];
+        const yearVal = x.invert(mouseX);
+        const bisect = d3.bisector(d => d.y).left;
+        const idx = bisect(indiaPopData, yearVal, 1);
+        const d0 = indiaPopData[idx - 1];
+        const d1 = indiaPopData[idx];
+        const d = (d1 && (yearVal - d0.y > d1.y - yearVal)) ? d1 : d0;
+
+        scrubLine.attr('x1', x(d.y)).attr('x2', x(d.y));
+        scrubDot.attr('cx', x(d.y)).attr('cy', y(d.v))
+          .attr('fill', d.y <= 2023 ? 'var(--green)' : 'var(--dimmed)');
+
+        chartTooltip
+          .html(`
+            <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">Year ${d.y}</div>
+            <div style="font-size:16px; font-weight:bold; font-family:var(--serif); color:var(--blue);">${d.v.toFixed(3)} Billion</div>
+            <div style="font-size:10px; color:var(--dimmed);">${d.y > 2023 ? 'UN Projection' : 'Historical Census'}</div>
+          `)
+          .style('left', (event.pageX + 15) + 'px')
+          .style('top', (event.pageY - 15) + 'px');
+      });
+
+    // Axes
+    svg.append('g').attr('transform', `translate(0,${h})`)
+      .call(d3.axisBottom(x).tickValues([1950, 1980, 2010, 2023, 2050, 2080, 2100]).tickFormat(d3.format('d')))
+      .call(g => {
+        g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)');
+        g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
+      });
+        
+    svg.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => `${d}B`))
+      .call(g => {
+        g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)');
+        g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
+      });
+  }
+
+  else if (mode === 'india-fertility') {
+    document.getElementById('chartTitle').textContent = 'India\'s Fertility Transition';
+    document.getElementById('chartSub').textContent = 'Total fertility rate (births per woman) · replacement = 2.1';
+    d3.select('#legendLineA').style('display', 'none');
+    d3.select('#legendLineB').style('display', 'flex');
+    d3.select('#legendLineB span').text('FERTILITY (TFR)');
+    d3.select('#legendLineB .legend-dot').style('background', 'var(--teal)');
+    d3.select('#legendLineC').style('display', 'none');
+
+    const x = d3.scaleLinear().domain([1950, 2023]).range([0, w]);
+    const y = d3.scaleLinear().domain([0, 7.0]).range([h, 0]);
+
+    // Target shaded zone below 2.1 replacement level
+    svg.append('rect')
+      .attr('x', 0).attr('width', w)
+      .attr('y', y(2.1)).attr('height', h - y(2.1))
+      .attr('fill', 'rgba(30,126,52,0.03)');
+
+    // Gridlines
+    [1.0, 2.0, 3.0, 4.0, 5.0, 6.0].forEach(v => {
+      svg.append('line').attr('x1', 0).attr('x2', w).attr('y1', y(v)).attr('y2', y(v))
+        .attr('stroke', gridColor).attr('stroke-dasharray', '3,3');
+    });
+
+    // Replacement line
+    svg.append('line').attr('x1', 0).attr('x2', 0).attr('y1', y(2.1)).attr('y2', y(2.1))
+      .attr('stroke', 'var(--orange)')
+      .attr('stroke-width', 1.5)
+      .transition()
+      .duration(800)
+      .attr('x2', w);
+
+    svg.append('text').attr('x', w - 8).attr('y', y(2.1) - 6)
+      .attr('text-anchor', 'end')
+      .attr('fill', 'var(--orange)').attr('font-size', '14px').attr('font-family', 'var(--mono)')
+      .text('REPLACEMENT LEVEL 2.1');
+
+    // Gradient definitions
+    const gradFert = defs.selectAll('#grad-fert-pop').data([null]).join('linearGradient').attr('id', 'grad-fert-pop').attr('x1', '0%').attr('y1', '0%').attr('x2', '0%').attr('y2', '100%');
+    gradFert.selectAll('stop').data([
+      { offset: '0%', color: 'var(--teal)', opacity: 0.15 },
+      { offset: '100%', color: 'var(--teal)', opacity: 0.00 }
+    ]).join('stop')
+      .attr('offset', d => d.offset)
+      .attr('stop-color', d => d.color)
+      .attr('stop-opacity', d => d.opacity);
+
+    // Area path rising from bottom
+    const areaStart = d3.area().x(d => x(d.y)).y0(h).y1(h).curve(d3.curveMonotoneX);
+    const area = d3.area().x(d => x(d.y)).y0(h).y1(d => y(d.v)).curve(d3.curveMonotoneX);
+    
+    svg.append('path')
+      .datum(indiaFertilityData)
+      .attr('fill', 'url(#grad-fert-pop)')
+      .attr('d', areaStart)
+      .transition()
+      .duration(1000)
+      .ease(d3.easeCubicOut)
+      .attr('d', area);
+
+    // Spline Line Path
+    const line = d3.line().x(d => x(d.y)).y(d => y(d.v)).curve(d3.curveMonotoneX);
+    const lp = svg.append('path').datum(indiaFertilityData)
+      .attr('fill', 'none').attr('stroke', 'var(--teal)').attr('stroke-width', 3).attr('d', line);
+      
+    const len = lp.node().getTotalLength();
+    lp.attr('stroke-dasharray', len).attr('stroke-dashoffset', len)
+      .transition().duration(1000).ease(d3.easeCubicOut).attr('stroke-dashoffset', 0);
+
+    // Draw vertical lollipop stems for data points
+    const stems = svg.selectAll('.lollipop-stem')
+      .data(indiaFertilityData)
+      .enter().append('line')
+      .attr('class', 'lollipop-stem')
+      .attr('x1', d => x(d.y)).attr('x2', d => x(d.y))
+      .attr('y1', h).attr('y2', h)
+      .attr('stroke', 'rgba(26,83,92,0.15)')
+      .attr('stroke-width', 1);
+
+    stems.transition()
+      .duration(800)
+      .delay((d, i) => i * 30)
+      .attr('y2', d => y(d.v));
+
+    // Lollipop dots
+    const dots = svg.selectAll('.lollipop-dot')
+      .data(indiaFertilityData)
+      .enter().append('circle')
+      .attr('class', 'lollipop-dot')
+      .attr('cx', d => x(d.y))
+      .attr('cy', h)
+      .attr('r', 0)
+      .attr('fill', 'var(--surface)')
+      .attr('stroke', 'var(--teal)')
+      .attr('stroke-width', 2);
+
+    dots.transition()
+      .duration(800)
+      .delay((d, i) => i * 30)
+      .attr('cy', d => y(d.v))
+      .attr('r', 4.5);
+
+    // Interactive Hover scrub for fertility
+    const scrubLine = svg.append('line')
+      .attr('y1', 0).attr('y2', h)
+      .attr('stroke', 'var(--border)')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', '4,4')
+      .style('opacity', 0);
+
+    const scrubDot = svg.append('circle')
+      .attr('r', 6)
+      .attr('fill', 'var(--teal)')
+      .attr('stroke', 'var(--bg)')
+      .attr('stroke-width', 2.5)
+      .style('opacity', 0);
+
+    svg.append('rect')
+      .attr('width', w)
+      .attr('height', h)
+      .attr('fill', 'none')
+      .attr('pointer-events', 'all')
+      .on('mouseover', () => {
+        scrubLine.style('opacity', 1);
+        scrubDot.style('opacity', 1);
+        chartTooltip.style('opacity', 1);
+      })
+      .on('mouseout', () => {
+        scrubLine.style('opacity', 0);
+        scrubDot.style('opacity', 0);
+        chartTooltip.style('opacity', 0);
+      })
+      .on('mousemove', (event) => {
+        const mouseX = d3.pointer(event)[0];
+        const yearVal = x.invert(mouseX);
+        const bisect = d3.bisector(d => d.y).left;
+        const idx = bisect(indiaFertilityData, yearVal, 1);
+        const d0 = indiaFertilityData[idx - 1];
+        const d1 = indiaFertilityData[idx];
+        const d = (d1 && (yearVal - d0.y > d1.y - yearVal)) ? d1 : d0;
+
+        scrubLine.attr('x1', x(d.y)).attr('x2', x(d.y));
+        scrubDot.attr('cx', x(d.y)).attr('cy', y(d.v));
+
+        const diff = d.v - 2.1;
+        const diffText = diff < 0 ? `${Math.abs(diff).toFixed(2)} below replacement` : `${diff.toFixed(2)} above replacement`;
+        const diffColor = diff < 0 ? 'var(--green)' : 'var(--red)';
+
+        chartTooltip
+          .html(`
+            <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">Year ${d.y}</div>
+            <div style="font-size:16px; font-weight:bold; font-family:var(--serif); color:var(--blue);">${d.v.toFixed(2)} TFR</div>
+            <div style="font-size:var(--fs-micro); font-family:var(--mono); font-weight:bold; color:${diffColor}; margin-top:2px;">${diffText}</div>
+          `)
+          .style('left', (event.pageX + 15) + 'px')
+          .style('top', (event.pageY - 15) + 'px');
+      });
+
+    // Axes
+    svg.append('g').attr('transform', `translate(0,${h})`)
+      .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format('d')))
+      .call(g => {
+        g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)');
+        g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
+      });
+        
+    svg.append('g').call(d3.axisLeft(y).ticks(7))
+      .call(g => {
+        g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)');
+        g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
+      });
+  }
+
+  else if (mode === 'india-states') {
+    document.getElementById('chartTitle').textContent = 'Concentric Regional Fertility Profiles';
+    document.getElementById('chartSub').textContent = 'Total fertility rate (TFR) circular sweep · replacement = 2.1';
+    d3.select('#legendLineA').style('display', 'none');
+    d3.select('#legendLineB').style('display', 'none');
+    d3.select('#legendLineC').style('display', 'none');
+
+    const statesTfrData = [
+      { state: "Kerala", tfr: 1.5, color: "var(--green)" },
+      { state: "Odisha", tfr: 1.8, color: "var(--purple)" },
+      { state: "National Avg", tfr: 1.98, color: "var(--teal)" },
+      { state: "Bihar", tfr: 2.8, color: "var(--red)" }
+    ];
+
+    const x = d3.scaleLinear().domain([0, 3.5]).range([0, w]);
+    const y = d3.scaleBand().domain(statesTfrData.map(d => d.state)).range([0, h]).padding(0.42);
+
+    // Green shaded replacement zone: x = 0 to x(2.1)
+    svg.append('rect')
+      .attr('x', 0)
+      .attr('width', x(2.1))
+      .attr('y', 0)
+      .attr('height', h)
+      .attr('fill', 'rgba(30,126,52,0.03)');
+
+    // Vertical gridlines
+    [1.0, 2.0, 3.0].forEach(v => {
+      svg.append('line')
+        .attr('x1', x(v)).attr('x2', x(v))
+        .attr('y1', 0).attr('y2', h)
+        .attr('stroke', gridColor).attr('stroke-dasharray', '3,3');
+    });
+
+    // Vertical Replacement Level (2.1) line
+    svg.append('line')
+      .attr('x1', x(2.1)).attr('x2', x(2.1))
+      .attr('y1', 0).attr('y2', h)
+      .attr('stroke', 'var(--orange)')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', '4,4');
+
+    svg.append('text')
+      .attr('x', x(2.1) + 6)
+      .attr('y', 14)
+      .attr('fill', 'var(--orange)')
+      .attr('font-size', '14px')
+      .attr('font-weight', 'bold')
+      .attr('font-family', 'var(--mono)')
+      .text('Replacement Level 2.1');
+
+    // Gradient definitions for each state
+    statesTfrData.forEach(d => {
+      const gradId = `grad-${d.state.replace(/\s+/g, '')}`;
+      const grad = defs.selectAll(`#${gradId}`).data([null]).join('linearGradient').attr('id', gradId).attr('x1', '0%').attr('y1', '0%').attr('x2', '100%').attr('y2', '0%');
+      grad.selectAll('stop').data([
+        { offset: '0%', color: d.color, opacity: 0.8 },
+        { offset: '100%', color: d.color, opacity: 1.0 }
+      ]).join('stop')
+        .attr('offset', s => s.offset)
+        .attr('stop-color', s => s.color)
+        .attr('stop-opacity', s => s.opacity);
+    });
+
+    // Horizontal bars
+    const bars = svg.selectAll('.state-bar')
+      .data(statesTfrData)
+      .enter().append('rect')
+      .attr('class', 'state-bar')
+      .attr('x', 0)
+      .attr('y', d => y(d.state))
+      .attr('height', y.bandwidth())
+      .attr('width', 0)
+      .attr('fill', d => `url(#grad-${d.state.replace(/\s+/g, '')})`)
+      .attr('rx', 4);
+
+    bars.transition()
+      .duration(1000)
+      .delay((d, i) => i * 100)
+      .attr('width', d => x(d.tfr));
+
+    // Interactive Hover
+    bars.on('mouseover', function(event, d) {
+      d3.select(this).attr('opacity', 0.85);
+      chartTooltip.style('opacity', 1)
+        .html(`
+          <div style="font-family:var(--sans); font-weight:bold; font-size:12px; color:${d.color};">${d.state}</div>
+          <div style="font-family:var(--serif); font-size:18px; font-weight:bold; margin-top:2px;">${d.tfr.toFixed(2)} TFR</div>
+          <div style="font-size:10px; color:var(--muted);">${d.tfr < 2.1 ? 'Below Replacement Rate' : 'Above Replacement Rate'}</div>
+        `);
+    })
+    .on('mousemove', function(event) {
+      chartTooltip
+        .style('left', (event.pageX + 15) + 'px')
+        .style('top', (event.pageY - 15) + 'px');
+    })
+    .on('mouseout', function() {
+      d3.select(this).attr('opacity', 1);
+      chartTooltip.style('opacity', 0);
+    });
+
+    // State names directly ABOVE each bar
+    svg.selectAll('.state-name-label')
+      .data(statesTfrData)
+      .enter().append('text')
+      .attr('class', 'state-name-label')
+      .attr('x', 0)
+      .attr('y', d => y(d.state) - 6)
+      .attr('fill', 'var(--text)')
+      .attr('font-size', '14px')
+      .attr('font-weight', 'bold')
+      .attr('font-family', 'var(--sans)')
+      .text(d => d.state)
+      .style('opacity', 0)
+      .transition()
+      .duration(800)
+      .style('opacity', 1);
+
+    // TFR numeric value labels at the right end of the bars
+    svg.selectAll('.state-val-label')
+      .data(statesTfrData)
+      .enter().append('text')
+      .attr('class', 'state-val-label')
+      .attr('x', 0)
+      .attr('y', d => y(d.state) + y.bandwidth() / 2 + 4)
+      .attr('fill', d => d.color)
+      .attr('font-size', '14px')
+      .attr('font-weight', 'bold')
+      .attr('font-family', 'var(--mono)')
+      .text(d => d.tfr)
+      .transition()
+      .duration(1000)
+      .delay((d, i) => i * 100)
+      .attr('x', d => x(d.tfr) + 8);
+
+    // X Axis bottom
+    svg.append('g').attr('transform', `translate(0,${h})`)
+      .call(d3.axisBottom(x).ticks(5))
+      .call(g => {
+        g.select('.domain').attr('stroke', 'var(--border)');
+        g.selectAll('line').attr('stroke', 'var(--border)');
+        g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
+      });
+
+    // Custom Y Axis line (no ticks, no labels, just a clean baseline)
+    svg.append('line')
+      .attr('x1', 0).attr('x2', 0)
+      .attr('y1', 0).attr('y2', h)
+      .attr('stroke', 'var(--border)')
+      .attr('stroke-width', 1);
+  }
+
+  else if (mode === 'india-labor') {
+    document.getElementById('chartTitle').textContent = 'Labor Force Dumbbell Comparison';
+    document.getElementById('chartSub').textContent = 'Odisha vs India benchmarks · 15-59 Age Cohort';
+    d3.select('#legendLineA').style('display', 'flex');
+    d3.select('#legendTextA').text('INDIA');
+    d3.select('#legendLineA .legend-dot').style('background', 'var(--green)');
+    d3.select('#legendLineB').style('display', 'flex');
+    d3.select('#legendLineB span').text('ODISHA');
+    d3.select('#legendLineB .legend-dot').style('background', 'var(--purple)');
+    d3.select('#legendLineC').style('display', 'none');
+
+    const laborData = [
+      {
+        category: "Overall LFPR",
+        india: 64.3,
+        odisha: 69.2,
+        lead: 4.9
+      },
+      {
+        category: "Female FLFPR",
+        india: 45.2,
+        odisha: 53.5,
+        lead: 8.3
+      }
+    ];
+
+    const yScale = d3.scalePoint().domain(laborData.map(d => d.category)).range([h * 0.25, h * 0.75]).padding(0.1);
+    const xScale = d3.scaleLinear().domain([30, 80]).range([0, w]);
+
+    // Gridlines (X-axis ticks)
+    [40, 50, 60, 70, 80].forEach(v => {
+      svg.append('line')
+        .attr('x1', xScale(v)).attr('x2', xScale(v))
+        .attr('y1', 0).attr('y2', h)
+        .attr('stroke', gridColor).attr('stroke-dasharray', '3,3');
+    });
+
+    laborData.forEach((d, i) => {
+      const y = yScale(d.category);
+      
+      // Dashed baseline track
+      svg.append('line')
+        .attr('x1', xScale(30)).attr('x2', xScale(80))
+        .attr('y1', y).attr('y2', y)
+        .attr('stroke', 'rgba(0,0,0,0.04)')
+        .attr('stroke-width', 1.5)
+        .attr('stroke-dasharray', '2,2');
+
+      // Lead gap connector (thick bar)
+      const connector = svg.append('line')
+        .attr('x1', xScale(d.india)).attr('y1', y)
+        .attr('x2', xScale(d.india)).attr('y2', y)
+        .attr('stroke', 'rgba(0,0,0,0.08)')
+        .attr('stroke-width', 6)
+        .attr('stroke-linecap', 'round');
+
+      connector.transition()
+        .duration(800)
+        .delay(200)
+        .attr('x2', xScale(d.odisha));
+
+      // India circle (Green)
+      const circleIndia = svg.append('circle')
+        .attr('cx', xScale(d.india)).attr('cy', y)
+        .attr('r', 0)
+        .attr('fill', 'var(--green)')
+        .attr('stroke', 'var(--surface)')
+        .attr('stroke-width', 2.5);
+
+      circleIndia.transition()
+        .duration(600)
+        .attr('r', 6.5);
+
+      // Odisha circle (Purple)
+      const circleOdisha = svg.append('circle')
+        .attr('cx', xScale(d.india)).attr('cy', y)
+        .attr('r', 0)
+        .attr('fill', 'var(--purple)')
+        .attr('stroke', 'var(--surface)')
+        .attr('stroke-width', 2.5);
+
+      circleOdisha.transition()
+        .duration(800)
+        .delay(200)
+        .attr('cx', xScale(d.odisha))
+        .attr('r', 6.5);
+
+      // India Text Label (above dot)
+      svg.append('text')
+        .attr('x', xScale(d.india))
+        .attr('y', y - 10)
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'var(--green)')
+        .attr('font-size', '13px')
+        .attr('font-weight', 'bold')
+        .attr('font-family', 'var(--mono)')
+        .text(`${d.india}%`)
+        .style('opacity', 0)
+        .transition()
+        .delay(600)
+        .duration(400)
+        .style('opacity', 1);
+
+      // Odisha Text Label (above dot)
+      svg.append('text')
+        .attr('x', xScale(d.odisha))
+        .attr('y', y - 10)
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'var(--purple)')
+        .attr('font-size', '13px')
+        .attr('font-weight', 'bold')
+        .attr('font-family', 'var(--mono)')
+        .text(`${d.odisha}%`)
+        .style('opacity', 0)
+        .transition()
+        .delay(800)
+        .duration(400)
+        .style('opacity', 1);
+
+      // Lead text annotation in center of connection track
+      svg.append('text')
+        .attr('x', (xScale(d.india) + xScale(d.odisha)) / 2)
+        .attr('y', y + 14)
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'var(--orange)')
+        .attr('font-size', '14px')
+        .attr('font-weight', 'bold')
+        .attr('font-family', 'var(--mono)')
+        .text(`+${d.lead}% lead`)
+        .style('opacity', 0)
+        .transition()
+        .delay(900)
+        .duration(400)
+        .style('opacity', 1);
+
+      // Interactive hover for dumbbell
+      const hoverRect = svg.append('rect')
+        .attr('x', xScale(d.india) - 10)
+        .attr('width', xScale(d.odisha) - xScale(d.india) + 20)
+        .attr('y', y - 20)
+        .attr('height', 40)
+        .attr('fill', 'none')
+        .attr('pointer-events', 'all');
+
+      hoverRect.on('mouseover', function(event) {
+        connector.attr('stroke', 'rgba(211,84,0,0.15)');
+        chartTooltip.style('opacity', 1)
+          .html(`
+            <div style="font-family:var(--sans); font-weight:bold; font-size:12px; color:var(--blue);">${d.category} Gap</div>
+            <div style="font-family:var(--serif); font-size:16px; font-weight:bold; margin-top:2px;">${d.lead.toFixed(1)}% Gap</div>
+            <div style="font-size:var(--fs-micro); color:var(--muted); margin-top:2px;">Odisha outpaces India by ${d.lead.toFixed(1)} percentage points.</div>
+          `);
+      })
+      .on('mousemove', function(event) {
+        chartTooltip
+          .style('left', (event.pageX + 15) + 'px')
+          .style('top', (event.pageY - 15) + 'px');
+      })
+      .on('mouseout', function() {
+        connector.attr('stroke', 'rgba(0,0,0,0.08)');
+        chartTooltip.style('opacity', 0);
+      });
+    });
+
+    // Axes
+    svg.append('g').attr('transform', `translate(0,${h})`)
+      .call(d3.axisBottom(xScale).tickValues([30, 40, 50, 60, 70, 80]).tickFormat(d => d + "%"))
+      .call(g => {
+        g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)');
+        g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
+      });
+
+    // Y Axis Category Labels
+    svg.append('g')
+      .call(d3.axisLeft(yScale))
+      .call(g => {
+        g.select('.domain').remove();
+        g.selectAll('line').remove();
+        g.selectAll('text')
+          .attr('fill', 'var(--text)')
+          .attr('font-size', '14px')
+          .attr('font-weight', 'bold')
+          .attr('font-family', 'var(--sans)');
+      });
+  }
+}
+
+// ──────────────────────────────────────────────
+// DUAL PYRAMIDS RENDERING
+// ──────────────────────────────────────────────
+function initPyramidChart(svgId, region) {
+  const svg = d3.select(`#${svgId}`);
+  if (!svg.select('.pyramid-content').empty()) return;
+
+  const container = document.getElementById(svgId).parentElement;
+  const width = container.clientWidth || 340;
+  const H = 345;
+  const m = {top:20, right:30, bottom:30, left:45};
+  const w = width - m.left - m.right;
+  const h = H - m.top - m.bottom;
+  const barH = h / ageLabels.length;
+
+  svg.attr('viewBox', `0 0 ${width} ${H}`);
+  const g = svg.append('g')
+    .attr('class', 'pyramid-content')
+    .attr('transform', `translate(${m.left},${m.top})`);
+
+  // Center vertical dividing line
+  g.append('line')
+    .attr('x1', w/2).attr('x2', w/2)
+    .attr('y1', 0).attr('y2', h)
+    .attr('stroke', 'var(--border)').attr('stroke-width', 1);
+
+  // Age labels inside the central channel
+  ageLabels.forEach((label, i) => {
+    const y = h - (i + 1) * barH;
+    if (i % 2 === 0) {
+      g.append('text')
+        .attr('x', w/2)
+        .attr('y', y + barH/2 + 3)
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'var(--text)')
+        .attr('font-size', '14px')
+        .attr('font-weight', '500')
+        .attr('font-family', 'var(--mono)')
+        .text(label);
+    }
+  });
+
+  // Gender Headers
+  g.append('text')
+    .attr('x', w/4).attr('y', -6)
+    .attr('text-anchor', 'middle')
+    .attr('fill', 'var(--teal)')
+    .attr('font-family', 'var(--mono)')
+    .attr('font-size', '14px')
+    .attr('font-weight', 'bold')
+    .text('MALE %');
+    
+  g.append('text')
+    .attr('x', 3*w/4).attr('y', -6)
+    .attr('text-anchor', 'middle')
+    .attr('fill', 'var(--orange)')
+    .attr('font-family', 'var(--mono)')
+    .attr('font-size', '14px')
+    .attr('font-weight', 'bold')
+    .text('FEMALE %');
+
+  // Baseline X Axis
+  g.append('line')
+    .attr('x1', 0).attr('x2', w)
+    .attr('y1', h + 6).attr('y2', h + 6)
+    .attr('stroke', 'var(--border)');
+
+  g.append('text')
+    .attr('x', w/2).attr('y', h + 18)
+    .attr('text-anchor', 'middle')
+    .attr('fill', 'var(--dimmed)')
+    .attr('font-size', '14px')
+    .attr('font-family', 'var(--sans)')
+    .text('% Share of Total Population');
+
+  // Subgroup to contain dynamic bars
+  g.append('g').attr('class', 'bars-group');
+}
+
+function drawPyramid(svgId, region, year) {
+  initPyramidChart(svgId, region);
+
+  const svg = d3.select(`#${svgId}`);
+  const g = svg.select('.pyramid-content');
+  const barsGroup = g.select('.bars-group');
+
+  const container = document.getElementById(svgId).parentElement;
+  const width = container.clientWidth || 340;
+  const H = 345;
+  const m = {top:20, right:30, bottom:30, left:45};
+  const w = width - m.left - m.right;
+  const h = H - m.top - m.bottom;
+  const barH = h / ageLabels.length;
+
+  let data;
+  if (region === 'india') {
+    data = indiaPyramidData[year];
+  } else {
+    data = odishaPyramidData[year];
+  }
+
+  if (!data) return;
+
+  const maxVal = 7.0; // standard maximum percentage
+  const xM = d3.scaleLinear().domain([0, maxVal]).range([w/2, 0]);
+  const xF = d3.scaleLinear().domain([0, maxVal]).range([w/2, w]);
+
+  const maleData = data.m.map((val, idx) => ({ val, index: idx }));
+  const femaleData = data.f.map((val, idx) => ({ val, index: idx }));
+
+  // Male Bars Data Bind
+  const maleBars = barsGroup.selectAll('.pyramid-bar-left')
+    .data(maleData, d => d.index);
+
+  maleBars.enter()
+    .append('rect')
+    .attr('class', 'pyramid-bar-left')
+    .attr('y', d => h - (d.index + 1) * barH + 1)
+    .attr('height', barH - 2)
+    .attr('x', w/2)
+    .attr('width', 0)
+    .merge(maleBars)
+    .transition()
+    .duration(700)
+    .ease(d3.easeCubicOut)
+    .attr('x', d => xM(d.val))
+    .attr('width', d => w/2 - xM(d.val));
+
+  // Female Bars Data Bind
+  const femaleBars = barsGroup.selectAll('.pyramid-bar-right')
+    .data(femaleData, d => d.index);
+
+  femaleBars.enter()
+    .append('rect')
+    .attr('class', 'pyramid-bar-right')
+    .attr('y', d => h - (d.index + 1) * barH + 1)
+    .attr('height', barH - 2)
+    .attr('x', w/2)
+    .attr('width', 0)
+    .merge(femaleBars)
+    .transition()
+    .duration(700)
+    .ease(d3.easeCubicOut)
+    .attr('width', d => xF(d.val) - w/2);
+}
+
+function triggerPyramids(year) {
+  drawPyramid('pyramidIndia', 'india', year);
+  drawPyramid('pyramidOdisha', 'odisha', year);
+}
+
+function setPyramidYear(year, btn) {
+  document.querySelectorAll('.yr-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentPyramidYear = year;
+  triggerPyramids(year);
+}
+
+// ──────────────────────────────────────────────
+// INDIA MAP GATEWAY
+// ──────────────────────────────────────────────
+function drawIndiaGatewayMap() {
+  const container = d3.select("#india-map-container");
+  const width = 500;
+  const height = 450;
+  
+  const svg = container.append("svg")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
+  const g = svg.append("g");
+  const tip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+
+  d3.json('./india.geojson').then(data => {
+    // Padding of 40px inside container
+    const projection = d3.geoMercator().fitExtent([[30, 30], [width - 30, height - 30]], data);
+    const path = d3.geoPath().projection(projection);
+
+    g.selectAll("path")
+      .data(data.features)
+      .enter().append("path")
+      .attr("d", path)
+      .attr("fill", d => d.properties.ST_NM === "Odisha" ? "var(--orange)" : "#eaedef")
+      .attr("stroke", "rgba(0,0,0,0.12)")
+      .attr("stroke-width", "0.7px")
+      .on("mouseover", function(event, d) {
+        d3.select(this).style("stroke", "var(--teal)").style("stroke-width", "1.8px").raise();
+        tip.transition().duration(200).style("opacity", 1);
+        tip.html(d.properties.ST_NM === "Odisha" 
+          ? `<strong style="color:var(--orange)">Odisha</strong><br><span style="font-size:var(--fs-caption);color:var(--muted)">Click to enter story</span>` 
+          : `<strong>${d.properties.ST_NM}</strong>`)
+           .style("left", (event.pageX + 15) + "px")
+           .style("top", (event.pageY - 10) + "px");
+      })
+      .on("mouseout", function() {
+        d3.select(this).style("stroke", "rgba(0,0,0,0.12)").style("stroke-width", "0.7px");
+        tip.transition().duration(400).style("opacity", 0);
+      })
+      .on("click", function(event, d) {
+        if (d.properties.ST_NM === "Odisha") {
+          window.location.href = 'odisha.html';
+        }
+      });
+  });
+}
+
+// ──────────────────────────────────────────────
+// INTERSECTION OBSERVER FOR SCROLL STEPS
+// ──────────────────────────────────────────────
+const stepObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('#scrollySection .step').forEach(s => s.classList.remove('active'));
+      entry.target.classList.add('active');
+      const chartMode = entry.target.dataset.chart;
+      if (chartMode && chartMode !== currentMode) {
+        currentMode = chartMode;
+        drawIndiaChart(chartMode);
+      }
+      // Fill mini-bars if present
+      entry.target.querySelectorAll('.mini-bar-fill').forEach(bar => {
+        const target = bar.dataset.w;
+        setTimeout(() => { bar.style.width = target; }, 200);
+      });
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('#scrollySection .step').forEach(s => stepObs.observe(s));
+
+// Draw India Map Gateway on page load
+drawIndiaGatewayMap();
+
+window.addEventListener('resize', () => {
+  drawIndiaChart(currentMode);
+  // Clear pyramid content to force recreation on resize
+  d3.select('#pyramidIndia').selectAll('*').remove();
+  d3.select('#pyramidOdisha').selectAll('*').remove();
+  triggerPyramids(currentPyramidYear);
+});
+</script>
+<script src="chatbot.js"></script>
+</body>
+</html>

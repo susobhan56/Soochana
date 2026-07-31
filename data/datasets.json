@@ -1,0 +1,67 @@
+{
+  "datasets": [
+    {
+      "id": "edu1",
+      "name": "District Level Education Data 2023-24 UDISE+",
+      "description": "Complete census data for Odisha state in Excel format",
+      "type": "excel",
+      "size": "2.5 MB",
+      "lastUpdated": "2025-01-15",
+      "file": "/datasets/District Level Education Data 2023-24 UDISE+.xlsx"
+    },
+    {
+      "id": "health2",
+      "name": "District-wise Population Figures 1901-2036",
+      "description": "District-wise healthcare facility and outcome data",
+      "type": "excel",
+      "size": "1.8 MB",
+      "lastUpdated": "2025-03-20",
+      "file": "/datasets/District-wise Population Figures 1901-2036.xlsx"
+    },
+    {
+      "id": "health1",
+      "name":"Education Data DistrictWise",
+      "description": "Education Related Data.",
+      "type": "csv",
+      "size": "0.5 MB",
+      "lastUpdated": "2025-07-01",
+      "file": "/datasets/Education Data DistrciWise.xlsx"
+    },
+    {
+      "id": "elderly1",
+      "name": "Elderly_pop & M&CH_Odisha_need_literature review",
+      "description": "Elderly data.",
+      "type": "excel",
+      "size": "0.8 MB",
+      "lastUpdated": "2025-07-01",
+      "file": "/datasets/Elderly_pop & M&CH_Odisha_need_literature review.xlsx"
+    },
+    {
+      "id": "emp1",
+      "name": "Health Data Analysis",
+      "description": "Analyzed health Matrices",
+      "type": "excel",
+      "size": "1.2 MB",
+      "lastUpdated": "2025-05-10",
+      "file": "/datasets/Health.xlsx"
+    },
+    {
+      "id": "mig1",
+      "name": "Migration and Urbanization Trends",
+      "description": "Processed data on migration patterns",
+      "type": "excel",
+      "size": "3.1 MB",
+      "lastUpdated": "2025-04-15",
+      "file": "/datasets/Migration and Urbanization.xlsx"
+    },
+    {
+      "id": "pop1",
+      "name": "Ageing Data Analysis",
+      "description": "Processed data on ageing populations",
+      "type": "excel",
+      "size": "3.1 MB",
+      "lastUpdated": "2025-04-15",
+      "file": "/datasets/Population Ageing.xlsx"
+    }
+  ]
+}

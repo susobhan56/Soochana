@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article Reader — Odisha Demographic Portal</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="ui.js"></script>
+<style>
+    /* Premium Editorial Article Styles */
+    .article-wrap {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 60px 20px 100px 20px;
+    }
+    .article-back-link {
+        font-family: var(--mono);
+        font-size: var(--fs-micro);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-decoration: none;
+        color: var(--teal);
+        display: inline-block;
+        margin-bottom: 24px;
+    }
+    .article-header {
+        margin-bottom: 40px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 30px;
+    }
+    .article-kicker {
+        font-family: var(--mono);
+        font-size: var(--fs-caption);
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--orange);
+        letter-spacing: 0.15em;
+        margin-bottom: 12px;
+    }
+    .article-title {
+        font-family: var(--serif);
+        font-size: var(--fs-h2);
+        color: var(--blue);
+        line-height: 1.15;
+        font-weight: var(--wt-display);
+        margin: 0 0 16px 0;
+        letter-spacing: -0.02em;
+    }
+    .article-abstract {
+        font-size: var(--fs-lead);
+        color: var(--muted);
+        line-height: 1.5;
+        margin: 0 0 24px 0;
+        font-style: italic;
+    }
+    .article-meta-line {
+        font-family: var(--sans);
+        font-size: var(--fs-small);
+        color: var(--dimmed);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .article-meta-line span.divider {
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--border);
+    }
+    
+    /* Typography settings for article body text */
+    .article-content {
+        font-family: var(--sans);
+        font-size: var(--fs-body);
+        line-height: 1.8;
+        color: var(--text);
+        /* In ch, not px, so the measure stays in the comfortable 50-75
+           character band at every text-size setting. */
+        max-width: 68ch;
+    }
+    .article-content p {
+        margin-bottom: 24px;
+    }
+    .article-content h5 {
+        font-family: var(--serif);
+        font-size: var(--fs-h4);
+        color: var(--blue);
+        margin: 40px 0 16px 0;
+        font-weight: var(--wt-display);
+        line-height: 1.3;
+    }
+    
+    /* Responsive details */
+    @media (max-width: 768px) {
+        .article-title {
+            font-size: var(--fs-h2);
+        }
+        .article-wrap {
+            padding: 40px 20px 80px 20px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- GLOBAL HEADER -->
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <h1>Soochana</h1>
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="index.html" class="btn-elegant">🏠 Home</a>
+    <a href="journeys.html" class="btn-elegant">📈 The Story</a>
+    <a href="odisha.html" class="btn-elegant">🗺️ Map Explorer</a>
+    <a href="themes.html" class="btn-elegant" aria-current="page">📊 Themes</a>
+    <a href="repository.html" class="btn-elegant">📁 Repository</a>
+    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
+  </div>
+</header>
+
+<!-- ARTICLE READER BODY CONTAINER -->
+<div class="article-wrap">
+    <a href="javascript:history.back()" class="article-back-link" id="backBtn">← Back to Overview</a>
+    
+    <article>
+        <div class="article-header">
+            <div class="article-kicker" id="artKicker">Demographic Transition</div>
+            <h2 class="article-title" id="artTitle">Loading Brief...</h2>
+            <div class="article-abstract" id="artAbstract">Please wait while the resource loads.</div>
+            <div class="article-meta-line">
+                <span>By DIU Team</span>
+                <span class="divider"></span>
+                <span id="artDate">Published: --</span>
+            </div>
+        </div>
+
+        <div class="article-content" id="artContent">
+            <p>Loading article content dynamically from the registry...</p>
+        </div>
+    </article>
+</div>
+
+<!-- GLOBAL FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="font-size: var(--fs-small); color:var(--muted); margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption);">
+      Odisha Welfare Portal · Static Client Explorer
+    </div>
+  </div>
+  <div class="footer-meta">
+    Data Sources: Census of India, NFHS-5, PLFS, UDISE+ & Government of Odisha Survey Reports.
+  </div>
+</footer>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const artId = urlParams.get('id');
+
+    if (!artId) {
+        window.location.href = 'themes.html';
+    }
+
+    // Load Article Contents metadata
+    fetch('data/contents.json')
+        .then(res => res.json())
+        .then(data => {
+            const article = data.recentContent.find(c => c.id === artId);
+            if (!article) {
+                document.getElementById('artTitle').textContent = "Brief Not Found";
+                document.getElementById('artContent').innerHTML = "<p>The requested brief could not be located in our registry directories.</p>";
+                return;
+            }
+
+            // Set content fields
+            document.getElementById('artKicker').textContent = article.theme.toUpperCase();
+            document.getElementById('artTitle').innerHTML = article.title;
+            document.getElementById('artAbstract').innerHTML = article.abstract;
+            document.getElementById('artDate').textContent = `Last Updated: ${article.lastUpdated}`;
+            document.getElementById('artContent').innerHTML = article.article;
+            document.title = `${article.title} — Brief Reader`;
+
+            // Adjust back button path if possible
+            const backBtn = document.getElementById('backBtn');
+            backBtn.href = `theme_detail.html?theme=${article.theme}`;
+            backBtn.textContent = `← Back to ${article.theme.toUpperCase()} Sector`;
+        })
+        .catch(err => {
+            console.error("Error loading article reader:", err);
+            document.getElementById('artTitle').textContent = "Failed to Load Article";
+            document.getElementById('artContent').innerHTML = "<p>Registry access error. Please check your data directory connectivity.</p>";
+        });
+</script>
+<script src="chatbot.js"></script>
+</body>
+</html>

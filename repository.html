@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Repository Hub — Odisha Demographic Portal</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="ui.js"></script>
+<style>
+    /* Repository Hub layout and tabs styles */
+    .repo-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 50px 20px 100px 20px;
+    }
+    .repo-hero {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    .repo-hero h2 {
+        font-family: var(--serif);
+        font-size: var(--fs-h2);
+        color: var(--blue);
+        margin-bottom: 12px;
+    }
+    .repo-hero p {
+        font-size: var(--fs-body);
+        color: var(--muted);
+    }
+    
+    /* Tab Switcher */
+    .repo-tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+        border-bottom: 1px solid var(--border);
+    }
+    .repo-tab-btn {
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        padding: 14px 28px;
+        font-family: var(--sans);
+        font-size: var(--fs-small);
+        font-weight: 700;
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .repo-tab-btn:hover {
+        color: var(--blue);
+    }
+    .repo-tab-btn.active {
+        color: var(--blue);
+        border-color: var(--teal);
+    }
+    
+    .repo-panel {
+        display: none;
+    }
+    .repo-panel.active {
+        display: block;
+    }
+    
+    /* Search & Filters */
+    .filter-bar {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+    }
+    .search-input {
+        flex: 1;
+        min-width: 280px;
+        border: 1px solid var(--border);
+        border-radius: 30px;
+        padding: 12px 20px;
+        font-family: var(--sans);
+        font-size: var(--fs-small);
+        outline: none;
+    }
+    .search-input:focus {
+        border-color: var(--teal);
+    }
+    .select-filter {
+        border: 1px solid var(--border);
+        border-radius: 30px;
+        padding: 12px 24px;
+        font-family: var(--mono);
+        font-size: var(--fs-caption);
+        background: var(--surface);
+        outline: none;
+        cursor: pointer;
+    }
+
+    /* Datasets Grid Card */
+    .datasets-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+    }
+    @media (max-width: 600px) {
+        .repo-hero h2 {
+            font-size: var(--fs-h2);
+        }
+        .repo-tab-btn {
+            padding: 10px 14px;
+            font-size: var(--fs-small);
+        }
+        .filter-bar {
+            flex-direction: column;
+            gap: 12px;
+        }
+        .select-filter {
+            width: 100%;
+        }
+    }
+    .dataset-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+    }
+    .dataset-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    .dataset-header h4 {
+        font-family: var(--serif);
+        font-size: var(--fs-lead);
+        color: var(--blue);
+        margin: 0;
+        line-height: 1.3;
+        /* Dataset names are long and often unbroken. Without min-width:0 a flex
+           item refuses to shrink below its content and pushes the icon past the
+           card edge on narrow screens. */
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+    .dataset-header .dataset-icon { flex-shrink: 0; }
+    .dataset-icon {
+        width: 32px;
+        height: 32px;
+        color: var(--teal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .dataset-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+    .dataset-desc {
+        font-size: var(--fs-small);
+        color: var(--muted);
+        line-height: 1.5;
+        margin-bottom: 24px;
+        flex: 1;
+    }
+    .dataset-meta {
+        font-family: var(--mono);
+        font-size: var(--fs-micro);
+        color: var(--dimmed);
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+    .dataset-btn-row {
+        display: flex;
+        gap: 12px;
+    }
+    .btn-dataset-dl {
+        flex: 1;
+        text-align: center;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-family: var(--sans);
+        font-size: var(--fs-small);
+        font-weight: 700;
+        background: var(--teal);
+        color: #ffffff;
+        border: 1px solid var(--teal);
+        transition: all 0.2s;
+    }
+    .btn-dataset-dl:hover {
+        background: var(--blue);
+        border-color: var(--blue);
+    }
+    
+    /* Reports / Factsheets Grid */
+    .reports-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 30px;
+    }
+    .report-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+        transition: transform 0.2s;
+    }
+    .report-card:hover {
+        transform: translateY(-4px);
+    }
+    .report-img {
+        height: 220px;
+        background: var(--panel);
+        border-bottom: 1px solid var(--border);
+        overflow: hidden;
+    }
+    .report-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .report-body {
+        padding: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .report-badge {
+        font-family: var(--mono);
+        font-size: var(--fs-micro);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--orange);
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+    .report-body h4 {
+        font-family: var(--serif);
+        font-size: var(--fs-lead);
+        color: var(--blue);
+        margin: 0 0 10px 0;
+        line-height: 1.3;
+        flex: 1;
+    }
+    .report-body p {
+        font-size: var(--fs-caption);
+        color: var(--muted);
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+    .report-btn-row {
+        display: flex;
+        gap: 10px;
+    }
+    .btn-report-view, .btn-report-dl {
+        flex: 1;
+        padding: 8px;
+        font-size: var(--fs-caption);
+        font-weight: 700;
+        font-family: var(--sans);
+        border-radius: 6px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-report-view {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+    }
+    .btn-report-view:hover {
+        background: var(--panel);
+    }
+    .btn-report-dl {
+        background: var(--teal);
+        border: 1px solid var(--teal);
+        color: #ffffff;
+    }
+    .btn-report-dl:hover {
+        background: var(--blue);
+        border-color: var(--blue);
+    }
+
+    /* Data Sources Table */
+    .sources-wrap {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 30px;
+        overflow-x: auto;
+    }
+    .sources-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    .sources-table th {
+        background: var(--panel);
+        font-family: var(--serif);
+        color: var(--blue);
+        font-weight: var(--wt-display);
+        padding: 16px 20px;
+        font-size: var(--fs-body);
+        border-bottom: 1px solid var(--border);
+    }
+    .sources-table td {
+        padding: 20px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+        font-size: var(--fs-small);
+        line-height: 1.6;
+    }
+    .sources-table tr:last-child td {
+        border-bottom: none;
+    }
+    .source-heading {
+        font-weight: 700;
+        color: var(--blue);
+        font-size: var(--fs-body);
+        margin-bottom: 6px;
+    }
+    .source-subheading {
+        font-family: var(--mono);
+        font-size: var(--fs-micro);
+        color: var(--orange);
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+    .source-detail-list {
+        padding-left: 16px;
+        margin: 6px 0;
+        font-size: var(--fs-small);
+        color: var(--muted);
+    }
+    
+    body {
+        overflow-y: scroll;
+        height: auto;
+    }
+</style>
+</head>
+<body>
+
+<!-- GLOBAL HEADER -->
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <h1>Soochana</h1>
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="index.html" class="btn-elegant">🏠 Home</a>
+    <a href="journeys.html" class="btn-elegant">📈 The Story</a>
+    <a href="odisha.html" class="btn-elegant">🗺️ Map Explorer</a>
+    <a href="themes.html" class="btn-elegant">📊 Themes</a>
+    <a href="repository.html" class="btn-elegant" aria-current="page">📁 Repository</a>
+    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
+  </div>
+</header>
+
+<!-- MAIN REPOSITORY HUB CONTENT -->
+<div class="repo-container">
+    <div class="repo-hero">
+        <div class="kicker">Data Catalog · Downloads & Resources</div>
+        <h2>Data Repository</h2>
+        <p>Access structured datasets, survey reports, factsheets, and vital data sources.</p>
+    </div>
+
+    <!-- TABS CONTROLS -->
+    <div class="repo-tabs">
+        <button class="repo-tab-btn active" data-tab="datasets">Datasets</button>
+        <button class="repo-tab-btn" data-tab="reports">Reports</button>
+        <button class="repo-tab-btn" data-tab="sources">Sources of Data</button>
+    </div>
+
+    <!-- 1. DATASETS PANEL -->
+    <div class="repo-panel active" id="panel-datasets">
+        <div class="filter-bar">
+            <input type="text" class="search-input" id="datasetSearch" placeholder="Search datasets by name or details...">
+            <select class="select-filter" id="datasetFormatFilter">
+                <option value="all">ALL FORMATS</option>
+                <option value="excel">EXCEL</option>
+                <option value="csv">CSV</option>
+            </select>
+        </div>
+        <div class="datasets-grid" id="datasetsGrid">
+            <!-- Loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- 2. REPORTS PANEL -->
+    <div class="repo-panel" id="panel-reports">
+        <div class="filter-bar">
+            <input type="text" class="search-input" id="reportSearch" placeholder="Search report publications...">
+            <select class="select-filter" id="reportThemeFilter">
+                <option value="all">ALL SECTORS</option>
+                <option value="demography">DEMOGRAPHY</option>
+                <option value="health">HEALTH</option>
+                <option value="education">EDUCATION</option>
+                <option value="ageing">AGEING</option>
+                <option value="employment">EMPLOYMENT</option>
+                <option value="migration">MIGRATION</option>
+            </select>
+        </div>
+        <div class="reports-grid" id="reportsGrid">
+            <!-- Loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- 3. SOURCES PANEL -->
+    <div class="repo-panel" id="panel-sources">
+        <div class="sources-wrap">
+            <table class="sources-table">
+                <thead>
+                    <tr>
+                        <th style="width: 45%;">Data Source Details</th>
+                        <th style="width: 55%;">Indicators Available</th>
+                    </tr>
+                </thead>
+                <tbody id="sourcesTableBody">
+                    <!-- Dynamically populated from static metadata -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- GLOBAL FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="font-size: var(--fs-small); color:var(--muted); margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption);">
+      Odisha Welfare Portal · Static Client Explorer
+    </div>
+  </div>
+  <div class="footer-meta">
+    Data Sources: Census of India, NFHS-5, PLFS, UDISE+ & Government of Odisha Survey Reports.
+  </div>
+</footer>
+
+<script>
+    // Tab Switching Logic
+    const tabBtns = document.querySelectorAll('.repo-tab-btn');
+    const panels = document.querySelectorAll('.repo-panel');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            panels.forEach(p => p.classList.remove('active'));
+
+            btn.classList.add('active');
+            document.getElementById(`panel-${btn.dataset.tab}`).classList.add('active');
+        });
+    });
+
+    // Icons Mapping
+    const typeIcons = {
+        'excel': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>`,
+        'csv': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>`
+    };
+
+    let allDatasets = [];
+    let allReports = [];
+
+    // Load Datasets Registry
+    fetch('data/datasets.json')
+        .then(res => res.json())
+        .then(data => {
+            allDatasets = data.datasets;
+            renderDatasets();
+        })
+        .catch(e => console.error("Error loading datasets:", e));
+
+    // Load Reports Registry
+    fetch('data/reports.json')
+        .then(res => res.json())
+        .then(data => {
+            allReports = data.reports;
+            renderReports();
+        })
+        .catch(e => console.error("Error loading reports:", e));
+
+    // Render Datasets
+    function renderDatasets() {
+        const grid = document.getElementById('datasetsGrid');
+        const searchVal = document.getElementById('datasetSearch').value.toLowerCase();
+        const formatVal = document.getElementById('datasetFormatFilter').value;
+
+        const filtered = allDatasets.filter(d => {
+            const matchesSearch = d.name.toLowerCase().includes(searchVal) || d.description.toLowerCase().includes(searchVal);
+            const matchesFormat = formatVal === 'all' || d.type === formatVal;
+            return matchesSearch && matchesFormat;
+        });
+
+        grid.innerHTML = '';
+        if (filtered.length === 0) {
+            grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0;">No datasets matched your filter criteria.</p>';
+            return;
+        }
+
+        filtered.forEach(d => {
+            const relFile = d.file.replace(/^\//, ''); // relative relative paths
+            const icon = typeIcons[d.type] || typeIcons['excel'];
+            grid.innerHTML += `
+                <div class="dataset-card">
+                    <div class="dataset-header">
+                        <h4>${d.name}</h4>
+                        <div class="dataset-icon">${icon}</div>
+                    </div>
+                    <p class="dataset-desc">${d.description}</p>
+                    <div class="dataset-meta">
+                        <span>UPDATED: ${d.lastUpdated}</span>
+                        <span>SIZE: ${d.size}</span>
+                    </div>
+                    <div class="dataset-btn-row">
+                        <a href="${relFile}" download class="btn-dataset-dl">💾 Download Dataset</a>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // Render Reports
+    function renderReports() {
+        const grid = document.getElementById('reportsGrid');
+        const searchVal = document.getElementById('reportSearch').value.toLowerCase();
+        const themeVal = document.getElementById('reportThemeFilter').value;
+
+        const filtered = allReports.filter(r => {
+            const matchesSearch = r.name.toLowerCase().includes(searchVal) || r.description.toLowerCase().includes(searchVal);
+            const matchesTheme = themeVal === 'all' || r.theme === themeVal;
+            return matchesSearch && matchesTheme;
+        });
+
+        grid.innerHTML = '';
+        if (filtered.length === 0) {
+            grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0;">No publications found matching your filter criteria.</p>';
+            return;
+        }
+
+        filtered.forEach(r => {
+            const relThumb = r.thumbnail.replace(/^\//, '');
+            const relFile = r.file.replace(/^\//, '');
+            grid.innerHTML += `
+                <div class="report-card">
+                    <div class="report-img">
+                        <img src="${relThumb}" alt="${r.name}" onerror="this.src='images/pop-2021-graph1.png'">
+                    </div>
+                    <div class="report-body">
+                        <span class="report-badge">${r.theme}</span>
+                        <h4>${r.name}</h4>
+                        <p>${r.description}</p>
+                        <div class="report-btn-row">
+                            <a href="${relFile}" target="_blank" class="btn-report-view">👁️ View PDF</a>
+                            <a href="${relFile}" download class="btn-report-dl">💾 Download</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // Set search listener on datasets
+    document.getElementById('datasetSearch').addEventListener('input', renderDatasets);
+    document.getElementById('datasetFormatFilter').addEventListener('change', renderDatasets);
+
+    // Set search listener on reports
+    document.getElementById('reportSearch').addEventListener('input', renderReports);
+    document.getElementById('reportThemeFilter').addEventListener('change', renderReports);
+
+    // Static Data Sources catalog definitions
+    const staticDataSources = [
+        {
+            heading: 'National Family Health Survey (NFHS-5)',
+            subheading: 'Ministry of Health & Family Welfare',
+            details: ['NFHS-1 (1992-93) to NFHS-5 (2019-21)', 'Comprehensive household interview clusters', 'State and district-level factsheets'],
+            link: 'http://rchiips.org/nfhs/index.shtml',
+            indicators: 'Total Fertility Rate (TFR), Infant and Child Mortality Rates, Maternal Health coverage, Nutritional benchmarks, Anaemia levels, Women empowerment indices.'
+        },
+        {
+            heading: 'Periodic Labour Force Survey (PLFS)',
+            subheading: 'National Statistical Office (NSO)',
+            details: ['Annual employment registers', 'Urban quarterly updates', 'Working age cohort profiles'],
+            link: 'https://mospi.gov.in/periodic-labour-force-survey-plfs',
+            indicators: 'Labor Force Participation Rate (LFPR), Worker Population Ratio (WPR), Unemployment Rate (UR), Sector-wise occupation distribution, Average weekly hours and wages.'
+        },
+        {
+            heading: 'Unified District Information System for Education (UDISE+)',
+            subheading: 'Ministry of Education',
+            details: ['Annual school-level records', 'Covering all school education categories', 'District-level infrastructural surveys'],
+            link: 'https://udiseplus.gov.in/',
+            indicators: 'School Infrastructure provision (toilets, boundary walls, libraries), Student Enrollment and Dropout rates, Teacher qualifications, Pupil-Teacher and Student-Classroom ratios.'
+        },
+        {
+            heading: 'Sample Registration System (SRS)',
+            subheading: 'Office of the Registrar General, India',
+            details: ['Continuous vital statistics registers', 'Monthly bulletins & Annual estimates', 'State-level baseline life tables'],
+            link: 'https://censusindia.gov.in/nada/index.php/catalog/SRS',
+            indicators: 'Crude Birth Rate, Crude Death Rate, Infant Mortality Rate (IMR), Maternal Mortality Ratio (MMR), Life Expectancy at Birth estimates.'
+        },
+        {
+            heading: 'Longitudinal Ageing Study in India (LASI)',
+            subheading: 'Wave-1 (2020-21)',
+            details: ['Nationally representative longitudinal survey', 'Targeting adults aged 45 and older', 'Focusing on geriatric health & socio-economic profiles'],
+            link: 'https://www.iipsindia.ac.in/content/lasi-wave-1',
+            indicators: 'Chronic disease prevalence, Cognitive and physical functional capacities, Elderly employment/retirement, Social security, isolation and pension indexes.'
+        }
+    ];
+
+    const sourcesTBody = document.getElementById('sourcesTableBody');
+    sourcesTBody.innerHTML = '';
+    staticDataSources.forEach(s => {
+        let detailsLi = s.details.map(d => `<li>${d}</li>`).join('');
+        sourcesTBody.innerHTML += `
+            <tr>
+                <td>
+                    <div class="source-heading">${s.heading}</div>
+                    <div class="source-subheading">${s.subheading}</div>
+                    <ul class="source-detail-list">${detailsLi}</ul>
+                    <a href="${s.link}" target="_blank" style="font-size: 12px; color: var(--teal); font-weight: 600; text-decoration: none;">Visit Survey Portal →</a>
+                </td>
+                <td style="color: var(--text); font-weight: 500;">
+                    ${s.indicators}
+                </td>
+            </tr>
+        `;
+    });
+</script>
+<script src="chatbot.js"></script>
+</body>
+</html>
