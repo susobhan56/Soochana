@@ -509,7 +509,8 @@
         }
 
         filtered.forEach(d => {
-            const relFile = d.file.replace(/^\//, ''); // relative relative paths
+            const fileUrl = d.file.startsWith('http') ? d.file : d.file.replace(/^\//, '');
+            const targetAttr = d.file.startsWith('http') ? 'target="_blank" rel="noopener"' : 'download';
             const icon = typeIcons[d.type] || typeIcons['excel'];
             grid.innerHTML += `
                 <div class="dataset-card">
@@ -523,7 +524,7 @@
                         <span>SIZE: ${d.size}</span>
                     </div>
                     <div class="dataset-btn-row">
-                        <a href="${relFile}" download class="btn-dataset-dl">💾 Download Dataset</a>
+                        <a href="${fileUrl}" ${targetAttr} class="btn-dataset-dl">💾 Download Dataset</a>
                     </div>
                 </div>
             `;
@@ -550,7 +551,8 @@
 
         filtered.forEach(r => {
             const relThumb = r.thumbnail.replace(/^\//, '');
-            const relFile = r.file.replace(/^\//, '');
+            const fileUrl = r.file.startsWith('http') ? r.file : r.file.replace(/^\//, '');
+            const targetAttr = r.file.startsWith('http') ? 'target="_blank" rel="noopener"' : 'download';
             grid.innerHTML += `
                 <div class="report-card">
                     <div class="report-img">
@@ -561,8 +563,8 @@
                         <h4>${r.name}</h4>
                         <p>${r.description}</p>
                         <div class="report-btn-row">
-                            <a href="${relFile}" target="_blank" class="btn-report-view">👁️ View PDF</a>
-                            <a href="${relFile}" download class="btn-report-dl">💾 Download</a>
+                            <a href="${fileUrl}" target="_blank" rel="noopener" class="btn-report-view">👁️ View Document</a>
+                            <a href="${fileUrl}" ${targetAttr} class="btn-report-dl">💾 Download</a>
                         </div>
                     </div>
                 </div>
