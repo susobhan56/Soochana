@@ -44,5 +44,9 @@ const DataLoader = {
 
   getStateDemographics: function() {
     return this.loadJSON("datasets/state_demographics.json");
+  },
+
+  getDistrictDetails: function() {
+    return this.loadJSON("datasets/districts_detail.json");
   }
 };

@@ -7,6 +7,7 @@
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js"></script>
 <link rel="stylesheet" href="style.css">
 <script src="ui.js"></script>
@@ -177,6 +178,12 @@
             font-size: var(--fs-h3);
         }
     }
+
+    @keyframes pulseGlow {
+        0% { transform: scale(0.9); opacity: 0.4; }
+        50% { transform: scale(1.3); opacity: 1; }
+        100% { transform: scale(0.9); opacity: 0.4; }
+    }
 </style>
 </head>
 <body>
@@ -185,24 +192,62 @@
   <div class="nav-group">
     <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
-      <h1>Soochana</h1>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+      </div>
     </a>
   </div>
   <div class="nav-group flex-wrap" style="gap: 12px;">
-    <a href="index.html" class="btn-elegant">🏠 Home</a>
-    <a href="journeys.html" class="btn-elegant">📈 The Story</a>
-    <a href="odisha.html" class="btn-elegant" aria-current="page">🗺️ Map Explorer</a>
-    <a href="themes.html" class="btn-elegant">📊 Themes</a>
-    <a href="repository.html" class="btn-elegant">📁 Repository</a>
-    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
+    <a href="index.html" class="btn-elegant">Home</a>
+    <a href="odisha.html" class="btn-elegant">Odisha at a glance</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="contact.html" class="btn-elegant">Contact</a>
   </div>
 </header>
 
 <div class="hero-editorial">
     <div id="bg-initial" class="hero-bg-text">A</div>
-    <div class="kicker">Regional Profile · Deep Dive</div>
+    <div class="kicker">Regional Profile · Executive Deep Dive</div>
     <h1 id="dist-title">District</h1>
     
+    <!-- District Picker Dropdown -->
+    <div style="margin-top: 14px; z-index: 10;">
+        <select id="district-picker" onchange="window.location.href='district.html?id=' + encodeURIComponent(this.value)" style="max-width: 280px;">
+            <option value="Bolangir">Bolangir</option>
+            <option value="Kalahandi">Kalahandi</option>
+            <option value="Kendujhar">Kendujhar</option>
+            <option value="Koraput">Koraput</option>
+            <option value="Malkangiri">Malkangiri</option>
+            <option value="Mayurbhanj">Mayurbhanj</option>
+            <option value="Nabarangpur">Nabarangpur</option>
+            <option value="Rayagada">Rayagada</option>
+            <option value="Angul">Angul</option>
+            <option value="Baleshwar">Baleshwar</option>
+            <option value="Bargarh">Bargarh</option>
+            <option value="Bhadrak">Bhadrak</option>
+            <option value="Boudh">Boudh</option>
+            <option value="Cuttack">Cuttack</option>
+            <option value="Debagarh">Debagarh</option>
+            <option value="Dhenkanal">Dhenkanal</option>
+            <option value="Gajapati">Gajapati</option>
+            <option value="Ganjam">Ganjam</option>
+            <option value="Jagatsinghapur">Jagatsinghapur</option>
+            <option value="Jajapur">Jajapur</option>
+            <option value="Jharsuguda">Jharsuguda</option>
+            <option value="Kandhamal">Kandhamal</option>
+            <option value="Kendrapara">Kendrapara</option>
+            <option value="Khordha">Khordha</option>
+            <option value="Nayagarh">Nayagarh</option>
+            <option value="Nuapada">Nuapada</option>
+            <option value="Puri">Puri</option>
+            <option value="Sambalpur">Sambalpur</option>
+            <option value="Subarnapur">Subarnapur</option>
+            <option value="Sundargarh">Sundargarh</option>
+        </select>
+    </div>
+
     <div class="hero-meta">
         <div class="meta-item">
             <div id="h-pop" class="meta-val">--</div>
@@ -281,6 +326,17 @@
     </div>
 </section>
 
+<!-- District Executive Profile Dossier (PPTX Integration) -->
+<section id="district-pptx-dossier" class="full-section" style="background: var(--surface); border-top: 1px solid var(--border); display: none; padding: 60px max(20px, 6vw);">
+    <div class="label" style="color: var(--teal); margin-bottom: 8px;">VI — District Executive Dossier</div>
+    <h2 style="font-family: var(--serif); font-size: 2.2rem; color: var(--blue); margin-bottom: 12px;"><span id="dossier-dist-name"></span> Strategic Profile &amp; Indicators</h2>
+    <p style="color: var(--muted); max-width: 740px; font-size: 0.95rem; margin-bottom: 35px; line-height: 1.6;">
+        Official executive dossier compiled from Census 2011, UDISE+ (2024-25), NFHS-5, and Directorate of Economics &amp; Statistics publications.
+    </p>
+
+    <div id="dossier-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px;"></div>
+</section>
+
 <footer style="padding: 100px; text-align: center; border-top: 1px solid var(--border); background: var(--surface);">
     <div class="kicker">Report Finalized · 2025</div>
     <p style="color:var(--muted); margin-top: 20px;">Data compiled from Census of India and NFHS frameworks.</p>
@@ -289,7 +345,20 @@
 
 <script>
     const params = new URLSearchParams(window.location.search);
-    const distId = params.get('id') || "Khordha";
+    const rawDistId = params.get('id') || "Bolangir";
+
+    const aliasMap = {
+        "balangir": "Bolangir",
+        "bolangir": "Bolangir",
+        "nabarangpore": "Nabarangpur",
+        "nabarangpur": "Nabarangpur",
+        "keonjhar": "Kendujhar",
+        "kendujhar": "Kendujhar",
+        "baleswar": "Baleshwar",
+        "baleshwar": "Baleshwar"
+    };
+
+    const distId = aliasMap[rawDistId.toLowerCase()] || rawDistId;
 
     // Chart Setup (Created ONCE)
     const margin = {top: 50, right: 50, bottom: 50, left: 80};
@@ -313,13 +382,18 @@
         DataLoader.getDistrictFertilityTrends(),
         DataLoader.getDistrictLifeExpectancy(),
         DataLoader.getDistrictMortality(),
-        DataLoader.getDistrictAgePyramids()
-    ]).then(([pop, fertility, lifeExpectancy, mortality, pyramids]) => {
+        DataLoader.getDistrictAgePyramids(),
+        DataLoader.getDistrictDetails()
+    ]).then(([pop, fertility, lifeExpectancy, mortality, pyramids, districtDetails]) => {
         
         // If the URL district ID does not exist in our data keys, fall back to Angul or Khordha
-        const validDistId = pop[distId] ? distId : "Khordha";
+        const validDistId = (districtDetails && districtDetails[distId]) ? distId : (pop[distId] ? distId : "Khordha");
         
-        datasets = { pop, fertility, lifeExpectancy, mortality, pyramids };
+        datasets = { pop, fertility, lifeExpectancy, mortality, pyramids, districtDetails };
+
+        // Sync dropdown selector
+        const picker = document.getElementById('district-picker');
+        if (picker) picker.value = validDistId;
 
         // Static UI Updates
         document.getElementById('dist-title').innerText = validDistId;
@@ -348,6 +422,16 @@
         const imr5 = mortality[validDistId] ? mortality[validDistId].infant_mortality_rate.nfhs5 : null;
         document.getElementById('step4-bignum').innerText = imr5 ? imr5.toFixed(1) : "--";
 
+        // Render PPTX Executive Dossier if district details exist
+        if (districtDetails && districtDetails[validDistId]) {
+            const dData = districtDetails[validDistId];
+            if (dData.tagline) {
+                const formattedTagline = dData.tagline.replace(/([a-z])([A-Z])/g, '$1 $2');
+                document.getElementById('dist-title').innerHTML = `${validDistId} <div style="font-family:'Inter', system-ui, -apple-system, sans-serif; font-size:1.25rem; color:var(--teal); font-weight:500; font-style:normal; letter-spacing:0.03em; line-height:1.5; margin-top:10px;">“${formattedTagline}”</div>`;
+            }
+            renderDistrictDossier(validDistId, dData);
+        }
+
         // Initial visualizer rendering
         updateChart('population', validDistId);
 
@@ -370,6 +454,452 @@
     }).catch(err => {
         console.error("Error loading district datasets:", err);
     });
+
+    function getChartIframe(d, slideNums) {
+        const c = d.charts || {};
+        let rawUrl = '';
+        const numList = Array.isArray(slideNums) ? slideNums : [slideNums];
+
+        for (const num of numList) {
+            if (c[String(num)]) {
+                rawUrl = c[String(num)];
+                break;
+            }
+        }
+        if (!rawUrl) return '';
+
+        const match = rawUrl.match(/visualisation\/(\d+)/);
+        const visId = match ? match[1] : '';
+        const embedUrl = visId ? `https://flo.uri.sh/visualisation/${visId}/embed?auto=1` : (rawUrl + '?auto=1');
+
+        return `<div class="lazy-chart-wrapper" data-embed-url="${embedUrl}" data-vis-id="${visId}" style="width:100%; border-radius:16px; overflow:hidden; border:1px solid var(--border); margin-top:24px; background:var(--surface); box-shadow:0 6px 24px rgba(0,0,0,0.04); opacity:0; transform:translateY(15px); transition:opacity 0.3s ease-out, transform 0.3s ease-out; min-height:560px;">
+            <div class="chart-loading-placeholder" style="display:flex; align-items:center; justify-content:center; height:560px; color:var(--muted); font-family:var(--mono); font-size:12px; letter-spacing:0.1em;">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+                    <div style="width:12px; height:12px; background:var(--teal); border-radius:50%; animation: pulseGlow 1.2s infinite ease-in-out;"></div>
+                    <span>PREPARING CHART...</span>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function initLazyChartsObserver() {
+        const chartObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const wrapper = entry.target;
+                    const embedUrl = wrapper.dataset.embedUrl;
+
+                    if (embedUrl && !wrapper.querySelector('iframe')) {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = embedUrl;
+                        iframe.title = "Interactive Visualization";
+                        iframe.frameBorder = "0";
+                        iframe.scrolling = "no";
+                        iframe.style.width = "100%";
+                        iframe.style.height = "560px";
+                        iframe.style.border = "none";
+                        iframe.allow = "autoplay; fullscreen";
+                        iframe.sandbox = "allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation";
+
+                        // Remove placeholder immediately for instant display
+                        const placeholder = wrapper.querySelector('.chart-loading-placeholder');
+                        if (placeholder) placeholder.style.display = 'none';
+
+                        wrapper.appendChild(iframe);
+                    }
+
+                    wrapper.style.opacity = '1';
+                    wrapper.style.transform = 'translateY(0)';
+                    observer.unobserve(wrapper);
+                }
+            });
+        }, { threshold: 0.05, rootMargin: "200px 0px 100px 0px" });
+
+        document.querySelectorAll('.lazy-chart-wrapper').forEach(el => chartObserver.observe(el));
+    }
+
+    function renderDistrictDossier(distName, d) {
+        const container = d3.select("#dossier-cards-grid");
+        if (container.empty()) return;
+        container.html("");
+        container.style("display", "flex").style("flex-direction", "column").style("gap", "40px").style("width", "100%");
+        d3.select("#dossier-dist-name").text(distName);
+        d3.select("#district-pptx-dossier").style("display", "block");
+
+        const bs = d.basic_stats || {};
+        const adm = d.admin_stats || {};
+
+        // 1. Basic & Administrative Matrix
+        container.append("div")
+            .style("background", "var(--panel)")
+            .style("border", "1px solid var(--border)")
+            .style("border-radius", "20px")
+            .style("padding", "32px")
+            .style("width", "100%")
+            .style("box-sizing", "border-box")
+            .html(`
+                <div class="kicker" style="color:var(--teal);">01 · Administration &amp; Matrix</div>
+                <h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 20px;">District Profile &amp; Key Collectorate</h3>
+                <div style="font-size:0.95rem; margin-bottom:20px; background:var(--surface); padding:14px 20px; border-radius:12px; border:1px solid var(--border);">
+                    <strong>District Magistrate / Collector:</strong><br><span style="color:var(--teal); font-size:1.1rem; font-weight:bold;">${adm.district_magistrate || "Collector & DM"}</span>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; font-size:0.9rem; font-family:var(--mono);">
+                    <div style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);"><strong>Geographical Area:</strong> ${bs.area_sq_km || "--"} Sq. km</div>
+                    <div style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);"><strong>Total Population (2011):</strong> ${bs.population_2011 || "--"}</div>
+                    <div style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);"><strong>Pop Density:</strong> ${bs.density_2011 || "--"} /sq.km</div>
+                    <div style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);"><strong>Literacy Rate:</strong> ${bs.literacy_rate || "--"}</div>
+                    <div style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);"><strong>Blocks:</strong> ${bs.blocks || "--"}</div>
+                    <div style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);"><strong>Gram Panchayats:</strong> ${bs.gram_panchayats || "--"}</div>
+                    <div style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);"><strong>Inhabited Villages:</strong> ${bs.villages || "--"}</div>
+                    <div style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);"><strong>Sub-div / Tehsils:</strong> ${adm.sub_divisions || "--"} / ${adm.tehsils || "--"}</div>
+                </div>
+            `);
+
+        // 2. Uniques & Cultural Splendor
+        container.append("div")
+            .style("background", "var(--panel)")
+            .style("border", "1px solid var(--border)")
+            .style("border-radius", "20px")
+            .style("padding", "32px")
+            .style("width", "100%")
+            .style("box-sizing", "border-box")
+            .html(`
+                <div class="kicker" style="color:var(--purple);">02 · Culture &amp; Heritage</div>
+                <h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 16px;">Uniques &amp; Local Splendor of ${distName}</h3>
+                <div style="font-size:0.95rem; line-height:1.7; color:var(--text); background:var(--surface); padding:20px; border-radius:12px; border:1px solid var(--border);">
+                    ${d.uniques_raw || "Famous for local handicrafts, historical monuments, traditional folk dances and cultural celebrations."}
+                </div>
+            `);
+
+        const tInfo = d.tribal_info || {};
+
+        // 3. Demographics & Population Trajectory
+        container.append("div")
+            .style("background", "var(--panel)")
+            .style("border", "1px solid var(--border)")
+            .style("border-radius", "20px")
+            .style("padding", "32px")
+            .style("width", "100%")
+            .style("box-sizing", "border-box")
+            .html(`
+                <div class="kicker" style="color:var(--orange);">03 · Demographics &amp; Indigenous Scale</div>
+                <h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 14px;">Demographic Trajectory &amp; Tribal Heritage</h3>
+                <div style="font-size:0.95rem; line-height:1.7; color:var(--text); margin-bottom:20px;">
+                    ${d.demography_narrative || ""}
+                </div>
+
+                <!-- Structured Tribal & PVTGs Feature Card -->
+                <div style="background:var(--surface); padding:20px; border-radius:16px; border:1px solid var(--border); margin-bottom:24px; box-shadow:0 4px 16px rgba(0,0,0,0.02);">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+                        <div style="width:8px; height:8px; background:var(--teal); border-radius:50%;"></div>
+                        <h4 style="font-family:var(--serif); font-size:1.15rem; margin:0; color:var(--blue);">Tribal Groups and PVTGs (Census 2011)</h4>
+                    </div>
+                    
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px;">
+                        <div style="background:var(--panel); padding:14px; border-radius:10px; border:1px solid var(--border);">
+                            <div style="font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase;">No. of Tribal Groups</div>
+                            <div style="font-family:var(--serif); font-size:1.5rem; font-weight:bold; color:var(--teal); margin-top:4px;">${tInfo.tribal_groups_count || "--"}</div>
+                        </div>
+
+                        <div style="background:var(--panel); padding:14px; border-radius:10px; border:1px solid var(--border);">
+                            <div style="font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase;">Total Tribal Population</div>
+                            <div style="font-family:var(--serif); font-size:1.5rem; font-weight:bold; color:var(--orange); margin-top:4px;">${tInfo.tribal_population || "--"} <span style="font-size:0.85rem; font-family:var(--mono); color:var(--muted); font-weight:normal;">(${tInfo.tribal_share_pct || ""})</span></div>
+                        </div>
+
+                        <div style="background:var(--panel); padding:14px; border-radius:10px; border:1px solid var(--border);">
+                            <div style="font-family:var(--mono); font-size:11px; color:var(--muted); text-transform:uppercase;">Particularly Vulnerable Groups (PVTGs)</div>
+                            <div style="font-family:var(--serif); font-size:1.2rem; font-weight:bold; color:var(--purple); margin-top:4px;">${tInfo.pvtg_count || "0"} ${tInfo.pvtg_names && tInfo.pvtg_names !== 'None' ? `(${tInfo.pvtg_names})` : ''}</div>
+                        </div>
+                    </div>
+                </div>
+
+                ${getChartIframe(d, [6])}
+                ${getChartIframe(d, [9])}
+            `);
+
+        // 4. Age Structure & Demographic Dividend
+        container.append("div")
+            .style("background", "var(--panel)")
+            .style("border", "1px solid var(--border)")
+            .style("border-radius", "20px")
+            .style("padding", "32px")
+            .style("width", "100%")
+            .style("box-sizing", "border-box")
+            .html(`
+                <div class="kicker" style="color:var(--teal);">04 · Age Structure &amp; Dividend</div>
+                <h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 14px;">Working-Age Share &amp; Cohort Pyramids (2011–2036)</h3>
+                
+                <!-- Interactive D3 Population Pyramid Widget -->
+                <div style="background:var(--surface); padding:24px; border-radius:16px; border:1px solid var(--border); margin-top:20px; margin-bottom:24px; box-shadow:0 4px 20px rgba(0,0,0,0.02);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
+                        <div>
+                            <h4 style="font-family:var(--serif); font-size:1.2rem; margin:0; color:var(--blue);"><span id="dist-pyr-title">${distName} Interactive Age Structure</span></h4>
+                            <div style="font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:4px;">Census 2011 &amp; ORGI Bayesian Projections</div>
+                        </div>
+                        <div class="yr-btn-group" id="dist-pyramid-years" style="display:flex; gap:8px;">
+                            <button class="yr-btn active" data-year="2011">2011</button>
+                            <button class="yr-btn" data-year="2021">2021</button>
+                            <button class="yr-btn" data-year="2026">2026</button>
+                            <button class="yr-btn" data-year="2031">2031</button>
+                            <button class="yr-btn" data-year="2036">2036</button>
+                        </div>
+                    </div>
+                    <div id="district-interactive-pyramid" style="width:100%; max-width:640px; margin:0 auto; height:340px;"></div>
+                </div>
+
+                ${getChartIframe(d, [8])}
+                ${getChartIframe(d, [10, 11])}
+            `);
+
+        // 5. Fertility Transition
+        container.append("div")
+            .style("background", "var(--panel)")
+            .style("border", "1px solid var(--border)")
+            .style("border-radius", "20px")
+            .style("padding", "32px")
+            .style("width", "100%")
+            .style("box-sizing", "border-box")
+            .html(`
+                <div class="kicker" style="color:var(--orange);">05 · Fertility Transition</div>
+                <h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 14px;">Total Fertility Rate Trajectory (2015–2036)</h3>
+                ${getChartIframe(d, [7])}
+            `);
+
+        // 6. Health & Nutrition Profile
+        container.append("div")
+            .style("background", "var(--panel)")
+            .style("border", "1px solid var(--border)")
+            .style("border-radius", "20px")
+            .style("padding", "32px")
+            .style("width", "100%")
+            .style("box-sizing", "border-box")
+            .html(`
+                <div class="kicker" style="color:var(--red);">06 · Health &amp; Clinical Infrastructure</div>
+                <h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 14px;">Maternal Health, Clinical Beds &amp; Nutrition</h3>
+                <div style="font-size:0.95rem; line-height:1.7; color:var(--text); margin-bottom:16px;">
+                    ${d.health_narrative || ""}
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; font-size:0.85rem; font-family:var(--mono); background:var(--surface); padding:16px; border-radius:12px; border:1px solid var(--border); margin-bottom:20px;">
+                    <div><strong>MMR (2017-19):</strong> ${d.health_stats ? d.health_stats.mmr : "--"}</div>
+                    <div><strong>PHCs (2024):</strong> ${d.health_stats ? d.health_stats.phcs : "--"}</div>
+                    <div><strong>CHCs (2024):</strong> ${d.health_stats ? d.health_stats.chcs : "--"}</div>
+                    <div><strong>Sub-Centres (2024):</strong> ${d.health_stats ? d.health_stats.sub_centres : "--"}</div>
+                    <div><strong>Beds / 100k:</strong> ${d.health_stats ? d.health_stats.beds_per_100k : "--"}</div>
+                </div>
+                ${getChartIframe(d, [13, 14])}
+                ${getChartIframe(d, [15, 16])}
+            `);
+
+        // 7. Education Profile & Infrastructure (Slides 16, 17, 18)
+        container.append("div")
+            .style("background", "var(--panel)")
+            .style("border", "1px solid var(--border)")
+            .style("border-radius", "20px")
+            .style("padding", "32px")
+            .style("width", "100%")
+            .style("box-sizing", "border-box")
+            .html(`
+                <div class="kicker" style="color:var(--teal);">07 · Education, Literacy &amp; Infrastructure</div>
+                <h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 14px;">Schooling Continuity &amp; Digital Readiness</h3>
+                <div style="font-size:0.95rem; line-height:1.7; color:var(--text); margin-bottom:16px;">
+                    ${d.education_narrative || ""}
+                </div>
+                ${d.education_stats && d.education_stats.raw ? `<div style="background:var(--surface); padding:16px; border-radius:12px; border:1px solid var(--border); font-size:0.85rem; font-family:var(--mono); margin-bottom:20px; line-height:1.6;">
+                    <strong>Key Education &amp; Transition Indicators:</strong><br>${d.education_stats.raw}
+                </div>` : ''}
+                ${getChartIframe(d, [18, 19])}
+            `);
+
+        // 8. Geography, Climate & Land Use (Slides 19, 20, 21)
+        container.append("div")
+            .style("background", "var(--panel)")
+            .style("border", "1px solid var(--border)")
+            .style("border-radius", "20px")
+            .style("padding", "32px")
+            .style("width", "100%")
+            .style("box-sizing", "border-box")
+            .html(`
+                <div class="kicker" style="color:var(--blue);">08 · Geography, Rainfall &amp; Land Use</div>
+                <h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 14px;">Land Use, Forest Cover &amp; Irrigation Potential</h3>
+                <div style="font-size:0.95rem; line-height:1.7; color:var(--text); margin-bottom:16px;">
+                    ${d.geography_narrative || ""}
+                </div>
+                ${d.geography_stats && d.geography_stats.raw ? `<div style="background:var(--surface); padding:16px; border-radius:12px; border:1px solid var(--border); font-size:0.85rem; font-family:var(--mono); margin-bottom:20px; line-height:1.6;">
+                    <strong>Land Use &amp; Agro-Climate Profile:</strong><br>${d.geography_stats.raw}
+                </div>` : ''}
+                ${getChartIframe(d, [21, 22])}
+            `);
+
+        // 9. Infrastructure & Connectivity (Slides 22, 23)
+        container.append("div")
+            .style("background", "var(--panel)")
+            .style("border", "1px solid var(--border)")
+            .style("border-radius", "20px")
+            .style("padding", "32px")
+            .style("width", "100%")
+            .style("box-sizing", "border-box")
+            .html(`
+                <div class="kicker" style="color:var(--purple);">09 · Infrastructure &amp; Economic Connectivity</div>
+                <h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 14px;">Electrification, Financial Inclusivity &amp; Road Lengths</h3>
+                <div style="font-size:0.95rem; line-height:1.7; color:var(--text); margin-bottom:16px;">
+                    ${d.infra_narrative || "The district's economic infrastructure reflects steady investments in rural electrification, expanding banking services, and road network development to connect remote settlements."}
+                </div>
+                ${d.infra_stats && d.infra_stats.raw ? `<div style="background:var(--surface); padding:16px; border-radius:12px; border:1px solid var(--border); font-size:0.85rem; font-family:var(--mono); line-height:1.6;">
+                    <strong>Infrastructure &amp; Connectivity Metrics:</strong><br>${d.infra_stats.raw}
+                </div>` : ''}
+            `);
+
+        // 10. NGOs & Civil Society Directory (Slide 23/24)
+        const ngoUrl = d.ngo_url || `https://ngosindia.org/orissa/${distName.toLowerCase()}-ngos/`;
+        container.append("div")
+            .style("background", "var(--panel)")
+            .style("border", "1px solid var(--border)")
+            .style("border-radius", "20px")
+            .style("padding", "32px")
+            .style("width", "100%")
+            .style("box-sizing", "border-box")
+            .html(`
+                <div class="kicker" style="color:var(--teal);">10 · Civil Society &amp; Development Partners</div>
+                <h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 14px;">Active Non-Governmental Organizations (NGOs) in ${distName}</h3>
+                <div style="font-size:0.95rem; line-height:1.7; color:var(--text); margin-bottom:20px;">
+                    Directory of registered non-governmental organizations, grassroots development initiatives, and community civil society partners operating within ${distName}.
+                </div>
+                
+                <div style="background:var(--surface); padding:20px 24px; border-radius:14px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div style="width:42px; height:42px; border-radius:10px; background:rgba(44,94,100,0.1); color:var(--teal); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-weight:bold; font-size:1.2rem;">NGO</div>
+                        <div>
+                            <strong style="font-family:var(--serif); font-size:1.1rem; color:var(--blue);">NGOSIndia ${distName} Directory</strong>
+                            <div style="font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:2px;">Verified Civil Society &amp; Grassroots Partner Database</div>
+                        </div>
+                    </div>
+                    <a href="${ngoUrl}" target="_blank" rel="noopener" class="btn-elegant" style="padding:10px 20px; font-size:0.85rem; text-decoration:none;">View ${distName} NGO Directory &rarr;</a>
+                </div>
+            `);
+
+        // Render interactive D3 Population Pyramid widget
+        initDistrictPyramidListener(distName);
+        renderDistrictInteractivePyramid(distName, '2011');
+
+        // Initialize scroll observer for lazy chart loads
+        initLazyChartsObserver();
+    }
+
+    let activeDistrictPyramidYear = '2011';
+
+    function initDistrictPyramidListener(distName) {
+        d3.selectAll("#dist-pyramid-years .yr-btn").on("click", function() {
+            d3.selectAll("#dist-pyramid-years .yr-btn").classed("active", false);
+            d3.select(this).classed("active", true);
+            activeDistrictPyramidYear = d3.select(this).attr("data-year");
+            renderDistrictInteractivePyramid(distName, activeDistrictPyramidYear);
+        });
+    }
+
+    function renderDistrictInteractivePyramid(distName, year) {
+        const containerId = "district-interactive-pyramid";
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        let svgSel = d3.select(`#${containerId} svg`);
+        const pWidth = container.clientWidth || 600;
+        const pHeight = 340;
+        const pMargin = {top: 25, right: 30, bottom: 30, left: 30};
+        const pw = pWidth - pMargin.left - pMargin.right;
+        const ph = pHeight - pMargin.top - pMargin.bottom;
+        const barH = ph / ageLabels.length;
+
+        if (svgSel.empty()) {
+            const svg = d3.select(`#${containerId}`).append("svg")
+                .attr("viewBox", `0 0 ${pWidth} ${pHeight}`)
+                .attr("style", "width:100%; height:100%;");
+
+            const g = svg.append("g")
+                .attr("class", "pyr-content")
+                .attr("transform", `translate(${pMargin.left},${pMargin.top})`);
+
+            // Middle Divider
+            g.append("line")
+                .attr("x1", pw/2).attr("x2", pw/2)
+                .attr("y1", 0).attr("y2", ph)
+                .attr("stroke", "var(--border)");
+
+            // Headers
+            g.append("text").attr("x", pw/4).attr("y", -8).attr("text-anchor", "middle").attr("fill", "var(--teal)").attr("font-family", "var(--mono)").attr("font-size", "12px").attr("font-weight", "bold").text("MALE %");
+            g.append("text").attr("x", 3*pw/4).attr("y", -8).attr("text-anchor", "middle").attr("fill", "var(--orange)").attr("font-family", "var(--mono)").attr("font-size", "12px").attr("font-weight", "bold").text("FEMALE %");
+
+            g.append("g").attr("class", "bars-group");
+
+            const labelsG = g.append("g").attr("class", "labels-group");
+            ageLabels.forEach((label, i) => {
+                const yPos = ph - (i + 1) * barH;
+                labelsG.append("text")
+                    .attr("x", pw/2)
+                    .attr("y", yPos + barH/2 + 3.5)
+                    .attr("text-anchor", "middle")
+                    .attr("fill", "#ffffff")
+                    .attr("font-size", "10px")
+                    .attr("font-weight", "700")
+                    .attr("font-family", "var(--mono)")
+                    .text(label);
+            });
+            svgSel = d3.select(`#${containerId} svg`);
+        }
+
+        const g = svgSel.select('.pyr-content');
+        const barsG = g.select('.bars-group');
+
+        const pyrData = (datasets.pyramids && datasets.pyramids[distName]) ? datasets.pyramids[distName][year] : null;
+        if (!pyrData) return;
+
+        const validCohorts = pyrData.filter(c => ageLabels.includes(c.age));
+        validCohorts.sort((a,b) => ageLabels.indexOf(a.age) - ageLabels.indexOf(b.age));
+        const total = d3.sum(validCohorts, c => c.male + c.female);
+
+        const minBarW = 22;
+        const maxVal = 6.6;
+        const xM = d3.scaleLinear().domain([0, maxVal]).range([pw/2 - minBarW, 0]);
+        const xF = d3.scaleLinear().domain([0, maxVal]).range([pw/2 + minBarW, pw]);
+
+        const maleData = validCohorts.map((d, i) => ({ age: d.age, val: (d.male / total) * 100, index: i }));
+        const femaleData = validCohorts.map((d, i) => ({ age: d.age, val: (d.female / total) * 100, index: i }));
+
+        // Male Bars
+        const maleBars = barsG.selectAll('.pyr-bar-m').data(maleData, d => d.index);
+        const maleEnter = maleBars.enter().append("rect")
+            .attr("class", "pyr-bar-m")
+            .attr("y", d => ph - (d.index + 1) * barH + 1)
+            .attr("height", barH - 2)
+            .attr("x", pw/2)
+            .attr("width", 0)
+            .attr("fill", "var(--teal)")
+            .attr("opacity", 0.88);
+        maleEnter.append("title");
+
+        const maleMerged = maleBars.merge(maleEnter);
+        maleMerged.select("title").text(d => `Age ${d.age} Male: ${d.val.toFixed(1)}%`);
+        maleMerged.transition().duration(600).ease(d3.easeCubicOut)
+            .attr("x", d => xM(d.val))
+            .attr("width", d => pw/2 - xM(d.val));
+
+        // Female Bars
+        const femaleBars = barsG.selectAll('.pyr-bar-f').data(femaleData, d => d.index);
+        const femaleEnter = femaleBars.enter().append("rect")
+            .attr("class", "pyr-bar-f")
+            .attr("y", d => ph - (d.index + 1) * barH + 1)
+            .attr("height", barH - 2)
+            .attr("x", pw/2)
+            .attr("width", 0)
+            .attr("fill", "var(--orange)")
+            .attr("opacity", 0.88);
+        femaleEnter.append("title");
+
+        const femaleMerged = femaleBars.merge(femaleEnter);
+        femaleMerged.select("title").text(d => `Age ${d.age} Female: ${d.val.toFixed(1)}%`);
+        femaleMerged.transition().duration(600).ease(d3.easeCubicOut)
+            .attr("x", pw/2)
+            .attr("width", d => xF(d.val) - pw/2);
+    }
 
     function updateChart(metric, dId) {
         if (activeMetric === metric) return;
@@ -1024,6 +1554,41 @@
             .append("g")
             .attr("transform", `translate(${pMargin.left},${pMargin.top})`);
             
+        // Genders
+        pSvg.append("text").attr("x", pw/4).attr("y", -6).attr("text-anchor","middle")
+            .attr("fill","var(--teal)").attr("font-family","var(--mono)").attr("font-size","13px").attr("font-weight","bold").text("MALE %");
+
+        pSvg.append("text").attr("x", 3*pw/4).attr("y", -6).attr("text-anchor","middle")
+            .attr("fill","var(--orange)").attr("font-family","var(--mono)").attr("font-size","13px").attr("font-weight","bold").text("FEMALE %");
+
+        // Middle Divider
+        pSvg.append("line").attr("x1", pw/2).attr("x2", pw/2).attr("y1", 0).attr("y2", ph)
+            .attr("stroke", "var(--border)").attr("stroke-width", 1);
+
+        // Bottom scale lines
+        pSvg.append("line").attr("x1", 0).attr("x2", pw).attr("y1", ph + 6).attr("y2", ph + 6).attr("stroke", "var(--border)");
+        pSvg.append("text").attr("x", pw/2).attr("y", ph + 22).attr("text-anchor", "middle")
+            .attr("fill", "var(--dimmed)").attr("font-family", "var(--mono)").attr("font-size", "14px").text("Percentage of Total District Population (%)");
+
+        pSvg.append("g").attr("class", "bars-group");
+
+        // Central Channel Age Labels
+        const barH = ph / ageLabels.length;
+        const labelsGroup = pSvg.append("g").attr("class", "labels-group");
+        ageLabels.forEach((label, i) => {
+            const yPos = ph - (i + 1) * barH;
+            labelsGroup.append("text")
+                .attr("class", "pyramid-label")
+                .attr("x", pw/2)
+                .attr("y", yPos + barH/2 + 3.5)
+                .attr("text-anchor", "middle")
+                .attr("fill", "#ffffff")
+                .attr("font-size", "10.5px")
+                .attr("font-weight", "700")
+                .attr("font-family", "var(--mono)")
+                .text(label);
+        });
+
         // Render initial year 2011
         drawDistrictPyramid(dId, "2011");
         
@@ -1050,66 +1615,37 @@
         const xF = d3.scaleLinear().domain([0, maxVal]).range([pw/2, pw]);
         const barH = ph / ageLabels.length;
 
+        const barsGroup = pSvg.select(".bars-group");
+
         // Male Bars
-        const maleBars = pSvg.selectAll(".pyramid-bar-left").data(validCohorts);
-        maleBars.enter().append("rect")
+        const maleBars = barsGroup.selectAll(".pyramid-bar-left").data(validCohorts, d => d.age);
+        const maleEnter = maleBars.enter().append("rect")
             .attr("class", "pyramid-bar-left")
             .attr("y", (d, i) => ph - (i + 1) * barH + 1)
             .attr("height", barH - 2)
             .attr("x", pw/2)
-            .attr("width", 0)
-            .merge(maleBars)
-            .transition().duration(700)
+            .attr("width", 0);
+        maleEnter.append("title");
+        const maleMerged = maleBars.merge(maleEnter);
+        maleMerged.select("title").text(d => `Age ${d.age} Male: ${((d.male / total) * 100).toFixed(1)}%`);
+        maleMerged.transition().duration(700)
             .attr("x", d => xM((d.male / total) * 100))
             .attr("width", d => pw/2 - xM((d.male / total) * 100));
 
         // Female Bars
-        const femaleBars = pSvg.selectAll(".pyramid-bar-right").data(validCohorts);
-        femaleBars.enter().append("rect")
+        const femaleBars = barsGroup.selectAll(".pyramid-bar-right").data(validCohorts, d => d.age);
+        const femaleEnter = femaleBars.enter().append("rect")
             .attr("class", "pyramid-bar-right")
             .attr("y", (d, i) => ph - (i + 1) * barH + 1)
             .attr("height", barH - 2)
             .attr("x", pw/2)
-            .attr("width", 0)
-            .merge(femaleBars)
-            .transition().duration(700)
+            .attr("width", 0);
+        femaleEnter.append("title");
+        const femaleMerged = femaleBars.merge(femaleEnter);
+        femaleMerged.select("title").text(d => `Age ${d.age} Female: ${((d.female / total) * 100).toFixed(1)}%`);
+        femaleMerged.transition().duration(700)
             .attr("x", pw/2)
             .attr("width", d => xF((d.female / total) * 100) - pw/2);
-
-        // Labels & Axes (draw once)
-        if (pSvg.selectAll(".pyramid-label").empty()) {
-            ageLabels.forEach((label, i) => {
-                const yPos = ph - (i + 1) * barH;
-                if (i % 2 === 0) {
-                    pSvg.append("text")
-                        .attr("class", "pyramid-label")
-                        .attr("x", pw/2)
-                        .attr("y", yPos + barH/2 + 3)
-                        .attr("text-anchor", "middle")
-                        .attr("fill", "var(--text)")
-                        .attr("font-size", "14px")
-                        .attr("font-weight", "500")
-                        .attr("font-family", "var(--mono)")
-                        .text(label);
-                }
-            });
-
-            // Genders
-            pSvg.append("text").attr("x", pw/4).attr("y", -6).attr("text-anchor","middle")
-                .attr("fill","var(--teal)").attr("font-family","var(--mono)").attr("font-size","13px").attr("font-weight","bold").text("MALE %");
-
-            pSvg.append("text").attr("x", 3*pw/4).attr("y", -6).attr("text-anchor","middle")
-                .attr("fill","var(--orange)").attr("font-family","var(--mono)").attr("font-size","13px").attr("font-weight","bold").text("FEMALE %");
-
-            // Middle Divider
-            pSvg.append("line").attr("x1", pw/2).attr("x2", pw/2).attr("y1", 0).attr("y2", ph)
-                .attr("stroke", "var(--border)").attr("stroke-width", 1);
-
-            // Bottom scale lines
-            pSvg.append("line").attr("x1", 0).attr("x2", pw).attr("y1", ph + 6).attr("y2", ph + 6).attr("stroke", "var(--border)");
-            pSvg.append("text").attr("x", pw/2).attr("y", ph + 22).attr("text-anchor", "middle")
-                .attr("fill", "var(--dimmed)").attr("font-family", "var(--mono)").attr("font-size", "14px").text("Percentage of Total District Population (%)");
-        }
     }
 </script>
 <script src="chatbot.js"></script>

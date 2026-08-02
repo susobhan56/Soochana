@@ -50,11 +50,8 @@
        default runs 4.5s in total: deliberately under the 5s threshold in
        WCAG 2.2.2, which is where auto-playing motion alongside other content
        would otherwise need a pause control. */
-    var dur      = opts.dur || 900;
-    /* One-shot by default. The field reveals the transition once and then
-       rests on 2036 — a perpetual loop behind body copy reads as restless
-       wallpaper and competes with the text for attention. */
-    var loop     = opts.loop === true;
+    var dur      = opts.dur || 1000;
+    var loop     = opts.loop !== false;
     var yearEl   = opts.yearEl  || null;
     var shareEl  = opts.shareEl || null;
     var cMale    = opts.male    || '#1a535c';
@@ -160,8 +157,8 @@
       if (k >= 1) {
         k = 0; t0 = ts;
         idx++;
-        if (idx > YEARS.length - 2) {     /* no later year left to morph into */
-          if (!loop) {                    /* come to rest on 2036 and stop */
+        if (idx >= YEARS.length) {     /* loop continuously */
+          if (!loop) {                 /* come to rest on 2036 and stop if explicitly disabled */
             settled = true;
             raf = null;
             still(LAST);
@@ -171,8 +168,9 @@
         }
       }
 
+      var nextIdx = (idx + 1) % YEARS.length;
       var A = PYR[YEARS[idx]];
-      var B = PYR[YEARS[idx + 1]];
+      var B = PYR[YEARS[nextIdx]];
       var e = ease(k);
 
       paint(
@@ -181,7 +179,7 @@
       );
 
       if (yearEl) {
-        var yr = k < 0.5 ? YEARS[idx] : YEARS[idx + 1];
+        var yr = k < 0.5 ? YEARS[idx] : YEARS[nextIdx];
         if (yearEl.textContent !== yr) {
           yearEl.textContent = yr;
           if (shareEl) shareEl.textContent = SHARE60[yr];
@@ -195,7 +193,7 @@
 
     document.addEventListener('visibilitychange', function () {
       /* Resume only if it was paused mid-run — never restart once at rest. */
-      if (!document.hidden && raf === null && !stopped && !settled) {
+      if (!document.hidden && raf === null && !stopped) {
         t0 = null;
         raf = global.requestAnimationFrame(frame);
       }

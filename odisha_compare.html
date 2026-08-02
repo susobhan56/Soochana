@@ -124,16 +124,18 @@
   <div class="nav-group">
     <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
-      <h1>Soochana</h1>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+      </div>
     </a>
   </div>
   <div class="nav-group flex-wrap" style="gap: 12px;">
-    <a href="index.html" class="btn-elegant">🏠 Home</a>
-    <a href="journeys.html" class="btn-elegant">📈 The Story</a>
-    <a href="odisha.html" class="btn-elegant" aria-current="page">🗺️ Map Explorer</a>
-    <a href="themes.html" class="btn-elegant">📊 Themes</a>
-    <a href="repository.html" class="btn-elegant">📁 Repository</a>
-    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
+    <a href="index.html" class="btn-elegant">Home</a>
+    <a href="odisha.html" class="btn-elegant">Odisha at a glance</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="contact.html" class="btn-elegant">Contact</a>
   </div>
 </header>
 
@@ -406,21 +408,6 @@
             .attr("stroke", "var(--border)")
             .attr("class", "divider-line");
 
-        // Age labels in middle
-        ageLabels.forEach((label, i) => {
-            const yPos = ph - (i + 1) * barH;
-            if (i % 2 === 0) {
-                g.append("text")
-                    .attr("x", pw/2)
-                    .attr("y", yPos + barH/2 + 3)
-                    .attr("text-anchor", "middle")
-                    .attr("fill", "var(--text)")
-                    .attr("font-size", "14px")
-                    .attr("font-family", "var(--mono)")
-                    .text(label);
-            }
-        });
-
         // Headers
         g.append("text")
             .attr("x", pw/4).attr("y", -6)
@@ -442,8 +429,25 @@
             .attr("class", "female-header")
             .text("FEMALE %");
 
-        // Subgroup to contain dynamic bars
+        // Subgroup to contain dynamic bars first
         g.append("g").attr("class", "bars-group");
+
+        // Central Channel Age Labels
+        const labelsGroup = g.append("g").attr("class", "labels-group");
+        ageLabels.forEach((label, i) => {
+            const yPos = ph - (i + 1) * barH;
+            labelsGroup.append("text")
+                .attr("class", "pyramid-label")
+                .attr("x", pw/2)
+                .attr("y", yPos + barH/2 + 3.5)
+                .attr("text-anchor", "middle")
+                .attr("fill", "#ffffff")
+                .attr("font-size", "10.5px")
+                .attr("font-weight", "700")
+                .attr("font-family", "var(--mono)")
+                .style("pointer-events", "none")
+                .text(label);
+        });
     }
 
     function renderPyramid(containerId, dId, year, colorMale, colorFemale) {
@@ -469,12 +473,13 @@
 
         const total = d3.sum(validCohorts, c => c.male + c.female);
 
+        const minBarW = 16; // Base offset for smooth continuous pyramid scaling
         const maxVal = 7.0; // standard maximum percentage
-        const xM = d3.scaleLinear().domain([0, maxVal]).range([pw/2, 0]);
-        const xF = d3.scaleLinear().domain([0, maxVal]).range([pw/2, pw]);
+        const xM = d3.scaleLinear().domain([0, maxVal]).range([pw/2 - minBarW, 0]);
+        const xF = d3.scaleLinear().domain([0, maxVal]).range([pw/2 + minBarW, pw]);
 
-        const maleData = validCohorts.map((d, i) => ({ val: (d.male / total) * 100, index: i }));
-        const femaleData = validCohorts.map((d, i) => ({ val: (d.female / total) * 100, index: i }));
+        const maleData = validCohorts.map((d, i) => ({ age: d.age, val: (d.male / total) * 100, index: i }));
+        const femaleData = validCohorts.map((d, i) => ({ age: d.age, val: (d.female / total) * 100, index: i }));
 
         // Update headers color (handles dynamic color configurations if any)
         g.select('.male-header').attr("fill", colorMale);
@@ -484,16 +489,18 @@
         const maleBars = barsGroup.selectAll('.pyramid-bar-left')
             .data(maleData, d => d.index);
 
-        maleBars.enter().append("rect")
+        const maleEnter = maleBars.enter().append("rect")
             .attr("class", "pyramid-bar-left")
             .attr("y", d => ph - (d.index + 1) * barH + 1)
             .attr("height", barH - 2)
             .attr("x", pw/2)
             .attr("width", 0)
             .attr("fill", colorMale)
-            .attr("opacity", 0.85)
-            .merge(maleBars)
-            .transition()
+            .attr("opacity", 0.85);
+        maleEnter.append("title");
+        const maleMerged = maleBars.merge(maleEnter);
+        maleMerged.select("title").text(d => `Age ${d.age} Male: ${d.val.toFixed(1)}%`);
+        maleMerged.transition()
             .duration(700)
             .ease(d3.easeCubicOut)
             .attr("fill", colorMale)
@@ -504,16 +511,18 @@
         const femaleBars = barsGroup.selectAll('.pyramid-bar-right')
             .data(femaleData, d => d.index);
 
-        femaleBars.enter().append("rect")
+        const femaleEnter = femaleBars.enter().append("rect")
             .attr("class", "pyramid-bar-right")
             .attr("y", d => ph - (d.index + 1) * barH + 1)
             .attr("height", barH - 2)
             .attr("x", pw/2)
             .attr("width", 0)
             .attr("fill", colorFemale)
-            .attr("opacity", 0.85)
-            .merge(femaleBars)
-            .transition()
+            .attr("opacity", 0.85);
+        femaleEnter.append("title");
+        const femaleMerged = femaleBars.merge(femaleEnter);
+        femaleMerged.select("title").text(d => `Age ${d.age} Female: ${d.val.toFixed(1)}%`);
+        femaleMerged.transition()
             .duration(700)
             .ease(d3.easeCubicOut)
             .attr("fill", colorFemale)

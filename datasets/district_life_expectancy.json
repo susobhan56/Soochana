@@ -298,5 +298,105 @@
       "nfhs4": 71.68,
       "nfhs5": 74.4
     }
+  },
+  "Bolangir": {
+    "male": {
+      "nfhs4": 68.54,
+      "nfhs5": 70.63
+    },
+    "female": {
+      "nfhs4": 69.51,
+      "nfhs5": 71.87
+    }
+  },
+  "Nabarangpur": {
+    "male": {
+      "nfhs4": 67.52,
+      "nfhs5": 69.82
+    },
+    "female": {
+      "nfhs4": 68.46,
+      "nfhs5": 71.02
+    }
+  },
+  "Nabarangpore": {
+    "male": {
+      "nfhs4": 67.52,
+      "nfhs5": 69.82
+    },
+    "female": {
+      "nfhs4": 68.46,
+      "nfhs5": 71.02
+    }
+  },
+  "Keonjhar": {
+    "male": {
+      "nfhs4": 67.18,
+      "nfhs5": 69.38
+    },
+    "female": {
+      "nfhs4": 68.11,
+      "nfhs5": 70.57
+    }
+  },
+  "Baleswar": {
+    "male": {
+      "nfhs4": 72.79,
+      "nfhs5": 75.76
+    },
+    "female": {
+      "nfhs4": 73.89,
+      "nfhs5": 77.19
+    }
+  },
+  "Balasore": {
+    "male": {
+      "nfhs4": 72.79,
+      "nfhs5": 75.76
+    },
+    "female": {
+      "nfhs4": 73.89,
+      "nfhs5": 77.19
+    }
+  },
+  "Sonepur": {
+    "male": {
+      "nfhs4": 67.21,
+      "nfhs5": 69.0
+    },
+    "female": {
+      "nfhs4": 68.14,
+      "nfhs5": 70.17
+    }
+  },
+  "Deogarh": {
+    "male": {
+      "nfhs4": 67.01,
+      "nfhs5": 69.44
+    },
+    "female": {
+      "nfhs4": 67.94,
+      "nfhs5": 70.63
+    }
+  },
+  "Jajpur": {
+    "male": {
+      "nfhs4": 68.64,
+      "nfhs5": 71.1
+    },
+    "female": {
+      "nfhs4": 69.61,
+      "nfhs5": 72.35
+    }
+  },
+  "Jagatsinghpur": {
+    "male": {
+      "nfhs4": 68.16,
+      "nfhs5": 73.61
+    },
+    "female": {
+      "nfhs4": 69.13,
+      "nfhs5": 74.96
+    }
   }
 }

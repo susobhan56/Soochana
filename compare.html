@@ -97,16 +97,18 @@
   <div class="nav-group">
     <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
-      <h1>Soochana</h1>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+      </div>
     </a>
   </div>
   <div class="nav-group flex-wrap" style="gap: 12px;">
-    <a href="index.html" class="btn-elegant">🏠 Home</a>
-    <a href="journeys.html" class="btn-elegant" aria-current="page">📈 The Story</a>
-    <a href="odisha.html" class="btn-elegant">🗺️ Map Explorer</a>
-    <a href="themes.html" class="btn-elegant">📊 Themes</a>
-    <a href="repository.html" class="btn-elegant">📁 Repository</a>
-    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
+    <a href="index.html" class="btn-elegant">Home</a>
+    <a href="odisha.html" class="btn-elegant">Odisha at a glance</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="contact.html" class="btn-elegant">Contact</a>
   </div>
 </header>
 
@@ -221,22 +223,40 @@
     const selectA = d3.select("#stateA-select");
     const selectB = d3.select("#stateB-select");
 
-    const statesList = [
-        { label: "India", key: "india" },
-        { label: "Odisha", key: "odisha" },
-        { label: "Bihar", key: "bihar" },
-        { label: "Jharkhand", key: "jharkhand" },
-        { label: "Chhattisgarh", key: "chhattisgarh" },
-        { label: "Telangana", key: "telangana" }
-    ];
+    const stateNamesMap = {
+        india: "India (National Average)",
+        odisha: "Odisha",
+        bihar: "Bihar",
+        jharkhand: "Jharkhand",
+        chhattisgarh: "Chhattisgarh",
+        telangana: "Telangana",
+        kerala: "Kerala",
+        tamilnadu: "Tamil Nadu",
+        maharashtra: "Maharashtra",
+        gujarat: "Gujarat",
+        uttarpradesh: "Uttar Pradesh",
+        westbengal: "West Bengal",
+        rajasthan: "Rajasthan",
+        madhyapradesh: "Madhya Pradesh",
+        karnataka: "Karnataka",
+        punjab: "Punjab"
+    };
 
     // Load dynamic national comparisons
     DataLoader.getNationalComparisons().then(data => {
 
-        // Populate drop-downs
-        statesList.forEach(s => {
-            selectA.append("option").text(s.label).attr("value", s.key);
-            selectB.append("option").text(s.label).attr("value", s.key);
+        // Extract available state keys dynamically
+        const firstRow = data[0] || {};
+        const metaKeys = new Set(['indicator', 'year', 'source']);
+        const availableKeys = Object.keys(firstRow).filter(k => !metaKeys.has(k));
+
+        selectA.html("");
+        selectB.html("");
+
+        availableKeys.forEach(k => {
+            const label = stateNamesMap[k] || (k.charAt(0).toUpperCase() + k.slice(1));
+            selectA.append("option").text(label).attr("value", k);
+            selectB.append("option").text(label).attr("value", k);
         });
 
         // Set defaults

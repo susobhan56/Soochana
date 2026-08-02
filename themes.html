@@ -33,8 +33,6 @@
     }
     .themes-grid {
         display: grid;
-        /* 280px, not 340px: at 375px viewport minus 40px padding, a 340px
-           minimum forces the container 5px past the viewport edge. */
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 30px;
     }
@@ -42,38 +40,42 @@
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 16px;
-        padding: 32px;
         text-decoration: none;
         color: var(--text);
         display: flex;
         flex-direction: column;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow: hidden;
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         box-shadow: 0 4px 12px rgba(0,0,0,0.01);
     }
     .theme-card:hover {
         transform: translateY(-5px);
         border-color: var(--teal);
-        box-shadow: 0 12px 30px rgba(26, 83, 92, 0.08);
+        box-shadow: 0 14px 34px rgba(26, 83, 92, 0.1);
     }
-    .theme-icon-box {
-        width: 54px;
-        height: 54px;
-        border-radius: 12px;
-        background: rgba(26, 83, 92, 0.06);
-        color: var(--teal);
+    .theme-media {
+        height: 180px;
+        background: var(--panel);
+        border-bottom: 1px solid var(--border);
+        overflow: hidden;
+        position: relative;
+    }
+    .theme-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 16px;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+    .theme-card:hover .theme-media img {
+        transform: scale(1.06);
+    }
+    .theme-card-body {
+        padding: 26px 26px 30px;
+        flex: 1;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 24px;
-    }
-    .theme-icon-box svg {
-        width: 28px;
-        height: 28px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
+        flex-direction: column;
     }
     .theme-card h3 {
         font-family: var(--serif);
@@ -121,16 +123,18 @@
   <div class="nav-group">
     <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
-      <h1>Soochana</h1>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+      </div>
     </a>
   </div>
   <div class="nav-group flex-wrap" style="gap: 12px;">
-    <a href="index.html" class="btn-elegant">🏠 Home</a>
-    <a href="journeys.html" class="btn-elegant">📈 The Story</a>
-    <a href="odisha.html" class="btn-elegant">🗺️ Map Explorer</a>
-    <a href="themes.html" class="btn-elegant" aria-current="page">📊 Themes</a>
-    <a href="repository.html" class="btn-elegant">📁 Repository</a>
-    <a href="contact.html" class="btn-elegant">✉️ Contact</a>
+    <a href="index.html" class="btn-elegant">Home</a>
+    <a href="odisha.html" class="btn-elegant">Odisha at a glance</a>
+    <a href="themes.html" class="btn-elegant" aria-current="page">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="contact.html" class="btn-elegant">Contact</a>
   </div>
 </header>
 
@@ -156,19 +160,20 @@
     </div>
   </div>
   <div class="footer-meta">
-    Data Sources: Census of India, NFHS-5, PLFS, UDISE+ & Government of Odisha Survey Reports.
+    Data Sources: Census of India, NFHS-5, PLFS, UDISE+ &amp; Government of Odisha Survey Reports.
   </div>
 </footer>
 
 <script>
-    const svgIcons = {
-        'demography': `<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
-        'health': `<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`,
-        'education': `<svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>`,
-        'ageing': `<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"></circle><path d="M12 7a4 4 0 0 1 4 4v8a1 1 0 0 1-2 0v-4H10v4a1 1 0 0 1-2 0v-8a4 4 0 0 1 4-4z"></path></svg>`,
-        'migration': `<svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"></polyline><line x1="10" y1="14" x2="21" y2="3"></line><polyline points="8 21 3 21 3 16"></polyline><line x1="14" y1="10" x2="3" y2="21"></line></svg>`,
-        'employment': `<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>`
+    const MEDIA = {
+        demography: 'icons/demography.gif',
+        health:     'icons/health.gif',
+        education:  'icons/education.gif',
+        ageing:     'icons/ageing.gif',
+        migration:  'icons/urban.gif',
+        employment: 'icons/employement.gif'
     };
+    const FALLBACK = 'images/dem1.png';
 
     fetch('data/themes.json')
         .then(res => res.json())
@@ -177,17 +182,19 @@
             grid.innerHTML = '';
             
             data.themes.forEach(theme => {
-                const icon = svgIcons[theme.id] || svgIcons['demography'];
+                const src = MEDIA[theme.id] || FALLBACK;
                 grid.innerHTML += `
-                    <a href="theme_detail.html?theme=${theme.slug}" class="theme-card">
-                        <div class="theme-icon-box">
-                            ${icon}
+                    <a href="theme_detail.html?theme=${encodeURIComponent(theme.slug)}" class="theme-card">
+                        <div class="theme-media">
+                            <img src="${src}" alt="${theme.name}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${FALLBACK}'">
                         </div>
-                        <h3>${theme.name}</h3>
-                        <p>${theme.description}</p>
-                        <div class="theme-card-footer">
-                            Explore indicators 
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        <div class="theme-card-body">
+                            <h3>${theme.name}</h3>
+                            <p>${theme.description}</p>
+                            <div class="theme-card-footer">
+                                Explore indicators 
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </div>
                         </div>
                     </a>
                 `;
