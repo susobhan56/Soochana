@@ -8,9 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="ui.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
   /* ═══════════════════════════════════════════════════════════════════
-     SOOCHANA ABOUT US — MODERN EDITORIAL STYLES
+     SOOCHANA ABOUT US — PREMIUM EDITORIAL DESIGN SYSTEM
      ═══════════════════════════════════════════════════════════════════ */
   
   body {
@@ -27,36 +28,38 @@
     width: 100%;
   }
 
-  /* 1. HERO LANDER */
-  .about-hero-lander {
+  /* 1. WARM EDITORIAL HERO LANDER */
+  .about-hero-editorial {
     position: relative;
-    min-height: 480px;
-    background: radial-gradient(circle at 50% 30%, #1e385c 0%, #0f172a 100%);
-    color: #ffffff;
-    padding: 90px 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    background: linear-gradient(180deg, #f5f3ec 0%, #faf9f5 100%);
+    color: var(--text, #1e2530);
+    padding: 70px 24px 80px 24px;
+    border-bottom: 1px solid var(--border, rgba(0, 0, 0, 0.08));
     overflow: hidden;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .about-hero-lander canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    opacity: 0.6;
   }
 
   .hero-container {
-    position: relative;
-    z-index: 2;
-    max-width: 860px;
+    max-width: 1200px;
     margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  @media (max-width: 992px) {
+    .hero-container { grid-template-columns: 1fr; text-align: center; }
+  }
+
+  .hero-left-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 992px) {
+    .hero-left-content { align-items: center; }
   }
 
   .hero-pill {
@@ -65,94 +68,202 @@
     gap: 8px;
     padding: 6px 18px;
     border-radius: 30px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #cbd5e1;
+    background: #ffffff;
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+    color: var(--teal, #1a535c);
     font-family: var(--mono, 'Inter', monospace);
     font-size: 0.78125rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
   }
 
   .hero-pill-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #f97316;
-    box-shadow: 0 0 10px #f97316;
+    background: var(--orange, #bb4500);
   }
 
-  .about-hero-lander h1 {
+  .about-hero-editorial h1 {
     font-family: var(--serif, 'Manrope', sans-serif);
-    font-size: clamp(3rem, 5.5vw, 4.5rem);
+    font-size: clamp(3rem, 5.2vw, 4.5rem);
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.05;
     margin: 0 0 10px 0;
-    color: #ffffff;
+    color: var(--blue, #1f385c);
   }
 
-  .about-hero-lander .tagline {
+  .about-hero-editorial .tagline {
     font-family: var(--serif, 'Manrope', sans-serif);
-    font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+    font-size: clamp(1.4rem, 2.6vw, 1.85rem);
     font-weight: 700;
-    color: #f97316;
-    margin-bottom: 24px;
+    color: var(--orange, #bb4500);
+    margin-bottom: 22px;
     letter-spacing: -0.01em;
   }
 
-  .about-hero-lander .hero-desc {
-    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-    color: #94a3b8;
-    max-width: 720px;
-    margin: 0 auto 40px auto;
+  .about-hero-editorial .hero-desc {
+    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+    color: var(--muted, #4f5664);
+    max-width: 580px;
+    margin: 0 0 36px 0;
     line-height: 1.65;
   }
 
   .hero-stats-band {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    max-width: 840px;
+    gap: 14px;
     width: 100%;
-    margin: 0 auto;
+    max-width: 620px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 576px) {
     .hero-stats-band { grid-template-columns: repeat(2, 1fr); }
   }
 
   .hero-stat-card {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #ffffff;
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
     border-radius: 14px;
-    padding: 18px 12px;
+    padding: 16px 10px;
     text-align: center;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
   }
 
   .hero-stat-card:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(249, 115, 22, 0.5);
+    border-color: var(--teal, #1a535c);
     transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(26, 83, 92, 0.08);
   }
 
   .hero-stat-val {
     font-family: var(--serif, 'Manrope', sans-serif);
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 800;
-    color: #ffffff;
-    margin-bottom: 4px;
+    color: var(--blue, #1f385c);
+    margin-bottom: 2px;
   }
 
   .hero-stat-lbl {
-    font-size: 0.78125rem;
-    color: #cbd5e1;
-    font-weight: 500;
+    font-size: 0.75rem;
+    color: var(--muted, #4f5664);
+    font-weight: 600;
+  }
+
+  /* RIGHT COLUMN: WARM EDITORIAL ODISHA DEMOGRAPHIC MAP STAGE */
+  .hero-map-editorial-stage {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .map-stage-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--hairline, rgba(0, 0, 0, 0.06));
+  }
+
+  .map-stage-title {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--blue, #1f385c);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .live-indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+  }
+
+  .map-svg-container {
+    width: 100%;
+    height: 340px;
+    position: relative;
+  }
+
+  .map-svg-container svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .district-path-editorial {
+    fill: #f1f5f9;
+    stroke: #cbd5e1;
+    stroke-width: 1px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+
+  .district-path-editorial:hover {
+    fill: rgba(187, 69, 0, 0.15);
+    stroke: var(--orange, #bb4500);
+    stroke-width: 2px;
+  }
+
+  .district-path-editorial.active-dist {
+    fill: rgba(26, 83, 92, 0.2);
+    stroke: var(--teal, #1a535c);
+    stroke-width: 2px;
+  }
+
+  /* Live Stream Floating Editorial Card */
+  .editorial-stream-card {
+    width: 100%;
+    background: var(--bg, #faf9f5);
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  }
+
+  .stream-district-name {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--blue, #1f385c);
+  }
+
+  .stream-district-info {
+    font-size: 0.8125rem;
+    color: var(--muted, #4f5664);
+    margin-top: 2px;
+  }
+
+  .stream-metrics-tag {
+    font-family: var(--mono, 'Inter', monospace);
+    font-size: 0.8125rem;
+    background: rgba(187, 69, 0, 0.08);
+    color: var(--orange, #bb4500);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
   }
 
   /* GENERAL SECTION LAYOUT */
@@ -166,7 +277,7 @@
   }
 
   .content-container {
-    max-width: 1100px;
+    max-width: 1120px;
     margin: 0 auto;
   }
 
@@ -422,7 +533,7 @@
   .institution-card p:last-child { margin-bottom: 0; }
 
   /* ═══════════════════════════════════════════════════════════════════
-     7. MEET THE TEAM — SEQUENTIAL INTRO THEN ALL-AT-ONCE GRID REVEAL
+     7. MEET THE TEAM — AUTOPLAY SEQUENTIAL INTRO & ALL-AT-ONCE GRID
      ═══════════════════════════════════════════════════════════════════ */
   
   /* Stage 1: Sequential Intro Spotlight Box */
@@ -449,18 +560,9 @@
 
   .spotlight-seq-indicator {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: 24px;
-  }
-
-  .seq-counter {
-    font-family: var(--mono, 'Inter', monospace);
-    font-size: 0.8125rem;
-    font-weight: 700;
-    color: var(--orange, #bb4500);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
 
   .skip-to-all-btn {
@@ -742,38 +844,55 @@
 <!-- MAIN CONTENT WRAPPER -->
 <main>
 
-  <!-- 1. HERO SECTION -->
-  <section class="about-hero-lander">
-    <canvas id="dotfield" aria-hidden="true"></canvas>
+  <!-- 1. WARM EDITORIAL HERO LANDER -->
+  <section class="about-hero-editorial">
     <div class="hero-container">
-      <div class="hero-pill">
-        <span class="hero-pill-dot"></span>
-        Odisha Demographic Knowledge Portal
-      </div>
-      <h1>Soochana</h1>
-      <div class="tagline">From Numbers to Narratives</div>
-      <p class="hero-desc">
-        Transforming demographic data into meaningful stories that inform policy, research, and public understanding of Odisha's changing population.
-      </p>
+      
+      <!-- Left Column: Hero Text & Metrics -->
+      <div class="hero-left-content">
+        <div class="hero-pill">
+          <span class="hero-pill-dot"></span>
+          Odisha Demographic Knowledge Portal
+        </div>
+        <h1>Soochana</h1>
+        <div class="tagline">From Numbers to Narratives</div>
+        <p class="hero-desc">
+          Transforming demographic statistics into accessible narratives through interactive map visualizers, analytical stories, and evidence-based population resources.
+        </p>
 
-      <div class="hero-stats-band">
-        <div class="hero-stat-card">
-          <div class="hero-stat-val">30</div>
-          <div class="hero-stat-lbl">Districts Tracked</div>
-        </div>
-        <div class="hero-stat-card">
-          <div class="hero-stat-val">10+</div>
-          <div class="hero-stat-lbl">Demographic Themes</div>
-        </div>
-        <div class="hero-stat-card">
-          <div class="hero-stat-val">40+ Yrs</div>
-          <div class="hero-stat-lbl">Survey Evidence</div>
-        </div>
-        <div class="hero-stat-card">
-          <div class="hero-stat-val">100%</div>
-          <div class="hero-stat-lbl">Open Access Data</div>
+        <div class="hero-stats-band">
+          <div class="hero-stat-card">
+            <div class="hero-stat-val">30</div>
+            <div class="hero-stat-lbl">Districts Tracked</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-val">10+</div>
+            <div class="hero-stat-lbl">Demographic Themes</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-val">40+ Yrs</div>
+            <div class="hero-stat-lbl">Survey Evidence</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-val">100%</div>
+            <div class="hero-stat-lbl">Open Access Data</div>
+          </div>
         </div>
       </div>
+
+      <!-- Right Column: Warm Editorial Interactive Odisha Demographic Map Stage -->
+      <div class="hero-map-editorial-stage">
+        <div class="map-svg-container" id="heroMapSvg"></div>
+
+        <div class="editorial-stream-card">
+          <div>
+            <div class="stream-district-name" id="streamDistrict">Khordha District</div>
+            <div class="stream-district-info" id="streamInfo">State Capital Region · Demographic Hub</div>
+          </div>
+          <div class="stream-metrics-tag" id="streamMetrics">TFR: 1.6 · Urban: 48.2% · Lit: 86.9%</div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -945,7 +1064,7 @@
     </div>
   </section>
 
-  <!-- 7. MEET THE TEAM — 1-BY-1 SEQUENTIAL INTRO THEN ALL-AT-ONCE GRID REVEAL -->
+  <!-- 7. MEET THE TEAM — 1-BY-1 SEQUENTIAL AUTOPLAY THEN ALL-AT-ONCE GRID REVEAL -->
   <section class="section-wrap" id="teamSection">
     <div class="content-container">
       <div class="section-header">
@@ -954,11 +1073,11 @@
         <p>Demographic Intelligence Unit</p>
       </div>
 
-      <!-- MODE 1: SEQUENTIAL 1-BY-1 SPOTLIGHT INTRO -->
+      <!-- MODE 1: SEQUENTIAL 1-BY-1 SPOTLIGHT INTRO (AUTOPLAY) -->
       <div class="team-spotlight-container" id="teamSpotlight">
         <div class="spotlight-progress-bar" id="spotlightProgressBar"></div>
 
-        <div class="spotlight-seq-indicator" style="justify-content: flex-end;">
+        <div class="spotlight-seq-indicator">
           <button type="button" class="skip-to-all-btn" id="skipToAllBtn">View All Team Members →</button>
         </div>
 
@@ -1005,10 +1124,131 @@
   </div>
 </footer>
 
-<script src="dotfield.js"></script>
 <script>
   /* ═══════════════════════════════════════════════════════════════════
-     TEAM INTRO SEQUENTIAL ENGINE & ALL-AT-ONCE GRID REVEAL
+     EDITORIAL ODISHA DEMOGRAPHIC MAP DATA ENGINE
+     ═══════════════════════════════════════════════════════════════════ */
+  const DEMO_STREAMS = [
+    { district: "Khordha", info: "State Capital Region · Demographic Hub", metrics: "TFR: 1.6 · Urban: 48.2% · Lit: 86.9%" },
+    { district: "Ganjam", info: "Southern Migration & Demographic Corridor", metrics: "Pop: 3.53M · TFR: 1.7 · Sex Ratio: 983" },
+    { district: "Cuttack", info: "Central Healthcare & Academic Belt", metrics: "TFR: 1.6 · Lit: 85.5% · WPR: 37.4%" },
+    { district: "Sambalpur", info: "Western Industrial & Trade Gateway", metrics: "Urban: 29.5% · Lit: 76.2% · TFR: 1.7" },
+    { district: "Koraput", info: "Southern Tribal Demographic Profile", metrics: "Working Cohort: 62.4% · Literacy: 49.2%" },
+    { district: "Mayurbhanj", info: "Northern Forest & Community Belt", metrics: "Pop: 2.52M · Sex Ratio: 1006" },
+    { district: "Sundargarh", info: "Northern Mining & Youth Demographics", metrics: "Urban: 35.3% · Lit: 73.3% · Youth: 28.5%" },
+    { district: "Puri", info: "Coastal Heritage & Ageing Profile", metrics: "Elderly Share: 11.2% · Lit: 84.7%" }
+  ];
+
+  let streamIndex = 0;
+
+  function initEditorialHeroMap() {
+    const container = d3.select("#heroMapSvg");
+    const width = container.node().getBoundingClientRect().width || 520;
+    const height = 340;
+
+    const svg = container.append("svg")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
+
+    d3.json("Orissa.geojson").then(geoData => {
+      const projection = d3.geoMercator().fitSize([width, height], geoData);
+      const path = d3.geoPath().projection(projection);
+
+      const colorPalette = ["#e2e8f0", "#cbd5e1", "#94a3b8", "#64748b", "#387478", "#1a535c", "#1f385c"];
+
+      svg.selectAll("path")
+        .data(geoData.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("class", "district-path-editorial")
+        .style("fill", (d, i) => colorPalette[i % colorPalette.length])
+        .style("opacity", 0.75)
+        .on("mouseenter", function(event, d) {
+          svg.selectAll(".district-path-editorial").classed("active-dist", false);
+          d3.select(this).classed("active-dist", true);
+
+          const distName = d.properties.Dist_Name || d.properties.DISTRICT || "District";
+          d3.select("#streamDistrict").text(`${distName} District`);
+          const matched = DEMO_STREAMS.find(s => s.district.toLowerCase() === distName.toLowerCase());
+          if (matched) {
+            d3.select("#streamInfo").text(matched.info);
+            d3.select("#streamMetrics").text(matched.metrics);
+          } else {
+            d3.select("#streamInfo").text("Demographic Data Record");
+            d3.select("#streamMetrics").text("Census & NFHS Evidence Base");
+          }
+        })
+        .on("mouseleave", function() {
+          d3.select(this).classed("active-dist", false);
+        });
+
+      const hubs = [
+        { name: "Khordha", coords: [85.8245, 20.2961] },
+        { name: "Cuttack", coords: [85.8830, 20.4625] },
+        { name: "Ganjam", coords: [84.9000, 19.3800] },
+        { name: "Sambalpur", coords: [83.9800, 21.4700] },
+        { name: "Koraput", coords: [82.7167, 18.8167] }
+      ];
+
+      const hubG = svg.append("g");
+      hubs.forEach(h => {
+        const pt = projection(h.coords);
+        if (pt) {
+          hubG.append("circle")
+            .attr("cx", pt[0])
+            .attr("cy", pt[1])
+            .attr("r", 4)
+            .attr("fill", "#bb4500");
+
+          hubG.append("circle")
+            .attr("cx", pt[0])
+            .attr("cy", pt[1])
+            .attr("r", 10)
+            .attr("fill", "none")
+            .attr("stroke", "#bb4500")
+            .attr("stroke-width", 1.5)
+            .attr("opacity", 0.5)
+            .append("animate")
+            .attr("attributeName", "r")
+            .attr("values", "4;16;4")
+            .attr("dur", "3s")
+            .attr("repeatCount", "indefinite");
+        }
+      });
+
+      highlightDistrictOnMap(DEMO_STREAMS[0].district);
+    }).catch(err => {
+      console.warn("GeoJSON load fallback:", err);
+    });
+  }
+
+  function highlightDistrictOnMap(distName) {
+    d3.selectAll(".district-path-editorial")
+      .classed("active-dist", function(d) {
+        const name = d.properties.Dist_Name || d.properties.DISTRICT || "";
+        return name.toLowerCase() === distName.toLowerCase();
+      });
+  }
+
+  function startStreamCycling() {
+    setInterval(() => {
+      streamIndex = (streamIndex + 1) % DEMO_STREAMS.length;
+      const s = DEMO_STREAMS[streamIndex];
+      const distEl = document.getElementById('streamDistrict');
+      const infoEl = document.getElementById('streamInfo');
+      const metricsEl = document.getElementById('streamMetrics');
+      if (distEl && metricsEl) {
+        distEl.textContent = `${s.district} District`;
+        infoEl.textContent = s.info;
+        metricsEl.textContent = s.metrics;
+        highlightDistrictOnMap(s.district);
+      }
+    }, 3500);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     TEAM INTRO SEQUENTIAL AUTOPLAY ENGINE & ALL-AT-ONCE GRID REVEAL
      ═══════════════════════════════════════════════════════════════════ */
   const TEAM_MEMBERS = [
     {
@@ -1070,7 +1310,7 @@
   let currentIndex = 0;
   let timerInterval = null;
   let progressVal = 0;
-  const MEMBER_DURATION = 4500; // 4.5s per member sequential intro
+  const MEMBER_DURATION = 4500; // 4.5s per member
   const TICK_INTERVAL = 50;
 
   function renderAllTeamGrid() {
@@ -1117,29 +1357,32 @@
 
   function startSequentialIntro() {
     clearInterval(timerInterval);
-    currentIndex = 0;
     progressVal = 0;
+    currentIndex = 0;
 
-    // Show spotlight, hide full grid
-    const spotlightContainer = document.getElementById('teamSpotlight');
-    const allGridWrapper = document.getElementById('allTeamGridWrapper');
-    spotlightContainer.style.display = 'block';
-    spotlightContainer.style.opacity = '1';
-    allGridWrapper.classList.remove('visible');
+    document.getElementById('teamSpotlight').style.display = 'block';
+    document.getElementById('teamSpotlight').style.opacity = '1';
+    
+    const gridWrap = document.getElementById('allTeamGridWrapper');
+    gridWrap.classList.remove('visible');
+    gridWrap.style.display = 'none';
 
     setSpotlightMember(0);
 
+    const stepIncrement = (TICK_INTERVAL / MEMBER_DURATION) * 100;
+
     timerInterval = setInterval(() => {
-      progressVal += (TICK_INTERVAL / MEMBER_DURATION) * 100;
-      document.getElementById('spotlightProgressBar').style.width = `${Math.min(progressVal, 100)}%`;
+      progressVal += stepIncrement;
+      document.getElementById('spotlightProgressBar').style.width = Math.min(progressVal, 100) + '%';
 
       if (progressVal >= 100) {
         progressVal = 0;
         currentIndex++;
+
         if (currentIndex < TEAM_MEMBERS.length) {
           setSpotlightMember(currentIndex);
         } else {
-          // ALL 6 MEMBERS ARE DONE! Show all at once in full screen grid!
+          clearInterval(timerInterval);
           revealAllMembersGrid();
         }
       }
@@ -1148,17 +1391,22 @@
 
   function revealAllMembersGrid() {
     clearInterval(timerInterval);
-    const spotlightContainer = document.getElementById('teamSpotlight');
-    const allGridWrapper = document.getElementById('allTeamGridWrapper');
+    const spotlightBox = document.getElementById('teamSpotlight');
+    spotlightBox.style.opacity = '0';
 
-    spotlightContainer.style.opacity = '0';
     setTimeout(() => {
-      spotlightContainer.style.display = 'none';
-      allGridWrapper.classList.add('visible');
-    }, 300);
+      spotlightBox.style.display = 'none';
+      const gridWrap = document.getElementById('allTeamGridWrapper');
+      gridWrap.style.display = 'block';
+      setTimeout(() => {
+        gridWrap.classList.add('visible');
+      }, 50);
+    }, 400);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    initEditorialHeroMap();
+    startStreamCycling();
     renderAllTeamGrid();
     startSequentialIntro();
 
