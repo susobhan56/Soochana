@@ -48,5 +48,20 @@ const DataLoader = {
 
   getDistrictDetails: function() {
     return this.loadJSON("datasets/districts_detail.json");
+  },
+
+  toDirectDownloadUrl: function(url) {
+    if (!url) return '#';
+    const match = url.match(/\/file\/d\/([^\/]+)/) || url.match(/[?&]id=([^&]+)/);
+    if (match && match[1]) {
+      return `https://drive.usercontent.google.com/download?id=${match[1]}&export=download&confirm=t`;
+    }
+    return url;
+  },
+
+  triggerDirectDownload: function(url) {
+    if (!url) return;
+    const downloadUrl = this.toDirectDownloadUrl(url);
+    window.location.href = downloadUrl;
   }
 };

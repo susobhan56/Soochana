@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Soochana: Odisha Demographic Intelligence Portal</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="ui.js"></script>
+<style>
+  /* ═══════════════════════════════════════════════════════════════════
+     SOOCHANA ABOUT US — MODERN EDITORIAL STYLES
+     ═══════════════════════════════════════════════════════════════════ */
+  
+  body {
+    background: var(--bg, #faf9f5);
+    color: var(--text, #1e2530);
+    font-family: var(--sans, 'Inter', sans-serif);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  main {
+    display: block;
+    width: 100%;
+  }
+
+  /* 1. HERO LANDER */
+  .about-hero-lander {
+    position: relative;
+    min-height: 480px;
+    background: radial-gradient(circle at 50% 30%, #1e385c 0%, #0f172a 100%);
+    color: #ffffff;
+    padding: 90px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .about-hero-lander canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .hero-container {
+    position: relative;
+    z-index: 2;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 18px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #cbd5e1;
+    font-family: var(--mono, 'Inter', monospace);
+    font-size: 0.78125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .hero-pill-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #f97316;
+    box-shadow: 0 0 10px #f97316;
+  }
+
+  .about-hero-lander h1 {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: clamp(3rem, 5.5vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0 0 10px 0;
+    color: #ffffff;
+  }
+
+  .about-hero-lander .tagline {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+    font-weight: 700;
+    color: #f97316;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .about-hero-lander .hero-desc {
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    color: #94a3b8;
+    max-width: 720px;
+    margin: 0 auto 40px auto;
+    line-height: 1.65;
+  }
+
+  .hero-stats-band {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 840px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .hero-stats-band { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .hero-stat-card {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 18px 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .hero-stat-card:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(249, 115, 22, 0.5);
+    transform: translateY(-3px);
+  }
+
+  .hero-stat-val {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+
+  .hero-stat-lbl {
+    font-size: 0.78125rem;
+    color: #cbd5e1;
+    font-weight: 500;
+  }
+
+  /* GENERAL SECTION LAYOUT */
+  .section-wrap {
+    padding: 90px 24px;
+    border-bottom: 1px solid var(--hairline, rgba(0, 0, 0, 0.06));
+  }
+
+  .section-wrap.alt-bg {
+    background: #ffffff;
+  }
+
+  .content-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 56px auto;
+  }
+
+  .section-header .kicker {
+    font-family: var(--mono, 'Inter', monospace);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--orange, #bb4500);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-header h2 {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: clamp(2rem, 3.2vw, 2.75rem);
+    font-weight: 800;
+    color: var(--blue, #1f385c);
+    margin: 0 0 16px 0;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .section-header p {
+    font-size: 1.1rem;
+    color: var(--muted, #4f5664);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* 2. WHAT IS SOOCHANA SECTION */
+  .about-narrative-card {
+    background: #ffffff;
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
+    border-radius: 20px;
+    padding: 44px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  }
+
+  .narrative-paragraphs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+  }
+
+  .narrative-paragraphs p {
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: var(--text, #1e2530);
+    margin: 0;
+  }
+
+  .narrative-paragraphs p strong {
+    color: var(--blue, #1f385c);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  @media (max-width: 992px) {
+    .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 576px) {
+    .feature-grid { grid-template-columns: 1fr; }
+  }
+
+  .feature-card {
+    background: var(--bg, #faf9f5);
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
+    border-radius: 16px;
+    padding: 26px;
+    transition: all 0.3s ease;
+  }
+
+  .feature-card:hover {
+    border-color: var(--teal, #1a535c);
+    box-shadow: 0 8px 24px rgba(26, 83, 92, 0.08);
+    transform: translateY(-4px);
+  }
+
+  .feature-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(26, 83, 92, 0.1);
+    color: var(--teal, #1a535c);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+
+  .feature-card-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+  }
+
+  .feature-card h4 {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--blue, #1f385c);
+    margin: 0 0 10px 0;
+  }
+
+  .feature-card p {
+    font-size: 0.9375rem;
+    color: var(--muted, #4f5664);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* 3. WHY WE BUILT SOOCHANA */
+  .pillars-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 940px;
+    margin: 0 auto;
+  }
+
+  .pillar-row {
+    background: #ffffff;
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
+    border-radius: 16px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    transition: all 0.3s ease;
+  }
+
+  .pillar-row:hover {
+    border-color: var(--orange, #bb4500);
+    box-shadow: 0 8px 28px rgba(187, 69, 0, 0.08);
+    transform: translateX(4px);
+  }
+
+  .pillar-badge {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--orange, #bb4500);
+    background: rgba(187, 69, 0, 0.08);
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .pillar-info h3 {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--blue, #1f385c);
+    margin: 0 0 6px 0;
+  }
+
+  .pillar-info p {
+    font-size: 1.0625rem;
+    color: var(--muted, #4f5664);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* 4, 5, 6. INSTITUTIONAL FOUNDATIONS */
+  .institutions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  @media (max-width: 992px) {
+    .institutions-grid { grid-template-columns: 1fr; }
+  }
+
+  .institution-card {
+    background: #ffffff;
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
+    border-radius: 20px;
+    padding: 36px 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .institution-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+  }
+
+  .inst-diu::before { background: linear-gradient(90deg, #bb4500, #f97316); }
+  .inst-cysd::before { background: linear-gradient(90deg, #1a535c, #387478); }
+  .inst-unfpa::before { background: linear-gradient(90deg, #1f385c, #3b82f6); }
+
+  .institution-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
+  }
+
+  .inst-tag {
+    font-family: var(--mono, 'Inter', monospace);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    align-self: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .inst-diu .inst-tag { background: rgba(187, 69, 0, 0.1); color: #bb4500; }
+  .inst-cysd .inst-tag { background: rgba(26, 83, 92, 0.1); color: #1a535c; }
+  .inst-unfpa .inst-tag { background: rgba(31, 56, 92, 0.1); color: #1f385c; }
+
+  .institution-card h3 {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--blue, #1f385c);
+    margin: 0 0 16px 0;
+    line-height: 1.3;
+  }
+
+  .institution-card p {
+    font-size: 0.96875rem;
+    color: var(--muted, #4f5664);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+  .institution-card p:last-child { margin-bottom: 0; }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     7. MEET THE TEAM — SEQUENTIAL INTRO THEN ALL-AT-ONCE GRID REVEAL
+     ═══════════════════════════════════════════════════════════════════ */
+  
+  /* Stage 1: Sequential Intro Spotlight Box */
+  .team-spotlight-container {
+    background: #ffffff;
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
+    border-radius: 24px;
+    padding: 44px 36px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .spotlight-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--teal, #1a535c), var(--orange, #bb4500));
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  .spotlight-seq-indicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .seq-counter {
+    font-family: var(--mono, 'Inter', monospace);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--orange, #bb4500);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .skip-to-all-btn {
+    background: var(--bg, #faf9f5);
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.1));
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--blue, #1f385c);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .skip-to-all-btn:hover {
+    background: #ffffff;
+    border-color: var(--teal, #1a535c);
+  }
+
+  .spotlight-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 780px;
+    margin: 0 auto;
+    min-height: 350px;
+    justify-content: center;
+  }
+
+  .spotlight-avatar-frame {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, var(--teal, #1a535c) 0%, var(--orange, #bb4500) 100%);
+    box-shadow: 0 10px 28px rgba(26, 83, 92, 0.18);
+    margin-bottom: 20px;
+    transition: transform 0.4s ease;
+  }
+
+  .spotlight-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #ffffff;
+    display: block;
+  }
+
+  .spotlight-member-name {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+    font-weight: 800;
+    color: var(--blue, #1f385c);
+    margin: 0 0 6px 0;
+    letter-spacing: -0.02em;
+  }
+
+  .spotlight-member-role-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 16px;
+    border-radius: 20px;
+    background: rgba(187, 69, 0, 0.08);
+    color: var(--orange, #bb4500);
+    font-family: var(--mono, 'Inter', monospace);
+    font-size: 0.84375rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .spotlight-member-org {
+    font-size: 0.96875rem;
+    color: var(--teal, #1a535c);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .spotlight-member-bio {
+    font-size: 1.05rem;
+    color: var(--muted, #4f5664);
+    line-height: 1.65;
+    max-width: 680px;
+    margin: 0 auto 20px auto;
+    background: var(--bg, #faf9f5);
+    padding: 18px 24px;
+    border-radius: 14px;
+    border: 1px solid var(--hairline, rgba(0, 0, 0, 0.05));
+  }
+
+  .spotlight-member-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .spotlight-tag {
+    font-size: 0.78125rem;
+    font-weight: 600;
+    background: #ffffff;
+    color: var(--text, #1e2530);
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.1));
+  }
+
+  /* Stage 2: ALL TEAM MEMBERS SINGLE SCREEN GRID (REVEALED ONCE ALL DONE) */
+  .all-team-grid-wrapper {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .all-team-grid-wrapper.visible {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .all-team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .all-team-header h3 {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--blue, #1f385c);
+    margin: 0;
+  }
+
+  .all-team-header p {
+    font-size: 0.96875rem;
+    color: var(--muted, #4f5664);
+    margin: 0;
+  }
+
+  .replay-btn {
+    background: var(--bg, #faf9f5);
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+    border-radius: 20px;
+    padding: 8px 18px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--orange, #bb4500);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .replay-btn:hover {
+    background: #ffffff;
+    border-color: var(--orange, #bb4500);
+    box-shadow: 0 4px 12px rgba(187, 69, 0, 0.12);
+  }
+
+  .all-team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  @media (max-width: 900px) {
+    .all-team-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .all-team-grid { grid-template-columns: 1fr; }
+  }
+
+  .team-card-unit {
+    background: #ffffff;
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  }
+
+  .team-card-unit:hover {
+    transform: translateY(-6px);
+    border-color: var(--teal, #1a535c);
+    box-shadow: 0 12px 36px rgba(26, 83, 92, 0.12);
+  }
+
+  .unit-avatar-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, var(--teal, #1a535c) 0%, var(--orange, #bb4500) 100%);
+    margin-bottom: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .unit-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #ffffff;
+    display: block;
+  }
+
+  .unit-name {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--blue, #1f385c);
+    margin: 0 0 6px 0;
+  }
+
+  .unit-role {
+    font-family: var(--mono, 'Inter', monospace);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--orange, #bb4500);
+    margin-bottom: 10px;
+  }
+
+  .unit-org {
+    font-size: 0.875rem;
+    color: var(--muted, #4f5664);
+    line-height: 1.45;
+    margin-bottom: 16px;
+  }
+
+  .unit-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-top: auto;
+  }
+
+  .unit-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--bg, #faf9f5);
+    color: var(--text, #1e2530);
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--hairline, rgba(0, 0, 0, 0.06));
+  }
+</style>
+</head>
+<body>
+
+<!-- GLOBAL HEADER -->
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+      </div>
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="index.html" class="btn-elegant">Home</a>
+    <a href="odisha.html" class="btn-elegant">Odisha at a glance</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="about.html" class="btn-elegant" aria-current="page">About Us</a>
+  </div>
+</header>
+
+<!-- MAIN CONTENT WRAPPER -->
+<main>
+
+  <!-- 1. HERO SECTION -->
+  <section class="about-hero-lander">
+    <canvas id="dotfield" aria-hidden="true"></canvas>
+    <div class="hero-container">
+      <div class="hero-pill">
+        <span class="hero-pill-dot"></span>
+        Odisha Demographic Knowledge Portal
+      </div>
+      <h1>Soochana</h1>
+      <div class="tagline">From Numbers to Narratives</div>
+      <p class="hero-desc">
+        Transforming demographic data into meaningful stories that inform policy, research, and public understanding of Odisha's changing population.
+      </p>
+
+      <div class="hero-stats-band">
+        <div class="hero-stat-card">
+          <div class="hero-stat-val">30</div>
+          <div class="hero-stat-lbl">Districts Tracked</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="hero-stat-val">10+</div>
+          <div class="hero-stat-lbl">Demographic Themes</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="hero-stat-val">40+ Yrs</div>
+          <div class="hero-stat-lbl">Survey Evidence</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="hero-stat-val">100%</div>
+          <div class="hero-stat-lbl">Open Access Data</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. WHAT IS SOOCHANA -->
+  <section class="section-wrap alt-bg">
+    <div class="content-container">
+      <div class="section-header">
+        <div class="kicker">Platform Overview</div>
+        <h2>About Soochana</h2>
+        <p>A digital ecosystem built to make demographic evidence accessible, contextual, and actionable.</p>
+      </div>
+
+      <div class="about-narrative-card">
+        <div class="narrative-paragraphs">
+          <p>
+            <strong>Soochana</strong> is a digital knowledge platform that transforms demographic statistics into accessible narratives through interactive data visualizations, analytical stories, and evidence-based resources.
+          </p>
+          <p>
+            The platform enables policymakers, researchers, students, media professionals, and citizens to explore Odisha's demographic transition through dynamic dashboards, thematic articles, reports, datasets, and factsheets.
+          </p>
+          <p>
+            Rather than presenting numbers in isolation, <strong>Soochana connects data with context</strong>, making complex demographic changes easier to understand.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+            </div>
+            <h4>Dynamic Dashboards</h4>
+            <p>Explore district-level population shifts, age distributions, and gender indicators interactively.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <h4>Analytical Stories</h4>
+            <p>Deep-dive thematic research translating statistics into clear, actionable stories.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <h4>Evidence Repository</h4>
+            <p>Access downloadable reports, factsheets, NFHS data, and Census publications.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            </div>
+            <h4>Policy Communication</h4>
+            <p>Empowering local decision-makers with population insights for sustainable planning.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. WHY WE BUILT SOOCHANA -->
+  <section class="section-wrap">
+    <div class="content-container">
+      <div class="section-header">
+        <div class="kicker">Core Objectives</div>
+        <h2>Why We Built Soochana</h2>
+        <p>Population is constantly changing, and every demographic shift influences education, healthcare, employment, urbanization, ageing, and economic development.</p>
+      </div>
+
+      <div class="pillars-stack">
+        
+        <div class="pillar-row">
+          <div class="pillar-badge">01</div>
+          <div class="pillar-info">
+            <h3>Understand Demographic Trends</h3>
+            <p>Gain comprehensive insights into fertility transition, mortality decline, age structural shifts, and urbanization patterns across Odisha.</p>
+          </div>
+        </div>
+
+        <div class="pillar-row">
+          <div class="pillar-badge">02</div>
+          <div class="pillar-info">
+            <h3>Explore Interactive Visualizations</h3>
+            <p>Engage with intuitive choropleth maps, comparative district trend lines, and population pyramids built for instant clarity.</p>
+          </div>
+        </div>
+
+        <div class="pillar-row">
+          <div class="pillar-badge">03</div>
+          <div class="pillar-info">
+            <h3>Access Reliable Datasets & Reports</h3>
+            <p>Download verified survey datasets from Census of India, NFHS-5, PLFS, UDISE+, and state survey repositories seamlessly.</p>
+          </div>
+        </div>
+
+        <div class="pillar-row">
+          <div class="pillar-badge">04</div>
+          <div class="pillar-info">
+            <h3>Discover Evidence-Based Narratives</h3>
+            <p>Read contextualized thematic articles examining how population dynamics intersect with public welfare, health, and economic growth.</p>
+          </div>
+        </div>
+
+        <div class="pillar-row">
+          <div class="pillar-badge">05</div>
+          <div class="pillar-info">
+            <h3>Support Research & Policy Decisions</h3>
+            <p>Provide researchers, policymakers, media, and development practitioners with empirical evidence for targeted interventions.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 4, 5, 6. INSTITUTIONAL FOUNDATIONS -->
+  <section class="section-wrap alt-bg">
+    <div class="content-container">
+      <div class="section-header">
+        <div class="kicker">Institutional Foundations</div>
+        <h2>Pioneering Demographic Intelligence</h2>
+        <p>Soochana is powered by a strategic collaboration committed to evidence-based development and population research.</p>
+      </div>
+
+      <div class="institutions-grid">
+        
+        <!-- DIU Card -->
+        <div class="institution-card inst-diu">
+          <div class="inst-tag">Analytical Lead</div>
+          <h3>Demographic Intelligence Unit (DIU)</h3>
+          <p>
+            The <strong>Demographic Intelligence Unit (DIU)</strong> is an initiative of the Centre for Youth and Social Development (CYSD), established with technical support from UNFPA Odisha.
+          </p>
+          <p>
+            DIU works at the intersection of demographic research, data visualization, policy communication, and evidence generation to promote informed development planning in Odisha.
+          </p>
+          <p>
+            Its objective is to make demographic evidence more accessible for governments, researchers, development practitioners, media, and the public.
+          </p>
+        </div>
+
+        <!-- CYSD Card -->
+        <div class="institution-card inst-cysd">
+          <div class="inst-tag">Founding Organisation</div>
+          <h3>Centre for Youth and Social Development (CYSD)</h3>
+          <p>
+            The <strong>Centre for Youth and Social Development (CYSD)</strong> is a leading development organization based in Odisha, working since 1982 to promote inclusive, equitable, and sustainable development.
+          </p>
+          <p>
+            CYSD works across governance, livelihoods, disaster resilience, climate change, social inclusion, and policy advocacy while strengthening evidence-based development through research and innovation.
+          </p>
+        </div>
+
+        <!-- UNFPA Card -->
+        <div class="institution-card inst-unfpa">
+          <div class="inst-tag">Technical Partner</div>
+          <h3>United Nations Population Fund (UNFPA)</h3>
+          <p>
+            <strong>UNFPA</strong> is the United Nations agency dedicated to ensuring that every pregnancy is wanted, every childbirth is safe, and every young person's potential is fulfilled.
+          </p>
+          <p>
+            In Odisha, UNFPA supports evidence-based planning and policy by strengthening demographic intelligence, population research, gender equality, reproductive health, and youth development.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. MEET THE TEAM — 1-BY-1 SEQUENTIAL INTRO THEN ALL-AT-ONCE GRID REVEAL -->
+  <section class="section-wrap" id="teamSection">
+    <div class="content-container">
+      <div class="section-header">
+        <div class="kicker">Our Experts</div>
+        <h2>Meet the Team</h2>
+        <p>Demographic Intelligence Unit</p>
+      </div>
+
+      <!-- MODE 1: SEQUENTIAL 1-BY-1 SPOTLIGHT INTRO -->
+      <div class="team-spotlight-container" id="teamSpotlight">
+        <div class="spotlight-progress-bar" id="spotlightProgressBar"></div>
+
+        <div class="spotlight-seq-indicator" style="justify-content: flex-end;">
+          <button type="button" class="skip-to-all-btn" id="skipToAllBtn">View All Team Members →</button>
+        </div>
+
+        <div class="spotlight-stage" id="spotlightStage">
+          <div class="spotlight-avatar-frame">
+            <img src="" alt="" class="spotlight-avatar-img" id="spotlightAvatar">
+          </div>
+          <div class="spotlight-member-name" id="spotlightName">Loading...</div>
+          <div class="spotlight-member-role-badge" id="spotlightRole">Role</div>
+          <div class="spotlight-member-org" id="spotlightOrg">Organization</div>
+          <div class="spotlight-member-bio" id="spotlightBio">Bio details loading...</div>
+          <div class="spotlight-member-tags" id="spotlightTags"></div>
+        </div>
+      </div>
+
+      <!-- MODE 2: REVEAL ALL 6 MEMBERS AT ONCE (WHEN ALL 6 ARE DONE) -->
+      <div class="all-team-grid-wrapper" id="allTeamGridWrapper">
+        <div class="all-team-header">
+          <div>
+            <h3>Demographic Intelligence Team</h3>
+            <p>All core members of the Demographic Intelligence Unit</p>
+          </div>
+          <button type="button" class="replay-btn" id="replayBtn">↺ Replay Sequential Intro</button>
+        </div>
+
+        <div class="all-team-grid" id="allTeamGrid"></div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- GLOBAL FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="font-size: var(--fs-small); color:var(--muted); margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption);">
+      Soochana · Demographic Intelligence Unit (CYSD & UNFPA Odisha)
+    </div>
+  </div>
+  <div class="footer-meta">
+    Data Sources: Census of India, NFHS-5, PLFS, UDISE+ & Government of Odisha Survey Reports.
+  </div>
+</footer>
+
+<script src="dotfield.js"></script>
+<script>
+  /* ═══════════════════════════════════════════════════════════════════
+     TEAM INTRO SEQUENTIAL ENGINE & ALL-AT-ONCE GRID REVEAL
+     ═══════════════════════════════════════════════════════════════════ */
+  const TEAM_MEMBERS = [
+    {
+      id: "jagadananda",
+      name: "Dr. Jagadananda",
+      role: "Mentor & Co-Founder",
+      org: "Centre for Youth and Social Development (CYSD)",
+      photo: "images/team/Dr. Jagadananda.png",
+      bio: "Co-founded CYSD in 1982 and has led grassroots development governance, participatory planning, and social inclusion initiatives in Odisha for over four decades. Guides DIU's strategic vision.",
+      tags: ["Governance", "Policy Advocacy", "Civil Society"]
+    },
+    {
+      id: "nadeem",
+      name: "Dr. Nadeem Noor",
+      role: "Technical Advisor",
+      org: "United Nations Population Fund (UNFPA Odisha)",
+      photo: "images/team/Dr. Nadeem Noor.png",
+      bio: "Drives evidence-based population policy, reproductive health advocacy, and youth development programs for UNFPA in Odisha. Technical advisor for DIU's demographic frameworks.",
+      tags: ["Population Studies", "Demographic Intelligence", "Public Health"]
+    },
+    {
+      id: "antim",
+      name: "Antim Alok",
+      role: "Lead, DIU",
+      org: "Demographic Intelligence Unit",
+      photo: "images/team/Antim Alok.png",
+      bio: "Oversees demographic research design, data synthesis, and policy communication strategies. Leads the core analytical team bridging raw statistics with governance decision-making.",
+      tags: ["Demographic Research", "Evidence Synthesis", "Analytics"]
+    },
+    {
+      id: "susavan",
+      name: "Susavan Behera",
+      role: "Data Visualization & Web Lead",
+      org: "Demographic Intelligence Unit",
+      photo: "images/team/Susavan Behera.png",
+      bio: "Engineers interactive dashboards, geospatial district maps, and data story engines powering the Soochana digital knowledge platform.",
+      tags: ["Visual Dashboards", "UI/UX Engineering", "Web Dev"]
+    },
+    {
+      id: "shreyak",
+      name: "Shreyak Sailendra",
+      role: "Demographic Analyst",
+      org: "Demographic Intelligence Unit",
+      photo: "images/team/Shreyak Sailendra.png",
+      bio: "Analyzes quinquennial population projections, NFHS survey rounds, and district-level census datasets to uncover long-term demographic trends.",
+      tags: ["Quantitative Analysis", "Survey Data", "Projections"]
+    },
+    {
+      id: "ananta",
+      name: "Ananta Swain",
+      role: "Research & Policy Associate",
+      org: "Demographic Intelligence Unit",
+      photo: "images/team/Ananta Swain.png",
+      bio: "Synthesizes complex demographic metrics into thematic factsheets, policy briefs, and accessible knowledge products for development practitioners.",
+      tags: ["Policy Synthesis", "Data Curation", "Factsheets"]
+    }
+  ];
+
+  let currentIndex = 0;
+  let timerInterval = null;
+  let progressVal = 0;
+  const MEMBER_DURATION = 4500; // 4.5s per member sequential intro
+  const TICK_INTERVAL = 50;
+
+  function renderAllTeamGrid() {
+    const gridContainer = document.getElementById('allTeamGrid');
+    gridContainer.innerHTML = TEAM_MEMBERS.map(member => `
+      <div class="team-card-unit">
+        <div class="unit-avatar-ring">
+          <img src="${member.photo}" alt="${member.name}" class="unit-avatar-img">
+        </div>
+        <div class="unit-name">${member.name}</div>
+        <div class="unit-role">${member.role}</div>
+        <div class="unit-org">${member.org}</div>
+        <div class="unit-tags">
+          ${member.tags.map(t => `<span class="unit-tag">${t}</span>`).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function setSpotlightMember(index) {
+    currentIndex = index;
+    const member = TEAM_MEMBERS[index];
+
+    const stage = document.getElementById('spotlightStage');
+    stage.style.opacity = '0.3';
+    stage.style.transform = 'translateY(4px)';
+    stage.style.transition = 'all 0.2s ease';
+
+    setTimeout(() => {
+      document.getElementById('spotlightAvatar').src = member.photo;
+      document.getElementById('spotlightAvatar').alt = member.name;
+      document.getElementById('spotlightName').textContent = member.name;
+      document.getElementById('spotlightRole').textContent = member.role;
+      document.getElementById('spotlightOrg').textContent = member.org;
+      document.getElementById('spotlightBio').textContent = member.bio;
+
+      const tagsContainer = document.getElementById('spotlightTags');
+      tagsContainer.innerHTML = member.tags.map(t => `<span class="spotlight-tag">${t}</span>`).join('');
+
+      stage.style.opacity = '1';
+      stage.style.transform = 'translateY(0)';
+    }, 180);
+  }
+
+  function startSequentialIntro() {
+    clearInterval(timerInterval);
+    currentIndex = 0;
+    progressVal = 0;
+
+    // Show spotlight, hide full grid
+    const spotlightContainer = document.getElementById('teamSpotlight');
+    const allGridWrapper = document.getElementById('allTeamGridWrapper');
+    spotlightContainer.style.display = 'block';
+    spotlightContainer.style.opacity = '1';
+    allGridWrapper.classList.remove('visible');
+
+    setSpotlightMember(0);
+
+    timerInterval = setInterval(() => {
+      progressVal += (TICK_INTERVAL / MEMBER_DURATION) * 100;
+      document.getElementById('spotlightProgressBar').style.width = `${Math.min(progressVal, 100)}%`;
+
+      if (progressVal >= 100) {
+        progressVal = 0;
+        currentIndex++;
+        if (currentIndex < TEAM_MEMBERS.length) {
+          setSpotlightMember(currentIndex);
+        } else {
+          // ALL 6 MEMBERS ARE DONE! Show all at once in full screen grid!
+          revealAllMembersGrid();
+        }
+      }
+    }, TICK_INTERVAL);
+  }
+
+  function revealAllMembersGrid() {
+    clearInterval(timerInterval);
+    const spotlightContainer = document.getElementById('teamSpotlight');
+    const allGridWrapper = document.getElementById('allTeamGridWrapper');
+
+    spotlightContainer.style.opacity = '0';
+    setTimeout(() => {
+      spotlightContainer.style.display = 'none';
+      allGridWrapper.classList.add('visible');
+    }, 300);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderAllTeamGrid();
+    startSequentialIntro();
+
+    document.getElementById('skipToAllBtn').addEventListener('click', revealAllMembersGrid);
+    document.getElementById('replayBtn').addEventListener('click', startSequentialIntro);
+  });
+</script>
+<script src="chatbot.js"></script>
+</body>
+</html>
