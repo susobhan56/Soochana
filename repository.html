@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="ui.js"></script>
+<script src="data_loader.js"></script>
 <style>
     /* Repository Hub layout and tabs styles */
     .repo-container {
@@ -512,7 +513,7 @@
 
         filtered.forEach(d => {
             const rawUrl = d.file.startsWith('http') ? d.file : d.file.replace(/^\//, '');
-            const downloadUrl = DataLoader.toDirectDownloadUrl(rawUrl);
+            const downloadUrl = (window.DataLoader && window.DataLoader.toDirectDownloadUrl) ? window.DataLoader.toDirectDownloadUrl(rawUrl) : rawUrl;
             const icon = typeIcons[d.type] || typeIcons['excel'];
             grid.innerHTML += `
                 <div class="dataset-card">
@@ -526,7 +527,7 @@
                         <span>SIZE: ${d.size}</span>
                     </div>
                     <div class="dataset-btn-row">
-                        <a href="${downloadUrl}" onclick="event.preventDefault(); DataLoader.triggerDirectDownload('${rawUrl}');" class="btn-dataset-dl">💾 Download Dataset</a>
+                        <a href="${downloadUrl}" onclick="event.preventDefault(); if (window.DataLoader && window.DataLoader.triggerDirectDownload) { DataLoader.triggerDirectDownload('${rawUrl}'); } else { window.location.href='${downloadUrl}'; }" class="btn-dataset-dl">💾 Download Dataset</a>
                     </div>
                 </div>
             `;
@@ -554,7 +555,7 @@
         filtered.forEach(r => {
             const relThumb = r.thumbnail.replace(/^\//, '');
             const viewUrl = r.file.startsWith('http') ? r.file : r.file.replace(/^\//, '');
-            const downloadUrl = DataLoader.toDirectDownloadUrl(viewUrl);
+            const downloadUrl = (window.DataLoader && window.DataLoader.toDirectDownloadUrl) ? window.DataLoader.toDirectDownloadUrl(viewUrl) : viewUrl;
             grid.innerHTML += `
                 <div class="report-card">
                     <div class="report-img">
@@ -566,7 +567,7 @@
                         <p>${r.description}</p>
                         <div class="report-btn-row">
                             <a href="${viewUrl}" target="_blank" rel="noopener" class="btn-report-view">👁️ View Document</a>
-                            <a href="${downloadUrl}" onclick="event.preventDefault(); DataLoader.triggerDirectDownload('${viewUrl}');" class="btn-report-dl">💾 Download PDF</a>
+                            <a href="${downloadUrl}" onclick="event.preventDefault(); if (window.DataLoader && window.DataLoader.triggerDirectDownload) { DataLoader.triggerDirectDownload('${viewUrl}'); } else { window.location.href='${downloadUrl}'; }" class="btn-report-dl">💾 Download PDF</a>
                         </div>
                     </div>
                 </div>
