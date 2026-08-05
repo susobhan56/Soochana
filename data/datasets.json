@@ -3,65 +3,74 @@
     {
       "id": "edu1",
       "name": "District Level Education Data 2023-24 UDISE+",
-      "description": "Complete census education dataset for Odisha districts in Google Drive format",
+      "description": "Complete census education dataset for Odisha districts",
       "type": "excel",
-      "size": "2.5 MB",
+      "size": "18 KB",
       "lastUpdated": "2025-01-15",
-      "file": "https://drive.google.com/file/d/1aMBcMd66Q0GdsqmqTA57PunLuQ5Wkkvv/view?usp=sharing"
+      "file": "excel/District Level Education Data 2023-24 UDISE+.xlsx"
     },
     {
-      "id": "health2",
+      "id": "pop1",
       "name": "District-wise Population Figures 1901-2036",
       "description": "District-wise population projections and demographic trend dataset",
       "type": "excel",
-      "size": "1.8 MB",
+      "size": "114 KB",
       "lastUpdated": "2025-03-20",
-      "file": "https://drive.google.com/file/d/1MrLxBsWqQFtD7nsiAC61iiJCl_BfN4-u/view?usp=sharing"
+      "file": "excel/District-wise Population Figures 1901-2036.xlsx"
     },
     {
-      "id": "health1",
+      "id": "edu2",
       "name": "Education Data DistrictWise",
       "description": "District-level educational indicators and UDISE+ metrics",
       "type": "excel",
-      "size": "0.5 MB",
+      "size": "21 KB",
       "lastUpdated": "2025-07-01",
-      "file": "https://drive.google.com/file/d/17mNmcTSrx4N4kIAx-nrfKorjGyJaOvtf/view?usp=sharing"
+      "file": "excel/Education Data DistrciWise.xlsx"
     },
     {
       "id": "elderly1",
       "name": "Elderly_pop & M&CH_Odisha_need_literature review",
       "description": "Literature review and dataset on elderly population and maternal-child health",
       "type": "excel",
-      "size": "0.8 MB",
+      "size": "16 KB",
       "lastUpdated": "2025-07-01",
-      "file": "https://drive.google.com/file/d/1zcpisbOOpMIAmy0eKZi7B2BAhnyvtHRo/view?usp=sharing"
+      "file": "excel/Elderly_pop & M&CH_Odisha_need_literature review.xlsx"
     },
     {
       "id": "emp1",
-      "name": "Health Data Analysis",
-      "description": "Analyzed health matrices and healthcare statistics",
+      "name": "Employment Data Analysis",
+      "description": "District-wise employment and labor force participation dataset",
       "type": "excel",
-      "size": "1.2 MB",
+      "size": "30 KB",
       "lastUpdated": "2025-05-10",
-      "file": "https://drive.google.com/file/d/1SC-bByc2hsPhi5K40pa_WuOQMJMkmsF_/view?usp=sharing"
+      "file": "excel/Employment.xlsx"
+    },
+    {
+      "id": "health1",
+      "name": "Health Data Analysis",
+      "description": "Analyzed health matrices, facility infrastructure, and healthcare statistics",
+      "type": "excel",
+      "size": "44 KB",
+      "lastUpdated": "2025-05-10",
+      "file": "excel/Health.xlsx"
     },
     {
       "id": "mig1",
       "name": "Migration and Urbanization Trends",
-      "description": "Processed data on migration patterns and urbanization trends",
+      "description": "Processed dataset on migration patterns, inter-district flow, and urbanization",
       "type": "excel",
-      "size": "3.1 MB",
+      "size": "29 KB",
       "lastUpdated": "2025-04-15",
-      "file": "https://drive.google.com/file/d/105CoDtTTKMuYEen5huK6UGowe4e8P9Ho/view?usp=sharing"
+      "file": "excel/Migration and Urbanization.xlsx"
     },
     {
-      "id": "pop1",
-      "name": "Ageing Data Analysis",
-      "description": "Processed dataset on ageing populations and elder care challenges",
+      "id": "ageing1",
+      "name": "Population Ageing Data Analysis",
+      "description": "Processed dataset on ageing demographics and elderly population trends",
       "type": "excel",
-      "size": "3.1 MB",
+      "size": "23 KB",
       "lastUpdated": "2025-04-15",
-      "file": "https://drive.google.com/file/d/1P4Zv9Mr-CXxubOdWRuZaZLO7HD5EOA6M/view?usp=sharing"
+      "file": "excel/Population Ageing.xlsx"
     }
   ]
 }
