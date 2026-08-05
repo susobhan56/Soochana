@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js"></script>
 <!-- Three.js 3D WebGL Engine for Interactive Background Particle System -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -21,6 +22,178 @@
   .reveal > * { transform: none !important; }
   .lander-kicker, .lander-sub, .lander-cta, .lander-readout { opacity: 1 !important; transform: none !important; }
 </style></noscript>
+<style>
+    /* Page specific overrides to support layout-scrolly map */
+    .scrolly { display: grid; grid-template-columns: 1fr 340px; position: relative; background: var(--surface); }
+    .sticky-map { 
+      position: sticky; 
+      top: 70px; 
+      height: calc(100vh - 70px); 
+      display: flex; 
+      flex-direction: column; 
+      border-right: 1px solid var(--border); 
+      padding: 16px 20px; 
+      background: var(--bg);
+      overflow: hidden;
+    }
+    #map-container {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+      overflow: hidden;
+    }
+    #map-container svg {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .steps { padding: 0; background: var(--surface); }
+    .step { min-height: 75vh; padding: 60px 24px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border); opacity: 0.25; transition: opacity 0.5s ease; }
+    .step.active { opacity: 1; }
+    .stat-cell { padding: 24px 20px; }
+    body { overflow-y: scroll; height: auto; }
+
+    /* Compact, refined text styling so the map stays huge */
+    .map-title {
+      font-size: 1.45rem !important;
+      font-weight: 700 !important;
+      line-height: 1.25 !important;
+      color: var(--blue);
+      margin-top: 2px !important;
+    }
+    .map-kicker {
+      font-size: 0.75rem !important;
+      letter-spacing: 0.12em !important;
+      font-weight: 700 !important;
+      text-transform: uppercase;
+    }
+    .step-idx {
+      font-family: var(--mono);
+      font-size: 0.8rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .step h2 {
+      font-size: 1.35rem !important;
+      font-weight: 700 !important;
+      line-height: 1.3 !important;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+    .step p {
+      font-size: 0.98rem !important;
+      line-height: 1.65 !important;
+      color: var(--text) !important;
+      font-weight: 400 !important;
+    }
+    .stat-value {
+      font-size: 1.65rem !important;
+      font-weight: 700 !important;
+    }
+    .stat-label {
+      font-size: 0.82rem !important;
+      line-height: 1.4 !important;
+      font-weight: 500 !important;
+    }
+    .tooltip {
+      font-size: 0.95rem !important;
+      padding: 9px 14px !important;
+      border-radius: 8px !important;
+    }
+
+    @media (max-width: 900px) {
+        .scrolly { grid-template-columns: 1fr; }
+        .sticky-map {
+            position: relative;
+            top: 0;
+            height: 70vh;
+            border-right: none;
+            border-bottom: 1px solid var(--border);
+            padding: 12px;
+        }
+        .step {
+            min-height: auto;
+            padding: 40px 16px;
+        }
+    }
+
+    /* Executive Presentation Index Navigation */
+    .report-index-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 36px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+    .report-index-header {
+      font-family: var(--mono);
+      font-size: var(--fs-micro);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .report-index-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .slide-tab-btn {
+      background: transparent;
+      border: 1px solid rgba(26, 83, 92, 0.25);
+      color: var(--teal);
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-tab-btn:hover {
+      background: rgba(26, 83, 92, 0.08);
+      border-color: var(--teal);
+      transform: translateY(-1px);
+    }
+    .slide-tab-btn.active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(26, 83, 92, 0.25);
+    }
+
+    /* Executive Presentation 2-Column Dashboard Grid */
+    .report-grid-layout {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+    @media (max-width: 900px) {
+      .report-grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .grid-span-full {
+      grid-column: 1 / -1;
+    }
+</style>
 </head>
 <body>
 
@@ -56,8 +229,7 @@
     </a>
   </div>
   <div class="nav-group flex-wrap" style="gap:12px;">
-    <a href="index.html" class="btn-elegant" aria-current="page">Home</a>
-    <a href="odisha.html" class="btn-elegant">Odisha at a glance</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Odisha at a glance</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant">Repository</a>
     <a href="about.html" class="btn-elegant">About Us</a>
@@ -82,8 +254,14 @@
     </p>
 
     <div class="lander-cta">
-      <a href="odisha.html" class="btn-pill solid">Odisha at a glance</a>
+      <a href="#state-stats" class="btn-pill solid">Odisha at a glance</a>
       <a href="#scrollySection" class="btn-pill ghost">Explore the story</a>
+    </div>
+
+    <!-- COMPACT TOP DEMOGRAPHIC BATTLE BUTTONS -->
+    <div style="margin-top: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <span style="font-family: var(--mono); font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">Demographic Duels:</span>
+      <a href="odisha_compare.html" class="btn-pill ghost" style="padding: 7px 18px; font-size: 0.82rem; border-color: rgba(107,70,193,0.35); color: var(--purple); text-decoration: none;" onmouseover="this.style.background='rgba(107,70,193,0.08)'; this.style.borderColor='var(--purple)';" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(107,70,193,0.35)';">District Battle →</a>
     </div>
   </div>
 
@@ -122,230 +300,381 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════
-     THE STORY — DEMOGRAPHIC TRANSITION JOURNEY
-     Full-width layout stretched smoothly to 1400px
+     STATE STAT STRIP
 ═══════════════════════════════════════════════ -->
-<section style="padding: 60px max(20px, 4vw) 20px; max-width: 1400px; width: 100%; margin: 0 auto; box-sizing: border-box;">
-  <div class="kicker">Data Journalism · Demographic Transition</div>
-  <h2 style="font-family:var(--serif); font-size:var(--fs-h2); font-weight:var(--wt-display); letter-spacing:-.03em; line-height:1.1; color:var(--blue); margin:0 0 16px;">
-    A Nation &amp; A State: Two Parallel Demographic Journeys
-  </h2>
-  <p style="font-size:var(--fs-body); color:var(--muted); max-width:48em; line-height:1.7; margin:0 0 40px;">
-    India has crossed the 1.4 billion threshold, becoming the world's most populous nation. 
-    Meanwhile, Odisha—with 46 million residents—mirrors the national transition while pacing ahead 
-    in stabilizing its population. Both achieved below-replacement fertility.
-  </p>
+<div class="stat-strip" id="state-stats">
+  <div class="stat-cell">
+    <div class="stat-value teal" id="stat-tfr">--</div>
+    <div class="stat-label">Fertility Rate (TFR)<br>NFHS-5 Profile</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value orange" id="stat-literacy">--</div>
+    <div class="stat-label">Literacy Rate<br>Census Benchmark</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value purple" id="stat-sexratio">--</div>
+    <div class="stat-label">Sex Ratio<br>Females per 1000 Males</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value blue" id="stat-peakpop">--</div>
+    <div class="stat-label">Peak Population<br>Projected by 2036</div>
+  </div>
+</div>
 
-  <!-- STAT STRIP (INDIA vs ODISHA) -->
-  <div class="stat-strip dual-region" style="margin-bottom: 50px; width: 100%;">
-    <!-- INDIA -->
-    <div class="stat-region">
-      <div class="stat-region-title green" style="color: var(--green);">India Overview</div>
-      <div class="stat-row">
-        <div class="stat-cell">
-          <div class="stat-value green">1.428B</div>
-          <div class="stat-label">Population<br>(2023)</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-value teal">1.98</div>
-          <div class="stat-label">Fertility Rate<br>(NFHS-5)</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-value yellow">29.8</div>
-          <div class="stat-label">Median Age<br>(years)</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-value orange">415</div>
-          <div class="stat-label">Density<br>(per km²)</div>
-        </div>
-      </div>
+<!-- ═══════════════════════════════════════════════
+     MACRO ECONOMY & GOVERNANCE STAT BAND
+═══════════════════════════════════════════════ -->
+<div class="stat-strip" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); width: 100%;">
+  <div class="stat-cell">
+    <div class="stat-value teal">₹9.88L Cr</div>
+    <div class="stat-label">GSDP (Current Prices)<br>Per Capita: ₹1,86,761</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value green">155,707 km²</div>
+    <div class="stat-label">Geographical Area<br>Forest Cover: 33.67% (52.4k km²)</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value purple">30 Districts</div>
+    <div class="stat-label">3 Divisions · 317 Tehsils<br>314 Blocks (118 Tribal)</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value blue">4.83 Cr</div>
+    <div class="stat-label">Projected Pop 2026<br>81.5% Rural · 18.5% Urban</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SCROLLYTELLING MAP SECTION
+═══════════════════════════════════════════════ -->
+<div class="scrolly" id="scrollySection">
+  <!-- LEFT: Sticky Map -->
+  <div class="sticky-map">
+    <div class="map-kicker" style="color: var(--purple);">Regional Explorer</div>
+    <h2 class="map-title" id="mapSectionTitle">The State Overview</h2>
+    <p style="font-size: var(--fs-caption); color: var(--muted); margin: 6px 0 20px 0; font-family: var(--mono);">Click on any district to explore deep-dive metrics</p>
+    <div id="map-container" style="flex:1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.01);"></div>
+  </div>
+
+  <!-- RIGHT: Scroll steps -->
+  <div class="steps">
+    <div class="step active" data-highlight="all" data-title="A Tapestry of 30 Districts">
+      <div class="step-idx">The State Overview</div>
+      <h2>30 Districts, One State</h2>
+      <p>Odisha is India's 11th most populous state. Its demographic profile is a complex matrix of rapid coastal urbanization and agricultural inland plains.</p>
     </div>
     
-    <!-- ODISHA -->
-    <div class="stat-region">
-      <div class="stat-region-title purple" style="color: var(--purple);">Odisha Overview</div>
-      <div class="stat-row">
-        <div class="stat-cell">
-          <div class="stat-value purple">46.2M</div>
-          <div class="stat-label">Population<br>(2021)</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-value red">1.80</div>
-          <div class="stat-label">Fertility Rate<br>(NFHS-5)</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-value orange">1063</div>
-          <div class="stat-label">Sex Ratio<br>(NFHS-5)</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-value blue">293</div>
-          <div class="stat-label">Density<br>(per km²)</div>
-        </div>
-      </div>
+    <div class="step" data-highlight="Ganjam,Cuttack,Mayurbhanj" data-title="The Demographic Giants">
+      <div class="step-idx" style="color: var(--orange);">Population Giants</div>
+      <h2>Where the millions reside</h2>
+      <p>Three districts—<span style="color:var(--yellow)">Ganjam</span>, <span style="color:var(--teal)">Cuttack</span>, and <span style="color:var(--purple)">Mayurbhanj</span>—together account for nearly 20% of the state's population. Ganjam alone has over 3.5 million residents.</p>
+    </div>
+    
+    <div class="step" data-highlight="Khordha" data-title="The Capital & Knowledge Hub">
+      <div class="step-idx" style="color: var(--teal);">Knowledge Hub</div>
+      <h2>Education and the Capital Belt</h2>
+      <p><span style="color:var(--teal)">Khordha</span> leads the state in literacy (86.9%) and has reached a very low fertility rate of 1.4, driven by urban development around Bhubaneswar.</p>
+    </div>
+    
+    <div class="step" data-highlight="Malkangiri,Nabarangapur,Koraput" data-title="The Southern Frontier Challenges">
+      <div class="step-idx" style="color: var(--red);">Challenges</div>
+      <h2>The Southern Frontier</h2>
+      <p>Southern districts like <span style="color:var(--red)">Malkangiri</span>, <span style="color:var(--red)">Nabarangapur</span>, and <span style="color:var(--red)">Koraput</span> still face higher infant mortality rates and lower literacy levels, representing the state's focused development priorities.</p>
     </div>
   </div>
+</div>
 
-  <!-- SCROLLYTELLING — INDIA & ODISHA DEMOGRAPHICS -->
-  <div class="scrolly" id="scrollySection" style="width: 100%;">
-    <!-- LEFT: sticky chart -->
-    <div class="sticky-chart">
-      <div class="chart-header">
-        <div class="chart-title" id="chartTitle">India's Population Growth, 1950–2100</div>
-        <div class="chart-subtitle label" id="chartSub">Total population (billions) · UN projections</div>
-      </div>
-      <div class="chart-body">
-        <svg id="mainChart"></svg>
-      </div>
-      <div class="chart-legend">
-        <div class="legend-item" id="legendLineA">
-          <div class="legend-dot" style="background:var(--green)"></div>
-          <span id="legendTextA">INDIA POPULATION</span>
-        </div>
-        <div class="legend-item" id="legendLineB" style="display:none">
-          <div class="legend-dot" style="background:var(--teal)"></div>
-          <span>FERTILITY (TFR)</span>
-        </div>
-        <div class="legend-item" id="legendLineC">
-          <div class="legend-dot" style="background:var(--dimmed)"></div>
-          <span>UN PROJECTION</span>
-        </div>
-      </div>
+<!-- ═══════════════════════════════════════════════
+     VITAL HEALTH & DEMOGRAPHIC BENCHMARKS (FULL WIDTH)
+═══════════════════════════════════════════════ -->
+<div class="stat-strip" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); width: 100%;">
+  <div class="stat-cell">
+    <div class="stat-value teal">15.8</div>
+    <div class="stat-label">Birth Rate<br>(per 1,000 Pop)</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value blue">7.9</div>
+    <div class="stat-label">Death Rate<br>(per 1,000 Pop)</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value orange">28</div>
+    <div class="stat-label">Infant Mortality (IMR)<br>(per 1,000 Live Births)</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value red">124</div>
+    <div class="stat-label">Maternal Mortality (MMR)<br>(per 100,000 Live Births)</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-value green">70.4</div>
+    <div class="stat-label">Life Expectancy<br>M: 69.2 | F: 71.8 yrs</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     POLICY TIMELINE
+═══════════════════════════════════════════════ -->
+<section class="timeline-section">
+  <div class="label" style="color: var(--orange); margin-bottom: 16px;">Policy History</div>
+  <h2>Decades of Progress: Odisha's Welfare Milestones</h2>
+
+  <div class="policy-timeline" id="policyTimeline">
+    <div class="policy-item key">
+      <div class="policy-year">1985</div>
+      <div class="policy-title">Universal Immunization Expansion</div>
+      <div class="policy-desc">Odisha expands immunization coverage across rural belts, targeting infant mortality and establishing basic primary healthcare centers in remote blocks.</div>
     </div>
-
-    <!-- RIGHT: scroll steps -->
-    <div class="steps">
-      <div class="step active" data-chart="india-total">
-        <div class="step-idx">01 — The Scale</div>
-        <h2>The rise to the world's largest population</h2>
-        <p>
-          India's population grew from 376 million in 1950 to 1.428 billion in 2023. Unlike China, whose population has begun to decline, India will continue growing until peaking around 2060.
-        </p>
-        <div class="big-num green">1.428B</div>
-        <div class="big-num-label">Peak scale reached · 2023</div>
-      </div>
-
-      <div class="step" data-chart="india-fertility">
-        <div class="step-idx">02 — The Transition</div>
-        <h2>Below replacement for the first time</h2>
-        <p>
-          A country needs a total fertility rate of 2.1 to maintain a stable population. India's fertility rate fell to 1.98 in 2023, signaling that population stabilization is on the horizon.
-        </p>
-        <div class="big-num teal">1.98</div>
-        <div class="big-num-label">Fertility rate (TFR) · replacement = 2.1</div>
-      </div>
-
-      <div class="step" data-chart="india-states">
-        <div class="step-idx">03 — Regional Disparity</div>
-        <h2>A divide in demographic speed</h2>
-        <p>
-          While southern states like Kerala (TFR 1.5) and Odisha (TFR 1.8) stabilized early, northern states like Bihar (TFR 2.8) continue to drive growth.
-        </p>
-        <div class="mini-bar-wrap">
-          <div class="mini-bar-row">
-            <span class="mini-bar-label">Kerala</span>
-            <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--green)" data-w="54%"></div></div>
-            <span class="mini-bar-val">1.5</span>
-          </div>
-          <div class="mini-bar-row">
-            <span class="mini-bar-label">Odisha</span>
-            <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--purple)" data-w="64%"></div></div>
-            <span class="mini-bar-val">1.8</span>
-          </div>
-          <div class="mini-bar-row">
-            <span class="mini-bar-label">National Avg</span>
-            <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--teal)" data-w="70%"></div></div>
-            <span class="mini-bar-val">1.98</span>
-          </div>
-          <div class="mini-bar-row">
-            <span class="mini-bar-label">Bihar</span>
-            <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--red)" data-w="100%"></div></div>
-            <span class="mini-bar-val red">2.8</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="step" data-chart="india-labor">
-        <div class="step-idx">04 — Labor Forces</div>
-        <h2>Labor Force Participation (LFPR)</h2>
-        <p>
-          Odisha outperforms the national average in Labor Force Participation Rate (LFPR) and Female Labor Force Participation (FLFPR) for the 15–59 age group.
-        </p>
-        <div class="mini-bar-wrap">
-          <div class="mini-bar-row">
-            <span class="mini-bar-label">Odisha LFPR</span>
-            <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--purple)" data-w="69%"></div></div>
-            <span class="mini-bar-val">69.2%</span>
-          </div>
-          <div class="mini-bar-row">
-            <span class="mini-bar-label">India LFPR</span>
-            <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--green)" data-w="64%"></div></div>
-            <span class="mini-bar-val">64.3%</span>
-          </div>
-          <div class="mini-bar-row">
-            <span class="mini-bar-label">Odisha FLFPR</span>
-            <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--orange)" data-w="53%"></div></div>
-            <span class="mini-bar-val">53.5%</span>
-          </div>
-          <div class="mini-bar-row">
-            <span class="mini-bar-label">India FLFPR</span>
-            <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--teal)" data-w="45%"></div></div>
-            <span class="mini-bar-val">45.2%</span>
-          </div>
-        </div>
-      </div>
+    <div class="policy-item">
+      <div class="policy-year">1995</div>
+      <div class="policy-title">Primary Education Tribal Drives</div>
+      <div class="policy-desc">Establishment of tribal residential schools (Seva Ashrams) to drive literacy expansion in the southern and western tribal districts.</div>
+    </div>
+    <div class="policy-item key">
+      <div class="policy-year">2011</div>
+      <div class="policy-title">Mamata Scheme Maternity Benefit</div>
+      <div class="policy-desc">A direct conditional cash transfer scheme for pregnant and lactating women. It drastically improves institutional delivery rates and child nutrition, driving infant mortality down.</div>
+    </div>
+    <div class="policy-item key">
+      <div class="policy-year">2018</div>
+      <div class="policy-title">Biju Swasthya Kalyan Yojana (BSKY)</div>
+      <div class="policy-desc">BSKY launches universal healthcare coverage, providing cashless treatment to over 9.6 million families in state hospitals and empaneled private centers.</div>
+    </div>
+    <div class="policy-item">
+      <div class="policy-year">2023</div>
+      <div class="policy-title">Stabilization Milestone (TFR 1.8)</div>
+      <div class="policy-desc">State surveys confirm Odisha's TFR has declined to 1.8—well below the national average—indicating success in state welfare and family planning programs.</div>
     </div>
   </div>
+</section>
 
-  <!-- POPULATION PYRAMIDS — DUAL -->
-  <div class="full-section" style="margin-top: 60px; width: 100%;">
-    <div class="label" style="margin-bottom:12px">05 — Age Structure Comparison</div>
-    <h2>Youth vs Aging: India and Odisha Side-by-Side</h2>
-    <p class="intro-text">
-      Both India and Odisha exhibit a transitional age structure. As fertility declines, the base of the pyramids (young children) is shrinking, while the middle working-age bulge grows. Select a projection milestone to view.
+<!-- ═══════════════════════════════════════════════
+     ODISHA DEMOGRAPHIC & DEVELOPMENT LANDSCAPE (11-SECTION SUITE)
+═══════════════════════════════════════════════ -->
+<section style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 50px max(20px, 4vw); box-sizing: border-box;">
+  <div style="margin-bottom: 24px;">
+    <div class="label" style="color: var(--teal); margin-bottom: 12px;">Strategic Demographic Dashboard</div>
+    <h2 style="font-family: var(--serif); font-size: var(--fs-h2); color: var(--blue); margin: 4px 0 0;">
+      Odisha State Development &amp; Demographic Analytics
+    </h2>
+    <p style="font-size: var(--fs-caption); color: var(--muted); font-family: var(--mono); margin-top: 6px; max-width: 54em; line-height: 1.5;">
+      Multi-Decadal Strategic Analysis of Population Trajectories, Gender Parity, Fertility Transitions, and Indigenous Heritage (1901–2036)
     </p>
+  </div>
 
-    <div class="yr-btn-group">
-      <button class="yr-btn active" data-year="2011" onclick="setPyramidYear(2011, this)">2011 (Census)</button>
-      <button class="yr-btn" data-year="2021" onclick="setPyramidYear(2021, this)">2021</button>
-      <button class="yr-btn" data-year="2026" onclick="setPyramidYear(2026, this)">2026 (Projected)</button>
-      <button class="yr-btn" data-year="2031" onclick="setPyramidYear(2031, this)">2031 (Projected)</button>
-      <button class="yr-btn" data-year="2036" onclick="setPyramidYear(2036, this)">2036 (Projected)</button>
+  <!-- Section Index Navigation Box -->
+  <div class="report-index-container">
+    <div class="report-index-header">Analytics Index &amp; Quick Module Jump:</div>
+    <div id="slide-tabs-bar" class="report-index-nav">
+      <button class="slide-tab-btn active" data-slide="1">01 Overview</button>
+      <button class="slide-tab-btn" data-slide="2">02 Admin Profile</button>
+      <button class="slide-tab-btn" data-slide="3">03 Demographics</button>
+      <button class="slide-tab-btn" data-slide="4">04 Pop Growth (1901-36)</button>
+      <button class="slide-tab-btn" data-slide="5">05 Pop Pyramids</button>
+      <button class="slide-tab-btn" data-slide="6">06 Age Cohorts</button>
+      <button class="slide-tab-btn" data-slide="7">07 Sex Ratio</button>
+      <button class="slide-tab-btn" data-slide="8">08 Sex Ratio at Birth</button>
+      <button class="slide-tab-btn" data-slide="9">09 TFR Trajectory</button>
+      <button class="slide-tab-btn" data-slide="10">10 Tribal Scale</button>
+      <button class="slide-tab-btn" data-slide="11">11 62 Tribes &amp; PVTGs</button>
+    </div>
+  </div>
+
+  <!-- All 11 Sections Rendered in a 2-Column Dashboard Grid -->
+  <div id="all-sections-container" class="report-grid-layout">
+    <!-- Section 1: Overview -->
+    <div id="section-1" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--teal);">Section 01 · State Overview</div>
+      <h3 style="font-family: var(--serif); font-size: 1.6rem; color: var(--blue); margin: 6px 0 16px;">Odisha Macro Framework &amp; Governance</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px;">
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--teal); font-family: var(--serif);">₹9.88 Lakh Cr</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px;">GSDP at Current Prices</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px;">
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--green); font-family: var(--serif);">155,707 km²</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px;">Forest Cover: 33.67%</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px;">
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--purple); font-family: var(--serif);">₹1,86,761</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px;">Per Capita Income</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px;">
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--orange); font-family: var(--serif);">4.83 Cr</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px;">Projected Pop 2026</div>
+        </div>
+      </div>
+      <div style="margin-top: 16px; font-size: 12px; color: var(--text); line-height: 1.5; border-top: 1px dashed var(--border); padding-top: 12px;">
+        <strong>Formation:</strong> 1 April 1936 | <strong>Capital:</strong> Bhubaneswar<br>
+        <strong>Assembly:</strong> 147 | <strong>Lok Sabha:</strong> 21 | <strong>Rajya Sabha:</strong> 10
+      </div>
     </div>
 
-    <div class="pyramid-dual">
-      <div class="pyramid-panel">
-        <div class="pyramid-header green" style="color: var(--green);">India Pyramid (%)</div>
-        <svg id="pyramidIndia"></svg>
+    <!-- Section 2: Admin Profile -->
+    <div id="section-2" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--purple);">Section 02 · Administration</div>
+      <h3 style="font-family: var(--serif); font-size: 1.6rem; color: var(--blue); margin: 6px 0 16px;">Administrative Matrix &amp; Infrastructure</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--blue);">30</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono);">Districts (3 Div)</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--purple);">314</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono);">Blocks (118 Tribal)</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--teal);">317</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono);">Tehsils &amp; 58 Sub-div</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--orange);">6,733</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono);">GPs &amp; 53k Villages</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--green);">110</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono);">Urban Local Bodies</div>
+        </div>
       </div>
-      <div class="pyramid-panel">
-        <div class="pyramid-header purple" style="color: var(--purple);">Odisha Pyramid (%)</div>
-        <svg id="pyramidOdisha"></svg>
+    </div>
+
+    <!-- Section 3: Demographics -->
+    <div id="section-3" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--orange);">Section 03 · Demographics</div>
+      <h3 style="font-family: var(--serif); font-size: 1.6rem; color: var(--blue); margin: 6px 0 16px;">Demographics &amp; Health Outcomes</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center;">
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--teal);">311 / km²</div>
+          <div style="font-size: 10px; color: var(--muted); font-family: var(--mono);">Pop Density</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center;">
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--purple);">993</div>
+          <div style="font-size: 10px; color: var(--muted); font-family: var(--mono);">Sex Ratio</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center;">
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--blue);">1.6</div>
+          <div style="font-size: 10px; color: var(--muted); font-family: var(--mono);">TFR</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center;">
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--green);">70.4 yrs</div>
+          <div style="font-size: 10px; color: var(--muted); font-family: var(--mono);">Life Exp</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center;">
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--orange);">28</div>
+          <div style="font-size: 10px; color: var(--muted); font-family: var(--mono);">IMR</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center;">
+          <div style="font-size: 1.3rem; font-weight: 800; color: var(--red);">124</div>
+          <div style="font-size: 10px; color: var(--muted); font-family: var(--mono);">MMR</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Population Growth Trajectory -->
+    <div id="section-4" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--teal);">Section 04 · Population Growth</div>
+      <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Population Growth Trajectory (1901–2036)</h3>
+      <div id="chart-section-4" style="width: 100%; height: 350px;"></div>
+    </div>
+
+    <!-- Section 5: Population Pyramids -->
+    <div id="section-5" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--purple);">Section 05 · Age Structure Pyramids</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom: 8px;">
+        <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 4px 0;">Pop Pyramid Cohorts</h3>
+        <div style="display:flex; gap:6px;">
+          <button onclick="renderPyramidIn('2011', '#chart-section-5')" class="btn-elegant" style="padding:3px 8px; font-size:11px;">2011</button>
+          <button onclick="renderPyramidIn('2026', '#chart-section-5')" class="btn-elegant active" style="padding:3px 8px; font-size:11px;">2026</button>
+          <button onclick="renderPyramidIn('2036', '#chart-section-5')" class="btn-elegant" style="padding:3px 8px; font-size:11px;">2036</button>
+        </div>
+      </div>
+      <div id="chart-section-5" style="width: 100%; height: 350px;"></div>
+    </div>
+
+    <!-- Section 6: Age Cohorts -->
+    <div id="section-6" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--orange);">Section 06 · Demographic Dividend</div>
+      <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Age-wise Population Share (%) (1991–2036)</h3>
+      <div id="chart-section-6" style="width: 100%; height: 350px;"></div>
+    </div>
+
+    <!-- Section 7: Sex Ratio -->
+    <div id="section-7" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--purple);">Section 07 · Gender Equity</div>
+      <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Odisha Overall Sex Ratio (1951–2036)</h3>
+      <div id="chart-section-7" style="width: 100%; height: 350px;"></div>
+    </div>
+
+    <!-- Section 8: Sex Ratio at Birth -->
+    <div id="section-8" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--blue);">Section 08 · Birth Dynamics</div>
+      <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Sex Ratio at Birth (SRB) (1951–2036)</h3>
+      <div id="chart-section-8" style="width: 100%; height: 350px;"></div>
+    </div>
+
+    <!-- Section 9: TFR Trajectory -->
+    <div id="section-9" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--orange);">Section 09 · Fertility Transition</div>
+      <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Total Fertility Rate Trajectory (1971–2036)</h3>
+      <div id="chart-section-9" style="width: 100%; height: 350px;"></div>
+    </div>
+
+    <!-- Section 10: Tribal Scale -->
+    <div id="section-10" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--purple);">Section 10 · Indigenous Heritage</div>
+      <h3 style="font-family: var(--serif); font-size: 1.6rem; color: var(--blue); margin: 6px 0 16px;">Tribal Groups &amp; Indigenous Scale</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--purple); font-family: var(--serif);">9.59 M</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px;">Total Tribal Pop (Census)</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--teal); font-family: var(--serif);">22.73%</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px;">Share of Odisha's Pop</div>
+        </div>
+        <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--orange); font-family: var(--serif);">9.17%</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px;">Share of National Tribal Pop</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 11: 62 Tribes & PVTGs -->
+    <div id="section-11" class="report-section-card grid-span-full" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+      <div class="kicker" style="color: var(--teal);">Section 11 · Tribal Catalog</div>
+      <h3 style="font-family: var(--serif); font-size: 1.6rem; color: var(--blue); margin: 6px 0 14px;">62 Recognized Tribal Communities &amp; 13 PVTGs</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Birhor (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Bondo (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Didayi (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Dongria Kondh (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Juang (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Hill Kharia (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Kutia Kondh (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Lanjia Saora (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Lodha (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Mankirdia (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Paudi Bhuyan (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Chuktia Bhunjia (PVTG)</span>
+        <span class="btn-pill ghost" style="padding:4px 12px; font-size:12px; color:var(--purple);">Shabar (PVTG)</span>
+      </div>
+      <div style="max-height: 260px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; font-size: 12px; color: var(--text); font-family: var(--mono); padding-right: 6px;">
+        <span>1. Bagata</span><span>2. Baiga</span><span>3. Banjara</span><span>4. Bathudi</span><span>5. Bhottada</span><span>6. Bhuyan</span><span>7. Bhumij</span><span>8. Bhumia</span><span>9. Binjhal</span><span>10. Binjhia</span><span>11. Birhor</span><span>12. Bondo</span><span>13. Chenchu</span><span>14. Dal</span><span>15. Desua Bhumia</span><span>16. Dharua</span><span>17. Didayi</span><span>18. Gadaba</span><span>19. Gandia</span><span>20. Gond</span><span>21. Ho</span><span>22. Holva</span><span>23. Jatapu</span><span>24. Juang</span><span>25. Kandha</span><span>26. Kawar</span><span>27. Hill Kharia</span><span>28. Kharwar</span><span>29. Kutia Kondh</span><span>30. Kisan</span><span>31. Kol</span><span>32. Kolah Loharas</span><span>33. Kolam</span><span>34. Kora</span><span>35. Korua</span><span>36. Kotia</span><span>37. Koya</span><span>38. Kulis</span><span>39. Lodha</span><span>40. Madia</span><span>41. Mahali</span><span>42. Mankidi</span><span>43. Mankirdia</span><span>44. Matya</span><span>45. Mirdhas</span><span>46. Munda</span><span>47. Mundari</span><span>48. Omanatya</span><span>49. Oraon</span><span>50. Parenga</span><span>51. Paroja</span><span>52. Pentia</span><span>53. Rajuar</span><span>54. Santal</span><span>55. Lanjia Saora</span><span>56. Shabar</span><span>57. Sounti</span><span>58. Tharua</span><span>59. Chuktia Bhunjia</span><span>60. Dongria Kondh</span><span>61. Paudi Bhuyan</span><span>62. Unclassified</span>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     MAP GATEWAY SECTION — INDIA MAP PANEL
+     30 DISTRICT LEADERBOARD
 ═══════════════════════════════════════════════ -->
-<section class="full-section map-gateway" style="max-width: 1400px; margin: 40px auto 60px; padding: 0 max(20px, 4vw); box-sizing: border-box;">
-  <div>
-    <div class="map-kicker">Gateway to State Story</div>
-    <h2 class="map-title">Explore Odisha's Regional Diversity</h2>
-    <p class="intro-text" style="margin-bottom: 24px;">
-      Odisha's 30 districts present widely divergent demographic profiles. 
-      Coastal hubs like Cuttack and Khordha have low fertility rates and high literacy, 
-      while southern tribal belts continue to face child mortality and developmental challenges.
-    </p>
-    <a href="odisha.html" class="btn-elegant" style="background: var(--orange); color: white; border-color: var(--orange); text-decoration: none; display: inline-block;">
-      Open Odisha at a glance →
-    </a>
-  </div>
-  <div id="india-map-container" style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); height: 480px; position: relative;">
-    <div style="position: absolute; top: 20px; left: 20px; z-index: 10;">
-      <div class="kicker" style="color: var(--orange); margin: 0;">Interactive Map</div>
-      <h3 style="font-family: var(--serif); font-size: 1.2rem; margin: 4px 0 0 0;">Click on Odisha to zoom in</h3>
-    </div>
+<section class="full-section">
+  <div class="label" style="color: var(--purple); margin-bottom: 12px;">Leaderboard Grid</div>
+  <h2>Odisha District Rankings</h2>
+  <p class="intro-text">
+    Sort and inspect demographic scales across all 30 districts of Odisha. 
+    Cards show decadal growth categories computed between Census 2011 and 2021.
+  </p>
+
+  <div class="districts-grid" id="leaderboardGrid">
+    <!-- Clickable cards loaded dynamically -->
   </div>
 </section>
 
@@ -395,508 +724,570 @@ function startField() {
   var lander = document.getElementById('lander');
   var yearEl = document.getElementById('introYear');
   var numEl  = document.getElementById('introNum');
-  var TRENDS = dotfield.TRENDS;
-  var fmt    = function (n) { return n.toLocaleString('en-IN'); };
+  var TRENDS = (window.dotfield && window.dotfield.TRENDS) ? window.dotfield.TRENDS : [
+    [1901, 10302917], [1911, 11378875], [1921, 11158586], [1931, 12491056],
+    [1941, 13767988], [1951, 14645946], [1961, 17548846], [1971, 21944615],
+    [1981, 26370271], [1991, 31659736], [2001, 36804660], [2011, 41974218],
+    [2021, 46254277]
+  ];
+  var fmt = function (n) { return (n || 0).toLocaleString('en-IN'); };
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var timers = [], done = false;
-  function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
-
-  function reveal() {
-    if (done) return;
-    done = true;
-    timers.forEach(clearTimeout);
-    timers.length = 0;
-
-    intro.classList.add('clear');
-    at(240, function () {
-      intro.classList.add('part');
-      lander.classList.add('in');
-      startField();
-    });
-    at(1400, function () { intro.classList.add('done'); });
-  }
-
-  if (reduced) {
-    intro.classList.add('done');
-    lander.classList.add('in');
+  if (!intro || reduced) {
+    if (intro) intro.style.display = 'none';
+    if (lander) lander.classList.add('in');
     startField();
     return;
   }
 
-  requestAnimationFrame(function () { intro.classList.add('go'); });
+  intro.classList.add('go');
 
-  var STEP = 150, LEAD = 140;
-  TRENDS.forEach(function (row, i) {
-    at(LEAD + i * STEP, function () {
-      yearEl.textContent = row[0];
-      numEl.textContent  = fmt(row[1]);
+  var idx = 0;
+  var totalTicks = TRENDS.length;
+  var stepTime = 160;
+
+  var timer = setInterval(function () {
+    if (idx < totalTicks) {
+      yearEl.textContent = TRENDS[idx][0];
+      numEl.textContent  = fmt(TRENDS[idx][1]);
+      idx++;
+    } else {
+      clearInterval(timer);
+      intro.classList.add('title');
+      setTimeout(dismiss, 1200);
+    }
+  }, stepTime);
+
+  function dismiss() {
+    intro.classList.add('clear');
+    setTimeout(function() {
+      intro.classList.add('part');
+      if (lander) lander.classList.add('in');
+      startField();
+      setTimeout(function () {
+        intro.classList.add('done');
+      }, 1100);
+    }, 400);
+  }
+
+  var skipBtn = document.getElementById('introSkip');
+  if (skipBtn) {
+    skipBtn.addEventListener('click', function () {
+      clearInterval(timer);
+      dismiss();
     });
-  });
-
-  var reelEnd = LEAD + TRENDS.length * STEP;
-  at(reelEnd, function () { intro.classList.add('title'); });
-  at(reelEnd + 950, reveal);
-
-  document.getElementById('introSkip').addEventListener('click', reveal);
-  ['keydown', 'wheel', 'touchstart'].forEach(function (ev) {
-    addEventListener(ev, reveal, { once: true, passive: true });
-  });
-
-  setTimeout(reveal, 7000);
+  }
 })();
+</script>
 
-/* ─────────────────────────────────────────────────────────────
-   3. STAT BAND — count up once
-   ───────────────────────────────────────────────────────────── */
-(function () {
-  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var cells = [].slice.call(document.querySelectorAll('.band-val'));
-
-  function render(el, v) {
-    el.textContent = v.toFixed(+el.dataset.dec || 0) + (el.dataset.suffix || '');
-  }
-  function settle(el) {
-    el.dataset.done = '1';
-    render(el, +el.dataset.to);
-  }
-
-  if (reduced || !('IntersectionObserver' in window)) return;
-
-  function animate(el) {
-    if (el.dataset.done) return;
-    el.dataset.done = '1';
-    var to = +el.dataset.to, t0 = performance.now();
-    (function step(ts) {
-      var k = Math.min((ts - t0) / 1100, 1);
-      render(el, to * (1 - Math.pow(1 - k, 3)));
-      if (k < 1) requestAnimationFrame(step);
-      else render(el, to);
-    })(t0);
-  }
-
-  cells.forEach(function (el) { render(el, 0); });
-
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      animate(entry.target);
-      io.unobserve(entry.target);
-    });
-  }, { threshold: 0.55 });
-
-  cells.forEach(function (el) { io.observe(el); });
-  setTimeout(function () { cells.forEach(settle); }, 3000);
-})();
-
-/* ─────────────────────────────────────────────────────────────
-   4. D3 SCROLLYTELLING & DUAL POPULATION PYRAMIDS
-   ───────────────────────────────────────────────────────────── */
-const indiaPopData = [
-  {y:1950,v:0.376},{y:1960,v:0.450},{y:1970,v:0.555},{y:1980,v:0.698},
-  {y:1990,v:0.873},{y:2000,v:1.056},{y:2010,v:1.234},{y:2020,v:1.380},
-  {y:2023,v:1.428},{y:2030,v:1.514},{y:2040,v:1.597},{y:2050,v:1.670},
-  {y:2060,v:1.698},{y:2070,v:1.678},{y:2080,v:1.628},{y:2090,v:1.551},{y:2100,v:1.450}
-];
-
-const indiaFertilityData = [
-  {y:1950,v:5.90},{y:1960,v:5.90},{y:1970,v:5.60},{y:1980,v:4.70},
-  {y:1990,v:3.90},{y:2000,v:3.20},{y:2010,v:2.60},{y:2015,v:2.30},
-  {y:2020,v:2.00},{y:2023,v:1.98}
-];
-
-const indiaPyramidData = {
-  "2011": {
-    m: [4.9, 5.2, 5.5, 5.1, 4.7, 4.4, 4.0, 3.7, 3.3, 2.9, 2.4, 2.0, 1.6, 1.2, 0.9, 0.6, 0.4],
-    f: [4.5, 4.8, 5.1, 4.7, 4.4, 4.1, 3.8, 3.5, 3.1, 2.8, 2.3, 1.9, 1.6, 1.2, 0.9, 0.6, 0.5]
-  },
-  "2021": {
-    m: [4.2, 4.5, 4.8, 4.9, 4.7, 4.5, 4.2, 3.9, 3.6, 3.2, 2.8, 2.3, 1.9, 1.4, 1.0, 0.7, 0.5],
-    f: [3.9, 4.1, 4.4, 4.5, 4.3, 4.2, 3.9, 3.7, 3.4, 3.1, 2.7, 2.2, 1.8, 1.4, 1.0, 0.7, 0.6]
-  },
-  "2026": {
-    m: [3.8, 4.1, 4.4, 4.6, 4.7, 4.5, 4.3, 4.0, 3.7, 3.4, 3.0, 2.5, 2.0, 1.5, 1.1, 0.7, 0.5],
-    f: [3.5, 3.8, 4.1, 4.3, 4.4, 4.2, 4.0, 3.8, 3.5, 3.2, 2.9, 2.4, 2.0, 1.5, 1.1, 0.8, 0.6]
-  },
-  "2031": {
-    m: [3.5, 3.8, 4.1, 4.3, 4.5, 4.6, 4.4, 4.1, 3.8, 3.5, 3.2, 2.7, 2.2, 1.7, 1.2, 0.8, 0.6],
-    f: [3.2, 3.5, 3.8, 4.0, 4.2, 4.3, 4.1, 3.9, 3.6, 3.3, 3.1, 2.6, 2.1, 1.6, 1.2, 0.8, 0.7]
-  },
-  "2036": {
-    m: [3.2, 3.5, 3.8, 4.0, 4.2, 4.4, 4.4, 4.2, 3.9, 3.6, 3.3, 2.9, 2.4, 1.9, 1.4, 0.9, 0.7],
-    f: [2.9, 3.2, 3.5, 3.7, 3.9, 4.1, 4.1, 3.9, 3.7, 3.4, 3.2, 2.8, 2.3, 1.8, 1.3, 0.9, 0.8]
-  }
-};
-
-const ageLabels = ['0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'];
-
-let odishaPyramidData = {};
-let currentMode = 'india-total';
-let currentPyramidYear = 2011;
-
-Promise.all([
-  DataLoader.getStateDemographics(),
-  DataLoader.getNationalComparisons()
-]).then(([stateDemo, natComp]) => {
-  const rawPyramids = stateDemo.pyramids;
-  Object.keys(rawPyramids).forEach(year => {
-    const validCohorts = rawPyramids[year].filter(c => ageLabels.includes(c.age));
-    const total = d3.sum(validCohorts, c => c.male + c.female);
-    validCohorts.sort((a,b) => ageLabels.indexOf(a.age) - ageLabels.indexOf(b.age));
-    
-    odishaPyramidData[year] = {
-      m: validCohorts.map(c => (c.male / total) * 100),
-      f: validCohorts.map(c => (c.female / total) * 100)
+<script>
+    const colors = {
+        'Ganjam': 'var(--yellow)',
+        'Cuttack': 'var(--teal)',
+        'Mayurbhanj': 'var(--purple)',
+        'Khordha': 'var(--teal)',
+        'Malkangiri': 'var(--red)',
+        'Nabarangapur': 'var(--red)',
+        'Koraput': 'var(--red)'
     };
-  });
-  
-  drawIndiaChart('india-total');
-  triggerPyramids(2011);
-  drawIndiaGatewayMap();
-}).catch(err => {
-  console.error("Error loading JSON datasets:", err);
-});
 
-function drawIndiaChart(mode) {
-  const el = document.getElementById('mainChart');
-  if (!el) return;
-  const W = el.clientWidth || 500;
-  const H = el.clientHeight || 360;
-  
-  const m = { top: 40, right: 40, bottom: 50, left: (mode === 'india-labor') ? 110 : 60 };
-  const w = W - m.left - m.right;
-  const h = H - m.top - m.bottom;
+    const container = d3.select("#map-container");
+    container.html("");
 
-  const svgEl = d3.select('#mainChart').attr('viewBox', `0 0 ${W} ${H}`);
-  svgEl.selectAll('.chart-group').transition().duration(250).style('opacity', 0).remove();
+    const svg = container.append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("preserveAspectRatio", "xMidYMid meet");
 
-  const svg = svgEl.append('g')
-    .attr('class', 'chart-group')
-    .attr('transform', `translate(${m.left},${m.top})`)
-    .style('opacity', 0);
+    const g = svg.append("g");
+    const tip = d3.select("body").selectAll(".map-tooltip").data([null]).join("div")
+        .attr("class", "tooltip map-tooltip")
+        .style("opacity", 0);
 
-  svg.transition().duration(400).style('opacity', 1);
-  const gridColor = 'rgba(0,0,0,0.06)';
-  const chartTooltip = d3.select("body").selectAll(".chart-tooltip").data([null]).join("div").attr("class", "tooltip chart-tooltip").style("opacity", 0);
-  const defs = svgEl.selectAll('defs').data([null]).join('defs');
-  
-  if (mode === 'india-total') {
-    document.getElementById('chartTitle').textContent = 'India\'s Population Growth, 1950–2100';
-    document.getElementById('chartSub').textContent = 'Total population (billions) · UN projections';
-    d3.select('#legendLineA').style('display', 'flex');
-    d3.select('#legendTextA').text('INDIA POPULATION');
-    d3.select('#legendLineA .legend-dot').style('background', 'var(--green)');
-    d3.select('#legendLineB').style('display', 'none');
-    d3.select('#legendLineC').style('display', 'flex');
+    DataLoader.loadJSON('./Orissa.geojson').then(geoData => {
+        // Project onto standard 1000x800 coordinate grid
+        const projTemp = d3.geoMercator().fitSize([1000, 800], geoData);
+        const path = d3.geoPath().projection(projTemp);
+        
+        // Calculate tight geographic bounding box of Odisha map features
+        const b = path.bounds(geoData);
+        const pad = 10;
+        const vx = b[0][0] - pad;
+        const vy = b[0][1] - pad;
+        const vw = (b[1][0] - b[0][0]) + pad * 2;
+        const vh = (b[1][1] - b[0][1]) + pad * 2;
 
-    const x = d3.scaleLinear().domain([1950, 2100]).range([0, w]);
-    const y = d3.scaleLinear().domain([0, 2.0]).range([h, 0]);
+        // Set tight viewBox directly around Odisha bounds
+        svg.attr("viewBox", `${vx} ${vy} ${vw} ${vh}`);
 
-    [0.5, 1.0, 1.5, 2.0].forEach(v => {
-      svg.append('line').attr('x1', 0).attr('x2', w)
-        .attr('y1', y(v)).attr('y2', y(v))
-        .attr('stroke', gridColor).attr('stroke-dasharray', '3,3');
+        g.selectAll("path")
+            .data(geoData.features).enter().append("path")
+            .attr("d", path)
+            .attr("fill", "#eaedef")
+            .attr("stroke", "rgba(0,0,0,0.14)")
+            .attr("stroke-width", "0.8px")
+            .attr("class", d => `dist-${d.properties.Dist_Name.replace(/\s+/g, '')}`)
+            .on("mouseover", function(event, d) {
+                d3.select(this).style("stroke", "var(--purple)").style("stroke-width", "2.2px").raise();
+                tip.transition().duration(200).style("opacity", 1);
+                tip.html(`<strong>${d.properties.Dist_Name}</strong><br><span style="font-size:var(--fs-caption);color:var(--muted)">Click to enter deep dive</span>`)
+                   .style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 10) + "px");
+            })
+            .on("mouseout", function() {
+                d3.select(this).style("stroke", "rgba(0,0,0,0.14)").style("stroke-width", "0.8px");
+                tip.transition().duration(400).style("opacity", 0);
+            })
+            .on("click", (e, d) => window.location.href = `district.html?id=${encodeURIComponent(d.properties.Dist_Name)}`);
+
+        // Observe Narrative Steps Scroll
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+                    entry.target.classList.add('active');
+                    highlightDistricts(entry.target.dataset.highlight);
+                    
+                    const title = entry.target.dataset.title;
+                    if (title) {
+                      const titleEl = document.getElementById('mapSectionTitle');
+                      if (titleEl) titleEl.innerText = title;
+                    }
+                }
+            });
+        }, { threshold: 0.4 });
+        
+        document.querySelectorAll('.step').forEach(s => observer.observe(s));
     });
 
-    const histData = indiaPopData.filter(d => d.y <= 2023);
-    const projData = indiaPopData.filter(d => d.y >= 2023);
+    function highlightDistricts(names) {
+        if (!names) return;
+        g.selectAll("path").transition().duration(500).attr("fill", "#eaedef").attr("opacity", 0.25);
+        if (names === 'all') { 
+            g.selectAll("path").transition().duration(500).attr("opacity", 1).attr("fill", "#eaedef"); 
+        }
+        else {
+            names.split(',').forEach(name => {
+                const color = colors[name] || "var(--teal)";
+                g.select(`.dist-${name.replace(/\s+/g, '')}`)
+                 .transition().duration(500)
+                 .attr("opacity", 1)
+                 .attr("fill", color);
+            });
+        }
+    }
 
-    const gradHist = defs.selectAll('#grad-hist-pop').data([null]).join('linearGradient').attr('id', 'grad-hist-pop').attr('x1', '0%').attr('y1', '0%').attr('x2', '0%').attr('y2', '100%');
-    gradHist.selectAll('stop').data([
-      { offset: '0%', color: 'var(--green)', opacity: 0.18 },
-      { offset: '100%', color: 'var(--green)', opacity: 0.00 }
-    ]).join('stop').attr('offset', d => d.offset).attr('stop-color', d => d.color).attr('stop-opacity', d => d.opacity);
+    // STATE STAT STRIP & LEADERBOARD DYNAMIC LOADING
+    Promise.all([
+      DataLoader.getDistrictPopulationTrends(),
+      DataLoader.getNationalComparisons(),
+      DataLoader.getStateDemographics()
+    ]).then(([popData, nationalData, stateData]) => {
+      d3.select("#stat-tfr").text("1.80");
+      d3.select("#stat-literacy").text("73.5%");
 
-    const areaStart = d3.area().x(d => x(d.y)).y0(h).y1(h).curve(d3.curveMonotoneX);
-    const area = d3.area().x(d => x(d.y)).y0(h).y1(d => y(d.v)).curve(d3.curveMonotoneX);
-    
-    svg.append('path').datum(histData).attr('fill', 'url(#grad-hist-pop)').attr('d', areaStart).transition().duration(1000).ease(d3.easeCubicOut).attr('d', area);
-    svg.append('path').datum(projData).attr('fill', 'rgba(0,0,0,0.02)').attr('d', areaStart).transition().duration(1000).ease(d3.easeCubicOut).attr('d', area);
+      const sexRatioItem = nationalData.find(d => d.indicator.includes("Sex Ratio (Number of females"));
+      if (sexRatioItem && sexRatioItem.odisha) {
+        d3.select("#stat-sexratio").text(Math.round(sexRatioItem.odisha));
+      } else {
+        d3.select("#stat-sexratio").text("1063");
+      }
 
-    const line = d3.line().x(d => x(d.y)).y(d => y(d.v)).curve(d3.curveMonotoneX);
-    const lp = svg.append('path').datum(histData).attr('fill', 'none').attr('stroke', 'var(--green)').attr('stroke-width', 3).attr('d', line);
-    const len = lp.node().getTotalLength();
-    lp.attr('stroke-dasharray', len).attr('stroke-dashoffset', len).transition().duration(1000).ease(d3.easeCubicOut).attr('stroke-dashoffset', 0);
+      if (stateData && stateData.population_trends) {
+        const peakYearData = stateData.population_trends.reduce((max, d) => 
+          (d.total > (max.total || 0)) ? d : max, { total: 0 });
+        if (peakYearData && peakYearData.total) {
+          d3.select("#stat-peakpop").text((peakYearData.total / 1000000).toFixed(1) + "M");
+        } else {
+          d3.select("#stat-peakpop").text("51.5M");
+        }
+      } else {
+        d3.select("#stat-peakpop").text("51.5M");
+      }
 
-    svg.append('path').datum(projData).attr('fill', 'none').attr('stroke', 'var(--dimmed)').attr('stroke-width', 2).attr('stroke-dasharray', '5,4').attr('d', line).style('opacity', 0).transition().delay(400).duration(600).style('opacity', 1);
-
-    svg.append('g').attr('transform', `translate(0,${h})`).call(d3.axisBottom(x).tickValues([1950, 1980, 2010, 2023, 2050, 2080, 2100]).tickFormat(d3.format('d'))).call(g => {
-      g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)'); g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
-    });
-    svg.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => `${d}B`)).call(g => {
-      g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)'); g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
-    });
-  }
-  else if (mode === 'india-fertility') {
-    document.getElementById('chartTitle').textContent = 'India\'s Fertility Transition';
-    document.getElementById('chartSub').textContent = 'Total fertility rate (births per woman) · replacement = 2.1';
-    d3.select('#legendLineA').style('display', 'none');
-    d3.select('#legendLineB').style('display', 'flex');
-    d3.select('#legendLineB span').text('FERTILITY (TFR)');
-    d3.select('#legendLineB .legend-dot').style('background', 'var(--teal)');
-    d3.select('#legendLineC').style('display', 'none');
-
-    const x = d3.scaleLinear().domain([1950, 2023]).range([0, w]);
-    const y = d3.scaleLinear().domain([0, 7.0]).range([h, 0]);
-
-    svg.append('rect').attr('x', 0).attr('width', w).attr('y', y(2.1)).attr('height', h - y(2.1)).attr('fill', 'rgba(30,126,52,0.03)');
-
-    [1.0, 2.0, 3.0, 4.0, 5.0, 6.0].forEach(v => {
-      svg.append('line').attr('x1', 0).attr('x2', w).attr('y1', y(v)).attr('y2', y(v)).attr('stroke', gridColor).attr('stroke-dasharray', '3,3');
-    });
-
-    svg.append('line').attr('x1', 0).attr('x2', 0).attr('y1', y(2.1)).attr('y2', y(2.1)).attr('stroke', 'var(--orange)').attr('stroke-width', 1.5).transition().duration(800).attr('x2', w);
-    svg.append('text').attr('x', w - 8).attr('y', y(2.1) - 6).attr('text-anchor', 'end').attr('fill', 'var(--orange)').attr('font-size', '14px').attr('font-family', 'var(--mono)').text('REPLACEMENT LEVEL 2.1');
-
-    const line = d3.line().x(d => x(d.y)).y(d => y(d.v)).curve(d3.curveMonotoneX);
-    const lp = svg.append('path').datum(indiaFertilityData).attr('fill', 'none').attr('stroke', 'var(--teal)').attr('stroke-width', 3).attr('d', line);
-    const len = lp.node().getTotalLength();
-    lp.attr('stroke-dasharray', len).attr('stroke-dashoffset', len).transition().duration(1000).ease(d3.easeCubicOut).attr('stroke-dashoffset', 0);
-
-    svg.append('g').attr('transform', `translate(0,${h})`).call(d3.axisBottom(x).ticks(6).tickFormat(d3.format('d'))).call(g => {
-      g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)'); g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
-    });
-    svg.append('g').call(d3.axisLeft(y).ticks(7)).call(g => {
-      g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)'); g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
-    });
-  }
-  else if (mode === 'india-states') {
-    document.getElementById('chartTitle').textContent = 'Regional Fertility Profiles';
-    document.getElementById('chartSub').textContent = 'Total fertility rate (TFR) comparison · replacement = 2.1';
-    d3.select('#legendLineA').style('display', 'none');
-    d3.select('#legendLineB').style('display', 'none');
-    d3.select('#legendLineC').style('display', 'none');
-
-    const statesTfrData = [
-      { state: "Kerala", tfr: 1.5, color: "var(--green)" },
-      { state: "Odisha", tfr: 1.8, color: "var(--purple)" },
-      { state: "National Avg", tfr: 1.98, color: "var(--teal)" },
-      { state: "Bihar", tfr: 2.8, color: "var(--red)" }
-    ];
-
-    const x = d3.scaleLinear().domain([0, 3.5]).range([0, w]);
-    const y = d3.scaleBand().domain(statesTfrData.map(d => d.state)).range([0, h]).padding(0.42);
-
-    svg.append('rect').attr('x', 0).attr('width', x(2.1)).attr('y', 0).attr('height', h).attr('fill', 'rgba(30,126,52,0.03)');
-
-    [1.0, 2.0, 3.0].forEach(v => {
-      svg.append('line').attr('x1', x(v)).attr('x2', x(v)).attr('y1', 0).attr('y2', h).attr('stroke', gridColor).attr('stroke-dasharray', '3,3');
-    });
-
-    svg.append('line').attr('x1', x(2.1)).attr('x2', x(2.1)).attr('y1', 0).attr('y2', h).attr('stroke', 'var(--orange)').attr('stroke-width', 1.5).attr('stroke-dasharray', '4,4');
-
-    const bars = svg.selectAll('.state-bar').data(statesTfrData).enter().append('rect').attr('class', 'state-bar').attr('x', 0).attr('y', d => y(d.state)).attr('height', y.bandwidth()).attr('width', 0).attr('fill', d => d.color).attr('rx', 4);
-    bars.transition().duration(1000).delay((d, i) => i * 100).attr('width', d => x(d.tfr));
-
-    svg.selectAll('.state-name-label').data(statesTfrData).enter().append('text').attr('x', 0).attr('y', d => y(d.state) - 6).attr('fill', 'var(--text)').attr('font-size', '13px').attr('font-weight', 'bold').text(d => d.state);
-    svg.selectAll('.state-val-label').data(statesTfrData).enter().append('text').attr('x', 0).attr('y', d => y(d.state) + y.bandwidth()/2 + 4).attr('fill', d => d.color).attr('font-size', '13px').attr('font-weight', 'bold').text(d => d.tfr).transition().duration(1000).delay((d, i) => i * 100).attr('x', d => x(d.tfr) + 8);
-
-    svg.append('g').attr('transform', `translate(0,${h})`).call(d3.axisBottom(x).ticks(5)).call(g => {
-      g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)'); g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
-    });
-  }
-  else if (mode === 'india-labor') {
-    document.getElementById('chartTitle').textContent = 'Labor Force Comparison';
-    document.getElementById('chartSub').textContent = 'Odisha vs India benchmarks · 15-59 Age Cohort';
-    d3.select('#legendLineA').style('display', 'flex');
-    d3.select('#legendTextA').text('INDIA');
-    d3.select('#legendLineA .legend-dot').style('background', 'var(--green)');
-    d3.select('#legendLineB').style('display', 'flex');
-    d3.select('#legendLineB span').text('ODISHA');
-    d3.select('#legendLineB .legend-dot').style('background', 'var(--purple)');
-    d3.select('#legendLineC').style('display', 'none');
-
-    const laborData = [
-      { category: "Overall LFPR", india: 64.3, odisha: 69.2 },
-      { category: "Female FLFPR", india: 45.2, odisha: 53.5 }
-    ];
-
-    const yScale = d3.scalePoint().domain(laborData.map(d => d.category)).range([h * 0.25, h * 0.75]).padding(0.1);
-    const xScale = d3.scaleLinear().domain([30, 80]).range([0, w]);
-
-    [40, 50, 60, 70, 80].forEach(v => {
-      svg.append('line').attr('x1', xScale(v)).attr('x2', xScale(v)).attr('y1', 0).attr('y2', h).attr('stroke', gridColor).attr('stroke-dasharray', '3,3');
+      // Leaderboard Grid
+      const grid = d3.select("#leaderboardGrid");
+      const districtsList = [];
+      Object.keys(popData).forEach(name => {
+        const p2011 = popData[name]["2011"].total;
+        const p2021 = popData[name]["2021"].total;
+        const growth = ((p2021 - p2011) / p2011) * 100;
+        districtsList.push({
+          name: name,
+          pop2021: p2021,
+          pop2011: p2011,
+          growth: growth
+        });
+      });
+      
+      districtsList.sort((a, b) => b.pop2021 - a.pop2021);
+      
+      districtsList.forEach((d, index) => {
+        const rank = index + 1;
+        const formattedPop = (d.pop2021 / 1000000).toFixed(2) + "M";
+        
+        let tagText = "Stable Growth";
+        let tagColor = "var(--green)";
+        if (d.growth > 11.5) {
+          tagText = "High Growth";
+          tagColor = "var(--orange)";
+        } else if (d.growth >= 7.5 && d.growth <= 11.5) {
+          tagText = "Moderate Growth";
+          tagColor = "var(--teal)";
+        }
+        
+        const card = grid.append("a")
+          .attr("href", `district.html?id=${encodeURIComponent(d.name)}`)
+          .attr("class", "district-card");
+          
+        card.append("div").attr("class", "district-name").text(d.name);
+        card.append("div").attr("class", "district-pop").text(formattedPop);
+        
+        const badgeRow = card.append("div").style("display", "flex").style("justify-content", "space-between").style("align-items", "center").style("margin-top", "auto");
+        badgeRow.append("div").attr("class", "district-label").text(`Rank #${rank}`);
+        badgeRow.append("div")
+          .style("font-family", "var(--mono)")
+          .style("font-size", "11px")
+          .style("padding", "1px 6px")
+          .style("border-radius", "6px")
+          .style("background", "rgba(0,0,0,0.03)")
+          .style("border", `1px solid ${tagColor}`)
+          .style("color", tagColor)
+          .text(tagText);
+      });
     });
 
-    laborData.forEach(d => {
-      const y = yScale(d.category);
-      svg.append('line').attr('x1', xScale(d.india)).attr('y1', y).attr('x2', xScale(d.odisha)).attr('y2', y).attr('stroke', 'rgba(0,0,0,0.15)').attr('stroke-width', 4).attr('stroke-linecap', 'round');
-      svg.append('circle').attr('cx', xScale(d.india)).attr('cy', y).attr('r', 6).attr('fill', 'var(--green)');
-      svg.append('circle').attr('cx', xScale(d.odisha)).attr('cy', y).attr('r', 6).attr('fill', 'var(--purple)');
-      svg.append('text').attr('x', xScale(d.india) - 10).attr('y', y + 4).attr('text-anchor', 'end').attr('fill', 'var(--green)').attr('font-size', '12px').attr('font-weight', 'bold').text(d.india + '%');
-      svg.append('text').attr('x', xScale(d.odisha) + 10).attr('y', y + 4).attr('text-anchor', 'start').attr('fill', 'var(--purple)').attr('font-size', '12px').attr('font-weight', 'bold').text(d.odisha + '%');
-    });
-
-    svg.append('g').attr('transform', `translate(0,${h})`).call(d3.axisBottom(xScale).tickValues([30, 40, 50, 60, 70, 80]).tickFormat(d => d + "%")).call(g => {
-      g.select('.domain').attr('stroke', 'var(--border)'); g.selectAll('line').attr('stroke', 'var(--border)'); g.selectAll('text').attr('fill', 'var(--muted)').attr('font-size', '13px').attr('font-family', 'var(--mono)');
-    });
-    svg.append('g').call(d3.axisLeft(yScale)).call(g => {
-      g.select('.domain').remove(); g.selectAll('line').remove(); g.selectAll('text').attr('fill', 'var(--text)').attr('font-size', '13px').attr('font-weight', 'bold');
-    });
-  }
-}
-
-function initPyramidChart(svgId) {
-  const svg = d3.select(`#${svgId}`);
-  if (!svg.select('.pyramid-content').empty()) return;
-
-  const container = document.getElementById(svgId).parentElement;
-  const width = container.clientWidth || 340;
-  const H = 345;
-  const m = {top:20, right:30, bottom:30, left:45};
-  const w = width - m.left - m.right;
-  const h = H - m.top - m.bottom;
-  const barH = h / ageLabels.length;
-
-  svg.attr('viewBox', `0 0 ${width} ${H}`);
-  const g = svg.append('g').attr('class', 'pyramid-content').attr('transform', `translate(${m.left},${m.top})`);
-  g.append('line').attr('x1', w/2).attr('x2', w/2).attr('y1', 0).attr('y2', h).attr('stroke', 'var(--border)').attr('stroke-width', 1);
-
-  g.append('text').attr('x', w/4).attr('y', -6).attr('text-anchor', 'middle').attr('fill', 'var(--teal)').attr('font-size', '12px').attr('font-weight', 'bold').text('MALE %');
-  g.append('text').attr('x', 3*w/4).attr('y', -6).attr('text-anchor', 'middle').attr('fill', 'var(--orange)').attr('font-size', '12px').attr('font-weight', 'bold').text('FEMALE %');
-
-  g.append('g').attr('class', 'bars-group');
-
-  const labelsGroup = g.append('g').attr('class', 'labels-group');
-  ageLabels.forEach((label, i) => {
-    const y = h - (i + 1) * barH;
-    labelsGroup.append('text')
-      .attr('class', 'pyramid-label')
-      .attr('x', w/2)
-      .attr('y', y + barH/2 + 3.5)
-      .attr('text-anchor', 'middle')
-      .attr('fill', '#ffffff')
-      .attr('font-size', '10.5px')
-      .attr('font-weight', '700')
-      .attr('font-family', 'var(--mono)')
-      .text(label);
-  });
-}
-
-function drawPyramid(svgId, region, year) {
-  initPyramidChart(svgId);
-
-  const svg = d3.select(`#${svgId}`);
-  const g = svg.select('.pyramid-content');
-  const barsGroup = g.select('.bars-group');
-  const container = document.getElementById(svgId).parentElement;
-  const width = container.clientWidth || 340;
-  const H = 345;
-  const m = {top:20, right:30, bottom:30, left:45};
-  const w = width - m.left - m.right;
-  const h = H - m.top - m.bottom;
-  const barH = h / ageLabels.length;
-
-  const data = (region === 'india') ? indiaPyramidData[year] : odishaPyramidData[year];
-  if (!data) return;
-
-  const maxVal = 7.0;
-  const xM = d3.scaleLinear().domain([0, maxVal]).range([w/2, 0]);
-  const xF = d3.scaleLinear().domain([0, maxVal]).range([w/2, w]);
-
-  const maleData = data.m.map((val, idx) => ({ val, index: idx }));
-  const femaleData = data.f.map((val, idx) => ({ val, index: idx }));
-
-  const maleBars = barsGroup.selectAll('.pyramid-bar-left').data(maleData, d => d.index);
-  const maleEnter = maleBars.enter().append('rect').attr('class', 'pyramid-bar-left').attr('y', d => h - (d.index + 1) * barH + 1).attr('height', barH - 2).attr('x', w/2).attr('width', 0).attr('fill', 'var(--teal)').attr('opacity', 0.85);
-  maleEnter.append('title');
-  const maleMerged = maleBars.merge(maleEnter);
-  maleMerged.select('title').text(d => `Age ${ageLabels[d.index]} Male: ${d.val.toFixed(1)}%`);
-  maleMerged.transition().duration(700).ease(d3.easeCubicOut).attr('x', d => xM(d.val)).attr('width', d => w/2 - xM(d.val));
-
-  const femaleBars = barsGroup.selectAll('.pyramid-bar-right').data(femaleData, d => d.index);
-  const femaleEnter = femaleBars.enter().append('rect').attr('class', 'pyramid-bar-right').attr('y', d => h - (d.index + 1) * barH + 1).attr('height', barH - 2).attr('x', w/2).attr('width', 0).attr('fill', 'var(--orange)').attr('opacity', 0.85);
-  femaleEnter.append('title');
-  const femaleMerged = femaleBars.merge(femaleEnter);
-  femaleMerged.select('title').text(d => `Age ${ageLabels[d.index]} Female: ${d.val.toFixed(1)}%`);
-  femaleMerged.transition().duration(700).ease(d3.easeCubicOut).attr('width', d => xF(d.val) - w/2);
-}
-
-function triggerPyramids(year) {
-  drawPyramid('pyramidIndia', 'india', year);
-  drawPyramid('pyramidOdisha', 'odisha', year);
-}
-
-function setPyramidYear(year, btn) {
-  document.querySelectorAll('.yr-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  currentPyramidYear = year;
-  triggerPyramids(year);
-}
-
-function drawIndiaGatewayMap() {
-  const container = d3.select("#india-map-container");
-  if (container.empty()) return;
-  const width = 500;
-  const height = 450;
-  
-  const svg = container.append("svg")
-    .attr("viewBox", `0 0 ${width} ${height}`)
-    .attr("preserveAspectRatio", "xMidYMid meet");
-  const g = svg.append("g");
-  const tip = d3.select("body").selectAll(".map-tooltip").data([null]).join("div").attr("class", "tooltip map-tooltip").style("opacity", 0);
-
-  d3.json('./india.geojson').then(data => {
-    const projection = d3.geoMercator().fitExtent([[30, 30], [width - 30, height - 30]], data);
-    const path = d3.geoPath().projection(projection);
-
-    g.selectAll("path")
-      .data(data.features)
-      .enter().append("path")
-      .attr("d", path)
-      .attr("fill", d => d.properties.ST_NM === "Odisha" ? "var(--orange)" : "#eaedef")
-      .attr("stroke", "rgba(0,0,0,0.12)")
-      .attr("stroke-width", "0.7px")
-      .style("cursor", d => d.properties.ST_NM === "Odisha" ? "pointer" : "default")
-      .on("mouseover", function(event, d) {
-        d3.select(this).style("stroke", "var(--teal)").style("stroke-width", "1.8px").raise();
-        tip.transition().duration(200).style("opacity", 1);
-        tip.html(d.properties.ST_NM === "Odisha" 
-          ? `<strong style="color:var(--orange)">Odisha</strong><br><span style="font-size:var(--fs-caption);color:var(--muted)">Click to view Odisha at a glance</span>` 
-          : `<strong>${d.properties.ST_NM}</strong>`)
-           .style("left", (event.pageX + 15) + "px")
-           .style("top", (event.pageY - 10) + "px");
-      })
-      .on("mouseout", function() {
-        d3.select(this).style("stroke", "rgba(0,0,0,0.12)").style("stroke-width", "0.7px");
-        tip.transition().duration(400).style("opacity", 0);
-      })
-      .on("click", function(event, d) {
-        if (d.properties.ST_NM === "Odisha") {
-          window.location.href = 'odisha.html';
+    // INTERSECTION OBSERVER FOR POLICY TIMELINE
+    const policyObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
         }
       });
-  }).catch(err => {
-    console.error("Could not load india.geojson:", err);
-  });
-}
+    }, { threshold: 0.3 });
+    
+    document.querySelectorAll('.policy-item').forEach(item => policyObs.observe(item));
 
-const stepObs = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      document.querySelectorAll('#scrollySection .step').forEach(s => s.classList.remove('active'));
-      entry.target.classList.add('active');
-      const chartMode = entry.target.dataset.chart;
-      if (chartMode && chartMode !== currentMode) {
-        currentMode = chartMode;
-        drawIndiaChart(chartMode);
+    // 11-SECTION DASHBOARD ENGINE WITH D3 ANIMATION
+    const odishaSlideData = {
+      popGrowth: [
+        {y: 1901, v: 10.3}, {y: 1911, v: 11.4}, {y: 1921, v: 11.2}, {y: 1931, v: 12.5},
+        {y: 1941, v: 13.8}, {y: 1951, v: 14.6}, {y: 1961, v: 17.5}, {y: 1971, v: 21.9},
+        {y: 1981, v: 26.4}, {y: 1991, v: 31.7}, {y: 2001, v: 36.8}, {y: 2011, v: 42.0},
+        {y: 2021, v: 45.4}, {y: 2026, v: 48.35}, {y: 2031, v: 50.1}, {y: 2036, v: 51.2}
+      ],
+      pyramids: {
+        "2011": [ {a:"0-4",m:2050,f:1980},{a:"5-9",m:2180,f:2090},{a:"10-14",m:2250,f:2140},{a:"15-19",m:2120,f:2010},{a:"20-24",m:1920,f:1890},{a:"25-29",m:1780,f:1760},{a:"30-34",m:1590,f:1580},{a:"35-39",m:1450,f:1440},{a:"40-44",m:1280,f:1260},{a:"45-49",m:1100,f:1080},{a:"50-54",m:920,f:910},{a:"55-59",m:780,f:790},{a:"60-64",m:650,f:670},{a:"65-69",m:480,f:510},{a:"70-74",m:320,f:350},{a:"75-79",m:190,f:210},{a:"80+",m:110,f:130} ],
+        "2026": [ {a:"0-4",m:1720,f:1610},{a:"5-9",m:1810,f:1700},{a:"10-14",m:1950,f:1840},{a:"15-19",m:2100,f:1990},{a:"20-24",m:2190,f:2080},{a:"25-29",m:2150,f:2060},{a:"30-34",m:1980,f:1950},{a:"35-39",m:1810,f:1790},{a:"40-44",m:1620,f:1600},{a:"45-49",m:1480,f:1460},{a:"50-54",m:1290,f:1270},{a:"55-59",m:1110,f:1100},{a:"60-64",m:930,f:940},{a:"65-69",m:750,f:780},{a:"70-74",m:560,f:600},{a:"75-79",m:370,f:410},{a:"80+",m:210,f:260} ],
+        "2036": [ {a:"0-4",m:1450,f:1360},{a:"5-9",m:1550,f:1450},{a:"10-14",m:1690,f:1590},{a:"15-19",m:1790,f:1690},{a:"20-24",m:1910,f:1810},{a:"25-29",m:2050,f:1950},{a:"30-34",m:2140,f:2050},{a:"35-39",m:2110,f:2030},{a:"40-44",m:1950,f:1920},{a:"45-49",m:1770,f:1750},{a:"50-54",m:1580,f:1560},{a:"55-59",m:1430,f:1410},{a:"60-64",m:1240,f:1230},{a:"65-69",m:1050,f:1060},{a:"70-74",m:830,f:870},{a:"75-79",m:600,f:650},{a:"80+",m:390,f:470} ]
+      },
+      ageCohorts: [
+        {y: 1991, youth: 38.6, work: 54.8, senior: 6.6},
+        {y: 2001, youth: 34.2, work: 58.6, senior: 7.2},
+        {y: 2011, youth: 28.5, work: 63.0, senior: 8.5},
+        {y: 2021, youth: 24.1, work: 65.7, senior: 10.2},
+        {y: 2026, youth: 21.8, work: 65.4, senior: 12.8},
+        {y: 2036, youth: 18.2, work: 62.9, senior: 18.9}
+      ],
+      sexRatio: [
+        {y: 1951, v: 1022}, {y: 1961, v: 1001}, {y: 1971, v: 988}, {y: 1981, v: 981},
+        {y: 1991, v: 971}, {y: 2001, v: 972}, {y: 2011, v: 979}, {y: 2021, v: 989},
+        {y: 2026, v: 993}, {y: 2031, v: 1008}, {y: 2036, v: 1022}
+      ],
+      srb: [
+        {y: 1951, v: 945}, {y: 1971, v: 938}, {y: 1991, v: 928}, {y: 2001, v: 920},
+        {y: 2011, v: 915}, {y: 2021, v: 918}, {y: 2026, v: 921}, {y: 2031, v: 932},
+        {y: 2036, v: 945}
+      ],
+      tfr: [
+        {y: 1971, v: 4.7}, {y: 1981, v: 4.1}, {y: 1991, v: 3.3}, {y: 2001, v: 2.6},
+        {y: 2011, v: 2.2}, {y: 2021, v: 1.6}, {y: 2026, v: 1.5}, {y: 2031, v: 1.4},
+        {y: 2036, v: 1.3}
+      ]
+    };
+
+    function renderLineChartIn(data, key, label, color, refVal, targetSelector) {
+      const container = d3.select(targetSelector);
+      if (container.empty()) return;
+      container.html("");
+      const rect = container.node().getBoundingClientRect();
+      const rawW = rect.width || 750;
+      const w = Math.min(rawW, 850);
+      const h = 360;
+      const margin = {top: 25, right: 40, bottom: 45, left: 55};
+
+      const wrapper = container.append("div")
+        .style("display", "flex")
+        .style("justify-content", "center")
+        .style("width", "100%");
+
+      const svg = wrapper.append("svg").attr("width", w).attr("height", h);
+
+      const x = d3.scaleLinear().domain(d3.extent(data, d => d.y)).range([margin.left, w - margin.right]);
+      const yMin = d3.min(data, d => d[key]);
+      const yMax = d3.max(data, d => d[key]);
+      const y = d3.scaleLinear().domain([yMin * 0.9, yMax * 1.05]).range([h - margin.bottom, margin.top]);
+
+      const gradientId = "grad-" + Math.random().toString(36).substr(2, 9);
+      const defs = svg.append("defs");
+      const linearGrad = defs.append("linearGradient")
+        .attr("id", gradientId)
+        .attr("x1", "0%").attr("y1", "0%")
+        .attr("x2", "0%").attr("y2", "100%");
+      linearGrad.append("stop").attr("offset", "0%").attr("stop-color", color).attr("stop-opacity", 0.25);
+      linearGrad.append("stop").attr("offset", "100%").attr("stop-color", color).attr("stop-opacity", 0.0);
+
+      svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y).tickSize(-w + margin.left + margin.right).tickFormat(""))
+        .attr("color", "var(--border)")
+        .attr("stroke-dasharray", "3,3")
+        .attr("opacity", 0.6);
+
+      svg.append("g")
+        .attr("transform", `translate(0,${h - margin.bottom})`)
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")))
+        .attr("color", "var(--muted)")
+        .attr("font-family", "var(--mono)");
+
+      svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y))
+        .attr("color", "var(--muted)")
+        .attr("font-family", "var(--mono)");
+
+      if (refVal) {
+        svg.append("line")
+          .attr("x1", margin.left)
+          .attr("x2", w - margin.right)
+          .attr("y1", y(refVal))
+          .attr("y2", y(refVal))
+          .attr("stroke", "var(--red)")
+          .attr("stroke-dasharray", "4,4")
+          .attr("stroke-width", 1.5);
+        
+        svg.append("text")
+          .attr("x", w - margin.right)
+          .attr("y", y(refVal) - 6)
+          .attr("text-anchor", "end")
+          .attr("fill", "var(--red)")
+          .attr("font-size", "10px")
+          .attr("font-family", "var(--mono)")
+          .text(`Ref: ${refVal}`);
       }
-      entry.target.querySelectorAll('.mini-bar-fill').forEach(bar => {
-        const target = bar.dataset.w;
-        setTimeout(() => { bar.style.width = target; }, 200);
-      });
+
+      const area = d3.area()
+        .x(d => x(d.y))
+        .y0(h - margin.bottom)
+        .y1(d => y(d[key]))
+        .curve(d3.curveMonotoneX);
+
+      const line = d3.line()
+        .x(d => x(d.y))
+        .y(d => y(d[key]))
+        .curve(d3.curveMonotoneX);
+
+      svg.append("path")
+        .datum(data)
+        .attr("fill", `url(#${gradientId})`)
+        .attr("d", area);
+
+      const path = svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", color)
+        .attr("stroke-width", 3)
+        .attr("d", line);
+
+      const totalLength = path.node().getTotalLength();
+      path.attr("stroke-dasharray", totalLength + " " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition().duration(1200).ease(d3.easeCubicOut)
+        .attr("stroke-dashoffset", 0);
+
+      const dots = svg.selectAll(".dot")
+        .data(data).enter().append("g")
+        .attr("transform", d => `translate(${x(d.y)},${y(d[key])})`);
+
+      dots.append("circle")
+        .attr("r", 0)
+        .attr("fill", "var(--bg)")
+        .attr("stroke", color)
+        .attr("stroke-width", 2.5)
+        .transition().delay((d, i) => i * 60).duration(400)
+        .attr("r", 4.5);
+
+      dots.append("text")
+        .attr("y", -10)
+        .attr("text-anchor", "middle")
+        .attr("fill", "var(--text)")
+        .attr("font-size", "10px")
+        .attr("font-family", "var(--mono)")
+        .attr("font-weight", "600")
+        .text(d => d[key]);
     }
-  });
-}, { threshold: 0.5 });
 
-document.querySelectorAll('#scrollySection .step').forEach(s => stepObs.observe(s));
+    function renderPyramidIn(yearKey, targetSelector) {
+      const container = d3.select(targetSelector);
+      if (container.empty()) return;
+      container.html("");
+      const data = odishaSlideData.pyramids[yearKey] || odishaSlideData.pyramids["2026"];
+      
+      const rect = container.node().getBoundingClientRect();
+      const rawW = rect.width || 750;
+      const w = Math.min(rawW, 850);
+      const h = 360;
+      const margin = {top: 20, right: 30, bottom: 30, left: 30};
 
-window.addEventListener('resize', () => {
-  drawIndiaChart(currentMode);
-  d3.select('#pyramidIndia').selectAll('*').remove();
-  d3.select('#pyramidOdisha').selectAll('*').remove();
-  triggerPyramids(currentPyramidYear);
-});
+      const wrapper = container.append("div")
+        .style("display", "flex")
+        .style("justify-content", "center")
+        .style("width", "100%");
+
+      const svg = wrapper.append("svg").attr("width", w).attr("height", h);
+      const center = w / 2;
+      const maxVal = d3.max(data, d => Math.max(d.m, d.f));
+      
+      const xMale = d3.scaleLinear().domain([0, maxVal * 1.15]).range([center - 40, margin.left]);
+      const xFemale = d3.scaleLinear().domain([0, maxVal * 1.15]).range([center + 40, w - margin.right]);
+      const y = d3.scaleBand().domain(data.map(d => d.a)).range([h - margin.bottom, margin.top]).padding(0.2);
+
+      svg.append("text").attr("x", center - 90).attr("y", 14).attr("fill", "var(--teal)").attr("font-size", "11px").attr("font-family", "var(--mono)").attr("font-weight", "700").text("MALE ('000s)");
+      svg.append("text").attr("x", center + 40).attr("y", 14).attr("fill", "var(--purple)").attr("font-size", "11px").attr("font-family", "var(--mono)").attr("font-weight", "700").text("FEMALE ('000s)");
+
+      svg.selectAll(".bar-m")
+        .data(data).enter().append("rect")
+        .attr("x", center - 40)
+        .attr("y", d => y(d.a))
+        .attr("width", 0)
+        .attr("height", y.bandwidth())
+        .attr("fill", "var(--teal)")
+        .attr("rx", 2)
+        .transition().duration(800).ease(d3.easeCubicOut)
+        .attr("x", d => xMale(d.m))
+        .attr("width", d => (center - 40) - xMale(d.m));
+
+      svg.selectAll(".bar-f")
+        .data(data).enter().append("rect")
+        .attr("x", center + 40)
+        .attr("y", d => y(d.a))
+        .attr("width", 0)
+        .attr("height", y.bandwidth())
+        .attr("fill", "var(--purple)")
+        .attr("rx", 2)
+        .transition().duration(800).ease(d3.easeCubicOut)
+        .attr("width", d => xFemale(d.f) - (center + 40));
+
+      svg.selectAll(".label-age")
+        .data(data).enter().append("text")
+        .attr("x", center)
+        .attr("y", d => y(d.a) + y.bandwidth()/2 + 4)
+        .attr("text-anchor", "middle")
+        .attr("fill", "#FFFFFF")
+        .attr("font-size", "10.5px")
+        .attr("font-weight", "700")
+        .attr("font-family", "var(--mono)")
+        .style("pointer-events", "none")
+        .text(d => d.a);
+    }
+
+    function renderStackedBarIn(data, targetSelector) {
+      const container = d3.select(targetSelector);
+      if (container.empty()) return;
+      container.html("");
+      const rect = container.node().getBoundingClientRect();
+      const rawW = rect.width || 750;
+      const w = Math.min(rawW, 850);
+      const h = 360;
+      const margin = {top: 45, right: 40, bottom: 40, left: 50};
+
+      const wrapper = container.append("div")
+        .style("display", "flex")
+        .style("justify-content", "center")
+        .style("width", "100%");
+
+      const svg = wrapper.append("svg").attr("width", w).attr("height", h);
+      const x = d3.scaleBand().domain(data.map(d => d.y)).range([margin.left, w - margin.right]).padding(0.35);
+      const y = d3.scaleLinear().domain([0, 100]).range([h - margin.bottom, margin.top]);
+
+      const colors = { youth: 'var(--orange)', work: 'var(--teal)', senior: 'var(--purple)' };
+      const labels = { youth: 'Youth (0-14)', work: 'Working (15-59)', senior: 'Senior (60+)' };
+
+      const legend = svg.append("g").attr("transform", `translate(${margin.left}, 15)`);
+      let legX = 0;
+      ['youth', 'work', 'senior'].forEach(k => {
+        legend.append("rect").attr("x", legX).attr("y", 0).attr("width", 12).attr("height", 12).attr("fill", colors[k]).attr("rx", 3);
+        legend.append("text").attr("x", legX + 16).attr("y", 10).attr("fill", "var(--text)").attr("font-size", "11px").attr("font-family", "var(--mono)").text(labels[k]);
+        legX += 140;
+      });
+
+      data.forEach(d => {
+        let y0 = 0;
+        ['youth', 'work', 'senior'].forEach(k => {
+          const val = d[k];
+          const barH = y(y0) - y(y0 + val);
+          svg.append("rect")
+            .attr("x", x(d.y))
+            .attr("y", y(y0))
+            .attr("width", x.bandwidth())
+            .attr("height", 0)
+            .attr("fill", colors[k])
+            .attr("rx", 3)
+            .call(el => el.append("title").text(`Year ${d.y} - ${labels[k]}: ${val}%`))
+            .transition().duration(900).ease(d3.easeCubicOut)
+            .attr("y", y(y0 + val))
+            .attr("height", barH);
+
+          y0 += val;
+        });
+      });
+
+      svg.append("g").attr("transform", `translate(0,${h - margin.bottom})`).call(d3.axisBottom(x).tickFormat(d3.format("d"))).attr("color", "var(--muted)").attr("font-family", "var(--mono)");
+    }
+
+    function renderChartOnIntersect(sectionId, renderFn) {
+      const el = document.getElementById(sectionId);
+      if (!el) return;
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            renderFn();
+          }
+        });
+      }, { threshold: 0.15 });
+      
+      observer.observe(el);
+    }
+
+    renderChartOnIntersect('section-4', () => renderLineChartIn(odishaSlideData.popGrowth, 'v', 'Millions', 'var(--teal)', null, '#chart-section-4'));
+    renderChartOnIntersect('section-5', () => renderPyramidIn('2026', '#chart-section-5'));
+    renderChartOnIntersect('section-6', () => renderStackedBarIn(odishaSlideData.ageCohorts, '#chart-section-6'));
+    renderChartOnIntersect('section-7', () => renderLineChartIn(odishaSlideData.sexRatio, 'v', 'Females / 1000 Males', 'var(--purple)', 1000, '#chart-section-7'));
+    renderChartOnIntersect('section-8', () => renderLineChartIn(odishaSlideData.srb, 'v', 'Female Births / 1000 Male Births', 'var(--blue)', 950, '#chart-section-8'));
+    renderChartOnIntersect('section-9', () => renderLineChartIn(odishaSlideData.tfr, 'v', 'TFR Value', 'var(--orange)', 2.1, '#chart-section-9'));
+
+    document.querySelectorAll('.slide-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const slideNum = btn.dataset.slide;
+        const target = document.getElementById(`section-${slideNum}`);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id.replace('section-', '');
+          document.querySelectorAll('.slide-tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.slide === id);
+          });
+        }
+      });
+    }, { threshold: 0.25 });
+
+    document.querySelectorAll('.report-section-card').forEach(card => sectionObserver.observe(card));
 </script>
 <script src="chatbot.js"></script>
 </body>

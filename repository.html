@@ -363,8 +363,7 @@
     </a>
   </div>
   <div class="nav-group flex-wrap" style="gap: 12px;">
-    <a href="index.html" class="btn-elegant">Home</a>
-    <a href="odisha.html" class="btn-elegant">Odisha at a glance</a>
+    <a href="index.html" class="btn-elegant">Odisha at a glance</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant" aria-current="page">Repository</a>
     <a href="about.html" class="btn-elegant">About Us</a>
@@ -513,8 +512,14 @@
 
         filtered.forEach(d => {
             const rawUrl = d.file.startsWith('http') ? d.file : d.file.replace(/^\//, '');
-            const downloadUrl = (window.DataLoader && window.DataLoader.toDirectDownloadUrl) ? window.DataLoader.toDirectDownloadUrl(rawUrl) : rawUrl;
+            const isLocal = !rawUrl.startsWith('http');
+            const targetUrl = isLocal ? encodeURI(rawUrl) : ((window.DataLoader && window.DataLoader.toDirectDownloadUrl) ? window.DataLoader.toDirectDownloadUrl(rawUrl) : rawUrl);
             const icon = typeIcons[d.type] || typeIcons['excel'];
+            const fileName = rawUrl.split('/').pop();
+            const clickHandler = isLocal 
+                ? `const a = document.createElement('a'); a.href='${targetUrl}'; a.download='${fileName}'; document.body.appendChild(a); a.click(); a.remove();`
+                : `if (window.DataLoader && window.DataLoader.triggerDirectDownload) { DataLoader.triggerDirectDownload('${rawUrl}'); } else { window.location.href='${targetUrl}'; }`;
+            
             grid.innerHTML += `
                 <div class="dataset-card">
                     <div class="dataset-header">
@@ -527,7 +532,7 @@
                         <span>SIZE: ${d.size}</span>
                     </div>
                     <div class="dataset-btn-row">
-                        <a href="${downloadUrl}" onclick="event.preventDefault(); if (window.DataLoader && window.DataLoader.triggerDirectDownload) { DataLoader.triggerDirectDownload('${rawUrl}'); } else { window.location.href='${downloadUrl}'; }" class="btn-dataset-dl">💾 Download Dataset</a>
+                        <a href="${targetUrl}" download="${fileName}" onclick="event.preventDefault(); ${clickHandler}" class="btn-dataset-dl">📊 Download Excel Dataset</a>
                     </div>
                 </div>
             `;

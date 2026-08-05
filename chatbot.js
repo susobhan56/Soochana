@@ -513,9 +513,8 @@
     }
     if (q.includes("compare") || q.includes("duel") || q.includes("versus") || q.includes("vs")) {
       return {
-        text: "You can compare demographics. Try using the State Duel to compare Odisha vs India, or District Duel for detailed district-wise age cohort pyramids.",
+        text: "You can compare demographics using the District Duel for detailed district-wise age cohort pyramids.",
         links: [
-          { title: "⚔️ State Duel (India/Odisha/States)", url: "compare.html" },
           { title: "⚔️ District Duel (Odisha Districts)", url: "odisha_compare.html" }
         ]
       };

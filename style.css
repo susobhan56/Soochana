@@ -1371,18 +1371,18 @@ path:hover {
 /* ─── LEADERBOARD ────────────────────────────────────────── */
 .districts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
-  margin-top: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
 }
 
 .district-card {
   background: var(--surface);
-  padding: 24px;
-  border-radius: 12px;
+  padding: 14px 16px;
+  border-radius: 10px;
   border: 1px solid var(--border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
+  transition: all 0.25s ease;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -1391,30 +1391,30 @@ path:hover {
 }
 
 .district-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   border-color: var(--teal);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
 }
 
 .district-name {
   font-family: var(--mono);
-  font-size: var(--fs-caption);
-  letter-spacing: 0.13em;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
   color: var(--teal);
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   text-transform: uppercase;
 }
 
 .district-pop {
   font-family: var(--serif);
-  font-size: var(--fs-h3);
-  font-weight: var(--wt-display);
-  letter-spacing: -0.03em;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin-bottom: 8px;
   color: var(--blue);
 }
 
-.district-label { font-size: var(--fs-micro); color: var(--muted); font-family: var(--mono); }
+.district-label { font-size: 0.72rem; color: var(--muted); font-family: var(--mono); }
 
 /* ─── TIMELINE ───────────────────────────────────────────── */
 .timeline-section {

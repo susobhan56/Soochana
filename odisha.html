@@ -3,17 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odisha's Demographic Journey — Regional Explorer</title>
+<title>Soochana — Odisha Demographic Intelligence</title>
+<meta name="description" content="Forty-six million people, one shifting age structure. Explore Odisha's demographics across thirty districts and seven decades — maps, briefs, datasets and reports.">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js"></script>
-<link rel="stylesheet" href="style.css">
+<!-- Three.js 3D WebGL Engine for Interactive Background Particle System -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="dotfield3d.js"></script>
+<!-- in <head> and not deferred, so the saved text size applies before first paint -->
 <script src="ui.js"></script>
+<noscript><style>
+  /* Without JS there is no intro and no staged reveal — show everything. */
+  .intro { display: none !important; }
+  .reveal > * { transform: none !important; }
+  .lander-kicker, .lander-sub, .lander-cta, .lander-readout { opacity: 1 !important; transform: none !important; }
+</style></noscript>
 <style>
     /* Page specific overrides to support layout-scrolly map */
-    .scrolly { display: grid; grid-template-columns: 1fr 420px; position: relative; background: var(--surface); }
+    .scrolly { display: grid; grid-template-columns: 1fr 340px; position: relative; background: var(--surface); }
     .sticky-map { 
       position: sticky; 
       top: 70px; 
@@ -21,92 +32,82 @@
       display: flex; 
       flex-direction: column; 
       border-right: 1px solid var(--border); 
-      padding: 40px; 
+      padding: 16px 20px; 
       background: var(--bg);
       overflow: hidden;
+    }
+    #map-container {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+      overflow: hidden;
+    }
+    #map-container svg {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
     }
     .steps { padding: 0; background: var(--surface); }
-    .step { min-height: 80vh; padding: 100px 40px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border); opacity: 0.25; transition: opacity 0.5s ease; }
+    .step { min-height: 75vh; padding: 60px 24px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border); opacity: 0.25; transition: opacity 0.5s ease; }
     .step.active { opacity: 1; }
-    /* .stat-strip / .stat-cell intentionally NOT redefined here. This inline
-       <style> loads after style.css, so a copy of the base rule would win over
-       style.css's responsive media queries and the strip would stay 4-up on a
-       phone, overflowing the viewport. style.css owns these. */
-    .stat-cell { padding: 32px 28px; }
+    .stat-cell { padding: 24px 20px; }
     body { overflow-y: scroll; height: auto; }
 
-    /* ── Hero dot field ──────────────────────────────────────────────
-       Occupies the slot that images/banner.gif used to fill: a framed
-       panel between the standfirst and the scroll cue. The banner was
-       17.4 MB (1366×768, 288 frames) — 70–140s on a rural 3G line
-       before the hero looked right. This draws from the 1.4 KB of age
-       structure inlined in dotfield.js instead, so the hero is complete
-       on first paint.
-
-       Page-scoped id and classes on purpose. style.css's #dotfield and
-       .lander-readout are tuned for the landing hero, where the canvas
-       is a 0.17-opacity wash behind display type and the readout stays
-       at opacity 0 until .lander gains .in from the intro curtain.
-       Neither is true here — this is foreground content, and this page
-       has no curtain to add that class. */
-
-    /* .hero is `display:grid; place-items:center`, so its single child is
-       shrink-to-fit — its width came out as whatever the widest line of text
-       measured, which is .hero-sub's `max-width:34em` resolved against
-       --fs-lead. That makes the hero column 748px at normal text size and
-       ~860px at A++, i.e. the reader's text-size control silently resized the
-       banner. Pin the column to the viewport instead so the panel below is a
-       stable 900px, and .hero-sub keeps centring itself inside it.
-       Classed rather than `.hero > div`, which also matches .scroll-cue. */
-    .hero-inner { width: min(900px, 100%); }
-
-    /* The wrapper is the positioning context, so the readout can be absolute
-       inside the frame at wide widths and simply flow below it at narrow ones
-       without the frame's fixed height trapping it. */
-    .hero-field-wrap {
-      position: relative;
-      max-width: 900px;
-      margin: 40px auto 14px;
+    /* Compact, refined text styling so the map stays huge */
+    .map-title {
+      font-size: 1.45rem !important;
+      font-weight: 700 !important;
+      line-height: 1.25 !important;
+      color: var(--blue);
+      margin-top: 2px !important;
     }
-
-    .hero-field {
-      position: relative;
-      /* Definite height, not aspect-ratio: dotfield() measures the box and
-         bails out when either dimension is 0, so the frame has to be sized
-         by CSS rather than by its content. */
-      height: clamp(240px, 34vw, 420px);
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      box-shadow: 0 12px 40px rgba(31, 56, 92, 0.06);
-      background: var(--bg);
-    }
-
-    #heroField { position: absolute; inset: 0; width: 100%; height: 100%; }
-
-    /* Top-right: the pyramid is bottom-weighted, so the narrow 85+ bands
-       leave this corner clear at every viewport width. */
-    .hero-field-readout {
-      position: absolute;
-      top: 14px;
-      right: 18px;
-      text-align: right;
-      font-family: var(--mono);
-      font-size: var(--fs-micro);
-      letter-spacing: 0.14em;
+    .map-kicker {
+      font-size: 0.75rem !important;
+      letter-spacing: 0.12em !important;
+      font-weight: 700 !important;
       text-transform: uppercase;
-      line-height: 2;
-      color: var(--dimmed);
     }
-
-    .hero-field-readout b { color: var(--teal); font-weight: 600; }
-
-    .hero-field-caption {
+    .step-idx {
       font-family: var(--mono);
-      font-size: var(--fs-caption);
-      color: var(--dimmed);
-      max-width: 900px;
-      margin: 0 auto 40px;
+      font-size: 0.8rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .step h2 {
+      font-size: 1.35rem !important;
+      font-weight: 700 !important;
+      line-height: 1.3 !important;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+    .step p {
+      font-size: 0.98rem !important;
+      line-height: 1.65 !important;
+      color: var(--text) !important;
+      font-weight: 400 !important;
+    }
+    .stat-value {
+      font-size: 1.65rem !important;
+      font-weight: 700 !important;
+    }
+    .stat-label {
+      font-size: 0.82rem !important;
+      line-height: 1.4 !important;
+      font-weight: 500 !important;
+    }
+    .tooltip {
+      font-size: 0.95rem !important;
+      padding: 9px 14px !important;
+      border-radius: 8px !important;
     }
 
     @media (max-width: 900px) {
@@ -114,30 +115,14 @@
         .sticky-map {
             position: relative;
             top: 0;
-            height: 50vh;
+            height: 70vh;
             border-right: none;
             border-bottom: 1px solid var(--border);
-            padding: 20px;
+            padding: 12px;
         }
         .step {
             min-height: auto;
-            padding: 60px 20px;
-        }
-    }
-
-    /* Below roughly 500px of panel the readout starts landing on the 75+ rows,
-       and enlarged text brings that forward — so drop it out of the panel and
-       centre it underneath, the way style.css does for .lander-readout. */
-    @media (max-width: 620px) {
-        .hero-field-readout {
-            position: static;
-            display: flex;
-            justify-content: center;
-            gap: 22px;
-            flex-wrap: wrap;
-            text-align: center;
-            line-height: 1.8;
-            margin-top: 12px;
+            padding: 40px 16px;
         }
     }
 
@@ -213,21 +198,38 @@
 <body>
 
 <!-- ═══════════════════════════════════════════════
+     INTRO TITLE SEQUENCE
+═══════════════════════════════════════════════ -->
+<div class="intro" id="intro" role="presentation">
+  <div class="intro-panel intro-panel-top"></div>
+  <div class="intro-panel intro-panel-bottom"></div>
+  <div class="intro-seam"></div>
+
+  <div class="intro-stage">
+    <div class="intro-year" id="introYear">1901</div>
+    <div class="intro-num" id="introNum">10,302,917</div>
+    <div class="intro-title">Soochana</div>
+    <div class="intro-caption">Odisha · Twelve decades of census</div>
+  </div>
+
+  <button class="intro-skip" id="introSkip" type="button">Skip intro</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════
      HEADER
 ═══════════════════════════════════════════════ -->
 <header>
   <div class="nav-group">
-    <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
-      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+    <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+      <div style="width:10px; height:10px; background:var(--orange); border-radius:50%;"></div>
       <div>
-        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
-        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+        <h1 style="line-height:1; margin:0;">Soochana</h1>
+        <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.12em; color:var(--muted); text-transform:uppercase; margin-top:3px; font-weight:600;">from numbers to narrative</div>
       </div>
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
-    <a href="index.html" class="btn-elegant">Home</a>
-    <a href="odisha.html" class="btn-elegant" aria-current="page">Odisha at a glance</a>
+  <div class="nav-group flex-wrap" style="gap:12px;">
+    <a href="index.html" class="btn-elegant" aria-current="page">Odisha at a glance</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant">Repository</a>
     <a href="about.html" class="btn-elegant">About Us</a>
@@ -235,52 +237,72 @@
 </header>
 
 <!-- ═══════════════════════════════════════════════
-     HERO SECTION
+     HERO — ambient dot field behind display type
 ═══════════════════════════════════════════════ -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-kicker">Regional Profile · Odisha State · Report 2025</div>
-    <div class="hero-num" style="color: var(--purple);">47.0M</div>
-    <h1>Odisha's Demographic<br><span class="gradient">Horizon</span></h1>
-    <p class="hero-sub">
-      Odisha is at a pivotal demographic juncture. With a fertility rate of 1.8—well below the national 
-      average of 1.98—the state is stabilizing its population growth while navigating structural regional variations 
-      between coastal urban hubs and inland tribal districts.
+<section class="lander" id="lander">
+  <canvas id="dotfield" aria-hidden="true"></canvas>
+  <h2 class="sr-only">Soochana — a demographic portal for Odisha</h2>
+
+  <div class="lander-inner">
+    <div class="lander-kicker">Demographic Intelligence Unit · Odisha</div>
+    <span class="reveal"><span class="display-line">Demography is the <em>tectonic</em></span></span>
+    <span class="reveal"><span class="display-line">plate beneath civilization —</span></span>
+    <span class="reveal"><span class="display-line">when it moves, <em>everything</em> moves.</span></span>
+
+    <p class="lander-sub">
+      Odisha fell below replacement fertility ahead of the national average. By 2036 nearly one in six residents will be over sixty. Explore thirty districts, seven decades, and the transition already under way.
     </p>
 
+    <div class="lander-cta">
+      <a href="#state-stats" class="btn-pill solid">Odisha at a glance</a>
+      <a href="#scrollySection" class="btn-pill ghost">Explore the story</a>
+    </div>
+
     <!-- COMPACT TOP DEMOGRAPHIC BATTLE BUTTONS -->
-    <div style="margin: 20px 0 28px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+    <div style="margin-top: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
       <span style="font-family: var(--mono); font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">Demographic Duels:</span>
-      <a href="compare.html" class="btn-pill ghost" style="padding: 7px 18px; font-size: 0.82rem; border-color: rgba(26,83,92,0.35); color: var(--teal); text-decoration: none;" onmouseover="this.style.background='rgba(26,83,92,0.08)'; this.style.borderColor='var(--teal)';" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(26,83,92,0.35)';">State Battle →</a>
       <a href="odisha_compare.html" class="btn-pill ghost" style="padding: 7px 18px; font-size: 0.82rem; border-color: rgba(107,70,193,0.35); color: var(--purple); text-decoration: none;" onmouseover="this.style.background='rgba(107,70,193,0.08)'; this.style.borderColor='var(--purple)';" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(107,70,193,0.35)';">District Battle →</a>
     </div>
-    <div class="hero-field-wrap">
-      <div class="hero-field">
-        <canvas id="heroField" aria-hidden="true"></canvas>
-      </div>
-      <div class="hero-field-readout" aria-hidden="true">
-        <div>Age structure <b id="hfYear">2021</b></div>
-        <div>Share aged 60+ <b id="hfShare">11.1%</b></div>
-      </div>
-      <p class="sr-only">
-        A halftone chart of Odisha's age structure, cycling through 1991, 2011,
-        2021 and the projections for 2026, 2031 and 2036. The share of residents
-        aged 60 and over climbs from 7.2% in 1991 to 15.9% by 2036, while the
-        under-five base narrows from 5.8% to 3.3%.
-      </p>
-    </div>
-    <div class="hero-field-caption">Odisha's age structure, 1991–2036 · one dot ≈ 123,000 people</div>
-    <div class="label" style="color:var(--muted)">Scroll to explore the regions ↓</div>
   </div>
-  <div class="scroll-cue">
-    <div class="arrow"></div>
+
+  <div class="lander-readout" aria-hidden="true">
+    <div class="readout-title" style="letter-spacing:0.18em; font-weight:700; color:var(--teal); margin-bottom:6px;">ODISHA AGE PYRAMID</div>
+    <div class="readout-legend" style="display:flex; gap:12px; justify-content:flex-end; margin-bottom:8px; font-size:11px;">
+      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#1a535c; margin-right:4px;"></span>Youth (0–19)</span>
+      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#2b5c68; margin-right:4px;"></span>Workforce</span>
+      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#bb4500; margin-right:4px;"></span>60+ Senior</span>
+    </div>
+    <div>CENSUS METRIC <b id="dfYear">2021</b></div>
+    <div>SHARE AGED 60+ <b id="dfShare">11.1%</b></div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
+     LIVE STAT BAND
+═══════════════════════════════════════════════ -->
+<div class="band" id="band">
+  <div class="band-cell">
+    <div class="band-val" data-to="46.25" data-suffix="M" data-dec="2">46.25M</div>
+    <div class="band-lbl">Population<br>Census 2021</div>
+  </div>
+  <div class="band-cell">
+    <div class="band-val" data-to="1.8" data-dec="1">1.8</div>
+    <div class="band-lbl">Fertility rate<br>NFHS-5 · replacement is 2.1</div>
+  </div>
+  <div class="band-cell">
+    <div class="band-val" data-to="15.9" data-suffix="%" data-dec="1">15.9%</div>
+    <div class="band-lbl">Aged 60 and over<br>Projected 2036</div>
+  </div>
+  <div class="band-cell">
+    <div class="band-val" data-to="30" data-dec="0">30</div>
+    <div class="band-lbl">Districts<br>Mapped in full</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
      STATE STAT STRIP
 ═══════════════════════════════════════════════ -->
-<div class="stat-strip">
+<div class="stat-strip" id="state-stats">
   <div class="stat-cell">
     <div class="stat-value teal" id="stat-tfr">--</div>
     <div class="stat-label">Fertility Rate (TFR)<br>NFHS-5 Profile</div>
@@ -321,12 +343,10 @@
   </div>
 </div>
 
-
-
 <!-- ═══════════════════════════════════════════════
      SCROLLYTELLING MAP SECTION
 ═══════════════════════════════════════════════ -->
-<div class="scrolly">
+<div class="scrolly" id="scrollySection">
   <!-- LEFT: Sticky Map -->
   <div class="sticky-map">
     <div class="map-kicker" style="color: var(--purple);">Regional Explorer</div>
@@ -338,25 +358,25 @@
   <!-- RIGHT: Scroll steps -->
   <div class="steps">
     <div class="step active" data-highlight="all" data-title="A Tapestry of 30 Districts">
-      <div class="step-idx">01 — The State Overview</div>
+      <div class="step-idx">The State Overview</div>
       <h2>30 Districts, One State</h2>
       <p>Odisha is India's 11th most populous state. Its demographic profile is a complex matrix of rapid coastal urbanization and agricultural inland plains.</p>
     </div>
     
     <div class="step" data-highlight="Ganjam,Cuttack,Mayurbhanj" data-title="The Demographic Giants">
-      <div class="step-idx" style="color: var(--orange);">02 — Population Giants</div>
+      <div class="step-idx" style="color: var(--orange);">Population Giants</div>
       <h2>Where the millions reside</h2>
       <p>Three districts—<span style="color:var(--yellow)">Ganjam</span>, <span style="color:var(--teal)">Cuttack</span>, and <span style="color:var(--purple)">Mayurbhanj</span>—together account for nearly 20% of the state's population. Ganjam alone has over 3.5 million residents.</p>
     </div>
     
     <div class="step" data-highlight="Khordha" data-title="The Capital & Knowledge Hub">
-      <div class="step-idx" style="color: var(--teal);">03 — Knowledge Hub</div>
+      <div class="step-idx" style="color: var(--teal);">Knowledge Hub</div>
       <h2>Education and the Capital Belt</h2>
       <p><span style="color:var(--teal)">Khordha</span> leads the state in literacy (86.9%) and has reached a very low fertility rate of 1.4, driven by urban development around Bhubaneswar.</p>
     </div>
     
     <div class="step" data-highlight="Malkangiri,Nabarangapur,Koraput" data-title="The Southern Frontier Challenges">
-      <div class="step-idx" style="color: var(--red);">04 — Challenges</div>
+      <div class="step-idx" style="color: var(--red);">Challenges</div>
       <h2>The Southern Frontier</h2>
       <p>Southern districts like <span style="color:var(--red)">Malkangiri</span>, <span style="color:var(--red)">Nabarangapur</span>, and <span style="color:var(--red)">Koraput</span> still face higher infant mortality rates and lower literacy levels, representing the state's focused development priorities.</p>
     </div>
@@ -385,33 +405,15 @@
   </div>
   <div class="stat-cell">
     <div class="stat-value green">70.4</div>
-    <div class="stat-label">Life Expectancy<br>M: 69.2 \| F: 71.8 yrs</div>
+    <div class="stat-label">Life Expectancy<br>M: 69.2 | F: 71.8 yrs</div>
   </div>
 </div>
-
-
-
-<!-- ═══════════════════════════════════════════════
-     30 DISTRICT LEADERBOARD
-═══════════════════════════════════════════════ -->
-<section class="full-section">
-  <div class="label" style="color: var(--purple); margin-bottom: 12px;">05 — Leaderboard Grid</div>
-  <h2>Odisha District Rankings</h2>
-  <p class="intro-text">
-    Sort and inspect demographic scales across all 30 districts of Odisha. 
-    Cards show decadal growth categories computed between Census 2011 and 2021.
-  </p>
-
-  <div class="districts-grid" id="leaderboardGrid">
-    <!-- Clickable cards loaded dynamically -->
-  </div>
-</section>
 
 <!-- ═══════════════════════════════════════════════
      POLICY TIMELINE
 ═══════════════════════════════════════════════ -->
 <section class="timeline-section">
-  <div class="label" style="color: var(--orange); margin-bottom: 16px;">06 — Policy History</div>
+  <div class="label" style="color: var(--orange); margin-bottom: 16px;">Policy History</div>
   <h2>Decades of Progress: Odisha's Welfare Milestones</h2>
 
   <div class="policy-timeline" id="policyTimeline">
@@ -444,11 +446,11 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     07 — ODISHA DEMOGRAPHIC & DEVELOPMENT LANDSCAPE (11-SECTION SUITE AT END)
+     ODISHA DEMOGRAPHIC & DEVELOPMENT LANDSCAPE (11-SECTION SUITE)
 ═══════════════════════════════════════════════ -->
 <section style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 50px max(20px, 4vw); box-sizing: border-box;">
   <div style="margin-bottom: 24px;">
-    <div class="label" style="color: var(--teal); margin-bottom: 12px;">07 — Strategic Demographic Dashboard</div>
+    <div class="label" style="color: var(--teal); margin-bottom: 12px;">Strategic Demographic Dashboard</div>
     <h2 style="font-family: var(--serif); font-size: var(--fs-h2); color: var(--blue); margin: 4px 0 0;">
       Odisha State Development &amp; Demographic Analytics
     </h2>
@@ -629,7 +631,7 @@
         </div>
         <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
           <div style="font-size: 1.5rem; font-weight: 800; color: var(--orange); font-family: var(--serif);">9.17%</div>
-          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px;">Share of India's Tribal Pop</div>
+          <div style="font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px;">Share of National Tribal Pop</div>
         </div>
       </div>
     </div>
@@ -661,40 +663,124 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════
+     30 DISTRICT LEADERBOARD
+═══════════════════════════════════════════════ -->
+<section class="full-section">
+  <div class="label" style="color: var(--purple); margin-bottom: 12px;">Leaderboard Grid</div>
+  <h2>Odisha District Rankings</h2>
+  <p class="intro-text">
+    Sort and inspect demographic scales across all 30 districts of Odisha. 
+    Cards show decadal growth categories computed between Census 2011 and 2021.
+  </p>
+
+  <div class="districts-grid" id="leaderboardGrid">
+    <!-- Clickable cards loaded dynamically -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
      FOOTER
 ═══════════════════════════════════════════════ -->
 <footer>
   <div>
     <div class="footer-brand">Demographic <span>Insights</span></div>
-    <div style="font-size: var(--fs-small); color:var(--muted); margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption);">
-      Odisha Regional Demographics · Built with D3.js
+    <div style="font-size:var(--fs-micro); color:var(--muted); margin-top:10px; font-family:var(--mono);">
+      Soochana · Odisha Demographic Intelligence Unit
     </div>
   </div>
   <div class="footer-meta">
-    Data: Census of India 1951-2011, National Family Health Survey (NFHS-5),<br>
-    Odisha State Population Projection Reports (2021-2036).
+    Data sources: Census of India, NFHS-5, PLFS, UDISE+, SRS &amp; LASI.<br>
+    Background: Odisha age structure 1991–2036 · one dot ≈ 123,000 people.
   </div>
 </footer>
 
 <script src="dotfield.js"></script>
 <script>
-    /* Hero dot field. Pauses when the tab is hidden and freezes on a static
-       2021 frame under prefers-reduced-motion — both handled inside dotfield(). */
-    dotfield(document.getElementById('heroField'), {
-      yearEl:  document.getElementById('hfYear'),
-      shareEl: document.getElementById('hfShare'),
-      loop:    true
+/* ─────────────────────────────────────────────────────────────
+   1. AMBIENT 3D / 2D DEMOGRAPHIC PARTICLE MATRIX
+   ───────────────────────────────────────────────────────────── */
+var fieldStarted = false;
+function startField() {
+  if (fieldStarted) return;
+  fieldStarted = true;
+  var canvas = document.getElementById('dotfield');
+  var opts = {
+    yearEl:  document.getElementById('dfYear'),
+    shareEl: document.getElementById('dfShare'),
+    loop:    true
+  };
+  if (window.dotfield3d) {
+    window.dotfield3d(canvas, opts);
+  } else if (window.dotfield) {
+    dotfield(canvas, opts);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2. INTRO TITLE SEQUENCE
+   ───────────────────────────────────────────────────────────── */
+(function () {
+  var intro  = document.getElementById('intro');
+  var lander = document.getElementById('lander');
+  var yearEl = document.getElementById('introYear');
+  var numEl  = document.getElementById('introNum');
+  var TRENDS = (window.dotfield && window.dotfield.TRENDS) ? window.dotfield.TRENDS : [
+    [1901, 10302917], [1911, 11378875], [1921, 11158586], [1931, 12491056],
+    [1941, 13767988], [1951, 14645946], [1961, 17548846], [1971, 21944615],
+    [1981, 26370271], [1991, 31659736], [2001, 36804660], [2011, 41974218],
+    [2021, 46254277]
+  ];
+  var fmt = function (n) { return (n || 0).toLocaleString('en-IN'); };
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!intro || reduced) {
+    if (intro) intro.style.display = 'none';
+    if (lander) lander.classList.add('in');
+    startField();
+    return;
+  }
+
+  intro.classList.add('go');
+
+  var idx = 0;
+  var totalTicks = TRENDS.length;
+  var stepTime = 160;
+
+  var timer = setInterval(function () {
+    if (idx < totalTicks) {
+      yearEl.textContent = TRENDS[idx][0];
+      numEl.textContent  = fmt(TRENDS[idx][1]);
+      idx++;
+    } else {
+      clearInterval(timer);
+      intro.classList.add('title');
+      setTimeout(dismiss, 1200);
+    }
+  }, stepTime);
+
+  function dismiss() {
+    intro.classList.add('clear');
+    setTimeout(function() {
+      intro.classList.add('part');
+      if (lander) lander.classList.add('in');
+      startField();
+      setTimeout(function () {
+        intro.classList.add('done');
+      }, 1100);
+    }, 400);
+  }
+
+  var skipBtn = document.getElementById('introSkip');
+  if (skipBtn) {
+    skipBtn.addEventListener('click', function () {
+      clearInterval(timer);
+      dismiss();
     });
+  }
+})();
 </script>
 
 <script>
-    const width = 800, height = 600;
-    const svg = d3.select("#map-container").append("svg")
-        .attr("viewBox", `0 0 800 600`)
-        .attr("preserveAspectRatio", "xMidYMid meet");
-    const g = svg.append("g");
-    const tip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
-
     const colors = {
         'Ganjam': 'var(--yellow)',
         'Cuttack': 'var(--teal)',
@@ -705,16 +791,40 @@
         'Koraput': 'var(--red)'
     };
 
-    // Load GeoJSON and Populate Map
+    const container = d3.select("#map-container");
+    container.html("");
+
+    const svg = container.append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const g = svg.append("g");
+    const tip = d3.select("body").selectAll(".map-tooltip").data([null]).join("div")
+        .attr("class", "tooltip map-tooltip")
+        .style("opacity", 0);
+
     DataLoader.loadJSON('./Orissa.geojson').then(geoData => {
-        const projection = d3.geoMercator().fitSize([width, height], geoData);
-        const path = d3.geoPath().projection(projection);
+        // Project onto standard 1000x800 coordinate grid
+        const projTemp = d3.geoMercator().fitSize([1000, 800], geoData);
+        const path = d3.geoPath().projection(projTemp);
+        
+        // Calculate tight geographic bounding box of Odisha map features
+        const b = path.bounds(geoData);
+        const pad = 10;
+        const vx = b[0][0] - pad;
+        const vy = b[0][1] - pad;
+        const vw = (b[1][0] - b[0][0]) + pad * 2;
+        const vh = (b[1][1] - b[0][1]) + pad * 2;
+
+        // Set tight viewBox directly around Odisha bounds
+        svg.attr("viewBox", `${vx} ${vy} ${vw} ${vh}`);
 
         g.selectAll("path")
             .data(geoData.features).enter().append("path")
             .attr("d", path)
             .attr("fill", "#eaedef")
-            .attr("stroke", "rgba(0,0,0,0.12)")
+            .attr("stroke", "rgba(0,0,0,0.14)")
             .attr("stroke-width", "0.8px")
             .attr("class", d => `dist-${d.properties.Dist_Name.replace(/\s+/g, '')}`)
             .on("mouseover", function(event, d) {
@@ -724,7 +834,7 @@
                    .style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 10) + "px");
             })
             .on("mouseout", function() {
-                d3.select(this).style("stroke", "rgba(0,0,0,0.12)").style("stroke-width", "0.8px");
+                d3.select(this).style("stroke", "rgba(0,0,0,0.14)").style("stroke-width", "0.8px");
                 tip.transition().duration(400).style("opacity", 0);
             })
             .on("click", (e, d) => window.location.href = `district.html?id=${encodeURIComponent(d.properties.Dist_Name)}`);
@@ -739,11 +849,12 @@
                     
                     const title = entry.target.dataset.title;
                     if (title) {
-                      document.getElementById('mapSectionTitle').innerText = title;
+                      const titleEl = document.getElementById('mapSectionTitle');
+                      if (titleEl) titleEl.innerText = title;
                     }
                 }
             });
-        }, { threshold: 0.5 });
+        }, { threshold: 0.4 });
         
         document.querySelectorAll('.step').forEach(s => observer.observe(s));
     });
@@ -765,23 +876,15 @@
         }
     }
 
-    // ──────────────────────────────────────────────
     // STATE STAT STRIP & LEADERBOARD DYNAMIC LOADING
-    // ──────────────────────────────────────────────
     Promise.all([
       DataLoader.getDistrictPopulationTrends(),
       DataLoader.getNationalComparisons(),
       DataLoader.getStateDemographics()
     ]).then(([popData, nationalData, stateData]) => {
-      
-      // 1. Populate State Stat Strip dynamically
-      // TFR fallback to 1.80 (standard NFHS-5 Odisha level)
       d3.select("#stat-tfr").text("1.80");
-      
-      // Literacy rate fallback to 73.5% (Census benchmark)
       d3.select("#stat-literacy").text("73.5%");
 
-      // Sex Ratio from NFHS-5 state benchmark
       const sexRatioItem = nationalData.find(d => d.indicator.includes("Sex Ratio (Number of females"));
       if (sexRatioItem && sexRatioItem.odisha) {
         d3.select("#stat-sexratio").text(Math.round(sexRatioItem.odisha));
@@ -789,7 +892,6 @@
         d3.select("#stat-sexratio").text("1063");
       }
 
-      // Peak Projected Population (usually 2036)
       if (stateData && stateData.population_trends) {
         const peakYearData = stateData.population_trends.reduce((max, d) => 
           (d.total > (max.total || 0)) ? d : max, { total: 0 });
@@ -802,15 +904,12 @@
         d3.select("#stat-peakpop").text("51.5M");
       }
 
-      // 2. Populate Leaderboard Grid
+      // Leaderboard Grid
       const grid = d3.select("#leaderboardGrid");
-      
-      // Calculate growth and compile district details
       const districtsList = [];
       Object.keys(popData).forEach(name => {
         const p2011 = popData[name]["2011"].total;
         const p2021 = popData[name]["2021"].total;
-        
         const growth = ((p2021 - p2011) / p2011) * 100;
         districtsList.push({
           name: name,
@@ -820,15 +919,12 @@
         });
       });
       
-      // Sort descending by 2021 population
       districtsList.sort((a, b) => b.pop2021 - a.pop2021);
       
-      // Render Grid Cards
       districtsList.forEach((d, index) => {
         const rank = index + 1;
         const formattedPop = (d.pop2021 / 1000000).toFixed(2) + "M";
         
-        // Growth classification tag
         let tagText = "Stable Growth";
         let tagColor = "var(--green)";
         if (d.growth > 11.5) {
@@ -850,9 +946,9 @@
         badgeRow.append("div").attr("class", "district-label").text(`Rank #${rank}`);
         badgeRow.append("div")
           .style("font-family", "var(--mono)")
-          .style("font-size", "14px")
-          .style("padding", "2px 8px")
-          .style("border-radius", "10px")
+          .style("font-size", "11px")
+          .style("padding", "1px 6px")
+          .style("border-radius", "6px")
           .style("background", "rgba(0,0,0,0.03)")
           .style("border", `1px solid ${tagColor}`)
           .style("color", tagColor)
@@ -860,9 +956,7 @@
       });
     });
 
-    // ──────────────────────────────────────────────
     // INTERSECTION OBSERVER FOR POLICY TIMELINE
-    // ──────────────────────────────────────────────
     const policyObs = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -873,12 +967,7 @@
     
     document.querySelectorAll('.policy-item').forEach(item => policyObs.observe(item));
 
-    // ──────────────────────────────────────────────
-    // ODISHA (1).PPTX — 11-SLIDE ENGINE WITH D3 ANIMATION
-    // ──────────────────────────────────────────────
-    let currentOdishaSlide = 1;
-    let odishaSlideTimer = null;
-
+    // 11-SECTION DASHBOARD ENGINE WITH D3 ANIMATION
     const odishaSlideData = {
       popGrowth: [
         {y: 1901, v: 10.3}, {y: 1911, v: 11.4}, {y: 1921, v: 11.2}, {y: 1931, v: 12.5},
@@ -916,9 +1005,6 @@
       ]
     };
 
-    // ──────────────────────────────────────────────
-    // ODISHA (1).PPTX — 11-SECTION ENGINE WITH D3 ANIMATIONS
-    // ──────────────────────────────────────────────
     function renderLineChartIn(data, key, label, color, refVal, targetSelector) {
       const container = d3.select(targetSelector);
       if (container.empty()) return;
@@ -941,7 +1027,6 @@
       const yMax = d3.max(data, d => d[key]);
       const y = d3.scaleLinear().domain([yMin * 0.9, yMax * 1.05]).range([h - margin.bottom, margin.top]);
 
-      // Gradient Definition for Area Fill
       const gradientId = "grad-" + Math.random().toString(36).substr(2, 9);
       const defs = svg.append("defs");
       const linearGrad = defs.append("linearGradient")
@@ -951,7 +1036,6 @@
       linearGrad.append("stop").attr("offset", "0%").attr("stop-color", color).attr("stop-opacity", 0.25);
       linearGrad.append("stop").attr("offset", "100%").attr("stop-color", color).attr("stop-opacity", 0.0);
 
-      // Dashed Horizontal Gridlines
       svg.append("g")
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y).tickSize(-w + margin.left + margin.right).tickFormat(""))
@@ -959,7 +1043,6 @@
         .attr("stroke-dasharray", "3,3")
         .attr("opacity", 0.6);
 
-      // X & Y Axes
       svg.append("g")
         .attr("transform", `translate(0,${h - margin.bottom})`)
         .call(d3.axisBottom(x).tickFormat(d3.format("d")))
@@ -972,7 +1055,6 @@
         .attr("color", "var(--muted)")
         .attr("font-family", "var(--mono)");
 
-      // Reference Line if provided
       if (refVal) {
         svg.append("line")
           .attr("x1", margin.left)
@@ -993,159 +1075,112 @@
           .text(`Ref: ${refVal}`);
       }
 
-      // Area under line
       const area = d3.area()
         .x(d => x(d.y))
         .y0(h - margin.bottom)
         .y1(d => y(d[key]))
         .curve(d3.curveMonotoneX);
 
+      const line = d3.line()
+        .x(d => x(d.y))
+        .y(d => y(d[key]))
+        .curve(d3.curveMonotoneX);
+
       svg.append("path")
         .datum(data)
         .attr("fill", `url(#${gradientId})`)
-        .attr("d", area)
-        .attr("opacity", 0)
-        .transition().duration(1000)
-        .attr("opacity", 1);
-
-      // Line path animation
-      const line = d3.line().x(d => x(d.y)).y(d => y(d[key])).curve(d3.curveMonotoneX);
+        .attr("d", area);
 
       const path = svg.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("stroke", color)
-        .attr("stroke-width", 3.5)
+        .attr("stroke-width", 3)
         .attr("d", line);
 
       const totalLength = path.node().getTotalLength();
       path.attr("stroke-dasharray", totalLength + " " + totalLength)
         .attr("stroke-dashoffset", totalLength)
-        .transition()
-        .duration(1200)
-        .ease(d3.easeCubicOut)
+        .transition().duration(1200).ease(d3.easeCubicOut)
         .attr("stroke-dashoffset", 0);
 
-      // Data Dots with tooltips
       const dots = svg.selectAll(".dot")
-        .data(data)
-        .enter().append("circle")
-        .attr("cx", d => x(d.y))
-        .attr("cy", d => y(d[key]))
+        .data(data).enter().append("g")
+        .attr("transform", d => `translate(${x(d.y)},${y(d[key])})`);
+
+      dots.append("circle")
         .attr("r", 0)
-        .attr("fill", "#ffffff")
+        .attr("fill", "var(--bg)")
         .attr("stroke", color)
-        .attr("stroke-width", 3);
+        .attr("stroke-width", 2.5)
+        .transition().delay((d, i) => i * 60).duration(400)
+        .attr("r", 4.5);
 
-      dots.transition()
-        .delay((d, i) => i * 70)
-        .duration(400)
-        .attr("r", 5);
-
-      dots.append("title").text(d => `Year ${d.y}: ${d[key]} ${label}`);
+      dots.append("text")
+        .attr("y", -10)
+        .attr("text-anchor", "middle")
+        .attr("fill", "var(--text)")
+        .attr("font-size", "10px")
+        .attr("font-family", "var(--mono)")
+        .attr("font-weight", "600")
+        .text(d => d[key]);
     }
 
-    function renderPyramidIn(yr, targetSelector = '#chart-section-5') {
+    function renderPyramidIn(yearKey, targetSelector) {
       const container = d3.select(targetSelector);
       if (container.empty()) return;
       container.html("");
-      const data = odishaSlideData.pyramids[yr] || odishaSlideData.pyramids["2026"];
+      const data = odishaSlideData.pyramids[yearKey] || odishaSlideData.pyramids["2026"];
       
       const rect = container.node().getBoundingClientRect();
-      const rawW = rect.width || 520;
-      const w = Math.min(rawW, 520);
-      const h = 350;
-      const margin = {top: 52, right: 35, bottom: 20, left: 35};
+      const rawW = rect.width || 750;
+      const w = Math.min(rawW, 850);
+      const h = 360;
+      const margin = {top: 20, right: 30, bottom: 30, left: 30};
 
       const wrapper = container.append("div")
         .style("display", "flex")
         .style("justify-content", "center")
         .style("width", "100%");
 
-      const svg = wrapper.append("svg")
-        .attr("viewBox", `0 0 ${w} ${h}`)
-        .style("width", "100%")
-        .style("max-width", `${w}px`)
-        .style("height", "auto");
-      
-      const mid = w / 2;
-      const sideW = (w - margin.left - margin.right) / 2;
-
-      // Top Title (ODISHA PYRAMID (%))
-      svg.append("text")
-        .attr("x", mid)
-        .attr("y", 20)
-        .attr("text-anchor", "middle")
-        .attr("fill", "#5C7054")
-        .attr("font-family", "var(--mono)")
-        .attr("font-size", "12px")
-        .attr("font-weight", "700")
-        .attr("letter-spacing", "0.14em")
-        .text(`ODISHA PYRAMID (%) — ${yr}`);
-
-      // Male Header (MALE %)
-      svg.append("text")
-        .attr("x", mid - sideW / 2)
-        .attr("y", 42)
-        .attr("text-anchor", "middle")
-        .attr("fill", "#2C5E64")
-        .attr("font-family", "var(--mono)")
-        .attr("font-size", "11px")
-        .attr("font-weight", "800")
-        .text("MALE %");
-
-      // Female Header (FEMALE %)
-      svg.append("text")
-        .attr("x", mid + sideW / 2)
-        .attr("y", 42)
-        .attr("text-anchor", "middle")
-        .attr("fill", "#C85A2A")
-        .attr("font-family", "var(--mono)")
-        .attr("font-size", "11px")
-        .attr("font-weight", "800")
-        .text("FEMALE %");
-
-      const minBarW = 14;
-      const y = d3.scaleBand().domain(data.map(d => d.a)).range([h - margin.bottom, margin.top]).padding(0.06);
+      const svg = wrapper.append("svg").attr("width", w).attr("height", h);
+      const center = w / 2;
       const maxVal = d3.max(data, d => Math.max(d.m, d.f));
-      const x = d3.scaleLinear().domain([0, maxVal]).range([minBarW, sideW]);
+      
+      const xMale = d3.scaleLinear().domain([0, maxVal * 1.15]).range([center - 40, margin.left]);
+      const xFemale = d3.scaleLinear().domain([0, maxVal * 1.15]).range([center + 40, w - margin.right]);
+      const y = d3.scaleBand().domain(data.map(d => d.a)).range([h - margin.bottom, margin.top]).padding(0.2);
 
-      // Male Bars (Left side meeting cleanly at mid)
+      svg.append("text").attr("x", center - 90).attr("y", 14).attr("fill", "var(--teal)").attr("font-size", "11px").attr("font-family", "var(--mono)").attr("font-weight", "700").text("MALE ('000s)");
+      svg.append("text").attr("x", center + 40).attr("y", 14).attr("fill", "var(--purple)").attr("font-size", "11px").attr("font-family", "var(--mono)").attr("font-weight", "700").text("FEMALE ('000s)");
+
       svg.selectAll(".bar-m")
-        .data(data)
-        .enter().append("rect")
-        .attr("class", "bar-m")
+        .data(data).enter().append("rect")
+        .attr("x", center - 40)
         .attr("y", d => y(d.a))
-        .attr("x", mid)
-        .attr("height", y.bandwidth())
         .attr("width", 0)
-        .attr("fill", "#2C5E64")
-        .call(el => el.append("title").text(d => `Age ${d.a} Male: ${d.m}%`))
-        .transition().duration(900).ease(d3.easeCubicOut)
-        .attr("x", d => mid - x(d.m))
-        .attr("width", d => x(d.m));
+        .attr("height", y.bandwidth())
+        .attr("fill", "var(--teal)")
+        .attr("rx", 2)
+        .transition().duration(800).ease(d3.easeCubicOut)
+        .attr("x", d => xMale(d.m))
+        .attr("width", d => (center - 40) - xMale(d.m));
 
-      // Female Bars (Right side meeting cleanly at mid)
       svg.selectAll(".bar-f")
-        .data(data)
-        .enter().append("rect")
-        .attr("class", "bar-f")
+        .data(data).enter().append("rect")
+        .attr("x", center + 40)
         .attr("y", d => y(d.a))
-        .attr("x", mid)
-        .attr("height", y.bandwidth())
         .attr("width", 0)
-        .attr("fill", "#C85A2A")
-        .call(el => el.append("title").text(d => `Age ${d.a} Female: ${d.f}%`))
-        .transition().duration(900).ease(d3.easeCubicOut)
-        .attr("width", d => x(d.f));
+        .attr("height", y.bandwidth())
+        .attr("fill", "var(--purple)")
+        .attr("rx", 2)
+        .transition().duration(800).ease(d3.easeCubicOut)
+        .attr("width", d => xFemale(d.f) - (center + 40));
 
-      // Center Age Labels sitting directly on the spine over the meeting bars
-      svg.selectAll(".lbl")
-        .data(data)
-        .enter().append("text")
-        .attr("class", "lbl")
-        .attr("y", d => y(d.a) + y.bandwidth() / 2 + 3.5)
-        .attr("x", mid)
+      svg.selectAll(".label-age")
+        .data(data).enter().append("text")
+        .attr("x", center)
+        .attr("y", d => y(d.a) + y.bandwidth()/2 + 4)
         .attr("text-anchor", "middle")
         .attr("fill", "#FFFFFF")
         .attr("font-size", "10.5px")
@@ -1177,7 +1212,6 @@
       const colors = { youth: 'var(--orange)', work: 'var(--teal)', senior: 'var(--purple)' };
       const labels = { youth: 'Youth (0-14)', work: 'Working (15-59)', senior: 'Senior (60+)' };
 
-      // Legend at top
       const legend = svg.append("g").attr("transform", `translate(${margin.left}, 15)`);
       let legX = 0;
       ['youth', 'work', 'senior'].forEach(k => {
@@ -1210,9 +1244,6 @@
       svg.append("g").attr("transform", `translate(0,${h - margin.bottom})`).call(d3.axisBottom(x).tickFormat(d3.format("d"))).attr("color", "var(--muted)").attr("font-family", "var(--mono)");
     }
 
-    // Scroll-triggered D3 chart rendering Map
-    const chartRenderedMap = {};
-
     function renderChartOnIntersect(sectionId, renderFn) {
       const el = document.getElementById(sectionId);
       if (!el) return;
@@ -1228,7 +1259,6 @@
       observer.observe(el);
     }
 
-    // Attach scroll reveal observers for Section 07 charts
     renderChartOnIntersect('section-4', () => renderLineChartIn(odishaSlideData.popGrowth, 'v', 'Millions', 'var(--teal)', null, '#chart-section-4'));
     renderChartOnIntersect('section-5', () => renderPyramidIn('2026', '#chart-section-5'));
     renderChartOnIntersect('section-6', () => renderStackedBarIn(odishaSlideData.ageCohorts, '#chart-section-6'));
@@ -1236,7 +1266,6 @@
     renderChartOnIntersect('section-8', () => renderLineChartIn(odishaSlideData.srb, 'v', 'Female Births / 1000 Male Births', 'var(--blue)', 950, '#chart-section-8'));
     renderChartOnIntersect('section-9', () => renderLineChartIn(odishaSlideData.tfr, 'v', 'TFR Value', 'var(--orange)', 2.1, '#chart-section-9'));
 
-    // Tab buttons smooth scrolling
     document.querySelectorAll('.slide-tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const slideNum = btn.dataset.slide;
@@ -1247,7 +1276,6 @@
       });
     });
 
-    // Scroll observer to highlight active tab button
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1260,7 +1288,6 @@
     }, { threshold: 0.25 });
 
     document.querySelectorAll('.report-section-card').forEach(card => sectionObserver.observe(card));
-
 </script>
 <script src="chatbot.js"></script>
 </body>
