@@ -506,7 +506,7 @@
       return {
         text: "You can explore district-level indicators dynamically on the interactive map of Odisha or perform a comparison duel between districts.",
         links: [
-          { title: "🗺️ Odisha Regional Explorer Map", url: "odisha.html" },
+          { title: "🗺️ Odisha Regional Explorer Map", url: "index.html" },
           { title: "⚔️ District duel comparison & pyramids", url: "odisha_compare.html" }
         ]
       };
@@ -523,7 +523,7 @@
       return {
         text: "Odisha has rolled out major welfare milestones like the Mamata Scheme (maternity cash benefits) and Biju Swasthya Kalyan Yojana (BSKY cashless health care). Read more on the timeline.",
         links: [
-          { title: "⌛ Policy Milestones Timeline", url: "odisha.html#policyTimeline" }
+          { title: "⌛ Policy Milestones Timeline", url: "index.html#policyTimeline" }
         ]
       };
     }

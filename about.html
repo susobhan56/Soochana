@@ -524,6 +524,7 @@
     margin-bottom: 20px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02), 0 2px 8px rgba(0, 0, 0, 0.02);
     box-sizing: border-box;
+    overflow: hidden;
   }
   .inst-logo-wrap img {
     max-height: 85px;
@@ -531,6 +532,11 @@
     width: auto;
     height: auto;
     object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+  .inst-diu .inst-logo-wrap img {
+    transform: scale(2.1);
+    transform-origin: center center;
   }
 
   .inst-diu .inst-tag { background: rgba(187, 69, 0, 0.1); color: #bb4500; }
