@@ -1,0 +1,264 @@
+{
+  "Odisha": {
+    "name": "Odisha",
+    "tagline": "",
+    "flags": [],
+    "slides_detail": [
+      {
+        "slide_num": 1,
+        "title": "Geography",
+        "text_content": "Odisha, on India's eastern coastline (155,707 sq km, ~480 km coastline on the Bay of Bengal), spans coastal plains, central plateaus, the Eastern Ghats and highlands (covering ~12% of the state), western rolling uplands, and major river flood plains, drained by the Mahanadi, Brahmani, Baitarani, Subarnarekha, Rushikulya, and Vansadhara. It borders West Bengal to the northeast, Jharkhand to the north, Chhattisgarh to the west, and Andhra Pradesh to the south. Key places of interest include the Jagannath Temple and Rath Yatra in Puri, the Konark Sun Temple, Chilika Lake, Bhitarkanika mangroves, and Simlipal National Park. Odisha is one of India's most disaster-prone states, facing recurrent cyclones and storm surges along its coast (1999 Super Cyclone, Phailin, Fani, Dana), monsoon flooding along its major rivers, and chronic drought in western districts, sometimes within the same year. Agriculturally, paddy dominates as the staple crop across the fertile coastal deltas, supplemented by pulses, oilseeds, and horticulture in the plateau and hill regions, though rainfed, monsoon-dependent farming remains vulnerable to this recurring flood-drought-cyclone cycle.",
+        "chart_url": ""
+      },
+      {
+        "slide_num": 2,
+        "title": "Geographic Outlook",
+        "text_content": "Annual Actual Rainfall in mm (2024): 1362.66 | Forest Area in '000 ha (2024): 6120 | Net Sown Area in '000 ha (2024): 5629 | Land put to Non-Agricultural Uses in '000 ha (2024): 1114 | Current Fallow Land in '000 ha (2024): 551 | Barren & Unculturable Land in '000 ha (2024): 720. Source: Directorate of Economics and Statistics",
+        "table_data": {
+          "annual_rainfall_mm_2024": "1362.66",
+          "forest_area_000ha_2024": "6120",
+          "net_sown_area_000ha_2024": "5629",
+          "non_agricultural_uses_000ha_2024": "1114",
+          "current_fallow_000ha_2024": "551",
+          "barren_unculturable_000ha_2024": "720"
+        },
+        "chart_url": ""
+      },
+      {
+        "slide_num": 3,
+        "title": "State Profile",
+        "text_content": "Total Geographical Area: 155,707 Sq. km | Total Population (2011): 4.2 Crores | Population Density – 2011: 269.57 person/sq.km | Literacy Rate (2011): 72.9% | Blocks: 314 | Gram Panchayats: 6794 | Villages: 51313 | Uninhabited Villages: 3636. Source: Census 2011, Directorate of Economics & Statistics – Government of Odisha. Note: Population Density = Total Population (2011) / Total Geographical Area",
+        "table_data": {
+          "area_sq_km": "155,707",
+          "population_2011": "4.2 Crores",
+          "density_2011": "269.57 person/sq.km",
+          "literacy_rate": "72.9%",
+          "blocks": "314",
+          "gram_panchayats": "6794",
+          "villages": "51313",
+          "uninhabited_villages": "3636"
+        },
+        "chart_url": ""
+      },
+      {
+        "slide_num": 4,
+        "title": "Administrative Stats",
+        "text_content": "Sub-divisions: 58 | Tehsils: 317 | Municipal Corporations: 53 | Assembly Constituencies: 147. Source: Directorate of Economics & Statistics – Government of Odisha, Odisha District Website",
+        "table_data": {
+          "sub_divisions": "58",
+          "tehsils": "317",
+          "municipal_corporations": "53",
+          "assembly_constituencies": "147"
+        },
+        "chart_url": ""
+      },
+      {
+        "slide_num": 5,
+        "title": "Demography",
+        "text_content": "Population (Census 2011): 4.2 Crores | Tribal Population as Share of State Population (Census 2011): 22.85% | Sex Ratio (Census 2011): 979 | Life Expectancy at Birth - Male (Computed from NFHS-5): 72 | Life Expectancy at Birth - Female (Computed from NFHS-5): 73.3 | Urban Population Share (Census 2011): 16.68%.\n\nOdisha is undergoing an advanced demographic transition, marked by slowing population growth, sustained fertility decline and rising longevity. After decades of population expansion, growth is projected to moderate further, while fertility has fallen well below replacement level. The sex ratio is also recovering after its historical decline and is expected to move above parity. These shifts are reshaping the age structure: the working-age population has expanded and remains relatively large, but the share of children is steadily declining while the elderly population is growing rapidly. With relatively low urbanisation and a substantial tribal population, the transition is unfolding alongside significant rural and social diversity. Overall, Odisha is moving from the latter stages of the demographic dividend toward an ageing population, making employment generation, human capital development and early preparation for social protection and elderly care increasingly important.",
+        "table_data": {
+          "population_2011": "4.2 Crores",
+          "tribal_share_pct": "22.85%",
+          "sex_ratio_2011": "979",
+          "life_expectancy_male_nfhs5": "72",
+          "life_expectancy_female_nfhs5": "73.3",
+          "urban_population_share": "16.68%"
+        },
+        "chart_url": ""
+      },
+      {
+        "slide_num": 6,
+        "title": "Population Trends of Odisha: 1901-2036",
+        "text_content": "Source: Census, Population Projections using Bayesian Approach, ORGI",
+        "chart_url": "https://flo.uri.sh/visualisation/24003580/embed"
+      },
+      {
+        "slide_num": 7,
+        "title": "Total Fertility Rate – 2015-36",
+        "text_content": "Source: 2015, 2020 - Computed from NFHS-4 & 5 district level data; 2021-36 - Projected figures using Bayesian Approach",
+        "chart_url": "https://flo.uri.sh/visualisation/23841643/embed"
+      },
+      {
+        "slide_num": 8,
+        "title": "Young-Age vs Working Age vs Elderly Population Trends: 2011-2036 (as % of Total Population)",
+        "text_content": "Source: Census, Population Projections using Bayesian Approach, ORGI",
+        "chart_url": "https://flo.uri.sh/visualisation/23838794/embed"
+      },
+      {
+        "slide_num": 9,
+        "title": "Sex Ratio: 1901-2036",
+        "text_content": "Source: Census, Population Projections using Bayesian Approach, ORGI",
+        "chart_url": "https://flo.uri.sh/visualisation/23840967/embed"
+      },
+      {
+        "slide_num": 10,
+        "title": "Population Pyramids: 2011-2036 (in Lakhs)",
+        "text_content": "Source: Census, Population Projections using Bayesian Approach, ORGI",
+        "chart_url": "https://flo.uri.sh/visualisation/30187525/embed"
+      },
+      {
+        "slide_num": 11,
+        "title": "Tribal Groups and PVTGs",
+        "text_content": "As per the Census 2011, Odisha has the third-highest percentage of tribal population in the country, which stands at 95,90,756. The state has 62 different tribal communities spread over 30 districts and 314 blocks. They constitute 22.85% of the state's total population and contribute 9.17% to the country's total tribal population.\n\n1. Bagata, 2. Baiga, 3. Banjara / Banjari, 4. Bathudi, 5. Bhotada / Dhotada, 6. Bhuiya / Bhuyan, 7. Bhumij, 8. Bhumia, 9. Binjhal, 10. Binjhia / Binjhio, 11. Birhor (PVTG), 12. Bondo (PVTG), 13. Chenchu, 14. Dal, 15. Desua Bhumia, 16. Dharua, 17. Didayi (PVTG), 18. Gadaba, 19. Gandia, 20. Gond / Gondo, 21. Ho, 22. Holva, 23. Jatapu, 24. Juang (PVTG), 25. Kandha / Kondh / Kui, 26. Kawar / Kanwar, 27. Kharia / Hill Kharia (PVTG), 28. Kharwar, 29. Khond / Kuta Kondh (PVTG), 30. Kisan, 31. Kol, 32. Kolah Loharas / Kol Loharas, 33. Kolam, 34. Kora, 35. Korua, 36. Kota, 37. Koya, 38. Kulis, 39. Lodha (PVTG), 40. Madia, 41. Mahali, 42. Mankidi, 43. Mankirdia (PVTG), 44. Matya, 45. Mirdhas / Kuda, 46. Munda / Munda Lohara, 47. Mundari, 48. Omanatya, 49. Oraon, 50. Parenga, 51. Paroja, 52. Penta, 53. Rajuar, 54. Santal, 55. Saora / Lanjia Saora (PVTG), 56. Shabar / Lodha (PVTG), 57. Sount, 58. Tharua, 59. Chukta Bhunjia (PVTG), 60. Dongria Kondh (PVTG), 61. Paudi Bhuyan (PVTG), 62. Unclassified / Regional Tribal Groups",
+        "table_data": {
+          "tribal_groups_count": "62",
+          "tribal_population": "95,90,756",
+          "tribal_share_pct": "22.85%",
+          "pvtg_count": "13",
+          "pvtg_names": "Birhor, Bondo, Didayi, Juang, Hill Kharia, Kuta Kondh, Lodha, Mankirdia, Lanjia Saora, Shabar/Lodha, Chukta Bhunjia, Dongria Kondh, Paudi Bhuyan"
+        },
+        "chart_url": ""
+      },
+      {
+        "slide_num": 12,
+        "title": "Health & Nutrition",
+        "text_content": "Odisha's health profile reflects substantial progress in healthcare access and survival outcomes, with an extensive primary healthcare network supporting improvements in neonatal, infant and under-five mortality. Child nutrition has also improved, with declines in stunting, wasting and underweight indicating gradual gains in tackling undernutrition. However, anaemia has emerged as a major and worsening public health challenge, affecting both young children and pregnant women at increasingly high levels. This divergence between improving mortality and undernutrition outcomes and rising anaemia underscores the need to strengthen preventive healthcare, maternal and child nutrition, and micronutrient-focused interventions alongside existing health services.",
+        "chart_url": ""
+      },
+      {
+        "slide_num": 13,
+        "title": "Health Infrastructure",
+        "text_content": "No. of Primary Health Centres (2024): 1405 | No. of Community Health Centres (2024): 383 | No. of Health Sub Centres (2024): 6688 | Beds Available per 1,00,000 People (2024): 44. Source: Directorate of Economics and Statistics. Note: Beds available per 1,00,000 people = (no. of beds * 1,00,000)/total population",
+        "table_data": {
+          "phcs_2024": "1405",
+          "chcs_2024": "383",
+          "sub_centres_2024": "6688",
+          "beds_per_100k_2024": "44"
+        },
+        "chart_url": ""
+      },
+      {
+        "slide_num": 14,
+        "title": "Mortality Rates",
+        "text_content": "Maternal Mortality Rate Estimate (2017-19): 138",
+        "table_data": {
+          "mmr_2017_19": "138"
+        },
+        "chart_url": "https://flo.uri.sh/visualisation/23843127/embed"
+      },
+      {
+        "slide_num": 15,
+        "title": "Nutrition Profile",
+        "text_content": "Source: NFHS-4, 5",
+        "chart_url": "https://flo.uri.sh/visualisation/23855834/embed"
+      },
+      {
+        "slide_num": 16,
+        "title": "Education",
+        "text_content": "Odisha's education system is predominantly government-led, with strong access and progression through the foundational and middle stages. However, retention becomes a key challenge at the secondary level, where dropout rises notably despite relatively adequate teacher availability. Digital readiness is improving, although the spread of smart classrooms remains limited compared with basic computer access. A persistent gender gap in literacy further highlights unequal educational attainment, particularly for women. Overall, the state has established a strong foundation in school access and transition, but improving secondary-stage retention, digital learning infrastructure and gender equity remains critical to strengthening educational outcomes.",
+        "chart_url": ""
+      },
+      {
+        "slide_num": 17,
+        "title": "Education Stats",
+        "text_content": "Male Literacy Rate (2011): 81.6% | Female Literacy Rate (2011): 64% | Preparatory GER (2025-26): 92.6 | Middle GER (2025-26): 93.3 | Middle Dropout Rate (2025-26): 2.2% | Secondary Dropout Rate (2025-26): 10% | Transition Rate Preparatory to Middle (2025-26): 97.6% | Transition Rate Middle to Secondary (2025-26): 94%. Source: Status of Elementary and Secondary Education in Odisha 2018-19, UDISE+ District Factsheets (2024-25), Census 2011. Note: Foundational (ages 3-8), Preparatory (ages 8-11), Middle (ages 11-14), and Secondary (ages 14-18)",
+        "table_data": {
+          "male_literacy_rate_2011": "81.6%",
+          "female_literacy_rate_2011": "64%",
+          "preparatory_ger_2025_26": "92.6",
+          "middle_ger_2025_26": "93.3",
+          "middle_dropout_rate_2025_26": "2.2%",
+          "secondary_dropout_rate_2025_26": "10%",
+          "transition_preparatory_to_middle_2025_26": "97.6%",
+          "transition_middle_to_secondary_2025_26": "94%"
+        },
+        "chart_url": ""
+      },
+      {
+        "slide_num": 18,
+        "title": "Education Infrastructure",
+        "text_content": "Middle Pupil Teacher Ratio: 15 | Secondary Pupil Teacher Ratio: 21 | % of schools having functional smart classrooms: 36.2% | % of schools having functional computer facility: 76.8%. Source: UDISE+ District Factsheets (2024-25). Note: Foundational (ages 3-8), Preparatory (ages 8-11), Middle (ages 11-14), and Secondary (ages 14-18)",
+        "table_data": {
+          "middle_ptr": "15",
+          "secondary_ptr": "21",
+          "pct_smart_classrooms": "36.2%",
+          "pct_computer_facility": "76.8%"
+        },
+        "chart_url": "https://flo.uri.sh/visualisation/30187665/embed"
+      },
+      {
+        "slide_num": 19,
+        "title": "Irrigation Potential",
+        "text_content": "Irrigation Potential Created (IPC) in '000 ha (2024): 5503.1 | IPC Kharif in '000 ha (2024): 3269.21 | IPC Rabi in '000 ha (2024): 2233.89. Source: Directorate of Economics and Statistics",
+        "table_data": {
+          "ipc_total_000ha_2024": "5503.1",
+          "ipc_kharif_000ha_2024": "3269.21",
+          "ipc_rabi_000ha_2024": "2233.89"
+        },
+        "chart_url": "https://flo.uri.sh/visualisation/30187706/embed"
+      },
+      {
+        "slide_num": 20,
+        "title": "Infrastructure",
+        "text_content": "% of Odisha's Inhabited Villages Electrified (2024-25): 100% | No. of Bank Branches per 1,00,000 people (2024-25): 15 | Rural Road Length in Km (2024-25): 107562.52 | National Highway Length in Km (2024-25): 5439.19 | Forest Road Length in Km (2024-25): 7651.59 | District Road Length in Km (2024-25): 25507.8. Source: Directorate of Economics & Statistics. Note: District Road Length = Major District Road + Other District Road",
+        "table_data": {
+          "pct_villages_electrified": "100%",
+          "bank_branches_per_100k": "15",
+          "rural_road_length_km": "107562.52",
+          "national_highway_length_km": "5439.19",
+          "forest_road_length_km": "7651.59",
+          "district_road_length_km": "25507.8"
+        },
+        "chart_url": ""
+      }
+    ],
+    "basic_stats": {
+      "area_sq_km": "155,707",
+      "population_2011": "4.2 Crores",
+      "density_2011": "269.57 person/sq.km",
+      "literacy_rate": "72.9%",
+      "blocks": "314",
+      "gram_panchayats": "6794",
+      "villages": "51313",
+      "uninhabited_villages": "3636"
+    },
+    "admin_stats": {
+      "sub_divisions": "58",
+      "tehsils": "317",
+      "municipal_corporations": "53",
+      "assembly_constituencies": "147",
+      "district_magistrate": ""
+    },
+    "charts": {
+      "6": "https://flo.uri.sh/visualisation/24003580/embed",
+      "7": "https://flo.uri.sh/visualisation/23841643/embed",
+      "8": "https://flo.uri.sh/visualisation/23838794/embed",
+      "9": "https://flo.uri.sh/visualisation/23840967/embed",
+      "10": "https://flo.uri.sh/visualisation/30187525/embed",
+      "14": "https://flo.uri.sh/visualisation/23843127/embed",
+      "15": "https://flo.uri.sh/visualisation/23855834/embed",
+      "18": "https://flo.uri.sh/visualisation/30187665/embed",
+      "19": "https://flo.uri.sh/visualisation/30187706/embed"
+    },
+    "uniques_raw": "",
+    "demography_narrative": "Odisha is undergoing an advanced demographic transition, marked by slowing population growth, sustained fertility decline and rising longevity. After decades of population expansion, growth is projected to moderate further, while fertility has fallen well below replacement level. The sex ratio is also recovering after its historical decline and is expected to move above parity. These shifts are reshaping the age structure: the working-age population has expanded and remains relatively large, but the share of children is steadily declining while the elderly population is growing rapidly. With relatively low urbanisation and a substantial tribal population, the transition is unfolding alongside significant rural and social diversity. Overall, Odisha is moving from the latter stages of the demographic dividend toward an ageing population, making employment generation, human capital development and early preparation for social protection and elderly care increasingly important.",
+    "tribal_info": {
+      "tribal_groups_count": "62",
+      "tribal_population": "95,90,756",
+      "tribal_share_pct": "22.85%",
+      "pvtg_count": "13",
+      "pvtg_names": "Birhor, Bondo, Didayi, Juang, Hill Kharia, Kuta Kondh, Lodha, Mankirdia, Lanjia Saora, Shabar/Lodha, Chukta Bhunjia, Dongria Kondh, Paudi Bhuyan"
+    },
+    "tribal_text": "As per the Census 2011, Odisha has the third-highest percentage of tribal population in the country, which stands at 95,90,756. The state has 62 different tribal communities spread over 30 districts and 314 blocks. They constitute 22.85% of the state's total population and contribute 9.17% to the country's total tribal population.",
+    "health_narrative": "Odisha's health profile reflects substantial progress in healthcare access and survival outcomes, with an extensive primary healthcare network supporting improvements in neonatal, infant and under-five mortality. Child nutrition has also improved, with declines in stunting, wasting and underweight indicating gradual gains in tackling undernutrition. However, anaemia has emerged as a major and worsening public health challenge, affecting both young children and pregnant women at increasingly high levels. This divergence between improving mortality and undernutrition outcomes and rising anaemia underscores the need to strengthen preventive healthcare, maternal and child nutrition, and micronutrient-focused interventions alongside existing health services.",
+    "health_stats": {
+      "mmr": "138",
+      "phcs": "1405",
+      "chcs": "383",
+      "sub_centres": "6688",
+      "beds_per_100k": "44"
+    },
+    "education_narrative": "Odisha's education system is predominantly government-led, with strong access and progression through the foundational and middle stages. However, retention becomes a key challenge at the secondary level, where dropout rises notably despite relatively adequate teacher availability. Digital readiness is improving, although the spread of smart classrooms remains limited compared with basic computer access. A persistent gender gap in literacy further highlights unequal educational attainment, particularly for women. Overall, the state has established a strong foundation in school access and transition, but improving secondary-stage retention, digital learning infrastructure and gender equity remains critical to strengthening educational outcomes.",
+    "education_stats": {
+      "raw": "Male Literacy Rate (2011): 81.6% | Female Literacy Rate (2011): 64% | Preparatory GER (2025-26): 92.6 | Middle GER (2025-26): 93.3 | Middle Dropout Rate (2025-26): 2.2% | Secondary Dropout Rate (2025-26): 10% | Transition Rate Preparatory to Middle (2025-26): 97.6% | Transition Rate Middle to Secondary (2025-26): 94%"
+    },
+    "geography_narrative": "Odisha, on India's eastern coastline (155,707 sq km, ~480 km coastline on the Bay of Bengal), spans coastal plains, central plateaus, the Eastern Ghats and highlands (covering ~12% of the state), western rolling uplands, and major river flood plains, drained by the Mahanadi, Brahmani, Baitarani, Subarnarekha, Rushikulya, and Vansadhara. It borders West Bengal to the northeast, Jharkhand to the north, Chhattisgarh to the west, and Andhra Pradesh to the south.",
+    "geography_stats": {
+      "raw": "Annual Actual Rainfall in mm (2024): 1362.66 | Forest Area in '000 ha (2024): 6120 | Net Sown Area in '000 ha (2024): 5629 | Land put to Non-Agricultural Uses in '000 ha (2024): 1114 | Current Fallow Land in '000 ha (2024): 551 | Barren & Unculturable Land in '000 ha (2024): 720"
+    },
+    "infra_narrative": "",
+    "infra_stats": {
+      "raw": "% of Odisha's Inhabited Villages Electrified (2024-25): 100% | No. of Bank Branches per 1,00,000 people (2024-25): 15 | Rural Road Length in Km (2024-25): 107562.52 | National Highway Length in Km (2024-25): 5439.19 | Forest Road Length in Km (2024-25): 7651.59 | District Road Length in Km (2024-25): 25507.8"
+    }
+  }
+}

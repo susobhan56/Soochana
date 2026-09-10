@@ -50,6 +50,10 @@ const DataLoader = {
     return this.loadJSON("datasets/districts_detail.json");
   },
 
+  getStateDetails: function() {
+    return this.loadJSON("datasets/state_details.json");
+  },
+
   toDirectDownloadUrl: function(url) {
     if (!url) return '#';
     const match = url.match(/\/file\/d\/([^\/]+)/) || url.match(/[?&]id=([^&]+)/);
