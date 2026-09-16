@@ -28,6 +28,48 @@
         50% { transform: scale(1.3); opacity: 1; }
         100% { transform: scale(0.9); opacity: 0.4; }
     }
+    @keyframes countPop {
+        0%   { transform: scale(1); }
+        50%  { transform: scale(1.12); }
+        100% { transform: scale(1); }
+    }
+    .report-section-card.anim-ready {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .report-section-card.anim-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .stat-tile.anim-ready {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .stat-tile.anim-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .stat-tile .stat-value.counted {
+        animation: countPop 0.35s ease;
+    }
+    .narrative-block.anim-ready {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .narrative-block.anim-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .kicker-anim.anim-ready {
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+    .kicker-anim.anim-in {
+        opacity: 1;
+    }
     /* Page specific overrides to support layout-scrolly map */
     .scrolly { display: grid; grid-template-columns: 1fr 340px; position: relative; background: var(--surface); }
     .sticky-map { 
@@ -814,7 +856,7 @@ function startField() {
         card.style.cssText = 'scroll-margin-top:140px; background:var(--panel); border:1px solid var(--border); border-radius:20px; padding:32px; width:100%; box-sizing:border-box;';
 
         var html = '';
-        html += '<div class="kicker" style="color:' + color + ';">' + sNum + ' &middot; ' + slide.title + '</div>';
+        html += '<div class="kicker kicker-anim" style="color:' + color + ';">' + sNum + ' &middot; ' + slide.title + '</div>';
         html += '<h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 14px;">' + slide.title + '</h3>';
 
         // Narrative text
@@ -826,7 +868,7 @@ function startField() {
             return p.trim().length > 60;
           });
           if (narrativeParts.length > 0) {
-            html += '<div style="font-size:0.95rem; line-height:1.7; color:var(--text); margin-bottom:16px; background:var(--surface); padding:20px; border-radius:12px; border:1px solid var(--border);">';
+            html += '<div class="narrative-block" style="font-size:0.95rem; line-height:1.7; color:var(--text); margin-bottom:16px; background:var(--surface); padding:20px; border-radius:12px; border:1px solid var(--border);">';
             html += narrativeParts.join('<br><br>');
             html += '</div>';
           }
@@ -834,10 +876,12 @@ function startField() {
 
         // Table data as stat grid
         if (slide.table_data && Object.keys(slide.table_data).length > 0) {
-          html += '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; font-size:0.9rem; font-family:var(--mono); margin-bottom:20px;">';
-          Object.keys(slide.table_data).forEach(function(key) {
+          html += '<div class="stat-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; font-size:0.9rem; font-family:var(--mono); margin-bottom:20px;">';
+          Object.keys(slide.table_data).forEach(function(key, tileIdx) {
             var label = key.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
-            html += '<div style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);"><strong>' + label + ':</strong> ' + slide.table_data[key] + '</div>';
+            var rawVal = String(slide.table_data[key]);
+            html += '<div class="stat-tile" style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);" data-delay="' + (tileIdx * 80) + '">';
+            html += '<strong>' + label + ':</strong> <span class="stat-value" data-target="' + rawVal.replace(/"/g, '&quot;') + '">' + rawVal + '</span></div>';
           });
           html += '</div>';
         }
@@ -847,8 +891,8 @@ function startField() {
           var embedUrl = slide.chart_url.indexOf('?') !== -1 ? slide.chart_url : slide.chart_url + '?auto=1';
           var match = slide.chart_url.match(/visualisation\/(\d+)/);
           var visId = match ? match[1] : '';
-          html += '<div class="lazy-chart-wrapper" data-embed-url="' + embedUrl + '" data-vis-id="' + visId + '" style="width:100%; border-radius:16px; overflow:hidden; border:1px solid var(--border); margin-top:24px; background:var(--surface); box-shadow:0 6px 24px rgba(0,0,0,0.04); opacity:0; transform:translateY(15px); transition:opacity 0.3s ease-out, transform 0.3s ease-out; min-height:560px;">';
-          html += '<div class="chart-loading-placeholder" style="display:flex; align-items:center; justify-content:center; height:560px; color:var(--muted); font-family:var(--mono); font-size:12px; letter-spacing:0.1em;">';
+          html += '<div class="lazy-chart-wrapper" data-embed-url="' + embedUrl + '" data-vis-id="' + visId + '" style="width:80%; margin-left:auto; margin-right:auto; border-radius:16px; overflow:hidden; border:1px solid var(--border); margin-top:24px; background:var(--surface); box-shadow:0 6px 24px rgba(0,0,0,0.04); opacity:0; transform:translateY(15px); transition:opacity 0.3s ease-out, transform 0.3s ease-out;">';
+          html += '<div class="chart-loading-placeholder" style="display:flex; align-items:center; justify-content:center; height:380px; color:var(--muted); font-family:var(--mono); font-size:12px; letter-spacing:0.1em;">';
           html += '<div style="display:flex; flex-direction:column; align-items:center; gap:10px;">';
           html += '<div style="width:12px; height:12px; background:var(--teal); border-radius:50%; animation:pulseGlow 1.2s infinite ease-in-out;"></div>';
           html += '<span>PREPARING CHART...</span></div></div></div>';
@@ -871,7 +915,7 @@ function startField() {
               iframe.frameBorder = '0';
               iframe.scrolling = 'no';
               iframe.style.width = '100%';
-              iframe.style.height = '560px';
+              iframe.style.height = '380px';
               iframe.style.border = 'none';
               iframe.allow = 'autoplay; fullscreen';
               iframe.sandbox = 'allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation';
@@ -901,6 +945,83 @@ function startField() {
       }, { threshold: 0.25 });
 
       document.querySelectorAll('.report-section-card').forEach(function(card) { sectionObserver.observe(card); });
+
+      // Count-up helper: animates a number from 0 to target
+      function animateCountUp(el, targetText) {
+        if (!targetText) return;
+        var numMatch = targetText.match(/([\d,]+(\.\d+)?)/);
+        if (!numMatch) { el.textContent = targetText; return; }
+        var numStr = numMatch[1];
+        var prefix = targetText.slice(0, targetText.indexOf(numStr));
+        var suffix = targetText.slice(targetText.indexOf(numStr) + numStr.length);
+        var target = parseFloat(numStr.replace(/,/g, ''));
+        if (isNaN(target)) { el.textContent = targetText; return; }
+        var hasComma = numStr.indexOf(',') !== -1;
+        var decimals = numStr.indexOf('.') !== -1 ? numStr.split('.')[1].length : 0;
+        var duration = 1200;
+        var startTime = null;
+        function step(ts) {
+          if (!startTime) startTime = ts;
+          var progress = Math.min((ts - startTime) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var current = eased * target;
+          var formatted = decimals > 0 ? current.toFixed(decimals) : Math.round(current).toString();
+          if (hasComma) formatted = formatted.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          el.textContent = prefix + formatted + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+          else el.classList.add('counted');
+        }
+        el.textContent = prefix + (decimals > 0 ? '0.' + '0'.repeat(decimals) : '0') + suffix;
+        requestAnimationFrame(step);
+      }
+
+      function revealCard(card) {
+        if (card.classList.contains('anim-in')) return;
+        card.classList.add('anim-in');
+        var kicker = card.querySelector('.kicker-anim');
+        if (kicker) setTimeout(function() { kicker.classList.add('anim-in'); }, 150);
+        var narratives = card.querySelectorAll('.narrative-block');
+        narratives.forEach(function(n, i) {
+          setTimeout(function() { n.classList.add('anim-in'); }, 300 + i * 150);
+        });
+        var tiles = card.querySelectorAll('.stat-tile');
+        tiles.forEach(function(tile) {
+          var delay = parseInt(tile.getAttribute('data-delay') || '0', 10);
+          setTimeout(function() {
+            tile.classList.add('anim-in');
+            var valEl = tile.querySelector('.stat-value');
+            if (valEl) animateCountUp(valEl, valEl.getAttribute('data-target'));
+          }, 400 + delay);
+        });
+      }
+
+      // Mark all animatable elements as ready (hidden)
+      document.querySelectorAll('.report-section-card').forEach(function(card) {
+        card.classList.add('anim-ready');
+        card.querySelectorAll('.kicker-anim').forEach(function(el) { el.classList.add('anim-ready'); });
+        card.querySelectorAll('.narrative-block').forEach(function(el) { el.classList.add('anim-ready'); });
+        card.querySelectorAll('.stat-tile').forEach(function(el) { el.classList.add('anim-ready'); });
+      });
+
+      // Card entrance observer
+      var cardAnimObserver = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            revealCard(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.report-section-card').forEach(function(card) { cardAnimObserver.observe(card); });
+
+      // Fallback: reveal cards already in viewport on load
+      setTimeout(function() {
+        document.querySelectorAll('.report-section-card.anim-ready:not(.anim-in)').forEach(function(card) {
+          var rect = card.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) revealCard(card);
+        });
+      }, 300);
     });
 </script>
 <script src="chatbot.js"></script>
