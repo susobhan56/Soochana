@@ -445,8 +445,8 @@
         const visId = match ? match[1] : '';
         const embedUrl = visId ? `https://flo.uri.sh/visualisation/${visId}/embed?auto=1` : (rawUrl + '?auto=1');
 
-        return `<div class="lazy-chart-wrapper" data-embed-url="${embedUrl}" data-vis-id="${visId}" style="width:100%; border-radius:16px; overflow:hidden; border:1px solid var(--border); margin-top:24px; background:var(--surface); box-shadow:0 6px 24px rgba(0,0,0,0.04); opacity:0; transform:translateY(15px); transition:opacity 0.3s ease-out, transform 0.3s ease-out; min-height:560px;">
-            <div class="chart-loading-placeholder" style="display:flex; align-items:center; justify-content:center; height:560px; color:var(--muted); font-family:var(--mono); font-size:12px; letter-spacing:0.1em;">
+        return `<div class="lazy-chart-wrapper" data-embed-url="${embedUrl}" data-vis-id="${visId}" style="width:80%; margin-left:auto; margin-right:auto; border-radius:16px; overflow:hidden; border:1px solid var(--border); margin-top:24px; background:var(--surface); box-shadow:0 6px 24px rgba(0,0,0,0.04); opacity:0; transform:translateY(15px); transition:opacity 0.3s ease-out, transform 0.3s ease-out;">
+            <div class="chart-loading-placeholder" style="display:flex; align-items:center; justify-content:center; height:380px; color:var(--muted); font-family:var(--mono); font-size:12px; letter-spacing:0.1em;">
                 <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
                     <div style="width:12px; height:12px; background:var(--teal); border-radius:50%; animation: pulseGlow 1.2s infinite ease-in-out;"></div>
                     <span>PREPARING CHART...</span>
@@ -469,7 +469,7 @@
                         iframe.frameBorder = "0";
                         iframe.scrolling = "no";
                         iframe.style.width = "100%";
-                        iframe.style.height = "560px";
+                        iframe.style.height = "380px";
                         iframe.style.border = "none";
                         iframe.allow = "autoplay; fullscreen";
                         iframe.sandbox = "allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation";
@@ -497,8 +497,8 @@
         const visId = match ? match[1] : '';
         const embedUrl = url.includes('?') ? url : url + '?auto=1';
 
-        return `<div class="lazy-chart-wrapper" data-embed-url="${embedUrl}" data-vis-id="${visId}" style="width:100%; border-radius:16px; overflow:hidden; border:1px solid var(--border); margin-top:24px; background:var(--surface); box-shadow:0 6px 24px rgba(0,0,0,0.04); opacity:0; transform:translateY(15px); transition:opacity 0.3s ease-out, transform 0.3s ease-out; min-height:560px;">
-            <div class="chart-loading-placeholder" style="display:flex; align-items:center; justify-content:center; height:560px; color:var(--muted); font-family:var(--mono); font-size:12px; letter-spacing:0.1em;">
+        return `<div class="lazy-chart-wrapper" data-embed-url="${embedUrl}" data-vis-id="${visId}" style="width:80%; margin-left:auto; margin-right:auto; border-radius:16px; overflow:hidden; border:1px solid var(--border); margin-top:24px; background:var(--surface); box-shadow:0 6px 24px rgba(0,0,0,0.04); opacity:0; transform:translateY(15px); transition:opacity 0.3s ease-out, transform 0.3s ease-out;">
+            <div class="chart-loading-placeholder" style="display:flex; align-items:center; justify-content:center; height:380px; color:var(--muted); font-family:var(--mono); font-size:12px; letter-spacing:0.1em;">
                 <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
                     <div style="width:12px; height:12px; background:var(--teal); border-radius:50%; animation: pulseGlow 1.2s infinite ease-in-out;"></div>
                     <span>PREPARING CHART...</span>
