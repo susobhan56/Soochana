@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>District Insight · Demographic Deep Dive</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js"></script>
@@ -28,6 +29,17 @@
         position: relative;
         border-bottom: 1px solid var(--border);
         background: radial-gradient(circle at 80% 20%, rgba(26, 188, 156, 0.05) 0%, transparent 50%);
+        overflow: hidden;
+    }
+
+    .hero-editorial::before {
+        content: '';
+        position: absolute;
+        top: -50%; right: -20%;
+        width: 80vw; height: 80vw;
+        background: radial-gradient(circle, rgba(26, 83, 92, 0.03) 0%, transparent 70%);
+        animation: float 8s ease-in-out infinite;
+        pointer-events: none;
     }
 
     .hero-bg-text {
@@ -41,6 +53,7 @@
         line-height: 1;
         pointer-events: none;
         z-index: 0;
+        animation: fadeIn 1.2s ease 0.3s both;
     }
 
     .hero-editorial h1 {
@@ -48,6 +61,11 @@
         margin: 0;
         letter-spacing: -0.04em;
         z-index: 1;
+        animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+    }
+
+    .hero-editorial .kicker {
+        animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
     }
 
     .hero-meta {
@@ -57,8 +75,28 @@
         z-index: 1;
     }
 
-    .meta-item { border-left: 1px solid var(--accent); padding-left: 20px; }
-    .meta-val { font-family: var(--serif); font-size: var(--fs-h2); font-weight: var(--wt-display); }
+    .meta-item {
+        border-left: 2px solid var(--accent);
+        padding-left: 20px;
+        animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease;
+    }
+    .meta-item:nth-child(1) { animation-delay: 0.4s; }
+    .meta-item:nth-child(2) { animation-delay: 0.5s; }
+    .meta-item:nth-child(3) { animation-delay: 0.6s; }
+
+    .meta-item:hover {
+        transform: translateY(-2px);
+        border-color: var(--teal);
+    }
+
+    .meta-val {
+        font-family: var(--serif);
+        font-size: var(--fs-h2);
+        font-weight: var(--wt-display);
+        transition: transform 0.3s ease;
+    }
+    .meta-item:hover .meta-val { transform: scale(1.04); }
     .meta-label { font-family: var(--mono); font-size: var(--fs-micro); color: var(--muted); text-transform: uppercase; margin-top: 5px; }
 
     /* Scrollytelling Refined */
@@ -94,14 +132,16 @@
         flex-direction: column;
         justify-content: center;
         border-bottom: 1px solid var(--border);
-        opacity: 0.1;
-        transform: translateY(20px);
-        transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+        opacity: 0.08;
+        transform: translateY(30px) scale(0.98);
+        filter: blur(2px);
+        transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .story-step.active {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
+        filter: blur(0);
     }
 
     .story-step h2 { font-family: var(--serif); font-size: var(--fs-h2); margin-bottom: 25px; line-height: 1.1; }
@@ -122,7 +162,20 @@
         color: var(--accent);
         letter-spacing: 0.2em;
         margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
     }
+
+    .chart-title-hud::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 40px; height: 2px;
+        background: var(--accent);
+        transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .chart-title-hud:hover::after { width: 80px; }
 
     .nav-header-fixed {
         position: sticky;
