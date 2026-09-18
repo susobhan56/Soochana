@@ -68,21 +68,12 @@
         object-fit: contain;
         padding: 16px;
         display: block;
-        /* Held slightly back at rest so six illustrations drawn in six
-           different styles still read as one set; full colour on hover. */
-        filter: saturate(0.8) contrast(1.02);
-        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
+        /* No harmonising filter here: the six animated icons are already one
+           designed set, so holding their colour back only dulls them. */
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .theme-card:hover .theme-media img {
         transform: scale(1.06);
-        filter: saturate(1.08) contrast(1.04);
-    }
-    .theme-media::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 34%, transparent 74%, rgba(26,83,92,0.05) 100%);
     }
     .theme-card-body {
         padding: 26px 26px 30px;
@@ -177,8 +168,17 @@
 </footer>
 
 <script>
-    /* Editorial illustration per sector. Extensions are tried in turn by the
-       resolver below; the original animated icon stays as the last resort. */
+    /* The animated sector icons are the card artwork. The editorial stills
+       stay as the fallback, and are still used for the hero on each
+       sector's detail page. */
+    const ICONS = {
+        demography: 'icons/demography.gif',
+        health:     'icons/health.gif',
+        education:  'icons/education.gif',
+        ageing:     'icons/ageing.gif',
+        migration:  'icons/urban.gif',
+        employment: 'icons/employement.gif'
+    };
     const ART = {
         demography: 'population-aerial',
         health:     'health-infrastructure',
@@ -187,15 +187,7 @@
         migration:  'migration-journey',
         employment: 'employment-cycle'
     };
-    const EXTS = ['.png', '.jpg', '.jpeg', '.webp', '.gif'];
-    const LEGACY = {
-        demography: 'icons/demography.gif',
-        health:     'icons/health.gif',
-        education:  'icons/education.gif',
-        ageing:     'icons/ageing.gif',
-        migration:  'icons/urban.gif',
-        employment: 'icons/employement.gif'
-    };
+    const EXTS = ['.png', '.jpg', '.jpeg', '.webp'];
     const FALLBACK = 'images/dem1.png';
 
     fetch('data/themes.json')
@@ -208,7 +200,7 @@
                 grid.innerHTML += `
                     <a href="theme_detail.html?theme=${encodeURIComponent(theme.slug)}" class="theme-card">
                         <div class="theme-media">
-                            <img alt="${theme.name}" decoding="async"
+                            <img alt="${theme.name}" decoding="async" loading="lazy"
                                  data-theme-id="${theme.id}">
                         </div>
                         <div class="theme-card-body">
@@ -223,26 +215,22 @@
                 `;
             });
 
-            /* Try each extension for the editorial still; if none of them
-               resolve, drop back to the sector's original animated icon. */
+            /* Animated icon first. If one is missing, walk the editorial
+               still's extensions, then the generic fallback. */
             grid.querySelectorAll('img[data-theme-id]').forEach(img => {
                 const id = img.getAttribute('data-theme-id');
                 const base = ART[id];
-                const legacy = LEGACY[id] || FALLBACK;
-                /* Lazy loading would defer the extension walk for any card
-                   below the fold, leaving it on a broken candidate. */
-                img.loading = 'eager';
                 let i = 0;
-                const next = () => {
+                const nextStill = () => {
                     if (!base || i >= EXTS.length) {
-                        img.onerror = () => { img.onerror = null; img.src = FALLBACK; };
-                        img.src = legacy;
+                        img.onerror = null;
+                        img.src = FALLBACK;
                         return;
                     }
                     img.src = `images/editorial/${base}${EXTS[i++]}`;
                 };
-                img.onerror = next;
-                next();
+                img.onerror = nextStill;
+                img.src = ICONS[id] || FALLBACK;
             });
         })
         .catch(err => {

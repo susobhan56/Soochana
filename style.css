@@ -191,6 +191,24 @@ body {
 /* Global smooth scroll */
 html { scroll-behavior: smooth; }
 
+/* ── centred page wrappers ──
+   body is a column flexbox, so a wrapper using `margin: 0 auto` is a flex
+   item with auto side margins — which makes it shrink-to-fit and centre
+   rather than fill the line. The themes page was collapsing to 740px on a
+   1385px viewport (the width of its widest child) and dropping from four
+   card columns to two. A definite width restores the intended behaviour;
+   on a nested block it is a harmless no-op. */
+.themes-container,
+.theme-detail-container,
+.repo-container,
+.contact-container,
+.compare-wrap,
+.article-wrap,
+.content-container,
+.hero-container {
+  width: 100%;
+}
+
 /* Grain overlay. Add <div class="grain"></div> as the first body child. */
 .grain {
   position: fixed;

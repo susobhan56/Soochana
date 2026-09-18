@@ -13,9 +13,9 @@
 <style>
     /* Premium Editorial Article Styles */
     .article-wrap {
-        max-width: 800px;
+        max-width: 1180px;
         margin: 0 auto;
-        padding: 60px 20px 100px 20px;
+        padding: 48px 20px 72px 20px;
     }
     .article-back-link {
         font-family: var(--mono);
@@ -80,10 +80,49 @@
         font-size: var(--fs-body);
         line-height: 1.8;
         color: var(--text);
-        /* In ch, not px, so the measure stays in the comfortable 50-75
-           character band at every text-size setting. */
-        max-width: 68ch;
     }
+
+    /* Prose runs to the same width as the figures so both edges line up.
+       A single 1140px column would give ~150 characters a line, well past
+       the point the eye reliably finds the next line, so the body text is
+       set in columns instead: the block matches the charts while each
+       column stays inside a readable measure. Headings span the full
+       width so they still read as section breaks. */
+    .article-content > p,
+    .article-content > ul,
+    .article-content > ol {
+        columns: 2;
+        column-gap: 56px;
+        max-width: 100%;
+    }
+
+    .article-content > p { orphans: 3; widows: 3; }
+
+    .article-content > h4,
+    .article-content > h5,
+    .article-content > h6,
+    .article-content > blockquote {
+        max-width: 100%;
+        column-span: all;
+    }
+
+    /* Below the point two columns would each be too narrow, fall back to
+       one full-width column. */
+    @media (max-width: 900px) {
+        .article-content > p,
+        .article-content > ul,
+        .article-content > ol { columns: 1; }
+    }
+
+    /* Charts arrive from the registry as a 16:9 padding-bottom box wrapping
+       a Flourish iframe. They span the column, so widening the page makes
+       them proportionally taller as well as wider. */
+    .article-content > div[style*="padding-bottom"] {
+        width: 100%;
+        margin-top: 32px !important;
+        margin-bottom: 28px !important;
+    }
+
     .article-content p {
         margin-bottom: 24px;
     }
