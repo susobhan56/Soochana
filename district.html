@@ -215,7 +215,9 @@
         }
         .hero-editorial {
             height: auto;
-            padding: 140px 20px 80px;
+            /* The header is sticky and now only ~110px, so the old 140px
+               of clearance left the title stranded below the fold. */
+            padding: 56px 20px 64px;
         }
         .hero-editorial h1 {
             font-size: var(--fs-display);

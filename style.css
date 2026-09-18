@@ -1957,6 +1957,100 @@ footer::before {
   .lander { padding: 52px 20px 60px; }
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE
+   The pages already reflow without horizontal overflow; what follows is
+   about making them usable with a thumb rather than merely fitting.
+   ═══════════════════════════════════════════════════════════════════ */
+/* Header and touch targets apply to tablets as well: the nav wrapped to
+   144px at 768px, and a tablet is a touch device like any other. */
+@media (max-width: 900px) {
+
+  /* ── header ──
+     Wrapping four nav buttons plus the text-size control pushed the header
+     to 194px, a quarter of a phone screen, before any content appeared.
+     The links become one horizontally scrollable row instead, which keeps
+     the header to a single band whatever gets added to the nav later. */
+  header {
+    padding: 8px 14px;
+    gap: 8px;
+    min-height: 0;
+  }
+
+  header .nav-group { gap: 8px; }
+
+  header .nav-group:last-child {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    width: 100%;
+    /* A flex item defaults to min-width:auto, so it refuses to shrink below
+       its content and grows the header instead of scrolling inside it. */
+    min-width: 0;
+    padding-bottom: 2px;
+  }
+
+  header .nav-group:last-child::-webkit-scrollbar { display: none; }
+  header .btn-elegant { flex: 0 0 auto; }
+
+  header h1 { font-size: 1.15rem; }
+
+  /* ── touch targets ──
+     44px is the smallest reliably hittable control; most of these sat at
+     33px. Only the vertical padding grows, so nothing reflows. */
+  .btn-elegant,
+  .btn-pill,
+  .slide-tab-btn,
+  .yr-btn,
+  .type-ctl button,
+  .district-card,
+  select {
+    min-height: 44px;
+  }
+
+  .btn-elegant,
+  .slide-tab-btn,
+  .yr-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-pill { padding: 14px 22px; }
+  .type-ctl button { padding: 10px 15px; }
+
+  /* The text-size control is a convenience, not navigation: let it sit
+     after the links rather than competing with them for the first row. */
+  .type-ctl { flex: 0 0 auto; }
+
+  /* Comfortable spacing between stacked tappable cards. */
+  .districts-grid { gap: 10px; }
+  .district-card { justify-content: center; }
+
+  /* The assistant's own controls sit below the touch minimum too. */
+  .chatbot-close-btn,
+  .chatbot-send-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+}
+
+/* Phone only: at tablet width the hero copy still has a column of its own,
+   so the field behind it is not yet a legibility problem. */
+@media (max-width: 760px) {
+  /* At phone width the dot field sits directly behind the standfirst and
+     the particles read through the text. Holding it back restores it. */
+  #dotfield { opacity: 0.4; }
+
+  .lander-inner { max-width: none; }
+
+  /* Decoration, and it collides with the assistant button at this size. */
+  .lander-readout { display: none; }
+}
+
 /* Honour the OS reduced-motion setting: kill decorative animation and
    land every staged reveal in its final state. */
 @media (prefers-reduced-motion: reduce) {
