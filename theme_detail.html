@@ -161,8 +161,11 @@
         <a href="themes.html" style="font-family:var(--mono); font-size: var(--fs-micro); text-decoration:none; color:var(--teal); font-weight:700; text-transform: none; letter-spacing:0.1em;">All Sectors</a>
         <h2 id="themeName">Sector Overview</h2>
         <p id="themeDesc">Explore related briefs and analyses.</p>
+        <!-- No src: it is set once the sector is known. An empty src is a
+             request for the page itself, which fails and looks like a
+             broken image to anything watching for load errors. -->
         <figure class="editorial-figure theme-hero-figure" id="themeHeroFigure" style="display:none; margin:26px 0 0;">
-            <img id="themeHeroImg" src="" alt="" loading="lazy" decoding="async">
+            <img id="themeHeroImg" alt="" decoding="async">
         </figure>
     </div>
 
@@ -218,13 +221,18 @@
             migration:  'urbanization-build',
             employment: 'employment-cycle'
         };
+        /* This runs after a network round trip, so the figure may already
+           have been cleaned up by the time we get here. Look both elements
+           up and bail quietly rather than throwing — an exception here is
+           caught by the .catch below and would wrongly report the whole
+           registry as unavailable. */
         const heroArt = HERO_ART[theme.id];
         const fig = document.getElementById('themeHeroFigure');
-        if (heroArt && window.SoochanaArt) {
-            const img = document.getElementById('themeHeroImg');
-            img.alt = theme.name + ' sector illustration';
-            img.setAttribute('data-art', heroArt);
-            window.SoochanaArt.load(img);
+        const heroImg = document.getElementById('themeHeroImg');
+        if (heroArt && heroImg && window.SoochanaArt) {
+            heroImg.alt = theme.name + ' sector illustration';
+            heroImg.setAttribute('data-art', heroArt);
+            window.SoochanaArt.load(heroImg);
         } else if (fig) {
             fig.remove();
         }
@@ -244,7 +252,8 @@
             grid.innerHTML += `
                 <a href="article.html?id=${article.id}" class="article-card">
                     <div class="article-img-wrap">
-                        <img src="${relThumbnail}" alt="${article.title}" class="article-img" onerror="this.src='images/pop-2021-graph1.png'">
+                        <img src="${relThumbnail}" alt="${article.title}" class="article-img" loading="lazy"
+                             onerror="this.onerror=null;this.src='images/dem1.png'">
                         <span class="article-badge">${article.type}</span>
                     </div>
                     <div class="article-body">

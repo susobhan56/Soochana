@@ -184,8 +184,13 @@
   function guardFigures() {
     document.querySelectorAll('img[data-art]').forEach(loadArt);
 
-    /* Plain src images (not using data-art) still fail closed. */
+    /* Plain src images (not using data-art) still fail closed — but an
+       <img> with no src yet is waiting for the page to fill it in, not
+       broken. Removing those took the element out from under code that
+       was still about to use it, which surfaced only once real network
+       latency let this run first. */
     document.querySelectorAll('.editorial-figure img:not([data-art])').forEach(function (img) {
+      if (!img.getAttribute('src')) return;
       img.addEventListener('error', function () { giveUp(img); });
     });
     document.querySelectorAll('img.editorial-ghost:not([data-art])').forEach(function (img) {
