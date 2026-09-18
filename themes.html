@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thematic Exploration — Odisha Demographic Portal</title>
+<title>Thematic Exploration · Odisha Demographic Portal</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script src="ui.js"></script>
 <style>
@@ -17,7 +18,7 @@
         padding: 60px 20px;
     }
     .themes-intro {
-        text-align: center;
+        text-align: left;
         max-width: 700px;
         margin: 0 auto 50px auto;
     }
@@ -67,10 +68,21 @@
         object-fit: contain;
         padding: 16px;
         display: block;
-        transition: transform 0.5s ease;
+        /* Held slightly back at rest so six illustrations drawn in six
+           different styles still read as one set; full colour on hover. */
+        filter: saturate(0.8) contrast(1.02);
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
     }
     .theme-card:hover .theme-media img {
         transform: scale(1.06);
+        filter: saturate(1.08) contrast(1.04);
+    }
+    .theme-media::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 34%, transparent 74%, rgba(26,83,92,0.05) 100%);
     }
     .theme-card-body {
         padding: 26px 26px 30px;
@@ -86,7 +98,7 @@
     }
     .theme-card p {
         font-size: var(--fs-small);
-        color: var(--muted);
+        color: var(--ink-body);
         line-height: 1.6;
         margin: 0;
         flex: 1;
@@ -96,7 +108,7 @@
         font-family: var(--mono);
         font-size: var(--fs-caption);
         font-weight: 700;
-        text-transform: uppercase;
+        text-transform: none;
         letter-spacing: 0.1em;
         color: var(--orange);
         display: flex;
@@ -126,7 +138,7 @@
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
       <div>
         <h1 style="line-height: 1; margin: 0;">Soochana</h1>
-        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.005em; color: var(--muted); text-transform: none; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
       </div>
     </a>
   </div>
@@ -165,7 +177,18 @@
 </footer>
 
 <script>
-    const MEDIA = {
+    /* Editorial illustration per sector. Extensions are tried in turn by the
+       resolver below; the original animated icon stays as the last resort. */
+    const ART = {
+        demography: 'population-aerial',
+        health:     'health-infrastructure',
+        education:  'education-classroom',
+        ageing:     'ageing-cohort',
+        migration:  'migration-journey',
+        employment: 'employment-cycle'
+    };
+    const EXTS = ['.png', '.jpg', '.jpeg', '.webp', '.gif'];
+    const LEGACY = {
         demography: 'icons/demography.gif',
         health:     'icons/health.gif',
         education:  'icons/education.gif',
@@ -182,11 +205,11 @@
             grid.innerHTML = '';
             
             data.themes.forEach(theme => {
-                const src = MEDIA[theme.id] || FALLBACK;
                 grid.innerHTML += `
                     <a href="theme_detail.html?theme=${encodeURIComponent(theme.slug)}" class="theme-card">
                         <div class="theme-media">
-                            <img src="${src}" alt="${theme.name}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${FALLBACK}'">
+                            <img alt="${theme.name}" decoding="async"
+                                 data-theme-id="${theme.id}">
                         </div>
                         <div class="theme-card-body">
                             <h3>${theme.name}</h3>
@@ -198,6 +221,28 @@
                         </div>
                     </a>
                 `;
+            });
+
+            /* Try each extension for the editorial still; if none of them
+               resolve, drop back to the sector's original animated icon. */
+            grid.querySelectorAll('img[data-theme-id]').forEach(img => {
+                const id = img.getAttribute('data-theme-id');
+                const base = ART[id];
+                const legacy = LEGACY[id] || FALLBACK;
+                /* Lazy loading would defer the extension walk for any card
+                   below the fold, leaving it on a broken candidate. */
+                img.loading = 'eager';
+                let i = 0;
+                const next = () => {
+                    if (!base || i >= EXTS.length) {
+                        img.onerror = () => { img.onerror = null; img.src = FALLBACK; };
+                        img.src = legacy;
+                        return;
+                    }
+                    img.src = `images/editorial/${base}${EXTS[i++]}`;
+                };
+                img.onerror = next;
+                next();
             });
         })
         .catch(err => {

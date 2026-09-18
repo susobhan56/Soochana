@@ -118,7 +118,7 @@
     .chatbot-header-sub {
       font-size: var(--fs-micro);
       font-family: var(--mono, monospace);
-      text-transform: uppercase;
+      text-transform: none;
       opacity: 0.8;
       letter-spacing: 0.1em;
       margin-top: 2px;
@@ -189,7 +189,7 @@
     .chatbot-rec-title {
       font-size: var(--fs-caption);
       font-family: var(--mono, monospace);
-      text-transform: uppercase;
+      text-transform: none;
       color: var(--muted, #4f5664);
       margin-bottom: 6px;
       letter-spacing: 0.05em;

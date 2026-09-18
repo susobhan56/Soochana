@@ -13,12 +13,15 @@
   --hairline: rgba(0, 0, 0, 0.055);
 
   /* ── ink ──
-     Ratios below are against --panel (#f2f1ec), the darkest of the three
-     grounds and therefore the binding constraint. WCAG AA for normal text
-     needs 4.5:1. Every ink token clears it on bg, surface and panel. */
-  --text:     #1e2530; /* 13.6:1  AAA */
-  --muted:    #4f5664; /*  6.5:1  AA  */
-  --dimmed:   #656d74; /*  4.7:1  AA  — was #868e96 at 2.9:1, failed */
+     Slate ramp. Headings #0f172a, body #334155, captions and labels
+     #64748b. All three clear WCAG AA on bg, surface and panel. */
+  --ink-heading: #0f172a; /* 16.8:1 AAA */
+  --ink-body:    #334155; /*  9.6:1 AAA */
+  --ink-subtle:  #64748b; /*  4.8:1 AA  */
+
+  --text:     var(--ink-body);
+  --muted:    var(--ink-subtle);
+  --dimmed:   var(--ink-subtle);
 
   /* ── accents ──
      *-ink variants are contrast-safe for text. The plain token stays
@@ -28,51 +31,58 @@
   --orange-lit: #d35400; /* graphics only */
   --yellow:     #d4a017; /* graphics only — 2.4:1, never for text */
   --yellow-ink: #8f5f00; /* 5.6:1  AA  — use for any yellow *text*   */
-  --blue:       #1f385c; /* 11.8:1 AAA */
+  /* Headings across the pages are written against --blue, so it now carries
+     the spec's heading ink. --blue-chart keeps the old navy for data marks. */
+  --blue:       var(--ink-heading);
+  --blue-chart: #1f385c;
   --green:      #1e7e34; /* 5.1:1  AA  */
   --teal:       #1a535c; /* 8.6:1  AAA */
   --teal-lit:   #387478; /* graphics / dot field */
   --purple:     #8e44ad; /* 5.9:1  AA  */
   --sage:       #a5beba;
 
-  /* ── families ── */
-  --font-geist:      'Geist', system-ui, -apple-system, sans-serif;
-  --font-geist-mono: 'Geist Mono', 'SF Mono', 'Fira Code', monospace;
-  --font-manrope:    var(--font-geist);
-  --font-inter:      var(--font-geist);
-  --serif: var(--font-geist);
-  --sans:  var(--font-geist);
-  --mono:  var(--font-geist-mono);
+  /* ── families ──
+     One family throughout: General Sans from Fontshare, falling back to
+     Outfit. There is no second face — the old --serif / --mono names are
+     kept only so existing pages keep resolving, and all point here. */
+  --font-sans: 'General Sans', 'Outfit', system-ui, -apple-system, sans-serif;
+  --serif: var(--font-sans);
+  --sans:  var(--font-sans);
+  --mono:  var(--font-sans);
+  --font-geist:      var(--font-sans);
+  --font-geist-mono: var(--font-sans);
+  --font-manrope:    var(--font-sans);
+  --font-inter:      var(--font-sans);
 
-  /* ── type scale (Exact Typography Spec) ── */
+  /* ── type scale ──
+     Fixed px per the spec, times --type-scale for the A / A+ / A++ control. */
   --type-scale: 1;
-  --fs-hero-title:        calc(clamp(3.5rem, 4.2vw, 4rem) * var(--type-scale));   /* 56–64px (Manrope 800) */
-  --fs-h1:                calc(clamp(2.75rem, 3.2vw, 3rem) * var(--type-scale)); /* 44–48px (Manrope 700) */
-  --fs-h2:                calc(2.25rem   * var(--type-scale));                   /* 36px (Manrope 700)    */
-  --fs-h3:                calc(1.75rem   * var(--type-scale));                   /* 28px (Manrope 600)    */
-  --fs-small-heading:     calc(1.3125rem * var(--type-scale));                   /* 20–22px (Inter 600)   */
-  --fs-body:              calc(1.0625rem * var(--type-scale));                   /* 16–18px (Inter 400)   */
-  --fs-button:            calc(0.96875rem* var(--type-scale));                   /* 15–16px (Inter 600)   */
-  --fs-graph-title:       calc(1.0625rem * var(--type-scale));                   /* 16–18px (Inter 600)   */
-  --fs-graph-axis:        calc(0.84375rem* var(--type-scale));                   /* 13–14px (Inter 500)   */
-  --fs-graph-value:       calc(0.78125rem* var(--type-scale));                   /* 12–13px (Inter 500)   */
-  --fs-table:             calc(0.875rem  * var(--type-scale));                   /* 14px (Inter 400)      */
-  --fs-caption:           calc(0.8125rem * var(--type-scale));                   /* 13px (Inter 400)      */
+  --fs-h1:      calc(38px * var(--type-scale));  /* 600, -0.03em          */
+  --fs-h2:      calc(26px * var(--type-scale));  /* 600, -0.015em         */
+  --fs-h3:      calc(18px * var(--type-scale));  /* 500                   */
+  --fs-body:    calc(15px * var(--type-scale));  /* 400, 1.6              */
+  --fs-button:  calc(14px * var(--type-scale));  /* 500                   */
+  --fs-caption: calc(13px * var(--type-scale));  /* 400, subtle ink       */
+  --fs-label:   calc(12px * var(--type-scale));  /* 500, subtle ink       */
 
-  --fs-micro:             var(--fs-caption);
-  --fs-small:             var(--fs-body);
-  --fs-lead:              var(--fs-small-heading);
-  --fs-h4:                var(--fs-small-heading);
-  --fs-display:           var(--fs-hero-title);
-  --fs-mega:              var(--fs-hero-title);
+  /* legacy aliases — every page still writes these names */
+  --fs-hero-title:    var(--fs-h1);
+  --fs-display:       var(--fs-h1);
+  --fs-mega:          var(--fs-h1);
+  --fs-small-heading: var(--fs-h3);
+  --fs-h4:            var(--fs-h3);
+  --fs-lead:          var(--fs-h3);
+  --fs-small:         var(--fs-body);
+  --fs-table:         var(--fs-body);
+  --fs-graph-title:   var(--fs-body);
+  --fs-graph-axis:    var(--fs-caption);
+  --fs-graph-value:   var(--fs-caption);
+  --fs-micro:         var(--fs-label);
 
-  /* ── display type character ──
-     The single most important pair in this file. Large serif at low
-     weight with tight tracking reads as elegant; at 900 it reads as
-     shouting. Optical sizing lets Fraunces adjust its own contrast. */
-  --wt-display: 400;
-  --tr-display: -0.035em;
-  --lh-display: 0.99;
+  /* ── display character ── */
+  --wt-display: 600;
+  --tr-display: -0.03em;
+  --lh-display: 1.15;
 
   --header-h: 78px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -163,9 +173,10 @@ html.type-switching *::after {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--sans);
+  font-family: var(--font-sans);
+  font-weight: 400;
   font-size: var(--fs-body);
-  line-height: 1.65;
+  line-height: 1.6;
   margin: 0;
   min-height: 100vh;
   overflow-x: hidden;
@@ -240,62 +251,57 @@ header:hover {
 }
 
 h1, .h1 {
-  font-family: var(--font-geist);
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-weight: 600;
   font-size: var(--fs-h1);
   letter-spacing: -0.03em;
-  line-height: 1.12;
+  line-height: 1.15;
   margin: 0;
-  color: var(--blue);
+  color: var(--ink-heading);
 }
 
 h2, .h2 {
-  font-family: var(--font-geist);
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-weight: 600;
   font-size: var(--fs-h2);
-  line-height: 1.18;
-  letter-spacing: -0.025em;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--ink-heading);
 }
 
 h3, .h3 {
-  font-family: var(--font-geist);
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-weight: 500;
   font-size: var(--fs-h3);
-  line-height: 1.22;
-  letter-spacing: -0.02em;
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: var(--ink-heading);
 }
 
 h4, h5, h6, .small-heading {
-  font-family: var(--font-geist);
-  font-weight: 600;
-  font-size: var(--fs-small-heading);
-  line-height: 1.32;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--fs-h3);
+  line-height: 1.35;
+  color: var(--ink-heading);
 }
 
-.kicker {
-  font-family: var(--font-geist-mono);
-  font-weight: 600;
-  font-size: var(--fs-caption);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--orange);
-  margin-bottom: 6px;
-  position: relative;
-  display: inline-block;
-}
-
-.kicker::after {
-  content: '';
+/* Section labels are plain text, not coloured pills. Any colour a page sets
+   inline is overridden here so the treatment stays uniform. */
+.kicker, .label {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--fs-label);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-subtle) !important;
+  background: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  margin-bottom: 8px;
   display: block;
-  width: 0;
-  height: 1px;
-  background: currentColor;
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  margin-top: 4px;
-  opacity: 0.4;
 }
-
-.kicker:hover::after { width: 100%; }
 
 /* ─── GLOBAL MODERN SELECT DROPDOWNS ────────────────────── */
 select {
@@ -311,9 +317,9 @@ select {
   color: var(--blue) !important;
   padding: 12px 48px 12px 22px !important;
   border-radius: 9999px !important;
-  font-family: var(--mono) !important;
-  font-size: var(--fs-small) !important;
-  font-weight: 700 !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--fs-button) !important;
+  font-weight: 500 !important;
   outline: none !important;
   cursor: pointer !important;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04) !important;
@@ -432,12 +438,13 @@ path:hover {
 .btn-elegant {
   background: rgba(0, 0, 0, 0.03);
   border: 1px solid var(--border);
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: var(--fs-micro);
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  padding: 10px 18px;
+  color: var(--ink-body);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--fs-button);
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 9px 16px;
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
@@ -484,12 +491,13 @@ path:hover {
 
 /* Landing call-to-action pills */
 .btn-pill {
-  font-family: var(--mono);
-  font-size: var(--fs-micro);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--fs-button);
+  letter-spacing: 0;
+  text-transform: none;
   text-decoration: none;
-  padding: 15px 28px;
+  padding: 12px 24px;
   border-radius: 999px;
   transition: all 0.3s var(--ease);
   white-space: nowrap;
@@ -595,8 +603,8 @@ path:hover {
   font-family: var(--mono);
   font-size: var(--fs-caption);
   color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.13em;
+  text-transform: none;
+  letter-spacing: 0.005em;
   line-height: 1.45;
   margin-bottom: 8px;
 }
@@ -657,7 +665,7 @@ path:hover {
 .step-idx {
   font-family: var(--mono);
   font-size: var(--fs-caption);
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.1em;
   color: var(--orange);
   margin-bottom: 10px;
@@ -737,7 +745,7 @@ path:hover {
 .intro-year {
   font-family: var(--mono);
   font-size: var(--fs-caption);
-  letter-spacing: 0.34em;
+  letter-spacing: 0.005em;
   color: var(--dimmed);
   font-variant-numeric: tabular-nums;
   opacity: 0;
@@ -765,8 +773,8 @@ path:hover {
   font-family: var(--serif);
   font-weight: var(--wt-display);
   font-size: var(--fs-h3);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   color: var(--teal);
   margin-top: 8px;
   opacity: 0;
@@ -777,8 +785,8 @@ path:hover {
 .intro-caption {
   font-family: var(--mono);
   font-size: var(--fs-micro);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   color: var(--dimmed);
   opacity: 0;
   transition: opacity 0.6s ease 0.1s;
@@ -794,8 +802,8 @@ path:hover {
   z-index: 4;
   font-family: var(--mono);
   font-size: var(--fs-micro);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   color: var(--dimmed);
   background: transparent;
   border: 1px solid var(--border);
@@ -830,7 +838,7 @@ path:hover {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 90px clamp(24px, 6vw, 86px) 110px;
+  padding: 72px clamp(24px, 6vw, 86px) 80px;
   overflow: hidden;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
@@ -863,8 +871,8 @@ path:hover {
 .lander-kicker {
   font-family: var(--mono);
   font-size: var(--fs-caption);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   color: var(--teal);
   margin-bottom: 30px;
   opacity: 0;
@@ -895,12 +903,12 @@ path:hover {
 .lander.in .lander-kicker { opacity: 1; transform: none; }
 
 .display-line {
-  font-family: var(--font-geist);
-  font-weight: 800;
-  font-size: clamp(2.1rem, 3.4vw, 2.95rem);
-  line-height: 1.2;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-h1);
+  line-height: 1.25;
   letter-spacing: -0.03em;
-  color: var(--blue);
+  color: var(--ink-heading);
   margin: 0;
   padding-bottom: 0.06em;
 }
@@ -947,7 +955,7 @@ path:hover {
   z-index: 2;
   font-family: var(--mono);
   font-size: var(--fs-micro);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.005em;
   color: var(--dimmed);
   text-align: right;
   line-height: 2;
@@ -1002,20 +1010,20 @@ path:hover {
 .band-lbl {
   font-family: var(--mono);
   font-size: var(--fs-micro);
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   color: var(--muted);
   line-height: 1.6;
 }
 
 /* ── theme cards with lazy GIFs ── */
-.theme-band { padding: 100px clamp(24px, 6vw, 80px); background: var(--bg); }
+.theme-band { padding: 64px clamp(24px, 6vw, 80px); background: var(--bg); }
 
 .theme-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 26px;
-  margin-top: 46px;
+  margin-top: 30px;
 }
 
 .theme-tile {
@@ -1079,7 +1087,7 @@ path:hover {
 
 .theme-body p {
   font-size: var(--fs-small);
-  color: var(--muted);
+  color: var(--ink-body);
   line-height: 1.65;
   margin: 0;
   flex: 1;
@@ -1090,7 +1098,7 @@ path:hover {
   font-family: var(--mono);
   font-size: var(--fs-micro);
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.1em;
   color: var(--orange);
   display: flex;
@@ -1112,7 +1120,7 @@ path:hover {
 
 .gateway-card {
   background: var(--surface);
-  padding: 70px clamp(24px, 4vw, 60px);
+  padding: 52px clamp(24px, 4vw, 60px);
   text-decoration: none;
   color: var(--text);
   transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1161,8 +1169,8 @@ path:hover {
   place-items: center;
   position: relative;
   overflow: hidden;
-  padding: 120px 40px 80px;
-  text-align: center;
+  padding: 84px 40px 60px;
+  text-align: left;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
@@ -1186,8 +1194,8 @@ path:hover {
 .hero-kicker {
   font-family: var(--mono);
   font-size: var(--fs-caption);
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   color: var(--teal);
   margin-bottom: 26px;
   position: relative;
@@ -1259,12 +1267,6 @@ path:hover {
   50%      { transform: rotate(45deg) translateY(6px); opacity: 1; }
 }
 
-.label {
-  font-family: var(--mono);
-  font-size: var(--fs-micro);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
 
 /* ─── STAT STRIP ─────────────────────────────────────────── */
 .stat-strip {
@@ -1284,8 +1286,8 @@ path:hover {
   border-bottom: 1px solid var(--border);
   font-family: var(--mono);
   font-size: var(--fs-caption);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   background: var(--bg);
 }
 
@@ -1423,9 +1425,9 @@ path:hover {
 .big-num-label {
   font-family: var(--mono);
   font-size: var(--fs-micro);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.005em;
   color: var(--dimmed);
-  text-transform: uppercase;
+  text-transform: none;
   margin-bottom: 20px;
 }
 
@@ -1483,7 +1485,7 @@ path:hover {
 
 /* ─── FULL-WIDTH SECTIONS ────────────────────────────────── */
 .full-section {
-  padding: 100px clamp(24px, 6vw, 80px);
+  padding: 52px clamp(24px, 6vw, 80px);
   border-top: 1px solid var(--border);
   background: var(--surface);
 }
@@ -1519,10 +1521,10 @@ path:hover {
 .pyramid-header {
   font-family: var(--mono);
   font-size: var(--fs-caption);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   margin-bottom: 24px;
-  text-align: center;
+  text-align: left;
   color: var(--muted);
 }
 
@@ -1534,8 +1536,8 @@ path:hover {
   color: var(--muted);
   font-family: var(--mono);
   font-size: var(--fs-micro);
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   padding: 11px 22px;
   border-radius: 999px;
   cursor: pointer;
@@ -1577,8 +1579,8 @@ path:hover {
 }
 
 .pyramid-label {
-  font-family: var(--mono);
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-weight: 500;
   fill: #ffffff;
   pointer-events: none;
 }
@@ -1603,8 +1605,8 @@ path:hover {
 .compare-country {
   font-family: var(--mono);
   font-size: var(--fs-micro);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   color: var(--muted);
   margin-bottom: 10px;
 }
@@ -1707,14 +1709,14 @@ path:hover {
   letter-spacing: 0.08em;
   color: var(--teal);
   margin-bottom: 4px;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .district-pop {
-  font-family: var(--serif);
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-sans);
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  letter-spacing: 0;
   margin-bottom: 8px;
   color: var(--blue);
 }
@@ -1723,7 +1725,7 @@ path:hover {
 
 /* ─── TIMELINE ───────────────────────────────────────────── */
 .timeline-section {
-  padding: 100px clamp(24px, 6vw, 80px);
+  padding: 52px clamp(24px, 6vw, 80px);
   border-top: 1px solid var(--border);
   background: var(--bg);
 }
@@ -1734,7 +1736,7 @@ path:hover {
   font-weight: var(--wt-display);
   letter-spacing: -0.03em;
   line-height: 1.1;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   color: var(--blue);
 }
 
@@ -1750,7 +1752,7 @@ path:hover {
 
 .policy-item {
   position: relative;
-  padding: 0 0 48px 32px;
+  padding: 0 0 32px 32px;
   opacity: 0;
   transform: translateX(-20px) translateY(8px);
   transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1833,8 +1835,8 @@ path:hover {
 .map-kicker {
   font-family: var(--mono);
   font-size: var(--fs-caption);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  text-transform: none;
   color: var(--teal);
   margin-bottom: 10px;
 }
@@ -1850,7 +1852,7 @@ path:hover {
 
 /* ─── FOOTER ─────────────────────────────────────────────── */
 footer {
-  padding: 60px clamp(24px, 6vw, 80px);
+  padding: 44px clamp(24px, 6vw, 80px);
   border-top: 1px solid var(--border);
   background: var(--surface);
   display: flex;
@@ -1913,7 +1915,7 @@ footer::before {
   .sticky-chart, .sticky-map { position: relative; height: 58vh; top: 0; }
   .step { min-height: auto; padding: 48px 24px; }
   .compare-grid, .pyramid-dual { grid-template-columns: 1fr; gap: 20px; }
-  .full-section, .timeline-section, footer { padding: 56px 24px; }
+  .full-section, .timeline-section, footer { padding: 40px 24px; }
   .footer-meta { text-align: left; }
   .districts-grid { grid-template-columns: 1fr 1fr; }
   .gateway { grid-template-columns: 1fr; }
@@ -1933,8 +1935,8 @@ footer::before {
   .band { grid-template-columns: 1fr; }
   .band-cell { border-right: none; border-bottom: 1px solid var(--border); }
   .band-cell:last-child { border-bottom: none; }
-  .theme-band { padding: 64px 20px; }
-  .lander { padding: 60px 20px 80px; }
+  .theme-band { padding: 44px 20px; }
+  .lander { padding: 52px 20px 60px; }
 }
 
 /* Honour the OS reduced-motion setting: kill decorative animation and
@@ -1961,6 +1963,406 @@ footer::before {
   .band-cell::after, .kicker::after { display: none !important; }
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   EDITORIAL ILLUSTRATION SYSTEM
+   The source illustrations come from mixed visual languages — silhouette,
+   photo-collage, flat vector, textured paint. A shared container plus a
+   light desaturation at rest is what makes them read as one set; hover
+   restores full colour so the artwork still rewards attention.
+   Every figure fails closed: a missing file hides its own frame (see the
+   onerror hook in each page) so a gap never collapses a layout.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.editorial-figure {
+  position: relative;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.4s ease, box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.editorial-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  padding: 18px;
+  filter: saturate(0.82) contrast(1.02);
+  transition: filter 0.6s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.editorial-figure:hover img {
+  filter: saturate(1.06) contrast(1.04);
+  transform: scale(1.03);
+}
+
+.editorial-figure:hover {
+  border-color: rgba(26, 83, 92, 0.24);
+  box-shadow: 0 18px 44px rgba(26, 83, 92, 0.09);
+}
+
+/* A soft top-light so cut-out artwork on white does not float unanchored. */
+.editorial-figure::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, transparent 32%, transparent 72%, rgba(26, 83, 92, 0.04) 100%);
+}
+
+/* ── full-width editorial band ──
+   Sits *between* existing sections. It never wraps a chart, a table or a
+   stat strip, so nothing it does can disturb the data layout. */
+/* Single column is the resting state, so a band whose artwork is missing or
+   still resolving never shows a gap or a broken-image box. It upgrades to two
+   columns only once an illustration has actually decoded (.has-art, set by
+   ui.js on the image's load event). */
+.editorial-band {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  padding: clamp(34px, 3.4vw, 48px) clamp(24px, 6vw, 80px);
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.editorial-band.has-art { grid-template-columns: 1fr 1fr; }
+
+.editorial-band .editorial-figure { display: none; }
+.editorial-band.has-art .editorial-figure { display: flex; }
+
+.editorial-band.alt { background: var(--surface); }
+
+/* Picture leads by default. .flip sends it after the copy, putting the
+   image on the right — order:-1 did nothing here, since the figure is
+   already first in the markup. */
+.editorial-band.flip .editorial-band-figure { order: 2; }
+
+.editorial-band-figure {
+  height: clamp(240px, 30vw, 360px);
+}
+
+.editorial-band-copy { max-width: 40em; }
+
+.editorial-band-quote {
+  font-family: var(--font-geist);
+  font-weight: 600;
+  font-size: clamp(1.35rem, 2.1vw, 1.9rem);
+  line-height: 1.32;
+  letter-spacing: -0.022em;
+  color: var(--blue);
+  margin: 10px 0 18px;
+}
+
+.editorial-band-quote em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.editorial-band-note {
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0;
+}
+
+.editorial-band-source {
+  margin-top: 20px;
+  font-family: var(--font-geist-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.005em;
+  text-transform: none;
+  color: var(--dimmed);
+}
+
+/* scroll-reveal — paired with the .in class set by the observer in ui.js */
+.editorial-band .editorial-band-figure,
+.editorial-band .editorial-band-copy {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.editorial-band .editorial-band-copy { transition-delay: 0.12s; }
+
+.editorial-band.in .editorial-band-figure,
+.editorial-band.in .editorial-band-copy {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── thematic gallery ──
+   The bands carry the three narrative beats. Everything else lives here, in
+   one section, so nine more illustrations cost one screen of scroll instead
+   of nine. Sits between sections; touches no chart, axis or table. */
+.editorial-gallery {
+  padding: clamp(38px, 3.6vw, 50px) clamp(24px, 6vw, 80px);
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+  /* The book-slide starts each tile turned 24deg in perspective, and a
+     rotated box projects wider than its layout width — on the full-width
+     strip that is ~1437px against a 1160px track, which put a horizontal
+     scrollbar on the page until the gallery revealed. Clip rather than
+     hidden: hidden would make this a scroll container and break sticky
+     positioning and scroll-into-view elsewhere on the page. */
+  overflow-x: clip;
+}
+
+.editorial-gallery-head { max-width: 54em; margin-bottom: clamp(22px, 2.6vw, 32px); }
+
+.editorial-gallery-head h2 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--ink-heading);
+  margin: 6px 0 14px;
+}
+
+.editorial-gallery-head p {
+  font-size: var(--fs-lead);
+  line-height: 1.65;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Four across. Nine frames leaves one on the final row, so the track is
+   flex rather than grid: the short row then centres under the full ones
+   instead of hanging off the left edge. A fixed basis keeps all nine the
+   same size, and align-items:stretch keeps a row's tiles level. */
+.editorial-gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: clamp(14px, 1.5vw, 20px);
+  max-width: 1160px;
+}
+
+.editorial-gallery-grid > .editorial-frame {
+  flex: 0 1 252px;
+  min-width: 0;
+}
+
+/* The methodology note is meta rather than one of the eight forces, and a
+   lone tile would otherwise hold a whole row open. It runs the full width
+   instead, laid out on its side, so the row carries its weight. */
+.editorial-gallery-grid > .editorial-frame.is-wide {
+  flex: 1 1 100%;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 18px 14px 14px;
+}
+
+.editorial-frame.is-wide .editorial-figure {
+  flex: 0 0 clamp(150px, 18vw, 210px);
+  aspect-ratio: 16 / 9;
+  margin: 0;
+}
+
+.editorial-frame.is-wide .editorial-frame-body { flex: 1; min-width: 0; }
+.editorial-frame.is-wide .editorial-frame-text { min-height: 0; max-width: 62ch; }
+
+@media (max-width: 1080px) { .editorial-gallery-grid > .editorial-frame { flex-basis: 30%; } }
+@media (max-width: 760px)  { .editorial-gallery-grid > .editorial-frame { flex-basis: 45%; } }
+
+@media (max-width: 560px) {
+  .editorial-gallery-grid > .editorial-frame.is-wide {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 13px 18px;
+  }
+  .editorial-frame.is-wide .editorial-figure {
+    flex: 0 0 auto;
+    aspect-ratio: 4 / 3;
+    margin-bottom: 13px;
+  }
+}
+
+/* ── the book slide ──
+   Each frame starts turned away on its spine and slides square onto the
+   shelf, one after the next. Perspective is per-element rather than on the
+   container: a multicolumn parent fragments its children, and a shared
+   perspective resolves inconsistently across them.
+   --d is the card's stagger, set by ui.js in visual order. */
+.editorial-frame {
+  --d: 0ms;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 13px 18px;
+  opacity: 0;
+  transform: perspective(1500px) translateX(-72px) rotateY(-24deg) scale(0.965);
+  transform-origin: left center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  will-change: transform, opacity;
+}
+
+.editorial-gallery.in .editorial-frame {
+  opacity: 1;
+  transform: perspective(1500px) translateX(0) rotateY(0deg) scale(1);
+  /* long, heavily eased travel so the slide reads as weight, not a snap */
+  transition: opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1) var(--d),
+              transform 1.05s cubic-bezier(0.19, 1, 0.22, 1) var(--d),
+              box-shadow 0.45s ease, border-color 0.45s ease;
+}
+
+/* Once settled the card is done animating in, so hover can own the transform. */
+.editorial-gallery.in .editorial-frame:hover {
+  transform: perspective(1500px) translateX(0) rotateY(0deg) translateY(-5px) scale(1.012);
+  border-color: rgba(26, 83, 92, 0.22);
+  box-shadow: 0 18px 42px rgba(26, 83, 92, 0.1);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* The picture leads; the words follow it in. */
+.editorial-frame .editorial-figure,
+.editorial-frame .editorial-frame-label,
+.editorial-frame .editorial-frame-text {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.editorial-gallery.in .editorial-frame .editorial-figure,
+.editorial-gallery.in .editorial-frame .editorial-frame-label,
+.editorial-gallery.in .editorial-frame .editorial-frame-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.editorial-gallery.in .editorial-frame .editorial-figure {
+  transition: opacity 0.65s ease calc(var(--d) + 150ms),
+              transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--d) + 150ms),
+              border-color 0.4s ease, box-shadow 0.45s ease;
+}
+
+.editorial-gallery.in .editorial-frame .editorial-frame-label {
+  transition: opacity 0.6s ease calc(var(--d) + 420ms),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--d) + 420ms);
+}
+
+.editorial-gallery.in .editorial-frame .editorial-frame-text {
+  transition: opacity 0.65s ease calc(var(--d) + 530ms),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--d) + 530ms);
+}
+
+/* the picture inside a frame */
+/* One fixed 4:3 window for every tile. The artwork runs from 1024x574
+   landscape to 736x981 portrait, so it is matted rather than cropped —
+   contain keeps every piece whole, and the panel ground behind it reads as
+   the mount of a framed print rather than as dead space. */
+.editorial-frame .editorial-figure {
+  aspect-ratio: 4 / 3;
+  height: auto;
+  width: 100%;
+  border-radius: 10px;
+  margin: 0 0 13px;
+  flex-shrink: 0;
+}
+
+.editorial-frame .editorial-figure img {
+  height: 100%;
+  padding: 10px;
+}
+
+.editorial-frame-label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink-subtle) !important;
+  margin-bottom: 7px;
+}
+
+/* Reserve three lines so tiles match across rows, not just within one —
+   flex equalises a row's items but leaves rows free to differ. */
+.editorial-frame-text {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--ink-body);
+  margin: 0;
+  min-height: calc(var(--fs-body) * 1.6 * 4);
+}
+
+.editorial-frame-text b {
+  color: var(--ink-heading);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 560px) {
+  .editorial-gallery-grid > .editorial-frame { flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-frame,
+  .editorial-frame .editorial-figure,
+  .editorial-frame .editorial-frame-label,
+  .editorial-frame .editorial-frame-text {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── theme detail hero figure ── */
+.theme-hero-figure {
+  height: clamp(200px, 26vw, 300px);
+  margin-top: 26px;
+  border-radius: 18px;
+}
+
+/* ── ghost watermark ──
+   Decoration only: behind content, never interactive, and only ever placed
+   in prose sections — never over a chart, axis or table. */
+.editorial-ghost {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  opacity: 0.055;
+  filter: grayscale(1);
+  max-width: 42%;
+  max-height: 78%;
+  object-fit: contain;
+}
+
+.editorial-ghost-host { position: relative; }
+.editorial-ghost-host > *:not(.editorial-ghost) { position: relative; z-index: 1; }
+
+@media (max-width: 900px) {
+  .editorial-band,
+  .editorial-band.has-art {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 38px 24px;
+  }
+  .editorial-band.flip .editorial-band-figure { order: 0; }
+  .editorial-band-figure { height: clamp(200px, 52vw, 280px); }
+  .editorial-ghost { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-band .editorial-band-figure,
+  .editorial-band .editorial-band-copy {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .editorial-figure img { transition: none !important; }
+}
+
 /* Screen-reader-only helper */
 .sr-only {
   position: absolute;
@@ -1970,4 +2372,142 @@ footer::before {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   DOSSIER STAT GRID + PVTG DISCLOSURE
+   Shared by the district dossier and the state dossier on the home
+   page, which render the same "Tribal Groups and PVTGs" slide.
+   ═══════════════════════════════════════════════════════════════════ */
+/* ── dossier stat grid ── */
+.dossier-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: start;
+}
+
+.dossier-stat {
+    background: var(--surface);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: var(--fs-body);
+}
+
+.dossier-stat strong { font-weight: 500; color: var(--ink-heading); }
+
+/* ── PVTG names disclosure ── */
+.pvtg-dropdown {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: var(--fs-body);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.pvtg-dropdown[open] {
+    border-color: rgba(26, 83, 92, 0.3);
+    box-shadow: 0 6px 18px rgba(26, 83, 92, 0.07);
+}
+
+/* summary keeps a block display so the disclosure still works; the
+   flex row lives one level in. */
+.pvtg-dropdown summary {
+    display: block;
+    padding: 12px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    border-radius: 8px;
+}
+
+.pvtg-summary-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* the default disclosure triangle, in both engines */
+.pvtg-dropdown summary::-webkit-details-marker { display: none; }
+.pvtg-dropdown summary::marker { content: ''; }
+
+.pvtg-dropdown summary:hover { background: rgba(26, 83, 92, 0.03); }
+.pvtg-dropdown summary:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+.pvtg-summary-label { font-weight: 500; color: var(--ink-heading); }
+
+.pvtg-count {
+    font-size: var(--fs-label);
+    color: var(--ink-subtle);
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 999px;
+    padding: 1px 8px;
+    line-height: 1.7;
+}
+
+.pvtg-chevron {
+    width: 15px;
+    height: 15px;
+    margin-left: auto;
+    flex-shrink: 0;
+    color: var(--teal);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pvtg-dropdown[open] .pvtg-chevron { transform: rotate(180deg); }
+
+.pvtg-list {
+    margin: 0;
+    padding: 2px 12px 12px 12px;
+    list-style: none;
+    border-top: 1px solid var(--border);
+}
+
+.pvtg-list li {
+    padding: 7px 2px 7px 14px;
+    position: relative;
+    color: var(--ink-body);
+    border-bottom: 1px solid var(--hairline);
+}
+
+.pvtg-list li:last-child { border-bottom: 0; }
+
+/* A long roster (the 62 tribal communities) columns out rather than
+   running to a 2,500px scroll. */
+.pvtg-list.is-long {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  column-gap: 20px;
+}
+
+.pvtg-list.is-long li { border-bottom: 0; padding-top: 5px; padding-bottom: 5px; }
+
+.pvtg-list li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    margin-top: -2px;
+    border-radius: 50%;
+    background: var(--teal);
+    opacity: 0.55;
+}
+
+/* Slide the list open rather than letting it appear instantly. */
+.pvtg-dropdown[open] .pvtg-list {
+    animation: pvtgOpen 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes pvtgOpen {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pvtg-chevron { transition: none; }
+    .pvtg-dropdown[open] .pvtg-list { animation: none; }
 }

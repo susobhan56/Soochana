@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Theme Explorer — Odisha Demographic Portal</title>
+<title>Theme Explorer · Odisha Demographic Portal</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script src="ui.js"></script>
 <style>
@@ -88,7 +89,7 @@
         font-family: var(--mono);
         font-size: var(--fs-micro);
         font-weight: 700;
-        text-transform: uppercase;
+        text-transform: none;
         border: 1px solid var(--border);
     }
     .article-body {
@@ -106,7 +107,7 @@
     }
     .article-body p {
         font-size: var(--fs-small);
-        color: var(--muted);
+        color: var(--ink-body);
         line-height: 1.6;
         margin: 0 0 20px 0;
         flex: 1;
@@ -125,7 +126,7 @@
         height: auto;
     }
     .no-content-msg {
-        text-align: center;
+        text-align: left;
         grid-column: 1 / -1;
         padding: 50px 20px;
         color: var(--muted);
@@ -142,7 +143,7 @@
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
       <div>
         <h1 style="line-height: 1; margin: 0;">Soochana</h1>
-        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.005em; color: var(--muted); text-transform: none; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
       </div>
     </a>
   </div>
@@ -157,9 +158,12 @@
 <!-- THEME DETAIL MAIN PORTAL -->
 <div class="theme-detail-container">
     <div class="theme-detail-hero">
-        <a href="themes.html" style="font-family:var(--mono); font-size: var(--fs-micro); text-decoration:none; color:var(--teal); font-weight:700; text-transform:uppercase; letter-spacing:0.1em;">← All Sectors</a>
+        <a href="themes.html" style="font-family:var(--mono); font-size: var(--fs-micro); text-decoration:none; color:var(--teal); font-weight:700; text-transform: none; letter-spacing:0.1em;">All Sectors</a>
         <h2 id="themeName">Sector Overview</h2>
         <p id="themeDesc">Explore related briefs and analyses.</p>
+        <figure class="editorial-figure theme-hero-figure" id="themeHeroFigure" style="display:none; margin:26px 0 0;">
+            <img id="themeHeroImg" src="" alt="" loading="lazy" decoding="async">
+        </figure>
     </div>
 
     <div class="articles-grid" id="articlesGrid">
@@ -203,7 +207,27 @@
         // Set Title and Description
         document.getElementById('themeName').textContent = theme.name;
         document.getElementById('themeDesc').innerHTML = theme.description;
-        document.title = `${theme.name} — Theme Explorer`;
+        document.title = `${theme.name} · Theme Explorer`;
+
+        // Sector illustration — resolved by ui.js, shown only once it loads
+        const HERO_ART = {
+            demography: 'density-crowd',
+            health:     'nutrition-strength',
+            education:  'education-classroom',
+            ageing:     'ageing-cohort',
+            migration:  'urbanization-build',
+            employment: 'employment-cycle'
+        };
+        const heroArt = HERO_ART[theme.id];
+        const fig = document.getElementById('themeHeroFigure');
+        if (heroArt && window.SoochanaArt) {
+            const img = document.getElementById('themeHeroImg');
+            img.alt = theme.name + ' sector illustration';
+            img.setAttribute('data-art', heroArt);
+            window.SoochanaArt.load(img);
+        } else if (fig) {
+            fig.remove();
+        }
 
         // Filter and display articles
         const grid = document.getElementById('articlesGrid');
@@ -228,7 +252,7 @@
                         <p>${article.abstract}</p>
                         <div class="article-meta">
                             <span>LAST UPDATED: ${article.lastUpdated}</span>
-                            <span style="color:var(--orange)">READ ARTICLE →</span>
+                            <span style="color:var(--orange)">READ ARTICLE</span>
                         </div>
                     </div>
                 </a>

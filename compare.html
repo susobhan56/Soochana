@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>State Duel — Demographic Comparison</title>
+<title>State Duel · Demographic Comparison</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="data_loader.js"></script>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script src="ui.js"></script>
 <style>
@@ -40,7 +41,7 @@
     .comparison-grid { display: flex; flex-direction: column; gap: 50px; }
     .comp-row { display: grid; grid-template-columns: 1fr 180px 1fr; align-items: center; }
 
-    .comp-label { text-align: center; font-family: var(--mono); font-size: var(--fs-caption); text-transform: uppercase; color: var(--muted); letter-spacing: 0.1em; line-height: 1.4; }
+    .comp-label { text-align: left; font-family: var(--mono); font-size: var(--fs-caption); text-transform: none; color: var(--muted); letter-spacing: 0.1em; line-height: 1.4; }
     
     .bar-container { height: 40px; background: var(--panel); border-radius: 4px; position: relative; overflow: hidden; }
     .bar-fill { height: 100%; transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -100,7 +101,7 @@
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
       <div>
         <h1 style="line-height: 1; margin: 0;">Soochana</h1>
-        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.005em; color: var(--muted); text-transform: none; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
       </div>
     </a>
   </div>

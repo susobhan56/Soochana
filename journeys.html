@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>India & Odisha: Parallel Demographic Journeys</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="data_loader.js"></script>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script src="ui.js"></script>
 </head>
@@ -23,7 +24,7 @@
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
       <div>
         <h1 style="line-height: 1; margin: 0;">Soochana</h1>
-        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.005em; color: var(--muted); text-transform: none; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
       </div>
     </a>
   </div>
@@ -45,7 +46,7 @@
     <h1>A Nation & A State,<br>Two <span class="gradient">Parallel</span><br>Demographic Journeys</h1>
     <p class="hero-sub">
       India has crossed the 1.4 billion threshold, becoming the world's most populous nation. 
-      Meanwhile, Odisha—with 47 million residents—mirrors the national transition while pacing ahead 
+      Meanwhile, Odisha, with 47 million residents, mirrors the national transition while pacing ahead 
       in stabilizing its population. Both achieved below-replacement fertility in 2023.
     </p>
     <div class="label" style="color:var(--muted)">Scroll to explore the data ↓</div>
@@ -138,7 +139,7 @@
   <!-- RIGHT: scroll steps -->
   <div class="steps">
     <div class="step active" data-chart="india-total">
-      <div class="step-idx">01 — The Scale</div>
+      <div class="step-idx">01 · The Scale</div>
       <h2>The rise to the world's largest population</h2>
       <p>
         India's population grew from 376 million in 1950 to 1.428 billion in 2023. Unlike China, whose population has begun to decline, India will continue growing until peaking around 2060.
@@ -148,7 +149,7 @@
     </div>
 
     <div class="step" data-chart="india-fertility">
-      <div class="step-idx">02 — The Transition</div>
+      <div class="step-idx">02 · The Transition</div>
       <h2>Below replacement for the first time</h2>
       <p>
         A country needs a total fertility rate of 2.1 to maintain a stable population. India's fertility rate fell to 1.98 in 2023, signaling that population stabilization is on the horizon.
@@ -158,7 +159,7 @@
     </div>
 
     <div class="step" data-chart="india-states">
-      <div class="step-idx">03 — Regional Disparity</div>
+      <div class="step-idx">03 · Regional Disparity</div>
       <h2>A divide in demographic speed</h2>
       <p>
         While southern states like Kerala (TFR 1.5) and Odisha (TFR 1.8) stabilized early, northern states like Bihar (TFR 2.8) continue to drive growth.
@@ -188,7 +189,7 @@
     </div>
 
     <div class="step" data-chart="india-labor">
-      <div class="step-idx">04 — Labor Forces</div>
+      <div class="step-idx">04 · Labor Forces</div>
       <h2>Labor Force Participation (LFPR)</h2>
       <p>
         Odisha outperforms the national average in Labor Force Participation Rate (LFPR) and Female Labor Force Participation (FLFPR) for the 15–59 age group.
@@ -223,7 +224,7 @@
      POPULATION PYRAMIDS — DUAL
 ═══════════════════════════════════════════════ -->
 <section class="full-section">
-  <div class="label" style="margin-bottom:12px">05 — Age Structure Comparison</div>
+  <div class="label" style="margin-bottom:12px">05 · Age Structure Comparison</div>
   <h2>Youth vs Aging: India and Odisha Side-by-Side</h2>
   <p class="intro-text">
     Both India and Odisha exhibit a transitional age structure. As fertility declines, the base of the pyramids (young children) is shrinking, while the middle working-age bulge grows. Select a projection milestone to view.
@@ -265,8 +266,7 @@
       while southern tribal belts continue to face child mortality and developmental challenges.
     </p>
     <a href="index.html" class="btn-elegant" style="background: var(--orange); color: white; border-color: var(--orange);">
-      Open Odisha Regional Explorer →
-    </a>
+      Open Odisha Regional Explorer</a>
   </div>
   <div id="india-map-container" style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); height: 500px; position: relative;">
     <div style="position: absolute; top: 20px; left: 20px; z-index: 10;">
@@ -547,7 +547,7 @@ function drawIndiaChart(mode) {
 
         chartTooltip
           .html(`
-            <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">Year ${d.y}</div>
+            <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform: none; margin-bottom:4px;">Year ${d.y}</div>
             <div style="font-size:16px; font-weight:bold; font-family:var(--serif); color:var(--blue);">${d.v.toFixed(3)} Billion</div>
             <div style="font-size:10px; color:var(--dimmed);">${d.y > 2023 ? 'UN Projection' : 'Historical Census'}</div>
           `)
@@ -720,7 +720,7 @@ function drawIndiaChart(mode) {
 
         chartTooltip
           .html(`
-            <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">Year ${d.y}</div>
+            <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform: none; margin-bottom:4px;">Year ${d.y}</div>
             <div style="font-size:16px; font-weight:bold; font-family:var(--serif); color:var(--blue);">${d.v.toFixed(2)} TFR</div>
             <div style="font-size:var(--fs-micro); font-family:var(--mono); font-weight:bold; color:${diffColor}; margin-top:2px;">${diffText}</div>
           `)

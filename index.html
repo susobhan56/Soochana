@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Soochana — Odisha Demographic Intelligence</title>
-<meta name="description" content="Forty-six million people, one shifting age structure. Explore Odisha's demographics across thirty districts and seven decades — maps, briefs, datasets and reports.">
+<title>Soochana · Odisha Demographic Intelligence</title>
+<meta name="description" content="Forty-six million people, one shifting age structure. Explore Odisha's demographics across thirty districts and seven decades. Maps, briefs, datasets and reports.">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://public.flourish.studio/resources/embed.js"></script>
@@ -142,9 +143,9 @@
     }
     .map-kicker {
       font-size: 0.75rem !important;
-      letter-spacing: 0.12em !important;
+      letter-spacing: 0.005em !important;
       font-weight: 700 !important;
-      text-transform: uppercase;
+      text-transform: none;
     }
     .step-idx {
       font-family: var(--mono);
@@ -203,13 +204,13 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 20px 24px;
-      margin-bottom: 36px;
+      margin-bottom: 24px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     }
     .report-index-header {
       font-family: var(--mono);
       font-size: var(--fs-micro);
-      text-transform: uppercase;
+      text-transform: none;
       letter-spacing: 0.1em;
       color: var(--muted);
       font-weight: 700;
@@ -311,7 +312,7 @@
       <div style="width:10px; height:10px; background:var(--orange); border-radius:50%;"></div>
       <div>
         <h1 style="line-height:1; margin:0;">Soochana</h1>
-        <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.12em; color:var(--muted); text-transform:uppercase; margin-top:3px; font-weight:600;">from numbers to narrative</div>
+        <div style="font-family:var(--mono); font-size:10px; letter-spacing: 0.005em; color:var(--muted); text-transform: none; margin-top:3px; font-weight:600;">from numbers to narrative</div>
       </div>
     </a>
   </div>
@@ -328,12 +329,12 @@
 ═══════════════════════════════════════════════ -->
 <section class="lander" id="lander">
   <canvas id="dotfield" aria-hidden="true"></canvas>
-  <h2 class="sr-only">Soochana — a demographic portal for Odisha</h2>
+  <h2 class="sr-only">Soochana, a demographic portal for Odisha</h2>
 
   <div class="lander-inner">
     <div class="lander-kicker">Demographic Intelligence Unit CYSD · Odisha</div>
     <span class="reveal"><span class="display-line">Demography is the <em>tectonic</em></span></span>
-    <span class="reveal"><span class="display-line">plate beneath civilization —</span></span>
+    <span class="reveal"><span class="display-line">plate beneath civilization,</span></span>
     <span class="reveal"><span class="display-line">when it moves, <em>everything</em> moves.</span></span>
 
     <p class="lander-sub">
@@ -347,13 +348,13 @@
 
     <!-- COMPACT TOP DEMOGRAPHIC BATTLE BUTTONS -->
     <div style="margin-top: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-      <span style="font-family: var(--mono); font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">Demographic Duels:</span>
-      <a href="odisha_compare.html" class="btn-pill ghost" style="padding: 7px 18px; font-size: 0.82rem; border-color: rgba(107,70,193,0.35); color: var(--purple); text-decoration: none;" onmouseover="this.style.background='rgba(107,70,193,0.08)'; this.style.borderColor='var(--purple)';" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(107,70,193,0.35)';">District Battle →</a>
+      <span style="font-family: var(--mono); font-size: 0.75rem; color: var(--muted); text-transform: none; letter-spacing: 0.08em; font-weight: 700;">Demographic Duels:</span>
+      <a href="odisha_compare.html" class="btn-pill ghost" style="padding: 7px 18px; font-size: 0.82rem; border-color: rgba(107,70,193,0.35); color: var(--purple); text-decoration: none;" onmouseover="this.style.background='rgba(107,70,193,0.08)'; this.style.borderColor='var(--purple)';" onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(107,70,193,0.35)';">District Battle</a>
     </div>
   </div>
 
   <div class="lander-readout" aria-hidden="true">
-    <div class="readout-title" style="letter-spacing:0.18em; font-weight:700; color:var(--teal); margin-bottom:6px;">ODISHA AGE PYRAMID</div>
+    <div class="readout-title" style="letter-spacing: 0.005em; font-weight:700; color:var(--teal); margin-bottom:6px;">ODISHA AGE PYRAMID</div>
     <div class="readout-legend" style="display:flex; gap:12px; justify-content:flex-end; margin-bottom:8px; font-size:11px;">
       <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#1a535c; margin-right:4px;"></span>Youth (0–19)</span>
       <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#2b5c68; margin-right:4px;"></span>Workforce</span>
@@ -453,7 +454,7 @@
     <div class="step" data-highlight="Ganjam,Cuttack,Mayurbhanj" data-title="The Demographic Giants">
       <div class="step-idx" style="color: var(--orange);">Population Giants</div>
       <h2>Where the millions reside</h2>
-      <p>Three districts—<span style="color:var(--yellow)">Ganjam</span>, <span style="color:var(--teal)">Cuttack</span>, and <span style="color:var(--purple)">Mayurbhanj</span>—together account for nearly 20% of the state's population. Ganjam alone has over 3.5 million residents.</p>
+      <p>Together, <span style="color:var(--yellow)">Ganjam</span>, <span style="color:var(--teal)">Cuttack</span>, and <span style="color:var(--purple)">Mayurbhanj</span> account for nearly 20% of the state's population. Ganjam alone has over 3.5 million residents.</p>
     </div>
     
     <div class="step" data-highlight="Khordha" data-title="The Capital & Knowledge Hub">
@@ -469,6 +470,25 @@
     </div>
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════
+     EDITORIAL BAND — MOVEMENT
+═══════════════════════════════════════════════ -->
+<section class="editorial-band" aria-labelledby="eb-move">
+  <figure class="editorial-figure editorial-band-figure" style="margin:0;">
+    <img data-art="migration-journey" alt="Silhouetted figures walking in a line carrying bags and bundles" loading="lazy" decoding="async">
+  </figure>
+  <div class="editorial-band-copy">
+    <div class="kicker" style="color: var(--purple);">Movement</div>
+    <p class="editorial-band-quote" id="eb-move">Four in five people in Odisha still live in a village, and the share falls every decade.</p>
+    <p class="editorial-band-note">
+      Urbanisation here is not one wave. It is Bhubaneswar and Cuttack drawing from the coastal belt,
+      mining towns pulling from the west, and a seasonal outflow from the southern districts that no
+      single census month fully captures.
+    </p>
+    <div class="editorial-band-source">Census of India · 81.5% rural · 18.5% urban</div>
+  </div>
+</section>
 
 <!-- ═══════════════════════════════════════════════
      VITAL HEALTH & DEMOGRAPHIC BENCHMARKS (FULL WIDTH)
@@ -495,6 +515,120 @@
     <div class="stat-label">Life Expectancy<br>M: 69.2 | F: 71.8 yrs</div>
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════
+     EDITORIAL BAND — BELOW REPLACEMENT
+     Sits with the vital rates above it: the birth rate reads as a number
+     until it is set against the replacement level, which is what this says.
+═══════════════════════════════════════════════ -->
+<section class="editorial-band alt flip" aria-labelledby="eb-fert">
+  <figure class="editorial-figure editorial-band-figure" style="margin:0;">
+    <img data-art="fertility-motherland" alt="Profile of an expectant mother rendered as a printed road map" loading="lazy" decoding="async">
+  </figure>
+  <div class="editorial-band-copy">
+    <div class="kicker">Below replacement</div>
+    <p class="editorial-band-quote" id="eb-fert">Odisha fell below replacement fertility <em>ahead of</em> the national average.</p>
+    <p class="editorial-band-note">
+      A total fertility rate of 1.8 against a replacement level of 2.1 means each generation is now
+      smaller than the one before it. Khordha has already reached 1.4. Momentum in the existing age
+      structure keeps the headcount climbing for another decade, and then it does not.
+    </p>
+    <div class="editorial-band-source">NFHS-5 · TFR 1.8 · replacement level 2.1</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     THEMATIC GALLERY — the forces behind the numbers
+═══════════════════════════════════════════════ -->
+<section class="editorial-gallery" id="thematicGallery" aria-labelledby="eg-head">
+  <div class="editorial-gallery-head">
+    <div class="label" style="color: var(--teal);">The forces behind the numbers</div>
+    <h2 id="eg-head">Nine frames on a state in transition</h2>
+    <p>
+      Every figure on this page is the trace of something happening to real households:
+      a birth deferred, a clinic reached, a train taken out of the district. These are the
+      forces the data is measuring.
+    </p>
+  </div>
+
+  <div class="editorial-gallery-grid">
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="population-aerial" alt="Aerial view of a dispersed crowd casting long shadows" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--blue);">Scale</div>
+      <p class="editorial-frame-text"><b>46.25 million</b> people counted in 2021. India's eleventh most populous state, spread across thirty districts.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="fertility-conception" alt="Overlapping discs with a single sperm" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--orange);">Births and deaths</div>
+      <p class="editorial-frame-text">A birth rate of <b>15.8</b> against a death rate of <b>7.9</b> per thousand. Natural increase is still positive, and narrowing each decade.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="health-infrastructure" alt="An intravenous drip stand hung with hospital buildings in place of bags" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--teal);">Health systems</div>
+      <p class="editorial-frame-text">Biju Swasthya Kalyan Yojana reaches <b>9.6 million</b> families. Infant mortality has fallen to <b>28</b> per thousand live births.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="nutrition-strength" alt="A flexed arm composed of fruit and vegetables" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--green);">Nutrition</div>
+      <p class="editorial-frame-text">Maternal and child nutrition underpins the mortality decline. Life expectancy now averages <b>70.4</b> years.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="education-classroom" alt="A teacher at a window beside pupils at desks" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--yellow-ink);">Education</div>
+      <p class="editorial-frame-text">Literacy stands at <b>73.5%</b> statewide. Khordha leads at <b>86.9%</b>, and its fertility rate has fallen furthest, to 1.4.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="employment-cycle" alt="A figure running inside a wheel set into a clock face" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--red);">Work</div>
+      <p class="editorial-frame-text">The working-age share peaks within this decade. After it, a smaller cohort supports more dependents for longer.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="urbanization-build" alt="Hands drawing a city plan around a construction crane" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--purple);">Urbanisation</div>
+      <p class="editorial-frame-text">Just <b>18.5%</b> urban today. The Bhubaneswar–Cuttack corridor is absorbing most of the shift, and absorbing it fast.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="density-crowd" alt="A tangled ball of figures of many ages pressed together" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--orange);">Dependency</div>
+      <p class="editorial-frame-text">As the over-sixty share climbs toward <b>15.9%</b> by 2036, the ratio of earners to dependents tightens at both ends at once.</p>
+    </article>
+
+    <article class="editorial-frame is-wide">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="data-collective" alt="People assembling oversized charts and bars" decoding="async">
+      </figure>
+      <div class="editorial-frame-body">
+        <div class="editorial-frame-label">How this was built</div>
+        <p class="editorial-frame-text">Compiled from Census of India, NFHS-5, SRS, PLFS and UDISE+. Every figure on this portal names its source.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
 
 <!-- ═══════════════════════════════════════════════
      POLICY TIMELINE
@@ -527,16 +661,35 @@
     <div class="policy-item">
       <div class="policy-year">2023</div>
       <div class="policy-title">Stabilization Milestone (TFR 1.8)</div>
-      <div class="policy-desc">State surveys confirm Odisha's TFR has declined to 1.8—well below the national average—indicating success in state welfare and family planning programs.</div>
+      <div class="policy-desc">State surveys confirm Odisha's TFR has declined to 1.8, well below the national average, indicating success in state welfare and family planning programs.</div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     EDITORIAL BAND — THE OTHER END OF THE CURVE
+═══════════════════════════════════════════════ -->
+<section class="editorial-band" aria-labelledby="eb-age">
+  <figure class="editorial-figure editorial-band-figure" style="margin:0;">
+    <img data-art="ageing-cohort" alt="Silhouettes of older adults with walking frames, wheelchairs and mobility aids" loading="lazy" decoding="async">
+  </figure>
+  <div class="editorial-band-copy">
+    <div class="kicker" style="color: var(--orange);">The other end of the curve</div>
+    <p class="editorial-band-quote" id="eb-age">By 2036, nearly one in six people in Odisha will be over sixty.</p>
+    <p class="editorial-band-note">
+      The same fall in fertility that eased pressure on schools and clinics is now reshaping the
+      opposite end of the age structure. The cohort that entered the workforce in the 1980s reaches
+      sixty within this decade, and the support ratio that funded their working lives inverts behind them.
+    </p>
+    <div class="editorial-band-source">Population projections 2011–2036, ORGI · 15.9% aged 60+</div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
      ODISHA DEMOGRAPHIC & DEVELOPMENT LANDSCAPE (11-SECTION SUITE)
 ═══════════════════════════════════════════════ -->
-<section style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 50px max(20px, 4vw); box-sizing: border-box;">
-  <div style="margin-bottom: 24px;">
+<section style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 40px max(20px, 4vw); box-sizing: border-box;">
+  <div style="margin-bottom: 18px;">
     <div class="label" style="color: var(--teal); margin-bottom: 12px;">Strategic Demographic Dashboard</div>
     <h2 style="font-family: var(--serif); font-size: var(--fs-h2); color: var(--blue); margin: 4px 0 0;">
       Odisha State Development &amp; Demographic Analytics
@@ -553,7 +706,7 @@
   </div>
 
   <!-- All Sections Rendered Dynamically from state_details.json -->
-  <div id="all-sections-container" style="display: flex; flex-direction: column; gap: 40px; width: 100%;"></div>
+  <div id="all-sections-container" style="display: flex; flex-direction: column; gap: 26px; width: 100%;"></div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
@@ -861,6 +1014,72 @@ function startField() {
     
     document.querySelectorAll('.policy-item').forEach(item => policyObs.observe(item));
 
+    // ── shared helpers for the dossier's name lists ──
+    function escHtml(s) {
+      return String(s).replace(/[&<>"']/g, function(c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    /* Title-casing a snake_case key turns acronyms into "Pvtg", "Sc", "Imr".
+       These keep their real form; everything else falls through. */
+    var LABEL_OVERRIDES = {
+      pvtg_names: 'PVTG names',
+      pvtg_count: 'Number of PVTGs',
+      tribal_groups_count: 'Number of tribal groups',
+      tribal_share_pct: 'Tribal share of population',
+      tribal_population: 'Tribal population'
+    };
+    var ACRONYMS = { pvtg: 'PVTG', sc: 'SC', st: 'ST', imr: 'IMR', mmr: 'MMR',
+                     nmr: 'NMR', tfr: 'TFR', u5mr: 'U5MR', gsdp: 'GSDP', pct: '%' };
+
+    function prettyLabel(key) {
+      if (LABEL_OVERRIDES[key]) return LABEL_OVERRIDES[key];
+      return key.split('_').map(function(w, i) {
+        var a = ACRONYMS[w.toLowerCase()];
+        if (a) return a;
+        return i === 0 ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+      }).join(' ');
+    }
+
+    /* A disclosure rather than a <select>: this is a list to read, not a
+       choice to make, so a control that reports a selected value would be
+       the wrong thing for a screen reader to announce. The flex row is a
+       span inside the summary — giving <summary> a display other than
+       list-item stops some engines treating it as the disclosure control. */
+    function renderNameList(label, names) {
+      var clean = names.map(function(n) { return String(n).trim(); }).filter(Boolean);
+      if (!clean.length) {
+        return '<div class="dossier-stat"><strong>' + label + ':</strong> None recorded</div>';
+      }
+      var items = clean.map(function(n) { return '<li>' + escHtml(n) + '</li>'; }).join('');
+      /* 62 communities in a single column runs to ~2500px. Past a dozen the
+         list breaks into columns so it stays scannable in one screen. */
+      var listCls = 'pvtg-list' + (clean.length > 12 ? ' is-long' : '');
+      return '<details class="pvtg-dropdown">' +
+        '<summary><span class="pvtg-summary-row">' +
+          '<span class="pvtg-summary-label">' + label + '</span>' +
+          '<span class="pvtg-count">' + clean.length + '</span>' +
+          '<svg class="pvtg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+            'stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<polyline points="6 9 12 15 18 9"></polyline></svg>' +
+        '</span></summary>' +
+        '<ul class="' + listCls + '">' + items + '</ul></details>';
+    }
+
+    // "1. Bagata, 2. Baiga, 3. Banjara / Banjari, ..." run on as one paragraph
+    function isNumberedRun(p) {
+      return /^\s*1\.\s/.test(p) && (p.match(/,\s*\d+\.\s/g) || []).length >= 4;
+    }
+
+    function renderNumberedRun(p) {
+      var items = p.trim().split(/,\s*(?=\d+\.\s)/)
+        .map(function(s) { return s.replace(/^\s*\d+\.\s*/, '').trim(); })
+        .filter(Boolean);
+      return '<div class="dossier-stat-grid" style="margin-bottom:16px;">' +
+        renderNameList('Tribal communities', items) + '</div>';
+    }
+
     // STATE DOSSIER ENGINE — dynamic rendering from state_details.json
     DataLoader.getStateDetails().then(function(stateData) {
       var d = stateData && stateData["Odisha"];
@@ -903,24 +1122,35 @@ function startField() {
         if (slide.text_content) {
           var parts = slide.text_content.split('\n\n');
           var hasTable = slide.table_data && Object.keys(slide.table_data).length > 0;
+          var listBlocks = '';
           var narrativeParts = parts.filter(function(p) {
             if (hasTable && p.indexOf(' | ') !== -1) return false;
-            return p.trim().length > 60;
+            if (p.trim().length <= 60) return false;
+            /* The 62 tribal communities arrive as one run-on numbered string.
+               As prose it is an unreadable wall; pulled into a disclosure it
+               is a list you can actually scan. */
+            if (isNumberedRun(p)) { listBlocks += renderNumberedRun(p); return false; }
+            return true;
           });
           if (narrativeParts.length > 0) {
             html += '<div class="narrative-block" style="font-size:0.95rem; line-height:1.7; color:var(--text); margin-bottom:16px; background:var(--surface); padding:20px; border-radius:12px; border:1px solid var(--border);">';
             html += narrativeParts.join('<br><br>');
             html += '</div>';
           }
+          html += listBlocks;
         }
 
         // Table data as stat grid
         if (slide.table_data && Object.keys(slide.table_data).length > 0) {
-          html += '<div class="stat-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; font-size:0.9rem; font-family:var(--mono); margin-bottom:20px;">';
+          html += '<div class="dossier-stat-grid">';
           Object.keys(slide.table_data).forEach(function(key, tileIdx) {
-            var label = key.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+            var label = prettyLabel(key);
             var rawVal = String(slide.table_data[key]);
-            html += '<div class="stat-tile" style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);" data-delay="' + (tileIdx * 80) + '">';
+            if (key === 'pvtg_names') {
+              html += renderNameList(label, rawVal.split(','));
+              return;
+            }
+            html += '<div class="stat-tile dossier-stat" data-delay="' + (tileIdx * 80) + '">';
             html += '<strong>' + label + ':</strong> <span class="stat-value" data-target="' + rawVal.replace(/"/g, '&quot;') + '">' + rawVal + '</span></div>';
           });
           html += '</div>';

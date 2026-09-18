@@ -73,9 +73,137 @@
     apply(saved);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', build);
-  } else {
+  /* ── 4. editorial bands and the gallery reveal on scroll ── */
+  function revealBands() {
+    var targets = document.querySelectorAll('.editorial-band, .editorial-gallery');
+    if (!targets.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      targets.forEach(function (t) { t.classList.add('in'); });
+      return;
+    }
+
+    var pending = [].slice.call(targets);
+
+    function show(el) {
+      var i = pending.indexOf(el);
+      if (i === -1) return;
+      pending.splice(i, 1);
+      obs.unobserve(el);
+      if (el.classList.contains('editorial-gallery')) stagger(el);
+      el.classList.add('in');
+      if (!pending.length) window.removeEventListener('scroll', sweep);
+    }
+
+    /* A jump — an anchor link, a restored scroll position, a find-in-page —
+       can carry a section from below the viewport to above it without the
+       observer ever reporting it as intersecting, which would leave it blank
+       for good. This sweep catches anything already scrolled past. */
+    var ticking = false;
+    function sweep() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        pending.slice().forEach(function (el) {
+          if (el.getBoundingClientRect().bottom < 0) show(el);
+        });
+      });
+    }
+
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) show(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+    pending.forEach(function (t) { obs.observe(t); });
+    window.addEventListener('scroll', sweep, { passive: true });
+  }
+
+  /* Stagger the frames so they slide on one after another rather than as a
+     block: across each row left to right, matching both reading order and
+     the direction the cards travel from. Rows are read off the live layout
+     rather than assumed, so it holds at any column count. */
+  function stagger(gallery) {
+    var cards = [].slice.call(gallery.querySelectorAll('.editorial-frame'));
+    if (!cards.length) return;
+
+    cards.map(function (card) {
+      var r = card.getBoundingClientRect();
+      return { card: card, row: Math.round(r.top / 40), x: r.left };
+    }).sort(function (a, b) {
+      return a.row - b.row || a.x - b.x;
+    }).forEach(function (item, i) {
+      item.card.style.setProperty('--d', (i * 95) + 'ms');
+    });
+  }
+
+  /* ── editorial artwork loader ──
+     An <img data-art="name"> is resolved against images/editorial/, trying
+     each common extension in turn, so saving a .jpg where a .png was expected
+     still works. When every candidate fails the figure removes itself: inside
+     a band the copy stands on its own, so the band reflows to one column
+     rather than sitting half empty. Nothing here leaves a broken-image box. */
+  var ART_DIR = 'images/editorial/';
+  var ART_EXT = ['.png', '.jpg', '.jpeg', '.webp', '.gif'];
+
+  function giveUp(img) {
+    var fig = img.closest ? img.closest('.editorial-figure') : null;
+    if (!fig) { img.remove(); return; }
+    /* In the gallery the picture is the point, so the whole card goes.
+       In a band the copy stands alone, so only the figure goes. */
+    var frame = fig.closest('.editorial-frame');
+    if (frame) frame.remove(); else fig.remove();
+  }
+
+  function loadArt(img) {
+    var base = img.getAttribute('data-art');
+    if (!base) return;
+    var i = 0;
+    function attempt() {
+      if (i >= ART_EXT.length) { giveUp(img); return; }
+      img.src = ART_DIR + base + ART_EXT[i++];
+    }
+    img.addEventListener('error', attempt);
+    img.addEventListener('load', function () {
+      var fig = img.closest && img.closest('.editorial-figure');
+      if (!fig) return;
+      fig.style.display = 'flex';
+      /* A band stays one column until its picture genuinely decodes. */
+      var band = fig.closest('.editorial-band');
+      if (band) band.classList.add('has-art');
+    });
+    /* loading="lazy" would defer the whole extension walk until the figure
+       nears the viewport; these are small and the walk must finish for the
+       layout to settle, so resolve eagerly. */
+    img.loading = 'eager';
+    attempt();
+  }
+
+  function guardFigures() {
+    document.querySelectorAll('img[data-art]').forEach(loadArt);
+
+    /* Plain src images (not using data-art) still fail closed. */
+    document.querySelectorAll('.editorial-figure img:not([data-art])').forEach(function (img) {
+      img.addEventListener('error', function () { giveUp(img); });
+    });
+    document.querySelectorAll('img.editorial-ghost:not([data-art])').forEach(function (img) {
+      img.addEventListener('error', function () { img.remove(); });
+    });
+  }
+
+  window.SoochanaArt = { dir: ART_DIR, load: loadArt };
+
+  function init() {
     build();
+    guardFigures();
+    revealBands();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
 })();

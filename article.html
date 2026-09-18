@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Article Reader — Odisha Demographic Portal</title>
+<title>Article Reader · Odisha Demographic Portal</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script src="ui.js"></script>
 <style>
@@ -20,7 +21,7 @@
         font-family: var(--mono);
         font-size: var(--fs-micro);
         font-weight: 700;
-        text-transform: uppercase;
+        text-transform: none;
         letter-spacing: 0.1em;
         text-decoration: none;
         color: var(--teal);
@@ -36,9 +37,9 @@
         font-family: var(--mono);
         font-size: var(--fs-caption);
         font-weight: 700;
-        text-transform: uppercase;
+        text-transform: none;
         color: var(--orange);
-        letter-spacing: 0.15em;
+        letter-spacing: 0.005em;
         margin-bottom: 12px;
     }
     .article-title {
@@ -115,7 +116,7 @@
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
       <div>
         <h1 style="line-height: 1; margin: 0;">Soochana</h1>
-        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.005em; color: var(--muted); text-transform: none; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
       </div>
     </a>
   </div>
@@ -129,7 +130,7 @@
 
 <!-- ARTICLE READER BODY CONTAINER -->
 <div class="article-wrap">
-    <a href="javascript:history.back()" class="article-back-link" id="backBtn">← Back to Overview</a>
+    <a href="javascript:history.back()" class="article-back-link" id="backBtn">Back to Overview</a>
     
     <article>
         <div class="article-header">
@@ -187,7 +188,7 @@
             document.getElementById('artAbstract').innerHTML = article.abstract;
             document.getElementById('artDate').textContent = `Last Updated: ${article.lastUpdated}`;
             document.getElementById('artContent').innerHTML = article.article;
-            document.title = `${article.title} — Brief Reader`;
+            document.title = `${article.title} · Brief Reader`;
 
             // Adjust back button path if possible
             const backBtn = document.getElementById('backBtn');

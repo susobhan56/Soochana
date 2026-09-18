@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>District Insight · Demographic Deep Dive</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js"></script>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script src="ui.js"></script>
 <style>
@@ -97,7 +98,7 @@
         transition: transform 0.3s ease;
     }
     .meta-item:hover .meta-val { transform: scale(1.04); }
-    .meta-label { font-family: var(--mono); font-size: var(--fs-micro); color: var(--muted); text-transform: uppercase; margin-top: 5px; }
+    .meta-label { font-family: var(--mono); font-size: var(--fs-micro); color: var(--muted); text-transform: none; margin-top: 5px; }
 
     /* Scrollytelling Refined */
     .scrolly-container {
@@ -158,7 +159,7 @@
     .chart-title-hud {
         font-family: var(--mono);
         font-size: var(--fs-caption);
-        text-transform: uppercase;
+        text-transform: none;
         color: var(--accent);
         letter-spacing: 0.2em;
         margin-bottom: 20px;
@@ -237,6 +238,7 @@
         50% { transform: scale(1.3); opacity: 1; }
         100% { transform: scale(0.9); opacity: 0.4; }
     }
+
 </style>
 </head>
 <body>
@@ -247,7 +249,7 @@
       <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
       <div>
         <h1 style="line-height: 1; margin: 0;">Soochana</h1>
-        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.005em; color: var(--muted); text-transform: none; margin-top: 3px; font-weight: 600;">from numbers to narrative</div>
       </div>
     </a>
   </div>
@@ -368,7 +370,7 @@
     <div id="dossier-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px;"></div>
 </section>
 
-<footer style="padding: 100px; text-align: center; border-top: 1px solid var(--border); background: var(--surface);">
+<footer style="padding: 56px clamp(24px,6vw,80px); text-align: left; border-top: 1px solid var(--border); background: var(--surface);">
     <div class="kicker">Report Finalized · 2025</div>
     <p style="color:var(--muted); margin-top: 20px;">Data compiled from Census of India and NFHS frameworks.</p>
     <a href="index.html" class="btn-elegant" style="display:inline-flex; margin-top:40px">Continue Exploring Odisha</a>
@@ -560,6 +562,61 @@
         </div>`;
     }
 
+    const escHtml = s => String(s).replace(/[&<>"']/g, c =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    /* Title-casing a snake_case key turns the acronyms into "Pvtg", "Sc",
+       "Imr". These keep their real form; everything else falls through. */
+    const LABEL_OVERRIDES = {
+        pvtg_names: 'PVTG names',
+        pvtg_count: 'Number of PVTGs',
+        tribal_groups_count: 'Number of tribal groups'
+    };
+    const ACRONYMS = { pvtg: 'PVTG', sc: 'SC', st: 'ST', imr: 'IMR', mmr: 'MMR',
+                       nmr: 'NMR', tfr: 'TFR', u5mr: 'U5MR', gsdp: 'GSDP' };
+
+    function prettyLabel(key) {
+        if (LABEL_OVERRIDES[key]) return LABEL_OVERRIDES[key];
+        return key.split('_').map((w, i) => {
+            const a = ACRONYMS[w.toLowerCase()];
+            if (a) return a;
+            return i === 0 ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+        }).join(' ');
+    }
+
+    /* The PVTG names arrive as one comma-joined string, one to four per
+       district and empty for the eighteen that have none. A disclosure is
+       used rather than a <select>: this is a list to read, not a choice to
+       make, so a native control that reports a selected value would be the
+       wrong semantics for a screen reader. */
+    function renderPvtgNames(label, value) {
+        const names = String(value || '')
+            .split(',').map(s => s.trim()).filter(Boolean);
+
+        if (!names.length) {
+            return `<div class="dossier-stat"><strong>${label}:</strong> None recorded</div>`;
+        }
+
+        const items = names.map(n => `<li>${escHtml(n)}</li>`).join('');
+        /* The flex row is a span inside the summary, not the summary itself:
+           giving <summary> a display other than list-item stops some engines
+           treating it as the disclosure control, and the panel then never
+           collapses. */
+        return `<details class="pvtg-dropdown">
+            <summary>
+                <span class="pvtg-summary-row">
+                    <span class="pvtg-summary-label">${label}</span>
+                    <span class="pvtg-count">${names.length}</span>
+                    <svg class="pvtg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </span>
+            </summary>
+            <ul class="pvtg-list">${items}</ul>
+        </details>`;
+    }
+
     function renderDistrictDossier(distName, d) {
         const container = d3.select("#dossier-cards-grid");
         if (container.empty()) return;
@@ -598,10 +655,14 @@
 
             // Table data as stat grid
             if (slide.table_data && Object.keys(slide.table_data).length > 0) {
-                html += '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; font-size:0.9rem; font-family:var(--mono); margin-bottom:20px;">';
+                html += '<div class="dossier-stat-grid">';
                 for (const [key, value] of Object.entries(slide.table_data)) {
-                    const label = key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-                    html += `<div style="background:var(--surface); padding:12px; border-radius:8px; border:1px solid var(--border);"><strong>${label}:</strong> ${value}</div>`;
+                    const label = prettyLabel(key);
+                    if (key === 'pvtg_names') {
+                        html += renderPvtgNames(label, value);
+                    } else {
+                        html += `<div class="dossier-stat"><strong>${label}:</strong> ${value}</div>`;
+                    }
                 }
                 html += '</div>';
             }
@@ -901,7 +962,7 @@
 
             chartTooltip
               .html(`
-                <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">Year ${d.year}</div>
+                <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform: none; margin-bottom:4px;">Year ${d.year}</div>
                 <div style="font-size:16px; font-weight:bold; font-family:var(--serif); color:var(--blue);">${(d.value / 1000000).toFixed(3)}M Total</div>
                 <div style="margin-top:6px; border-top:1px solid var(--border); padding-top:4px; display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:var(--fs-caption);">
                   <div><span style="color:var(--teal); font-weight:bold;">♂ Male:</span> ${(malePop / 1000000).toFixed(3)}M</div>
@@ -1036,7 +1097,7 @@
 
               chartTooltip.style("opacity", 1)
                 .html(`
-                  <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">${d.rawYear}</div>
+                  <div style="font-family:var(--mono); font-size:10px; color:var(--muted); text-transform: none; margin-bottom:4px;">${d.rawYear}</div>
                   <div style="font-size:18px; font-weight:bold; font-family:var(--serif); color:var(--orange);">${d.value.toFixed(2)} TFR</div>
                   <div style="font-size:10px; font-family:var(--mono); font-weight:bold; color:${diffColor}; margin-top:2px;">${diffStr}</div>
                 `);
