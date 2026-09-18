@@ -12,8 +12,10 @@
 <script src="ui.js"></script>
 <style>
     /* Premium Editorial Article Styles */
+    /* Scales the charts and the two-column text together, so the figures
+       come down in size without breaking the alignment between them. */
     .article-wrap {
-        max-width: 1180px;
+        max-width: 1000px;
         margin: 0 auto;
         padding: 48px 20px 72px 20px;
     }
@@ -123,6 +125,39 @@
         margin-bottom: 28px !important;
     }
 
+    /* ── figures in the prose ──
+       A stroke is drawn under each number as it comes into view, so the
+       statistics register while reading rather than having to be hunted
+       for in the paragraph. */
+    .stat-num {
+        position: relative;
+        display: inline-block;
+        font-weight: 500;
+        color: var(--ink-heading);
+        white-space: nowrap;
+    }
+
+    .stat-num::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 1px;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--teal);
+        opacity: 0.55;
+        transform: scaleX(0);
+        transform-origin: left center;
+        transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms);
+    }
+
+    .stat-num.drawn::after { transform: scaleX(1); }
+
+    @media (prefers-reduced-motion: reduce) {
+        .stat-num::after { transition: none; transform: scaleX(1); }
+    }
+
     .article-content p {
         margin-bottom: 24px;
     }
@@ -203,6 +238,85 @@
 </footer>
 
 <script>
+    /* ── underline the figures in the prose ──
+       Numbers are wrapped, then their stroke is drawn as each paragraph
+       scrolls into view. Only text nodes are visited, so nothing inside a
+       tag or an attribute is ever touched — in particular the chart
+       embeds, whose markup is full of numeric values, are skipped whole. */
+
+    // A bare number with optional thousands separators, decimals and a unit.
+    // The guards keep it off things like NFHS-5, COVID-19 and 2021-22.
+    // Each comma must be followed by digits, or a trailing sentence comma
+    // gets swallowed into the match ("1951," rather than "1951").
+    const NUM_RE = /(?<![\w.\-/])(\d+(?:,\d+)*(?:\.\d+)?)(\s?(?:%|‰))?(?![\w\-/])/g;
+    const SKIP_TAGS = new Set(['SCRIPT', 'STYLE', 'IFRAME', 'A', 'CODE']);
+
+    function markNumbers(root) {
+        if (!root) return;
+
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode(node) {
+                if (!node.nodeValue || !/\d/.test(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+                for (let p = node.parentElement; p && p !== root; p = p.parentElement) {
+                    if (SKIP_TAGS.has(p.tagName)) return NodeFilter.FILTER_REJECT;
+                    if (p.classList.contains('stat-num')) return NodeFilter.FILTER_REJECT;
+                    // the 16:9 box holding a Flourish embed
+                    if (p.tagName === 'DIV' && (p.getAttribute('style') || '').includes('padding-bottom')) {
+                        return NodeFilter.FILTER_REJECT;
+                    }
+                }
+                return NodeFilter.FILTER_ACCEPT;
+            }
+        });
+
+        const targets = [];
+        for (let n = walker.nextNode(); n; n = walker.nextNode()) targets.push(n);
+
+        targets.forEach(node => {
+            const text = node.nodeValue;
+            NUM_RE.lastIndex = 0;
+            if (!NUM_RE.test(text)) return;
+            NUM_RE.lastIndex = 0;
+
+            const frag = document.createDocumentFragment();
+            let last = 0, m;
+            while ((m = NUM_RE.exec(text)) !== null) {
+                if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+                const span = document.createElement('span');
+                span.className = 'stat-num';
+                span.textContent = m[0];
+                frag.appendChild(span);
+                last = m.index + m[0].length;
+            }
+            if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+            node.parentNode.replaceChild(frag, node);
+        });
+
+        drawStrokes(root);
+    }
+
+    function drawStrokes(root) {
+        const nums = [...root.querySelectorAll('.stat-num')];
+        if (!nums.length) return;
+
+        if (!('IntersectionObserver' in window)) {
+            nums.forEach(n => n.classList.add('drawn'));
+            return;
+        }
+
+        const obs = new IntersectionObserver((entries, o) => {
+            // Stagger within a batch so a paragraph's figures draw in sequence
+            // rather than all snapping at once.
+            entries.filter(e => e.isIntersecting).forEach((e, i) => {
+                e.target.style.setProperty('--d', (i * 70) + 'ms');
+                e.target.classList.add('drawn');
+                o.unobserve(e.target);
+            });
+        }, { threshold: 0.9, rootMargin: '0px 0px -4% 0px' });
+
+        nums.forEach(n => obs.observe(n));
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const artId = urlParams.get('id');
 
@@ -228,6 +342,7 @@
             document.getElementById('artDate').textContent = `Last Updated: ${article.lastUpdated}`;
             document.getElementById('artContent').innerHTML = article.article;
             document.title = `${article.title} · Brief Reader`;
+            markNumbers(document.getElementById('artContent'));
 
             // Adjust back button path if possible
             const backBtn = document.getElementById('backBtn');
