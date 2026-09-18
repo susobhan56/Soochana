@@ -566,7 +566,8 @@
             grid.innerHTML += `
                 <div class="report-card">
                     <div class="report-img">
-                        <img src="${relThumb}" alt="${r.name}" onerror="this.src='images/pop-2021-graph1.png'">
+                        <img src="${relThumb}" alt="${r.name}" loading="lazy"
+                             onerror="this.onerror=null;this.src='images/dem1.png'">
                     </div>
                     <div class="report-body">
                         <span class="report-badge">${r.theme}</span>
