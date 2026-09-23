@@ -963,6 +963,16 @@ path:hover {
   -webkit-background-clip: text;
   background-clip: text;
   animation: gradientShift 4s ease-in-out infinite;
+  /* background-clip:text paints the gradient only inside this element's
+     box, so any glyph ink outside it has nothing to paint and disappears.
+     Both words end on a letter that leans past its advance width — the C
+     of TECTONIC, the G of EVERYTHING — which is what was being shaved off.
+     The padding widens the paint box; the negative margin cancels the
+     layout shift it would otherwise cause on an inline element. */
+  padding-right: 0.16em;
+  margin-right: -0.16em;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
 }
 
 .lander-sub {
