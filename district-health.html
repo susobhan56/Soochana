@@ -94,7 +94,7 @@ select.wide{min-width:min(520px,100%)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 .stats{display:flex;flex-wrap:wrap;gap:12px 36px;margin:4px 0 20px}
 .stats div{font-size:13px;color:var(--muted)}
-.stats b{display:block;font-size:28px;color:var(--ink);font-weight:800;line-height:1.1}
+.stats b{display:block;font-size:24px;color:var(--ink);font-weight:800;line-height:1.1}
 /* heatmap */
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;font-size:13px}
@@ -162,7 +162,7 @@ label select{max-width:min(420px,80vw)}
 .d3db svg,.d3st svg,#regChart svg,#swarm svg{display:block;overflow:visible}
 .d3db text,.d3st text,#regChart text{font:13.5px var(--sans);fill:var(--ink)}
 .d3db .row.head text.lab{font-weight:700;fill:var(--muted);font-size:13px}
-.d3db .vals{font-size:13px} .d3db .sub{fill:var(--muted);font-size:12px} .d3db .vb{font-weight:700}
+.d3db .vals{font-size:13px;paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round} .d3db .sub{fill:var(--muted);font-size:12px} .d3db .vb{font-weight:700}
 .d3db .base{stroke:var(--track);stroke-width:2}
 .d3db .bar{stroke-width:6;stroke-linecap:round;opacity:.5}
 .d3db .old{fill:var(--surface);stroke:var(--old);stroke-width:2}
@@ -234,8 +234,39 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
 .d3db .ric{color:var(--muted)}
 #h2h .hic{color:var(--muted)}
 .xt td:first-child svg.ic-s{vertical-align:-2px}
+
+.wrap{max-width:1240px}
+.split{display:grid;grid-template-columns:290px minmax(0,1fr);gap:22px;align-items:start}
+.split>*{min-width:0}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:12px;max-height:calc(100vh - 76px);display:flex;flex-direction:column;min-height:0}
+.slist{display:flex;flex-direction:column;min-height:0;flex:1}
+.slist .sitems{overflow-y:auto;flex:1;min-height:0;margin:0 -6px;padding:0 6px 4px;scrollbar-width:thin}
+.sidelab{font-size:12px;font-weight:700;color:var(--muted);margin:4px 2px 6px}
+.sidelab:not(:first-child){margin-top:12px}
+.sfull{width:100%}
+.ssearch{width:100%;margin-bottom:8px}
+.si{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;padding:7px 10px;border-radius:8px;font-size:13.5px;line-height:1.3;cursor:pointer;color:var(--ink)}
+.si:hover{background:var(--track)}
+.si:focus-visible{outline:2px solid var(--up);outline-offset:-2px}
+.si[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.si[aria-pressed="true"] svg.ic{color:var(--bg)}
+.si[aria-pressed="true"] .sb,.si[aria-pressed="true"] .sb span{color:var(--bg)}
+.si svg.ic{margin:0;color:var(--muted)}
+.sl{flex:1;min-width:0}
+.sb{font-size:12px;font-weight:700;white-space:nowrap}
+.sg{font-size:12px;font-weight:700;color:var(--ink);padding:12px 10px 4px;display:flex;align-items:center;position:sticky;top:0;background:var(--surface);z-index:1}
+.mob-only{display:none}
+.mainc{min-width:0}
+.two.stackd{grid-template-columns:1fr}
+@media (max-width:900px){
+  .split{grid-template-columns:1fr;gap:14px}
+  .side{position:static;max-height:none}
+  .slist.long{display:none}
+  .mob-only{display:block}
+  .slist.short .sitems{display:flex;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:6px}
+  .slist.short .si{width:auto;flex:none;white-space:nowrap;border:1px solid var(--rule)}
+}
 @media (max-width:760px){
-  #picChips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch} #picChips .chip{white-space:nowrap;flex:none}
   .quad{grid-template-columns:1fr 1fr} .quad .qr{grid-column:1/-1} .quad .qh.blank{display:none}
   .db{grid-template-columns:1fr 96px}
   .db .lab{grid-column:1/-1;margin-top:6px}
@@ -251,7 +282,7 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="ic-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></symbol><symbol id="ic-edu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.6 2.7 3 6 3s6-1.4 6-3v-5"/><path d="M22 9v6"/></symbol><symbol id="ic-rings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M10 5l2-2 2 2-2 2z"/></symbol><symbol id="ic-pill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 3.5a5 5 0 017 7l-7 7a5 5 0 01-7-7z"/><path d="M7 7l7 7"/></symbol><symbol id="ic-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.2"/><path d="M12 17h.01"/></symbol><symbol id="ic-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/><path d="M12 9v5M9.5 11.5h5"/></symbol><symbol id="ic-hosp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 7v6M9 10h6M9 21v-4h6v4"/></symbol><symbol id="ic-baby" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7"/><path d="M12 6c0-1.5 1-2.5 2.5-2.5"/><path d="M9.5 15.5c1.4 1 3.6 1 5 0"/><path d="M9.5 11.5h.01M14.5 11.5h.01"/></symbol><symbol id="ic-syringe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2l4 4"/><path d="M15 5l4 4"/><path d="M17 7l-9 9H5v-3l9-9"/><path d="M5 19l-3 3"/><path d="M9 11l2 2M11 9l2 2"/></symbol><symbol id="ic-thermo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.8V4a2 2 0 00-4 0v10.8a4 4 0 104 0z"/><path d="M12 10v6"/></symbol><symbol id="ic-bowl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18a9 9 0 01-18 0z"/><path d="M9 8c0-1.2 1-1.6 1-3M14 8c0-1.2 1-1.6 1-3"/></symbol><symbol id="ic-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9a5 5 0 018 0"/><path d="M12 9l1.5-2"/></symbol><symbol id="ic-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z"/><path d="M8.5 14h2l1-2 1.5 4 1-2h1.5"/></symbol><symbol id="ic-woman" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M12 13v8M9 18h6"/></symbol><symbol id="ic-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol><symbol id="ic-smoke" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h13v4H3z"/><path d="M19 14v4M21 14v4"/><path d="M17 10c0-2 2-2 2-4"/><path d="M3 3l18 18"/></symbol><symbol id="ico-person" viewBox="0 0 20 24"><circle cx="10" cy="5" r="4.2"/><path d="M3 23v-7.5C3 11.4 6 9.8 10 9.8s7 1.6 7 5.7V23z"/></symbol><symbol id="ico-house" viewBox="0 0 20 24"><path d="M10 2L1 10h2.5v12h13V10H19z"/></symbol><symbol id="ico-baby" viewBox="0 0 20 24"><circle cx="10" cy="7" r="5.5"/><path d="M4 23c0-6 2.5-9 6-9s6 3 6 9z"/></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="ic-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></symbol><symbol id="ic-edu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.6 2.7 3 6 3s6-1.4 6-3v-5"/><path d="M22 9v6"/></symbol><symbol id="ic-rings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M10 5l2-2 2 2-2 2z"/></symbol><symbol id="ic-pill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 3.5a5 5 0 017 7l-7 7a5 5 0 01-7-7z"/><path d="M7 7l7 7"/></symbol><symbol id="ic-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.2"/><path d="M12 17h.01"/></symbol><symbol id="ic-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/><path d="M12 9v5M9.5 11.5h5"/></symbol><symbol id="ic-hosp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 7v6M9 10h6M9 21v-4h6v4"/></symbol><symbol id="ic-baby" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7"/><path d="M12 6c0-1.5 1-2.5 2.5-2.5"/><path d="M9.5 15.5c1.4 1 3.6 1 5 0"/><path d="M9.5 11.5h.01M14.5 11.5h.01"/></symbol><symbol id="ic-syringe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2l4 4"/><path d="M15 5l4 4"/><path d="M17 7l-9 9H5v-3l9-9"/><path d="M5 19l-3 3"/><path d="M9 11l2 2M11 9l2 2"/></symbol><symbol id="ic-thermo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.8V4a2 2 0 00-4 0v10.8a4 4 0 104 0z"/><path d="M12 10v6"/></symbol><symbol id="ic-bowl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18a9 9 0 01-18 0z"/><path d="M9 8c0-1.2 1-1.6 1-3M14 8c0-1.2 1-1.6 1-3"/></symbol><symbol id="ic-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9a5 5 0 018 0"/><path d="M12 9l1.5-2"/></symbol><symbol id="ic-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z"/><path d="M8.5 14h2l1-2 1.5 4 1-2h1.5"/></symbol><symbol id="ic-woman" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M12 13v8M9 18h6"/></symbol><symbol id="ic-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol><symbol id="ic-smoke" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h13v4H3z"/><path d="M19 14v4M21 14v4"/><path d="M17 10c0-2 2-2 2-4"/><path d="M3 3l18 18"/></symbol><symbol id="ico-person" viewBox="0 0 20 24"><circle cx="10" cy="5" r="4.2"/><path d="M3 23v-7.5C3 11.4 6 9.8 10 9.8s7 1.6 7 5.7V23z"/></symbol><symbol id="ico-house" viewBox="0 0 20 24"><path d="M10 2L1 10h2.5v12h13V10H19z"/></symbol><symbol id="ico-baby" viewBox="0 0 20 24"><circle cx="10" cy="7" r="5.5"/><path d="M4 23c0-6 2.5-9 6-9s6 3 6 9z"/></symbol><symbol id="ic-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></symbol></defs></svg>
 <nav class="top" aria-label="Sections"><div class="in">
   <a href="index.html" class="back-to-portal" aria-label="Back to Soochana">Soochana</a>
   <b>Odisha NFHS</b>
@@ -275,10 +306,15 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
 <section id="simple">
   <h2>The story in pictures</h2>
   <p class="sub">Imagine 100 people (or 100 households) from Odisha. Each figure below is one of them. Pick a topic to see how many of those 100 were affected five years ago and how many today.</p>
-  <div class="controls" id="picChips" role="group" aria-label="Choose a topic"></div>
-  <div class="controls"><label>Place <select id="picPlace"></select></label></div>
-  <div class="panel pic-panel"><div id="picSay"></div><div id="pic"></div>
-    <p class="note">Blue figures show something good (like insurance). Orange figures show a problem (like stunting), so for orange, fewer is better.</p></div>
+  <div class="split">
+    <aside class="side" aria-label="Choose a topic">
+      <div class="sidelab">Place</div><select id="picPlace" class="sfull" aria-label="Place"></select>
+      <div class="sidelab">Topic</div>
+      <div class="slist short" id="picChips" role="group" aria-label="Topics"></div>
+    </aside>
+    <div class="panel pic-panel"><div id="picSay"></div><div id="pic"></div>
+      <p class="note">Blue figures show something good (like insurance). Orange figures show a problem (like stunting), so for orange, fewer is better.</p></div>
+  </div>
 
   <h3 class="h3big">Report card by topic</h3>
   <p class="sub">A simple grade for each area of health, based on how many of its measures got better (A) or worse (E) since 2019–21.</p>
@@ -307,10 +343,13 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
 <section id="state">
   <h2>How each state indicator moved</h2>
   <p class="sub">Hollow dot is NFHS-5, filled dot is NFHS-6. Colour shows whether the change is good or bad for health; purple marks indicators with no clear better direction (e.g. fertility, caesarean rate).</p>
-  <div class="controls" id="stateChips" role="group" aria-label="Filter by theme"></div>
+  <div class="split">
+  <aside class="side" aria-label="Choose a theme"><div class="sidelab">Show</div><div class="slist short" id="stateChips" role="group" aria-label="Themes"></div></aside>
+  <div class="mainc">
   <div class="controls"><button class="btn" id="stateReplay">▶ Replay the change</button></div>
   <div class="legend"><span><i class="dot o"></i>NFHS-5 (2019–21)</span><span><i class="dot bg-up"></i>Improved</span><span><i class="dot bg-down"></i>Worsened</span><span><i class="dot bg-flat"></i>Little change (&lt;1 pt)</span><span>Values in %, changes in percentage points (pts)</span><span><i class="dot bg-neu"></i>No clear direction</span></div>
   <div class="panel"><div class="d3db" id="stateDB"></div></div>
+  </div></div>
 </section>
 
 <section id="themes">
@@ -330,8 +369,10 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
 <section id="regions">
   <h2>Region comparison</h2>
   <p class="sub">Odisha’s three revenue divisions and the KBK districts (Koraput, Balangir, Kalahandi, Malkangiri, Nabarangpur, Nuapada, Rayagada, Sonepur) compared side by side. Values are simple averages of district figures.</p>
-  <div class="controls"><select id="regSel" class="wide" aria-label="Indicator for region chart"></select></div>
-  <div class="panel"><p class="unitline" id="regUnit"></p><div class="legend"><span><i class="dot" style="background:var(--old)"></i>NFHS-5 (top bar)</span><span>Coloured bar: NFHS-6</span></div><div id="regChart"></div><p class="note" id="regNote"></p></div>
+  <div class="split">
+    <aside class="side" aria-label="Choose an indicator"><div class="sidelab">Indicator</div><select id="regSel" class="sfull mob-only" aria-label="Indicator for region chart"></select><div class="slist long" id="regList"></div></aside>
+    <div class="panel"><p class="unitline" id="regUnit"></p><div class="legend"><span><i class="dot" style="background:var(--old)"></i>NFHS-5 (top bar)</span><span>Coloured bar: NFHS-6</span></div><div id="regChart"></div><p class="note" id="regNote"></p></div>
+  </div>
   <h3 style="margin-top:28px">Cross-table: key indicators by region</h3>
   <div class="controls" role="group" aria-label="Cell display">
     <button class="chip" data-m="v6" aria-pressed="true">NFHS-6 value</button><button class="chip" data-m="chg" aria-pressed="false">Change since NFHS-5</button><button class="chip" data-m="gap" aria-pressed="false">Gap vs Odisha</button>
@@ -349,8 +390,10 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
 <section id="explore">
   <h2>District explorer</h2>
   <p class="sub">Pick any indicator to see all 30 districts in both rounds. The dashed line is the Odisha NFHS-6 average.</p>
+  <div class="split">
+  <aside class="side" aria-label="Choose an indicator"><div class="sidelab">Indicator</div><select id="indSel" class="sfull mob-only" aria-label="Indicator"></select><div class="slist long" id="expList"></div></aside>
+  <div class="mainc">
   <div class="controls">
-    <select id="indSel" class="wide" aria-label="Indicator"></select>
     <select id="sortSel" aria-label="Sort districts">
       <option value="v6">Sort by NFHS-6 value</option>
       <option value="chg">Sort by change</option>
@@ -362,18 +405,24 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
   <div class="legend" id="expLegend"></div>
   <div class="panel"><div class="stats" id="expStats"></div><div class="d3db" id="expDB"></div>
   <p class="note" id="expNote"></p></div>
-  <div class="two" style="margin-top:24px">
+  <div class="two stackd" style="margin-top:24px">
     <div class="panel"><h3>Where is each district heading?</h3><p class="note" style="margin:0 0 10px">Cross-table of level (NFHS-6 vs state) and trend (change since NFHS-5).</p><div id="quad"></div></div>
     <div class="panel"><h3>Then vs now</h3><p class="note" style="margin:0 0 6px">Each dot is a district. Above the line means the value went up.</p><div id="thenNow"></div><p class="note" id="convNote"></p></div>
   </div>
+  </div></div>
 </section>
 
 <section id="rel">
   <h2>What moves together?</h2>
   <p class="sub">Compare any two indicators across the 30 districts in NFHS-6. Try the suggested pairs to see the strongest patterns.</p>
-  <div class="controls" id="relPresets"></div>
-  <div class="controls"><label>X <select id="relX" aria-label="X indicator"></select></label><label>Y <select id="relY" aria-label="Y indicator"></select></label></div>
-  <div class="panel"><p class="unitline" id="relUnit"></p><div class="stats" id="relStats"></div><div id="relChart"></div><p class="note" id="relNote"></p></div>
+  <div class="split">
+    <aside class="side" aria-label="Choose two indicators">
+      <div class="sidelab">Across (X axis)</div><select id="relX" class="sfull" aria-label="X indicator"></select>
+      <div class="sidelab">Up (Y axis)</div><select id="relY" class="sfull" aria-label="Y indicator"></select>
+      <div class="sidelab">Suggested pairs</div><div class="slist short" id="relPresets"></div>
+    </aside>
+    <div class="panel"><p class="unitline" id="relUnit"></p><div class="stats" id="relStats"></div><div id="relChart"></div><p class="note" id="relNote"></p></div>
+  </div>
 </section>
 
 <section id="score">
@@ -435,7 +484,7 @@ const fmt = v => v==null ? "–" : (Math.abs(v)<10 && v%1!==0 ? v.toFixed(1) : v
 const sgn = v => (v>0?"+":v<0?"−":"±")+Math.abs(v).toFixed(1);
 function cls(i,a,b){ if(a==null||b==null) return "flat"; if(!i.pol) return "neu"; const g=(a-b)*i.pol; return g>=1?"up":g<=-1?"down":"flat"; }
 const gain = (i,a,b) => (a==null||b==null)? null : (a-b)*(i.pol||0);
-const SHORT = {7:"Health insurance coverage",14:"Women ever used internet",15:"Men ever used internet",12:"Women 10+ yrs schooling",13:"Men 10+ yrs schooling",16:"Child marriage (women 20–24)",22:"Modern contraceptive use",26:"Unmet need for family planning",29:"ANC in first trimester",31:"4+ ANC visits",34:"IFA 180+ days in pregnancy",36:"Institutional births",39:"Caesarean births",45:"Fully vaccinated (card or recall)",62:"Breastfed within 1 hour",63:"Exclusive breastfeeding <6m",69:"Adequate diet 6–23m",70:"Stunting (under 5)",71:"Wasting (under 5)",73:"Underweight (under 5)",75:"Women underweight BMI",77:"Women overweight/obese",78:"Men overweight/obese",81:"Women high blood sugar",84:"Men high blood sugar",87:"Women elevated BP",90:"Men elevated BP",94:"Women own mobile phone",96:"Spousal violence (ever)",99:"Women tobacco use",100:"Men tobacco use",102:"Men alcohol use",4:"Electricity",5:"Improved drinking water",6:"Iodized salt",8:"Bank/post office account",9:"Women ever attended school",11:"Pre-school attendance",19:"Teen pregnancy (15–19)",21:"Any contraceptive method",30:"Any ANC visit",33:"IFA 100+ days in pregnancy",38:"Skilled birth attendance",42:"Postnatal care (mother)",52:"Second measles dose",55:"Vitamin A dose",58:"Diarrhoea prevalence",61:"ARI/fever care sought",74:"Child overweight",76:"Men underweight BMI",93:"Women own bank account",95:"Hygienic menstrual protection",101:"Women alcohol use",92:"Women paid in cash",91:"Women in household decisions",3:"Population 60+",18:"Total fertility rate",68:"Adequate diet, non-breastfed 6–23m",83:"Men very high blood sugar",80:"Women very high blood sugar",43:"Home-born baby checked in 24h"};
+const SHORT = {1:"Population under 5",2:"Population under 15",10:"Women own house/land",17:"Men married before 21 (25–29)",20:"Third or higher births",23:"Traditional FP method",24:"Female sterilization",25:"Male sterilization",27:"Unmet need: spacing",28:"Unmet need: limiting",32:"Protected against neonatal tetanus",35:"MCP card received",37:"Births in public facility",40:"C-section, private facility",41:"C-section, public facility",44:"Postnatal care (child)",46:"Fully vaccinated (card only)",47:"Any vaccine",48:"BCG",49:"Polio, 3 doses",50:"Pentavalent, 3 doses",51:"Measles, 1st dose",53:"Hepatitis B birth dose",54:"Rotavirus, 3 doses",56:"Vaccinated at public facility",57:"Vaccinated at private facility",59:"Severe diarrhoea",60:"ARI symptoms",64:"Breastfeeding <6m",65:"Breastfed or water/milk only <6m",66:"Solid food + breastmilk 6–8m",67:"Adequate diet, breastfed 6–23m",72:"Severe wasting (under 5)",79:"Women blood sugar high (141–160)",82:"Men blood sugar high (141–160)",85:"Women BP mildly high",86:"Women BP moderate/severe",88:"Men BP mildly high",89:"Men BP moderate/severe",97:"Violence during pregnancy",98:"Sexual violence by age 18",7:"Health insurance coverage",14:"Women ever used internet",15:"Men ever used internet",12:"Women 10+ yrs schooling",13:"Men 10+ yrs schooling",16:"Child marriage (women 20–24)",22:"Modern contraceptive use",26:"Unmet need for family planning",29:"ANC in first trimester",31:"4+ ANC visits",34:"IFA 180+ days in pregnancy",36:"Institutional births",39:"Caesarean births",45:"Fully vaccinated (card or recall)",62:"Breastfed within 1 hour",63:"Exclusive breastfeeding <6m",69:"Adequate diet 6–23m",70:"Stunting (under 5)",71:"Wasting (under 5)",73:"Underweight (under 5)",75:"Women underweight BMI",77:"Women overweight/obese",78:"Men overweight/obese",81:"Women high blood sugar",84:"Men high blood sugar",87:"Women elevated BP",90:"Men elevated BP",94:"Women own mobile phone",96:"Spousal violence (ever)",99:"Women tobacco use",100:"Men tobacco use",102:"Men alcohol use",4:"Electricity",5:"Improved drinking water",6:"Iodized salt",8:"Bank/post office account",9:"Women ever attended school",11:"Pre-school attendance",19:"Teen pregnancy (15–19)",21:"Any contraceptive method",30:"Any ANC visit",33:"IFA 100+ days in pregnancy",38:"Skilled birth attendance",42:"Postnatal care (mother)",52:"Second measles dose",55:"Vitamin A dose",58:"Diarrhoea prevalence",61:"ARI/fever care sought",74:"Child overweight",76:"Men underweight BMI",93:"Women own bank account",95:"Hygienic menstrual protection",101:"Women alcohol use",92:"Women paid in cash",91:"Women in household decisions",3:"Population 60+",18:"Total fertility rate",68:"Adequate diet, non-breastfed 6–23m",83:"Men very high blood sugar",80:"Women very high blood sugar",43:"Home-born baby checked in 24h"};
 const lbl = i => SHORT[i.n] || i.name;
 const maxOf = i => i.unit==="%"?100:3;
 const byN = n => I.find(x=>x.n===n);
@@ -534,7 +583,7 @@ function drawDB(el, animate){
   t.select(".bar").attr("x1",r=>x(r.b??r.a??0)).attr("x2",r=>x(r.a??0));
   t.select(".new").attr("cx",r=>x(r.a??0)).attr("r",7);
 
-  svg.selectAll("line.ref").data(o.ref!=null?[o.ref]:[]).join("line").attr("class","ref").attr("y1",0)
+  svg.selectAll("line.ref").data(o.ref!=null?[o.ref]:[]).join("line").attr("class","ref").lower().attr("y1",0)
     .transition().duration(dur).attr("x1",x).attr("x2",x).attr("y2",H);
 }
 function replayDB(sel){
@@ -744,11 +793,13 @@ function renderState(){
     rows=[{key:"h1",head:1,label:"Largest improvements"},...pol.slice(0,12).map(mk),{key:"h2",head:1,label:"Largest setbacks"},...pol.slice(-12).reverse().map(mk)];
   } else rows=list.filter(i=>i.sec===stateF).map(i=>({...mk(i),label:i.name}));
   dumbbell("#stateDB",rows,{max:100,onClick:r=>hasD(r.i)&&exploreInd(r.i.n)});
-  document.querySelectorAll("#stateChips .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===stateF));
+  document.querySelectorAll("#stateChips .si").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===stateF));
 }
 $("#stateReplay").addEventListener("click",()=>replayDB("#stateDB"));
-$("#stateChips").innerHTML=stateFilters.map(f=>`<button class="chip" data-f="${f}">${SEC_IC[f]?ic(f):""}${f}</button>`).join("");
-$("#stateChips").addEventListener("click",e=>{const b=e.target.closest(".chip"); if(b){stateF=b.dataset.f; renderState();}});
+$("#stateChips").innerHTML=`<div class="sitems">`+stateFilters.map(f=>{ let badge="";
+  if(SEC_IC[f]){ let u=0,w=0; I.filter(i=>i.sec===f&&i.pol&&i.t6!=null&&i.t5!=null).forEach(i=>{const c=cls(i,i.t6,i.t5); if(c==="up")u++; if(c==="down")w++;}); badge=`<span class="sb" title="${u} better, ${w} worse"><span class="up">✓${u}</span> <span class="down">✗${w}</span></span>`; }
+  return `<button class="si" data-f="${f}">${SEC_IC[f]?ic(f):`<svg class="ic" aria-hidden="true"><use href="#ic-trend"/></svg>`}<span class="sl">${f}</span>${badge}</button>`;}).join("")+`</div>`;
+$("#stateChips").addEventListener("click",e=>{const b=e.target.closest(".si"); if(b){stateF=b.dataset.f; renderState();}});
 renderState();
 
 /* theme bars */
@@ -1024,12 +1075,12 @@ indSel.addEventListener("change",renderQuad); renderQuad();
 const opts=SECS.map(s=>`<optgroup label="${s}">`+I.filter(i=>i.sec===s&&hasD(i)).map(i=>`<option value="${i.n}">${lbl(i)}</option>`).join("")+`</optgroup>`).join("");
 $("#relX").innerHTML=opts; $("#relY").innerHTML=opts;
 const PRE=[[12,70,"Schooling & stunting"],[12,16,"Schooling & child marriage"],[77,81,"Overweight & blood sugar"],[16,19,"Child marriage & teen pregnancy"],[36,70,"Hospital births & stunting"],[77,70,"Adult overweight & child stunting"],[14,22,"Internet & contraception"]];
-$("#relPresets").innerHTML=PRE.map(([x,y,l])=>`<button class="chip" data-x="${x}" data-y="${y}">${l}</button>`).join("");
-$("#relPresets").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;$("#relX").value=b.dataset.x;$("#relY").value=b.dataset.y;renderRel();});
+$("#relPresets").innerHTML=`<div class="sitems">`+PRE.map(([x,y,l])=>`<button class="si" data-x="${x}" data-y="${y}"><svg class="ic" aria-hidden="true"><use href="#ic-${SEC_IC[byN(x).sec]}"/></svg><span class="sl">${l}</span></button>`).join("")+`</div>`;
+$("#relPresets").addEventListener("click",e=>{const b=e.target.closest(".si");if(!b)return;$("#relX").value=b.dataset.x;$("#relY").value=b.dataset.y;renderRel();});
 $("#relX").value="12"; $("#relY").value="70";
 function renderRel(){
   const X=byN(+$("#relX").value), Y=byN(+$("#relY").value);
-  document.querySelectorAll("#relPresets .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.x==X.n&&b.dataset.y==Y.n));
+  document.querySelectorAll("#relPresets .si").forEach(b=>b.setAttribute("aria-pressed",b.dataset.x==X.n&&b.dataset.y==Y.n));
   const rows=DS.map(d=>({d,x:X.d[d][0],y:Y.d[d][0],fl:!!(X.fl[d]||Y.fl[d])})).filter(r=>r.x!=null&&r.y!=null);
   const r=pear(rows.map(p=>p.x),rows.map(p=>p.y));
   const ex=[...rows].sort((a,b)=>a.x-b.x); const labSet=new Set([ex[0].d,ex[ex.length-1].d,[...rows].sort((a,b)=>a.y-b.y)[0].d,[...rows].sort((a,b)=>b.y-a.y)[0].d]);
@@ -1079,15 +1130,15 @@ const STORY=[
 ];
 let storyN=7, storyPlace="Odisha";
 (function(){
-  $("#picChips").innerHTML=STORY.map(s=>`<button class="chip" data-n="${s.n}">${ic(byN(s.n).sec)}${s.who[0].toUpperCase()+s.who.slice(1)}: ${s.what.replace(/ \(.*\)/,"")}</button>`).join("");
-  $("#picChips").addEventListener("click",e=>{const b=e.target.closest(".chip"); if(b){storyN=+b.dataset.n; renderPic();}});
+  $("#picChips").innerHTML=`<div class="sitems">`+STORY.map(s=>{const i=byN(s.n),c=cls(i,i.t6,i.t5);return `<button class="si" data-n="${s.n}">${ic(i.sec)}<span class="sl">${s.who[0].toUpperCase()+s.who.slice(1)} who ${s.what.replace(/ \(.*\)/,"")}</span><span class="sb ${c}">${c==="up"?"better":c==="down"?"worse":"same"}</span></button>`;}).join("")+`</div>`;
+  $("#picChips").addEventListener("click",e=>{const b=e.target.closest(".si"); if(b){storyN=+b.dataset.n; renderPic();}});
   $("#picPlace").innerHTML=`<option>Odisha</option>`+[...DS].sort().map(d=>`<option>${d}</option>`).join("");
   $("#picPlace").addEventListener("change",()=>{storyPlace=$("#picPlace").value; renderPic();});
 })();
 function renderPic(){
   const s=STORY.find(x=>x.n===storyN), i=byN(s.n);
   let a=storyPlace==="Odisha"?i.t6:i.d[storyPlace][0], b=storyPlace==="Odisha"?i.t5:i.d[storyPlace][1];
-  document.querySelectorAll("#picChips .chip").forEach(c=>c.setAttribute("aria-pressed",+c.dataset.n===storyN));
+  document.querySelectorAll("#picChips .si").forEach(c=>c.setAttribute("aria-pressed",+c.dataset.n===storyN));
   const el=$("#pic");
   if(a==null||b==null){ el.innerHTML=`<p class="note">This figure is not available for ${storyPlace}. Choose Odisha or another district.</p>`; $("#picSay").innerHTML=""; return; }
   const A=Math.round(a), B=Math.round(b), c=cls(i,a,b);
@@ -1192,7 +1243,26 @@ function renderH2H(noAnim){
   g.select(".vb").html(r=>`${fmt(r.b)}%${r.win==="B"?" ✓":""}`).style("font-weight",r=>r.win==="B"?800:500).transition().duration(dur).attr("x",r=>mid+gap+x(r.b)+6);
 }
 
+
+/* ===== left-hand indicator list ===== */
+function sideList(el, sel){
+  const items=I.filter(hasD);
+  const badge=i=>{ if(i.t6==null||i.t5==null) return ""; const c=cls(i,i.t6,i.t5); return `<span class="sb ${c}">${du(i.t6-i.t5,i)}</span>`; };
+  el.innerHTML=`<input type="search" class="ssearch" placeholder="Search ${items.length} indicators" aria-label="Search indicators"><div class="sitems">`+
+    SECS.map(s=>{const its=items.filter(i=>i.sec===s); if(!its.length) return "";
+      return `<div class="sgrp"><div class="sg">${ic(s,"ic ic-s")}${s}</div>`+its.map(i=>`<button class="si" data-n="${i.n}" title="${esc(i.name)}"><span class="sl">${esc(lbl(i))}</span>${badge(i)}</button>`).join("")+`</div>`;}).join("")+`</div>`;
+  const box=el.querySelector(".sitems");
+  el.addEventListener("click",e=>{const b=e.target.closest(".si"); if(!b) return; sel.value=b.dataset.n; sel.dispatchEvent(new Event("change"));});
+  el.querySelector(".ssearch").addEventListener("input",e=>{const q=e.target.value.toLowerCase().trim();
+    el.querySelectorAll(".sgrp").forEach(g=>{let any=false; const gm=g.querySelector(".sg").textContent.toLowerCase().includes(q);
+      g.querySelectorAll(".si").forEach(b=>{const i=byN(+b.dataset.n); const hit=!q||gm||i.name.toLowerCase().includes(q)||lbl(i).toLowerCase().includes(q); b.style.display=hit?"":"none"; any=any||hit;}); g.style.display=any?"":"none";});});
+  const mark=()=>{ el.querySelectorAll(".si").forEach(b=>b.setAttribute("aria-pressed",b.dataset.n===sel.value));
+    const a=el.querySelector('.si[aria-pressed="true"]'); if(a&&box.clientHeight){ const top=a.offsetTop-box.offsetTop; if(top<box.scrollTop||top>box.scrollTop+box.clientHeight-40) box.scrollTop=top-box.clientHeight/3; } };
+  sel.addEventListener("change",mark); mark();
+}
+
 /* init after everything is defined */
+sideList($("#expList"),indSel); sideList($("#regList"),regSel);
 renderExp(); renderScore(); renderProf(); swarm();
 onView($("#pic"),renderPic); onResize($("#pic"),renderPic); onView($("#h2h"),renderH2H);
 document.querySelectorAll(".fc").forEach(c=>onView(c,()=>c.querySelectorAll(".mt span[data-w]").forEach((s,k)=>setTimeout(()=>s.style.width=s.dataset.w+"%",RM?0:k*90))));
