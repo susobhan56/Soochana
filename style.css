@@ -882,7 +882,10 @@ path:hover {
   z-index: 1;
 }
 
-.lander-inner { position: relative; z-index: 2; max-width: 580px; }
+/* 700px, not 580: set in caps the longest display line measures 642px and
+   was wrapping. Each line lives in its own overflow-hidden reveal mask, so
+   a wrapped line breaks the one-line-per-mask composition. */
+.lander-inner { position: relative; z-index: 2; max-width: 700px; }
 
 /* The kicker descends while the display lines rise, so the hero converges
    from both directions rather than everything arriving from below. */
@@ -900,11 +903,25 @@ path:hover {
 
 /* Line-by-line reveal: each line sits in an overflow-hidden box and
    slides up from below. Staggered by nth-of-type. */
-.reveal { 
-  display: block; 
-  overflow: hidden; 
-  padding-bottom: 0.14em; 
-  margin-bottom: -0.14em; 
+/* The mask that the display lines slide up out of. overflow:hidden clips at
+   the padding edge, so the box needs slack on the sides the letterforms
+   actually reach: the descender of an italic "g", and the rightward
+   overhang an italic "c" carries past its advance width. Negative margins
+   cancel the padding so the line box and baseline grid are unchanged. */
+/* Measured against the rendered face rather than guessed: at 38px the
+   italic "g" puts ink 8px below the baseline and the italic "c" overhangs
+   its advance width by 3.2px. The old 0.14em/3.9em of slack clipped both.
+   0.34em bottom and 0.20em right clear them with room to spare. */
+/* Sized against --fs-h1, not em: .reveal is a plain wrapper inheriting the
+   15px body size, so an em here resolved to a quarter of what the 38px
+   display line actually needs. Scales with the A / A+ / A++ control. */
+.reveal {
+  display: block;
+  overflow: hidden;
+  padding: calc(var(--fs-h1) * 0.10) calc(var(--fs-h1) * 0.18)
+           calc(var(--fs-h1) * 0.30) calc(var(--fs-h1) * 0.04);
+  margin: calc(var(--fs-h1) * -0.10) calc(var(--fs-h1) * -0.18)
+          calc(var(--fs-h1) * -0.30) calc(var(--fs-h1) * -0.04);
 }
 
 .reveal > * {
@@ -931,9 +948,15 @@ path:hover {
   padding-bottom: 0.06em;
 }
 
+/* The two emphasised words are set in caps. This is the one deliberate
+   exception to the no-all-caps rule: it is a display treatment on two
+   words, not a UI label. Caps set at the display line's -0.03em would
+   jam together, so the tracking is opened back up. */
 .display-line em {
   font-style: italic;
-  font-weight: var(--wt-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.015em;
   color: transparent;
   background: linear-gradient(135deg, var(--teal), var(--blue));
   background-size: 200% 200%;
@@ -962,6 +985,118 @@ path:hover {
   flex-wrap: wrap;
   opacity: 0;
   transition: opacity 0.9s ease 0.82s;
+}
+
+/* ── hero calls to action ──
+   Two pills carrying the whole page's invitation, so they are given more
+   weight than the utility buttons elsewhere: deeper padding, a graded
+   fill, and a light sweep that crosses on hover. No arrows — the label
+   carries the meaning. */
+.lander-cta .btn-pill {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 16px 32px;
+  font-size: var(--fs-body);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  border-radius: 999px;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.35s ease, color 0.35s ease;
+}
+
+/* the sweep, shared by both */
+.lander-cta .btn-pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.38) 50%, transparent 62%);
+  background-size: 260% 100%;
+  background-position: 160% 0;
+  opacity: 0;
+  transition: none;
+}
+
+.lander-cta .btn-pill:hover::after {
+  opacity: 1;
+  animation: ctaSweep 0.75s cubic-bezier(0.32, 0, 0.22, 1) forwards;
+}
+
+@keyframes ctaSweep {
+  from { background-position: 160% 0; }
+  to   { background-position: -60% 0; }
+}
+
+/* primary — graded teal into the heading navy */
+.lander-cta .btn-pill.solid {
+  border: 0;
+  color: #fff;
+  background: linear-gradient(135deg, var(--teal) 0%, #14464e 55%, var(--ink-heading) 100%);
+  background-size: 160% 160%;
+  background-position: 0% 50%;
+  box-shadow: 0 6px 18px rgba(26, 83, 92, 0.26),
+              0 1px 2px rgba(15, 23, 42, 0.12);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              background-position 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lander-cta .btn-pill.solid:hover {
+  background-position: 100% 50%;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(26, 83, 92, 0.32),
+              0 3px 8px rgba(15, 23, 42, 0.14);
+}
+
+.lander-cta .btn-pill.solid:active {
+  transform: translateY(-1px) scale(0.985);
+  box-shadow: 0 6px 16px rgba(26, 83, 92, 0.26);
+  transition-duration: 0.12s;
+}
+
+/* secondary — outline that fills from the left */
+.lander-cta .btn-pill.ghost {
+  border: 1px solid rgba(26, 83, 92, 0.32);
+  color: var(--teal);
+  background: var(--surface);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+.lander-cta .btn-pill.ghost::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, rgba(26,83,92,0.10), rgba(15,23,42,0.06));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lander-cta .btn-pill.ghost:hover::before { transform: scaleX(1); }
+
+.lander-cta .btn-pill.ghost:hover {
+  border-color: var(--teal);
+  color: var(--ink-heading);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(26, 83, 92, 0.14);
+}
+
+.lander-cta .btn-pill.ghost:active {
+  transform: translateY(-1px) scale(0.985);
+  transition-duration: 0.12s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lander-cta .btn-pill,
+  .lander-cta .btn-pill::before,
+  .lander-cta .btn-pill::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  .lander-cta .btn-pill:hover { transform: none; }
 }
 
 .lander.in .lander-cta { opacity: 1; }
