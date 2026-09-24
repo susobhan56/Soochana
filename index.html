@@ -133,6 +133,26 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
+    .stat-hub { border-bottom: 1px solid var(--border); background: var(--surface); }
+    .stat-hub .stat-strip { border-bottom: 1px solid var(--border); }
+    .stat-hub-title {
+      padding: 16px clamp(20px, 2.4vw, 28px) 10px;
+      font-size: var(--fs-label); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); background: var(--surface);
+    }
+    /* Rows wrap and stretch on their own: tiles share a row equally, and
+       a wrapped last line widens to fill, so there are never empty slots.
+       The 1px gap over the border colour draws the grid lines. */
+    .stat-hub .stat-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1px;
+      background: var(--border);
+      border-top: 1px solid var(--border);
+    }
+    .stat-hub .stat-cell { flex: 1 1 210px; border: 0; background: var(--surface); }
+    .stat-source { margin-top: 6px; font-size: 11.5px; line-height: 1.4; color: var(--muted); opacity: 0.85; }
+    @media (max-width: 480px) { .stat-hub .stat-cell { flex-basis: 100%; } }
       padding: 8px;
       overflow: hidden;
     }
@@ -381,70 +401,54 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     LIVE STAT BAND
+     ODISHA IN NUMBERS
+     Drawn from data/key_stats.js: change a value, label, note or source
+     there, not here. Rows lay themselves out, so tiles can be added or
+     deleted in that file without touching this page.
 ═══════════════════════════════════════════════ -->
-<div class="band" id="band">
-  <div class="band-cell">
-    <div class="band-val" data-to="46.25" data-suffix="M" data-dec="2">4.6 Cr</div>
-    <div class="band-lbl">2021<br>Projected Population</div>
-  </div>
-  <div class="band-cell">
-    <div class="band-val" data-to="1.8" data-dec="1">1.8</div>
-    <div class="band-lbl">Total Fertility Rate (TFR)<br>NFHS-5. 2019-21</div>
-  </div>
-  <div class="band-cell">
-    <div class="band-val" data-to="15.9" data-suffix="%" data-dec="1">15.9%</div>
-    <div class="band-lbl">Aged 60 and over<br>Projected 2036</div>
-  </div>
-  <div class="band-cell">
-    <div class="band-val" data-to="30" data-dec="0">30</div>
-    <div class="band-lbl">Districts<br>Mapped in full</div>
-  </div>
-</div>
+<section class="stat-hub" id="state-stats" aria-label="Odisha in numbers"></section>
 
-<!-- ═══════════════════════════════════════════════
-     STATE STAT STRIP
-═══════════════════════════════════════════════ -->
-<div class="stat-strip" id="state-stats">
-  <div class="stat-cell">
-    <div class="stat-value teal" id="stat-tfr">--</div>
-    <div class="stat-label">Fertility Rate (TFR)<br>NFHS-5 Profile</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-value orange" id="stat-literacy">--</div>
-    <div class="stat-label">Literacy Rate<br>Census 2011</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-value purple" id="stat-sexratio">--</div>
-    <div class="stat-label">Sex Ratio<br>Females per 1000 Males</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-value blue" id="stat-peakpop">46.25M</div>
-    <div class="stat-label">Projected Population<br>By 2021</div>
-  </div>
-</div>
+<script>
+(function () {
+  var data = window.SOOCHANA_KEY_STATS;
+  if (!data) return;
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function source(tile, cls) {
+    return tile.source ? el('div', cls, 'Source: ' + tile.source) : null;
+  }
 
-<!-- ═══════════════════════════════════════════════
-     MACRO ECONOMY & GOVERNANCE STAT BAND
-═══════════════════════════════════════════════ -->
-<div class="stat-strip" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); width: 100%;">
-  <div class="stat-cell">
-    <div class="stat-value teal">₹9.88L Cr</div>
-    <div class="stat-label">GSDP (Current Prices)<br>Per Capita: ₹1,86,761</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-value green">155,707 km²</div>
-    <div class="stat-label">Geographical Area<br>Forest Cover: 33.67% (52.4k km²)</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-value purple">30 Districts</div>
-    <div class="stat-label">3 Divisions · 317 Tehsils<br>314 Blocks (118 Tribal)</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-value blue">4.83 Cr</div>
-    <div class="stat-label">Projected Pop 2026<br>81.5% Rural · 18.5% Urban</div>
-  </div>
-</div>
+  var hub = document.getElementById('state-stats');
+  (data.groups || []).forEach(function (g, gi) {
+    if (!g.tiles || !g.tiles.length) return;   /* an emptied group disappears */
+    var id = 'hub-group-' + gi;
+    var title = el('div', 'stat-hub-title', g.title);
+    title.id = id;
+    hub.appendChild(title);
+    var row = el('div', 'stat-strip');
+    row.setAttribute('role', 'group');
+    row.setAttribute('aria-labelledby', id);
+    (g.tiles || []).forEach(function (t) {
+      var cell = el('div', 'stat-cell');
+      var val = el('div', 'stat-value ' + (t.color || 'teal'), t.value === 'auto' ? '--' : t.value);
+      /* 'auto' tiles are filled from the data by the page script below */
+      if (t.value === 'auto' && /sex ratio/i.test(t.label)) val.id = 'stat-sexratio';
+      cell.appendChild(val);
+      var lbl = el('div', 'stat-label', t.label);
+      if (t.note) { lbl.appendChild(document.createElement('br')); lbl.appendChild(document.createTextNode(t.note)); }
+      cell.appendChild(lbl);
+      var src = source(t, 'stat-source');
+      if (src) cell.appendChild(src);
+      row.appendChild(cell);
+    });
+    hub.appendChild(row);
+  });
+})();
+</script>
 
 <!-- ═══════════════════════════════════════════════
      SCROLLYTELLING MAP SECTION
@@ -506,35 +510,9 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     VITAL HEALTH & DEMOGRAPHIC BENCHMARKS (FULL WIDTH)
-═══════════════════════════════════════════════ -->
-<div class="stat-strip" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); width: 100%;">
-  <div class="stat-cell">
-    <div class="stat-value teal">15.8</div>
-    <div class="stat-label">Birth Rate<br>(per 1,000 Pop)</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-value blue">7.9</div>
-    <div class="stat-label">Death Rate<br>(per 1,000 Pop)</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-value orange">28</div>
-    <div class="stat-label">Infant Mortality (IMR)<br>(per 1,000 Live Births)</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-value red">124</div>
-    <div class="stat-label">Maternal Mortality (MMR)<br>(per 100,000 Live Births)</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-value green">70.4</div>
-    <div class="stat-label">Life Expectancy<br>M: 69.2 | F: 71.8 yrs</div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════
      EDITORIAL BAND — BELOW REPLACEMENT
-     Sits with the vital rates above it: the birth rate reads as a number
-     until it is set against the replacement level, which is what this says.
+     The vital rates it once sat under now live in "Odisha in numbers",
+     above the district map.
 ═══════════════════════════════════════════════ -->
 <section class="editorial-band alt flip" aria-labelledby="eb-fert">
   <figure class="editorial-figure editorial-band-figure" style="margin:0;">
@@ -937,27 +915,20 @@ function startField() {
             });
         }
     }
-
     // STATE STAT STRIP & LEADERBOARD DYNAMIC LOADING
     Promise.all([
       DataLoader.getDistrictPopulationTrends(),
       DataLoader.getNationalComparisons(),
       DataLoader.getStateDemographics()
     ]).then(([popData, nationalData, stateData]) => {
-      d3.select("#stat-tfr").text("1.80");
-      d3.select("#stat-literacy").text("72.9%");
-
-      /* Sex ratio and projected population are both read off the 2021 row
-         so the two tiles agree. The earlier 1063 came from the national
-         comparison sheet, which carries the NFHS-5 survey figure rather
-         than the projection these tiles report. */
+      /* Headline tiles come from data/key_stats.js. A tile whose value is
+         'auto' is filled here: the sex ratio reads the 2021 projection row,
+         the same row as the projected population in the band. (1063, used
+         earlier, was the NFHS-5 survey figure, not this projection.) */
       const row2021 = (stateData && stateData.population_trends || [])
         .find(d => d.year === 2021 && d.total);
 
       d3.select("#stat-sexratio").text(row2021 ? Math.round(row2021.sex_ratio) : "988");
-      d3.select("#stat-peakpop").text(
-        row2021 ? (row2021.total / 1000000).toFixed(2) + "M" : "46.25M"
-      );
 
       // Leaderboard Grid
       const grid = d3.select("#leaderboardGrid");
