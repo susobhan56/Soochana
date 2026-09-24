@@ -116,6 +116,20 @@
         .article-content > ol { columns: 1; }
     }
 
+    /* Flourish charts pasted into an article as a .flourish-figure block.
+       Size them here: max-width is how wide, the iframe height how tall. */
+    .article-content > .flourish-figure {
+        max-width: 80% !important;
+        margin: 28px auto 24px !important;
+    }
+    .article-content > .flourish-figure iframe {
+        height: 480px !important;
+    }
+    @media (max-width: 700px) {
+        .article-content > .flourish-figure { max-width: 100% !important; }
+        .article-content > .flourish-figure iframe { height: 420px !important; }
+    }
+
     /* Charts arrive from the registry as a 16:9 padding-bottom box wrapping
        a Flourish iframe. They span the column, so widening the page makes
        them proportionally taller as well as wider. */
@@ -325,7 +339,8 @@
     }
 
     // Load Article Contents metadata
-    fetch('data/contents.json')
+    // no-cache: re-check the registry on every load so edited articles show up
+    fetch('data/contents.json', { cache: 'no-cache' })
         .then(res => res.json())
         .then(data => {
             const article = data.recentContent.find(c => c.id === artId);
