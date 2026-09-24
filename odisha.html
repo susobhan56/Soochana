@@ -311,7 +311,7 @@
   </div>
   <div class="stat-cell">
     <div class="stat-value orange" id="stat-literacy">--</div>
-    <div class="stat-label">Literacy Rate<br>Census Benchmark</div>
+    <div class="stat-label">Literacy Rate<br>Census 2011</div>
   </div>
   <div class="stat-cell">
     <div class="stat-value purple" id="stat-sexratio">--</div>
@@ -319,7 +319,7 @@
   </div>
   <div class="stat-cell">
     <div class="stat-value blue" id="stat-peakpop">--</div>
-    <div class="stat-label">Peak Population<br>Projected by 2036</div>
+    <div class="stat-label">Projected Population<br>By 2021</div>
   </div>
 </div>
 
@@ -885,26 +885,18 @@ function startField() {
       DataLoader.getStateDemographics()
     ]).then(([popData, nationalData, stateData]) => {
       d3.select("#stat-tfr").text("1.80");
-      d3.select("#stat-literacy").text("73.5%");
+      d3.select("#stat-literacy").text("72.9%");
 
-      const sexRatioItem = nationalData.find(d => d.indicator.includes("Sex Ratio (Number of females"));
-      if (sexRatioItem && sexRatioItem.odisha) {
-        d3.select("#stat-sexratio").text(Math.round(sexRatioItem.odisha));
-      } else {
-        d3.select("#stat-sexratio").text("1063");
-      }
+      /* Sex ratio and projected population both read off the 2021 row so
+         the tiles agree. 1063 came from the national comparison sheet,
+         which carries the NFHS-5 survey figure, not this projection. */
+      const row2021 = (stateData && stateData.population_trends || [])
+        .find(d => d.year === 2021 && d.total);
+      d3.select("#stat-sexratio").text(row2021 ? Math.round(row2021.sex_ratio) : "988");
 
-      if (stateData && stateData.population_trends) {
-        const peakYearData = stateData.population_trends.reduce((max, d) => 
-          (d.total > (max.total || 0)) ? d : max, { total: 0 });
-        if (peakYearData && peakYearData.total) {
-          d3.select("#stat-peakpop").text((peakYearData.total / 1000000).toFixed(1) + "M");
-        } else {
-          d3.select("#stat-peakpop").text("51.5M");
-        }
-      } else {
-        d3.select("#stat-peakpop").text("51.5M");
-      }
+      d3.select("#stat-peakpop").text(
+        row2021 ? (row2021.total / 1000000).toFixed(2) + "M" : "46.25M"
+      );
 
       // Leaderboard Grid
       const grid = d3.select("#leaderboardGrid");
