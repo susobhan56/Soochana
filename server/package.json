@@ -1,0 +1,16 @@
+{
+  "name": "soochana-narrator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Optional server side of the Soochana Storyteller: a Claude narration proxy and a build-time pre-generation script.",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node narrate-proxy.mjs",
+    "pregenerate": "node pregenerate.mjs",
+    "pregenerate:dry": "node pregenerate.mjs --dry-run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest"
+  }
+}
