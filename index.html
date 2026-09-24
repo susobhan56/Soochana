@@ -13,21 +13,8 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js"></script>
-<!-- Soochana Storyteller: narrates the charts on the page from the data behind them -->
-<script src="storyteller/engine/stats.js?v=5"></script>
-<script src="storyteller/engine/trend.js?v=5"></script>
-<script src="storyteller/engine/compare.js?v=5"></script>
-<script src="storyteller/engine/pyramid.js?v=5"></script>
-<script src="storyteller/engine/language.js?v=5"></script>
-<script src="storyteller/engine/rules.js?v=5"></script>
-<script src="storyteller/engine/narrate.js?v=5"></script>
-<script src="storyteller/narration/prompt.js?v=5"></script>
-<script src="storyteller/narration/voice.js?v=5"></script>
-<script src="storyteller/narration/narration-service.js?v=5"></script>
-<script src="storyteller/stories/districts.js?v=5"></script>
-<script src="storyteller/stories/registry.js?v=5"></script>
-<script src="storyteller/ui/storyteller.js?v=5"></script>
-<link rel="stylesheet" href="storyteller/ui/storyteller.css?v=5">
+<!-- Headline figures for the band and "Odisha in numbers": edit data/key_stats.js -->
+<script src="data/key_stats.js"></script>
 <!-- Three.js 3D WebGL Engine for Interactive Background Particle System -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="dotfield3d.js"></script>
@@ -133,6 +120,19 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
+      padding: 8px;
+      overflow: hidden;
+    }
+    #map-container svg {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .steps { padding: 0; background: var(--surface); }
+    .step { min-height: 75vh; padding: 60px 24px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border); opacity: 0.25; transition: opacity 0.5s ease; }
+    .step.active { opacity: 1; }
+    .stat-cell { padding: 24px 20px; }
     .stat-hub { border-bottom: 1px solid var(--border); background: var(--surface); }
     .stat-hub .stat-strip { border-bottom: 1px solid var(--border); }
     .stat-hub-title {
@@ -153,19 +153,6 @@
     .stat-hub .stat-cell { flex: 1 1 210px; border: 0; background: var(--surface); }
     .stat-source { margin-top: 6px; font-size: 11.5px; line-height: 1.4; color: var(--muted); opacity: 0.85; }
     @media (max-width: 480px) { .stat-hub .stat-cell { flex-basis: 100%; } }
-      padding: 8px;
-      overflow: hidden;
-    }
-    #map-container svg {
-      width: 100%;
-      height: 100%;
-      max-width: 100%;
-      max-height: 100%;
-    }
-    .steps { padding: 0; background: var(--surface); }
-    .step { min-height: 75vh; padding: 60px 24px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border); opacity: 0.25; transition: opacity 0.5s ease; }
-    .step.active { opacity: 1; }
-    .stat-cell { padding: 24px 20px; }
     body { overflow-y: scroll; height: auto; }
 
     /* Compact, refined text styling so the map stays huge */
@@ -915,6 +902,7 @@ function startField() {
             });
         }
     }
+
     // STATE STAT STRIP & LEADERBOARD DYNAMIC LOADING
     Promise.all([
       DataLoader.getDistrictPopulationTrends(),
@@ -927,7 +915,6 @@ function startField() {
          earlier, was the NFHS-5 survey figure, not this projection.) */
       const row2021 = (stateData && stateData.population_trends || [])
         .find(d => d.year === 2021 && d.total);
-
       d3.select("#stat-sexratio").text(row2021 ? Math.round(row2021.sex_ratio) : "988");
 
       // Leaderboard Grid
@@ -1148,21 +1135,8 @@ function startField() {
         }
 
         card.innerHTML = html;
-        // Storyteller: charts with a numerical counterpart in datasets/state_demographics.json
-        var storyId = /Young-Age|Working Age|Elderly/i.test(slide.title) ? 'state-age-structure'
-          : /Population Trends/i.test(slide.title) ? 'state-population'
-          : /Sex Ratio/i.test(slide.title) ? 'state-sex-ratio'
-          : /Pyramid/i.test(slide.title) ? 'state-pyramid' : null;
-        if (storyId) card.setAttribute('data-story-id', storyId);
         container.appendChild(card);
       });
-
-      if (window.SoochanaStoryteller) {
-        SoochanaStoryteller.init({
-          geography: { level: 'state', id: 'Odisha', name: 'Odisha' },
-          load: function (url) { return DataLoader.loadJSON(url); }
-        });
-      }
 
       // Lazy-load iframes on scroll (same as district.html)
       var chartObserver = new IntersectionObserver(function(entries, observer) {

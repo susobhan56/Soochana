@@ -13,21 +13,6 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js"></script>
-<!-- Soochana Storyteller: narrates the chart in view from the data behind it -->
-<script src="storyteller/engine/stats.js?v=5"></script>
-<script src="storyteller/engine/trend.js?v=5"></script>
-<script src="storyteller/engine/compare.js?v=5"></script>
-<script src="storyteller/engine/pyramid.js?v=5"></script>
-<script src="storyteller/engine/language.js?v=5"></script>
-<script src="storyteller/engine/rules.js?v=5"></script>
-<script src="storyteller/engine/narrate.js?v=5"></script>
-<script src="storyteller/narration/prompt.js?v=5"></script>
-<script src="storyteller/narration/voice.js?v=5"></script>
-<script src="storyteller/narration/narration-service.js?v=5"></script>
-<script src="storyteller/stories/districts.js?v=5"></script>
-<script src="storyteller/stories/registry.js?v=5"></script>
-<script src="storyteller/ui/storyteller.js?v=5"></script>
-<link rel="stylesheet" href="storyteller/ui/storyteller.css?v=5">
 <!-- Three.js 3D WebGL Engine for Interactive Background Particle System -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="dotfield3d.js"></script>
@@ -585,14 +570,14 @@
     </div>
 
     <!-- Section 4: Population Growth Trajectory -->
-    <div id="section-4" data-story-id="state-population" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+    <div id="section-4" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--teal);">Section 04 · Population Growth</div>
       <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Population Growth Trajectory (1901–2036)</h3>
       <div id="chart-section-4" style="width: 100%; height: 350px;"></div>
     </div>
 
     <!-- Section 5: Population Pyramids -->
-    <div id="section-5" data-story-id="state-pyramid" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+    <div id="section-5" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--purple);">Section 05 · Age Structure Pyramids</div>
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom: 8px;">
         <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 4px 0;">Pop Pyramid Cohorts</h3>
@@ -606,28 +591,28 @@
     </div>
 
     <!-- Section 6: Age Cohorts -->
-    <div id="section-6" data-story-id="state-age-structure" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+    <div id="section-6" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--orange);">Section 06 · Demographic Dividend</div>
       <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Age-wise Population Share (%) (1991–2036)</h3>
       <div id="chart-section-6" style="width: 100%; height: 350px;"></div>
     </div>
 
     <!-- Section 7: Sex Ratio -->
-    <div id="section-7" data-story-id="state-sex-ratio" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+    <div id="section-7" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--purple);">Section 07 · Gender Equity</div>
       <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Odisha Overall Sex Ratio (1951–2036)</h3>
       <div id="chart-section-7" style="width: 100%; height: 350px;"></div>
     </div>
 
     <!-- Section 8: Sex Ratio at Birth -->
-    <div id="section-8" data-story-id="state-srb" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+    <div id="section-8" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--blue);">Section 08 · Birth Dynamics</div>
       <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Sex Ratio at Birth (SRB) (1951–2036)</h3>
       <div id="chart-section-8" style="width: 100%; height: 350px;"></div>
     </div>
 
     <!-- Section 9: TFR Trajectory -->
-    <div id="section-9" data-story-id="state-tfr" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+    <div id="section-9" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--orange);">Section 09 · Fertility Transition</div>
       <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Total Fertility Rate Trajectory (1971–2036)</h3>
       <div id="chart-section-9" style="width: 100%; height: 350px;"></div>
@@ -1138,8 +1123,6 @@ function startField() {
     function renderPyramidIn(yearKey, targetSelector) {
       const container = d3.select(targetSelector);
       if (container.empty()) return;
-      // The narration follows the year on screen
-      if (window.SoochanaStoryteller) SoochanaStoryteller.setState('state-pyramid', { year: String(yearKey) });
       container.html("");
       const data = odishaSlideData.pyramids[yearKey] || odishaSlideData.pyramids["2026"];
       
@@ -1268,16 +1251,6 @@ function startField() {
       }, { threshold: 0.15 });
       
       observer.observe(el);
-    }
-
-    // Storyteller: narrates sections 4–9 from the same data the charts draw
-    if (window.SoochanaStoryteller) {
-      SoochanaStoryteller.init({
-        geography: { level: 'state', id: 'Odisha', name: 'Odisha' },
-        load: url => DataLoader.loadJSON(url),
-        sources: { odishaSlideData },
-        dock: 'auto'   // opposite the column being read
-      });
     }
 
     renderChartOnIntersect('section-4', () => renderLineChartIn(odishaSlideData.popGrowth, 'v', 'Millions', 'var(--teal)', null, '#chart-section-4'));

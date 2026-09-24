@@ -8,21 +8,6 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js"></script>
-<!-- Soochana Storyteller: narrates the chart in view from the data behind it -->
-<script src="storyteller/engine/stats.js?v=5"></script>
-<script src="storyteller/engine/trend.js?v=5"></script>
-<script src="storyteller/engine/compare.js?v=5"></script>
-<script src="storyteller/engine/pyramid.js?v=5"></script>
-<script src="storyteller/engine/language.js?v=5"></script>
-<script src="storyteller/engine/rules.js?v=5"></script>
-<script src="storyteller/engine/narrate.js?v=5"></script>
-<script src="storyteller/narration/prompt.js?v=5"></script>
-<script src="storyteller/narration/voice.js?v=5"></script>
-<script src="storyteller/narration/narration-service.js?v=5"></script>
-<script src="storyteller/stories/districts.js?v=5"></script>
-<script src="storyteller/stories/registry.js?v=5"></script>
-<script src="storyteller/ui/storyteller.js?v=5"></script>
-<link rel="stylesheet" href="storyteller/ui/storyteller.css?v=5">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
@@ -342,7 +327,7 @@
     </div>
 
     <div class="story-steps">
-        <div class="story-step active" data-metric="population" data-story-id="district-population">
+        <div class="story-step active" data-metric="population">
             <div class="step-idx">I. Expansion</div>
             <h2>A Growing<br>Footprint</h2>
             <p>Over the last few decades, this district has experienced substantial population shifts. Toggling projected trajectories outlines the structural expansion expected through 2036.</p>
@@ -350,7 +335,7 @@
             <div class="big-num-label">Projected Population (2036)</div>
         </div>
 
-        <div class="story-step" data-metric="fertility" data-story-id="district-tfr">
+        <div class="story-step" data-metric="fertility">
             <div class="step-idx" style="color:var(--orange)">II. Fertility</div>
             <h2>Transition to<br>Stabilization</h2>
             <p>Empowerment and family welfare access have driven the district's fertility curve down. TFR levels are projected to decline below the 2.1 replacement rate, leading to eventual stabilization.</p>
@@ -358,7 +343,7 @@
             <div class="big-num-label">Projected TFR (2036)</div>
         </div>
 
-        <div class="story-step" data-metric="life_expectancy" data-story-id="district-life-expectancy">
+        <div class="story-step" data-metric="life_expectancy">
             <div class="step-idx" style="color:var(--purple)">III. Longevity</div>
             <h2>Life Expectancy<br>Gains</h2>
             <p>Advancements in nutrition, sanitation, and state schemes (like BSKY) have pushed average life expectancy upward, with women exhibiting strong relative gains between NFHS surveys.</p>
@@ -366,7 +351,7 @@
             <div class="big-num-label">Female Life Expectancy (NFHS-5)</div>
         </div>
 
-        <div class="story-step" data-metric="mortality" data-story-id="district-mortality">
+        <div class="story-step" data-metric="mortality">
             <div class="step-idx" style="color:var(--red)">IV. Health</div>
             <h2>Decline in<br>Mortality Rates</h2>
             <p>Targeted maternal and child healthcare schemes have significantly brought down child mortality indicators. Double bars compare rates from NFHS-4 against NFHS-5 profiles.</p>
@@ -495,15 +480,6 @@
         }, { threshold: 0.6 });
 
         document.querySelectorAll('.story-step').forEach(s => observer.observe(s));
-
-        // Storyteller: narrates each chart for this district from the same JSON
-        if (window.SoochanaStoryteller) {
-            SoochanaStoryteller.init({
-                geography: { level: 'district', id: validDistId, name: validDistId },
-                load: url => DataLoader.loadJSON(url),
-                dock: 'right'   // the sticky chart is on the left
-            });
-        }
 
     }).catch(err => {
         console.error("Error loading district datasets:", err);
@@ -643,21 +619,6 @@
         </details>`;
     }
 
-    /* Dossier slides that have a narrated counterpart. The Flourish
-       iframes do not expose their data, so the storyteller reads the same
-       numbers from datasets/*.json instead. */
-    function storyIdForSlide(title) {
-        const t = String(title || '');
-        // Age structure first: its title also contains "Population Trends"
-        if (/Young-Age|Working Age|Elderly/i.test(t)) return 'district-age-structure';
-        if (/Population Trends/i.test(t)) return 'district-population';
-        if (/Fertility/i.test(t)) return 'district-tfr';
-        if (/Sex Ratio/i.test(t)) return 'district-sex-ratio';
-        if (/Pyramid/i.test(t)) return 'district-pyramid';
-        if (/Mortality/i.test(t)) return 'district-mortality';
-        return null;
-    }
-
     function renderDistrictDossier(distName, d) {
         const container = d3.select("#dossier-cards-grid");
         if (container.empty()) return;
@@ -714,7 +675,6 @@
             }
 
             container.append("div")
-                .attr("data-story-id", storyIdForSlide(slide.title))
                 .style("background", "var(--panel)")
                 .style("border", "1px solid var(--border)")
                 .style("border-radius", "20px")
