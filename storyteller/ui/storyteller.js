@@ -299,13 +299,97 @@
 
   function seenKey(id) { return id + '|' + (config.geography && config.geography.id) + '|' + JSON.stringify(state.storyState[id] || {}); }
 
-  function narrationFor(ds, id) {
+  function narrationFor(ds, id, mode) {
     var st = state.storyState[id] || {};
-    var key = [id, state.mode, JSON.stringify(st)].join('|');
+    var m = mode || state.mode;
+    var key = [id, m, JSON.stringify(st)].join('|');
     if (!narrationCache.has(key)) {
-      narrationCache.set(key, root.SoochanaInsight.narrate.buildNarration(ds, { mode: state.mode, focusYear: st.year }));
+      narrationCache.set(key, root.SoochanaInsight.narrate.buildNarration(ds, { mode: m, focusYear: st.year }));
     }
     return narrationCache.get(key);
+  }
+
+  /* ── in-section perception panels ─────────────────────────────────
+     Each narrated section gets its own panel, placed under the
+     section's heading, which pops in as the section scrolls into view.
+     It carries the full perception: headline, plain explanation, the
+     precise numbers, key points, why it matters and the source. */
+  function inlineSlot(el) {
+    var slot = el.querySelector('[data-story-slot]');
+    if (slot) return { parent: slot, before: null };
+    var heading = el.querySelector('h2, h3');
+    if (heading && heading.parentNode) {
+      /* after the heading; if it sits in a flex row, after that row */
+      var anchor = heading;
+      while (anchor.parentNode !== el && anchor.parentNode && anchor.parentNode !== doc.body) anchor = anchor.parentNode;
+      return anchor.parentNode === el ? { parent: el, before: anchor.nextSibling } : { parent: el, before: null };
+    }
+    return { parent: el, before: null };
+  }
+
+  function ensureInline(el) {
+    if (el.__sstInline && el.contains(el.__sstInline)) return el.__sstInline;
+    var box = h('aside', { class: 'sst-inline', 'aria-label': 'What this chart shows' });
+    box.innerHTML =
+      '<div class="sst-inline-top"><span class="sst-inline-tag"><span class="sst-dot" aria-hidden="true"></span>Perception</span>' +
+      '<span class="sst-badge"></span></div>' +
+      '<h4 class="sst-inline-head"></h4>' +
+      '<p class="sst-inline-text"></p>' +
+      '<p class="sst-inline-data"><strong>In numbers:</strong> <span></span></p>' +
+      '<ul class="sst-points"></ul>' +
+      '<details class="sst-why"><summary>Why this matters</summary><p></p></details>' +
+      '<div class="sst-inline-foot"><span class="sst-source"></span>' +
+      '<button type="button" class="sst-inline-listen">' + icon('play') + '<span>Listen</span></button></div>';
+    var slot = inlineSlot(el);
+    slot.parent.insertBefore(box, slot.before);
+    box.querySelector('.sst-inline-listen').addEventListener('click', function () {
+      if (!box.__narration) return;
+      state.userPaused = false;
+      if (voice.state() === 'speaking') { voice.cancel(); return; }
+      speak(box.__narration);
+    });
+    el.__sstInline = box;
+    return box;
+  }
+
+  function renderInline(el, opts) {
+    opts = opts || {};
+    var id = el.getAttribute('data-story-id');
+    if (!NS.stories.get(id)) return;
+    var key = id + '|' + JSON.stringify(state.storyState[id] || {});
+    if (el.__sstInlineKey === key && !opts.force) return;
+    el.__sstInlineKey = key;
+    NS.stories.build(id, storyContext(id)).then(function (ds) {
+      if (!ds) { el.__sstInlineKey = null; return; }
+      var story = narrationFor(ds, id, 'story');
+      var data = narrationFor(ds, id, 'data');
+      var box = ensureInline(el);
+      box.__narration = story;
+      var q = function (sel) { return box.querySelector(sel); };
+      q('.sst-badge').textContent = STATUS_LABEL[story.dataStatus] || 'Observed';
+      q('.sst-badge').classList.toggle('is-projected', /projected/.test(story.dataStatus));
+      q('.sst-inline-head').textContent = story.headline;
+      q('.sst-inline-text').textContent = story.narration;
+      q('.sst-inline-data span').textContent = data.narration;
+      q('.sst-inline-data').hidden = !data.narration || data.narration === story.narration;
+      var pts = q('.sst-points');
+      pts.innerHTML = '';
+      (story.keyPoints || []).forEach(function (k) { pts.appendChild(h('li', { text: k })); });
+      pts.hidden = !story.keyPoints || !story.keyPoints.length;
+      q('.sst-why').hidden = !story.importance;
+      q('.sst-why p').textContent = story.importance || '';
+      q('.sst-source').textContent = 'Source: ' + story.sourceLabel.replace(/\.$/, '') + '.' + (story.sourceNote ? ' ' + story.sourceNote : '');
+      q('.sst-inline-listen').hidden = !voice || !voice.isSupported();
+      box.classList.remove('is-in');
+      void box.offsetWidth;                   /* restart the pop-in */
+      box.classList.add('is-in');
+    });
+  }
+
+  function renderInlineFor(id) {
+    doc.querySelectorAll('[data-story-id="' + id + '"]').forEach(function (el) {
+      if (el.__sstInline) renderInline(el, { force: true });
+    });
   }
 
   function speak(n) {
@@ -455,7 +539,7 @@
     var goto = btn.getAttribute('data-goto');
     if (goto) { scrollToStory(goto); return; }
     switch (act) {
-      case 'collapse': setCollapsed(!state.collapsed); break;
+      case 'collapse': state.userExpanded = state.collapsed; setCollapsed(!state.collapsed); break;
       case 'close': setClosed(true); break;
       case 'play': {
         var vs = voice.state();
@@ -483,7 +567,7 @@
         if (state.autoNarrate && state.currentSection && current && current.storyId !== state.currentSection) narrate(state.currentSection);
         break;
       case 'transcript': openTranscript(); break;
-      case 'overview': narrateOverview({ manual: true }); break;
+      case 'overview': if (state.collapsed) { state.collapsed = false; } narrateOverview({ manual: true }); break;
       case 'pending':
         if (state.currentSection) narrate(state.currentSection, { manual: true });
         break;
@@ -561,6 +645,7 @@
     sectionEls[id] = el;
     if (!changed) return;
     if (state.closed) return;
+    if (config.inline && !state.userExpanded && !state.collapsed) { state.collapsed = true; syncControls(); }
     if (!state.autoNarrate && current) {
       var def = NS.stories.get(id);
       els.pending.textContent = 'Narrate this section: ' + def.title;
@@ -587,7 +672,9 @@
     for (var t = 0; t <= 1.0001; t += 0.05) thresholds.push(Math.min(1, +t.toFixed(2)));
     io = new root.IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        scores.set(e.target, e.isIntersecting ? visibility(e.target, e.boundingClientRect) : 0);
+        var sc = e.isIntersecting ? visibility(e.target, e.boundingClientRect) : 0;
+        scores.set(e.target, sc);
+        if (config.inline && sc >= config.inlineVisible) renderInline(e.target);
       });
       pick();
     }, { threshold: thresholds });
@@ -615,6 +702,8 @@
       sources: {},
       dwellMs: 1000,
       minVisible: 0.55,
+      inline: true,          /* perception panels inside each section */
+      inlineVisible: 0.2,    /* pop the panel in once 20% of the section shows */
       dock: 'left',
       llmEndpoint: null,
       pregeneratedUrl: null
@@ -654,6 +743,7 @@
     /* Charts may re-render with the same filter (odisha.html redraws the
        pyramid each time it scrolls into view); only a real change counts. */
     if (JSON.stringify(state.storyState[id]) === before) return;
+    if (started && config.inline) renderInlineFor(id);
     if (started && cardStory() === id && !state.closed) narrate(id, { manual: true });
   }
 
@@ -676,6 +766,8 @@
     getState: getState,
     scan: scan,
     narrate: function (id) { return narrate(id, { manual: true }); },
+    /* (re)draw the in-section perception panel for a section element */
+    showPerception: function (el) { if (el && config) renderInline(el, { force: true }); },
     registerSource: function (name, data) { if (config) config.sources[name] = data; }
   };
   Object.assign(NS, api);

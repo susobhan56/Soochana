@@ -63,6 +63,12 @@
       name: 'Census of India (1901–2011); later values are projections',
       note: 'Growth rates are computed from the state totals in datasets/state_demographics.json. The chart does not name its projection source.'
     },
+    /* The state sheet behind index.html's slides, which cite it as
+       "Source: Census, Population Projections using Bayesian Approach, ORGI". */
+    stateSheet: {
+      name: 'Census of India; population projections using a Bayesian approach (ORGI)',
+      note: 'Values up to 2011 are Census counts; later values are projections.'
+    },
     stateCensusSeries: {
       name: 'Census of India (to 2011); later values are projections',
       note: 'The chart does not name its projection source.'
@@ -353,7 +359,7 @@
           : { id: 'population', label: 'Population', role: 'population', unitKind: 'count', format: 'persons',
               values: rows.map(function (r) { return { x: r.year, y: r.total, status: afterCensus(r.year) }; }) };
         return {
-          source: SOURCES.statePopulation,
+          source: data && data.popGrowth ? SOURCES.statePopulation : SOURCES.stateSheet,
           series: [
             level,
             { id: 'growth', label: 'Annual growth rate', role: 'growth_rate', unitKind: 'rate', format: 'growth', minChange: 0.15,
@@ -373,7 +379,7 @@
         /* Pages without the inline chart data (index.html) use the state sheet. */
         return ctx.load(PATHS.stateDemographics).then(function (st) {
           if (!st || !st.pyramids) return null;
-          return { source: SOURCES.stateCensusSeries, series: [], pyramid: { years: st.pyramids, statusOf: afterCensus } };
+          return { source: SOURCES.stateSheet, series: [], pyramid: { years: st.pyramids, statusOf: afterCensus } };
         });
       }
       var years = {};
@@ -392,7 +398,7 @@
         return ctx.load(PATHS.stateDemographics).then(function (st) {
           if (!st || !st.pyramids) return null;
           return {
-            source: SOURCES.stateCensusSeries,
+            source: SOURCES.stateSheet,
             series: I().pyramid.toAgeStructureSeries({ years: st.pyramids, statusOf: afterCensus }, { geography: ctx.geography.name })
           };
         });
@@ -418,7 +424,7 @@
           var rows = stateRows(st).filter(function (r) { return r.sex_ratio; });
           if (!rows.length) return null;
           return {
-            source: SOURCES.stateCensusSeries,
+            source: SOURCES.stateSheet,
             series: [{
               id: 'sex_ratio', label: 'Sex ratio', role: 'sex_ratio', unitKind: 'ratio', format: 'sexratio', minChange: 10,
               references: [{ value: 1000, label: 'parity' }],

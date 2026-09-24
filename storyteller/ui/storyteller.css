@@ -81,6 +81,8 @@
 }
 .sst.sst-collapsed .sst-peek { display: block; }
 .sst.sst-collapsed .sst-head-spacer { display: none; }
+.sst.sst-collapsed [data-act="overview"], .sst.sst-collapsed [data-act="transcript"] { display: none; }
+.sst.sst-collapsed .sst-brand { display: none; }
 
 .sst-body {
   padding: 12px 16px 14px;
@@ -301,3 +303,79 @@
 }
 
 @media print { .sst, .sst-launcher, .sst-transcript { display: none !important; } }
+
+
+/* ── In-section perception panel ─────────────────────────────────── */
+.sst-inline {
+  --sst-accent: var(--teal, #1a535c);
+  --sst-accent-soft: rgba(26, 83, 92, 0.08);
+  --sst-line: var(--border, rgba(0, 0, 0, 0.09));
+  --sst-panel: var(--panel, #f2f1ec);
+  --sst-projected: #8f5f00;
+  margin: 14px 0 18px;
+  padding: 16px 18px 14px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--sst-line);
+  border-left: 4px solid var(--sst-accent);
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
+  color: var(--ink-body, #334155);
+  font-family: var(--font-sans, "General Sans", "Outfit", system-ui, sans-serif);
+  font-size: 14.5px;
+  line-height: 1.6;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.sst-inline.is-in { opacity: 1; transform: none; }
+.sst-inline [hidden] { display: none !important; }
+.sst-inline-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.sst-inline-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--sst-accent);
+}
+.sst-inline .sst-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sst-accent); box-shadow: 0 0 0 3px var(--sst-accent-soft); }
+.sst-inline .sst-badge {
+  font-size: 11px; padding: 1px 8px; border-radius: 999px;
+  border: 1px solid var(--sst-line); background: var(--sst-panel); color: var(--ink-body, #334155);
+}
+.sst-inline .sst-badge.is-projected { color: var(--sst-projected); border-color: rgba(143, 95, 0, 0.3); background: rgba(212, 160, 23, 0.08); }
+.sst-inline-head {
+  margin: 4px 0 6px; font-size: 18px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em;
+  color: var(--ink-heading, #0f172a);
+}
+.sst-inline-text { margin: 0 0 8px; font-size: 15px; color: var(--ink-heading, #0f172a); }
+.sst-inline-data { margin: 0 0 8px; font-size: 13.5px; color: var(--ink-body, #334155); }
+.sst-inline-data strong { font-weight: 600; color: var(--sst-accent); }
+.sst-inline .sst-points { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.sst-inline .sst-points li { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--sst-accent-soft); color: var(--sst-accent); }
+.sst-inline .sst-why { margin-top: 10px; border-top: 1px dashed var(--sst-line); padding-top: 8px; }
+.sst-inline .sst-why summary { cursor: pointer; font-size: 13px; font-weight: 500; color: var(--sst-accent); list-style: none; }
+.sst-inline .sst-why summary::-webkit-details-marker { display: none; }
+.sst-inline .sst-why summary::before { content: "+ "; }
+.sst-inline .sst-why[open] summary::before { content: "\2212  "; }
+.sst-inline .sst-why p { margin: 6px 0 0; font-size: 13px; }
+.sst-inline-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 10px; }
+.sst-inline .sst-source { font-size: 12px; color: var(--ink-subtle, #64748b); }
+.sst-inline-listen {
+  flex: none; display: inline-flex; align-items: center; gap: 6px;
+  font: inherit; font-size: 13px; color: var(--sst-accent);
+  background: transparent; border: 1px solid var(--sst-line); border-radius: 8px;
+  min-height: 32px; padding: 4px 10px; cursor: pointer;
+}
+.sst-inline-listen:hover { background: var(--sst-panel); }
+.sst-inline-listen:focus-visible { outline: 2px solid var(--sst-accent); outline-offset: 2px; }
+.sst-inline-listen svg { width: 14px; height: 14px; }
+
+@media (max-width: 640px) {
+  .sst-inline { padding: 14px; font-size: 14px; }
+  .sst-inline-head { font-size: 16.5px; }
+  .sst-inline-foot { flex-direction: column; align-items: flex-start; }
+  .sst-inline-listen { min-height: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sst-inline { transform: none; transition: opacity 0.2s linear; }
+}
+@media print { .sst-inline { opacity: 1; transform: none; box-shadow: none; } }
