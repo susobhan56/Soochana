@@ -41,6 +41,19 @@
     var yearEl   = opts.yearEl  || null;
     var shareEl  = opts.shareEl || null;
 
+    /* Colours default to the light theme; a page on a dark ground passes
+       its own through opts.palette (ripple is an "r, g, b" triple). */
+    var pal = opts.palette || {};
+    var C = {
+      youth:  pal.youth  || '#1a535c',
+      work:   pal.work   || '#2b5c68',
+      senior: pal.senior || '#bb4500',
+      eldest: pal.eldest || '#8e44ad',
+      hover:  pal.hover  || '#bb4500',
+      ripple: pal.ripple || '26, 83, 92',
+      label:  pal.label  || '#1e2530'
+    };
+
     var ctx = canvas.getContext('2d');
     if (!ctx) return { stop: function () {} };
 
@@ -116,9 +129,9 @@
 
         var isSenior = i >= 12; // 60+
         var isYouth  = i < 4;   // 0-19
-        var colorHex = isSenior 
-          ? (i >= 14 ? '#8e44ad' : '#bb4500')   // Purple / Coral
-          : (isYouth ? '#1a535c' : '#2b5c68');  // Deep Teal
+        var colorHex = isSenior
+          ? (i >= 14 ? C.eldest : C.senior)
+          : (isYouth ? C.youth : C.work);
 
         // Male nodes (left)
         for (var d = MAXDOTS - 1; d >= 0; d--) {
@@ -157,7 +170,7 @@
           x: 0, y: 0, z: 0,
           vx: 0, vy: 0, vz: 0,
           sx: 0, sy: 0, scale: 1,
-          alpha: 0, color: '#1a535c', rowIdx: r
+          alpha: 0, color: C.youth, rowIdx: r
         });
       }
       nodesState.push(rowArray);
@@ -191,7 +204,7 @@
         if (rip.alpha < 0.01 || rip.r > rip.maxR) {
           ripples.splice(sw, 1);
         } else {
-          ctx.strokeStyle = 'rgba(26, 83, 92, ' + (rip.alpha * 0.3) + ')';
+          ctx.strokeStyle = 'rgba(' + C.ripple + ', ' + (rip.alpha * 0.3) + ')';
           ctx.lineWidth = 1.5;
           ctx.beginPath();
           ctx.arc(rip.x, rip.y, rip.r, 0, Math.PI * 2);
@@ -274,7 +287,7 @@
             var nextH = nodesState[r2][c2 + 1];
             if (nextH.alpha > 0.05) {
               var lineAlpha = Math.min(curr.alpha, nextH.alpha) * (isRowHovered ? 0.6 : 0.22);
-              ctx.strokeStyle = isRowHovered ? '#bb4500' : curr.color;
+              ctx.strokeStyle = isRowHovered ? C.hover : curr.color;
               ctx.globalAlpha = lineAlpha;
               ctx.beginPath();
               ctx.moveTo(curr.sx, curr.sy);
@@ -287,7 +300,7 @@
             var nextV = nodesState[r2 + 1][c2];
             if (nextV.alpha > 0.05) {
               var lineAlphaV = Math.min(curr.alpha, nextV.alpha) * (isRowHovered ? 0.6 : 0.22);
-              ctx.strokeStyle = isRowHovered ? '#bb4500' : curr.color;
+              ctx.strokeStyle = isRowHovered ? C.hover : curr.color;
               ctx.globalAlpha = lineAlphaV;
               ctx.beginPath();
               ctx.moveTo(curr.sx, curr.sy);
@@ -307,7 +320,7 @@
 
           var nodeRadius = Math.max(1.1, (isRowHovered3 ? 3.8 : 2.6) * pNode.scale);
           ctx.globalAlpha = isRowHovered3 ? 1.0 : pNode.alpha;
-          ctx.fillStyle = isRowHovered3 ? '#bb4500' : pNode.color;
+          ctx.fillStyle = isRowHovered3 ? C.hover : pNode.color;
           ctx.beginPath();
           ctx.arc(pNode.sx, pNode.sy, nodeRadius, 0, Math.PI * 2);
           ctx.fill();
@@ -317,7 +330,7 @@
       // 3. Floating Editorial Axis Labels & Annotations
       ctx.globalAlpha = 0.55;
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#1e2530';
+      ctx.fillStyle = C.label;
 
       var topNode = nodesState[NUM_BANDS - 1][Math.floor(totalCols / 2)];
       var botNode = nodesState[0][Math.floor(totalCols / 2)];

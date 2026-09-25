@@ -8,9 +8,12 @@
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<!-- Outfit for the site; Anton, Merriweather and Hind for the welcome screen -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<!-- live population estimate + district map, used by the welcome screen -->
+<script src="soochana_live.js"></script>
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js"></script>
 <!-- Headline figures for the band and "Odisha in numbers": edit data/key_stats.js -->
@@ -312,25 +315,48 @@
       grid-column: 1 / -1;
     }
 </style>
+<!-- the Population Matters look, home page only; after the block above so it wins -->
+<link rel="stylesheet" href="home_pm.css">
 </head>
-<body>
+<body class="pm-home">
 
 <!-- ═══════════════════════════════════════════════
-     INTRO TITLE SEQUENCE
+     WELCOME — the first screen on opening the site: the live
+     population estimate over a faded district map. It stays until
+     the reader chooses, then the two panels part to reveal the page.
+     Shown once per browser session (see the script at the foot).
 ═══════════════════════════════════════════════ -->
-<div class="intro" id="intro" role="presentation">
+<div class="intro welcome" id="intro" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
   <div class="intro-panel intro-panel-top"></div>
   <div class="intro-panel intro-panel-bottom"></div>
   <div class="intro-seam"></div>
 
-  <div class="intro-stage">
-    <div class="intro-year" id="introYear">1901</div>
-    <div class="intro-num" id="introNum">10,302,917</div>
-    <div class="intro-title">Soochana</div>
-    <div class="intro-caption">Odisha · Twelve decades of census</div>
-  </div>
+  <div class="intro-stage welcome-stage">
+    <svg class="welcome-map" id="welcomeMap" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
 
-  <button class="intro-skip" id="introSkip" type="button">Skip intro</button>
+    <div class="welcome-inner">
+      <div class="welcome-brand w-rise">
+        <span class="welcome-dot" aria-hidden="true"></span>
+        <span class="welcome-name" id="welcomeTitle">Soochana</span>
+      </div>
+      <p class="welcome-tag w-rise" style="--i:1">From numbers to narrative</p>
+
+      <p class="welcome-kicker w-rise" style="--i:2"><span class="welcome-live" aria-hidden="true"></span>Odisha's population right now</p>
+      <div class="welcome-count w-rise" style="--i:2" id="welcomeCount">&nbsp;</div>
+
+      <p class="welcome-sub w-rise" style="--i:3">
+        More people live in Odisha than ever before, but the way the state grows has changed.
+        Families are smaller, people live longer, and growth is slowing district by district.
+        Each shift changes what Odisha will need from its schools, hospitals and jobs.
+      </p>
+      <p class="welcome-ask w-rise" style="--i:4">Ready to see how it happened?</p>
+      <div class="welcome-cta w-rise" style="--i:4">
+        <a href="explore.html#growth" class="btn-pill solid" id="welcomeGo">Start exploring</a>
+        <button type="button" class="btn-pill ghost" id="introSkip">Go to the home page</button>
+      </div>
+      <p class="welcome-note w-rise" style="--i:5" id="welcomeNote">An estimate from district population projections.</p>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════
@@ -374,6 +400,7 @@
     <div class="lander-cta">
       <a href="#state-stats" class="btn-pill solid">Odisha at a glance</a>
       <a href="district-health.html" class="btn-pill ghost">How healthy is your district?</a>
+      <a href="explore.html" class="btn-pill ghost">Take the guided tour</a>
     </div>
 
     <!-- COMPACT TOP DEMOGRAPHIC BATTLE BUTTONS -->
@@ -386,9 +413,9 @@
   <div class="lander-readout" aria-hidden="true">
     <div class="readout-title" style="letter-spacing: 0.005em; font-weight:700; color:var(--teal); margin-bottom:6px;">ODISHA AGE PYRAMID</div>
     <div class="readout-legend" style="display:flex; gap:12px; justify-content:flex-end; margin-bottom:8px; font-size:11px;">
-      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#1a535c; margin-right:4px;"></span>Youth (0–19)</span>
-      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#2b5c68; margin-right:4px;"></span>Workforce</span>
-      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#bb4500; margin-right:4px;"></span>60+ Senior</span>
+      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#9fd3f0; margin-right:4px;"></span>Youth (0–19)</span>
+      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#d7ecf7; margin-right:4px;"></span>Workforce</span>
+      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#f08a4b; margin-right:4px;"></span>60+ Senior</span>
     </div>
     <div>CENSUS METRIC <b id="dfYear">2021</b></div>
     <div>SHARE AGED 60+ <b id="dfShare">11.1%</b></div>
@@ -464,6 +491,83 @@
 })();
 </script>
 
+<script>
+/* "Odisha in numbers": each figure counts up, gently, the first time it
+   scrolls into view. The text from data/key_stats.js is put back exactly
+   at the end, so '₹9.88L Cr' or '155,707 km²' reads just as written; only
+   the motion is added. Figures without a number (and the sex-ratio tile,
+   which fills itself later) are left alone. */
+(function () {
+  var cells = [].slice.call(document.querySelectorAll('#state-stats .stat-value'));
+  if (!cells.length || !('IntersectionObserver' in window)) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var NUM = /^(\D*?)(\d[\d,]*(?:\.\d+)?)(.*)$/;
+  var MS = 2400;
+  function ease(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
+
+  function parse(el) {
+    if (el.id === 'stat-sexratio') return null;
+    var text = el.textContent, m = text.match(NUM);
+    if (!m) return null;
+    var raw = m[2];
+    return {
+      el: el, text: text, pre: m[1], suf: m[3],
+      val: parseFloat(raw.replace(/,/g, '')),
+      dec: (raw.split('.')[1] || '').length,
+      grouped: raw.indexOf(',') !== -1,
+      locale: /\d,\d\d,\d{3}/.test(raw) ? 'en-IN' : 'en-US'
+    };
+  }
+
+  function show(p, v) {
+    var n = p.grouped
+      ? v.toLocaleString(p.locale, { minimumFractionDigits: p.dec, maximumFractionDigits: p.dec })
+      : v.toFixed(p.dec);
+    p.el.textContent = p.pre + n + p.suf;
+  }
+
+  function run(p, delay) {
+    show(p, 0);
+    setTimeout(function () {
+      var start = null;
+      function frame(ts) {
+        if (start === null) start = ts;
+        var t = Math.min(1, (ts - start) / MS);
+        if (t < 1) { show(p, p.val * ease(t)); requestAnimationFrame(frame); }
+        else p.el.textContent = p.text;
+      }
+      requestAnimationFrame(frame);
+    }, delay);
+  }
+
+  var items = cells.map(parse).filter(Boolean);
+  var pending = items.slice();
+
+  function start(p) {
+    var i = pending.indexOf(p);
+    if (i === -1) return;
+    pending.splice(i, 1);
+    obs.unobserve(p.el);
+    /* tiles in one row follow each other, left to right */
+    var row = p.el.closest('.stat-strip');
+    var k = row ? [].indexOf.call(row.querySelectorAll('.stat-value'), p.el) : 0;
+    run(p, k * 140);
+  }
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      items.forEach(function (p) { if (p.el === e.target) start(p); });
+    });
+  }, { threshold: 0.35 });
+
+  /* Each figure keeps its real value until it is seen, so if the observer
+     never fires (a jump past it, an old browser) nothing is left at zero. */
+  items.forEach(function (p) { obs.observe(p.el); });
+})();
+</script>
+
 <!-- ═══════════════════════════════════════════════
      SCROLLYTELLING MAP SECTION
 ═══════════════════════════════════════════════ -->
@@ -536,11 +640,11 @@
     <div class="kicker">Below replacement</div>
     <p class="editorial-band-quote" id="eb-fert">Odisha fell below replacement fertility <em>ahead of</em> the national average.</p>
     <p class="editorial-band-note">
-      A total fertility rate of 1.8 against a replacement level of 2.1 means each generation is now
-      smaller than the one before it. Khordha has already reached 1.4. Momentum in the existing age
+      A total fertility rate of 1.7 against a replacement level of 2.1 means each generation is now
+      smaller than the one before it. Momentum in the existing age
       structure keeps the headcount climbing for another decade, and then it does not.
     </p>
-    <div class="editorial-band-source">NFHS-5 · TFR 1.8 · replacement level 2.1</div>
+    <div class="editorial-band-source">NFHS-6 · TFR 1.7 · replacement level 2.1</div>
   </div>
 </section>
 
@@ -559,7 +663,7 @@
       opposite end of the age structure. The cohort that entered the workforce in the 1980s reaches
       sixty within this decade, and the support ratio that funded their working lives inverts behind them.
     </p>
-    <div class="editorial-band-source">Population projections 2011–2036, ORGI · 15.9% aged 60+</div>
+    <div class="editorial-band-source">Population projections using the Bayesian Approach, 2011–2036, ORGI · 15.9% aged 60+</div>
   </div>
 </section>
 
@@ -584,7 +688,7 @@
         <img data-art="population-aerial" alt="Aerial view of a dispersed crowd casting long shadows" decoding="async">
       </figure>
       <div class="editorial-frame-label" style="color: var(--blue);">Scale</div>
-      <p class="editorial-frame-text"><b>46.25 million</b> projected population 2021. India's eleventh most populous state, spread across thirty districts.</p>
+      <p class="editorial-frame-text"><b>4.6 Cr</b> projected population 2021. India's eleventh most populous state, spread across thirty districts.</p>
     </article>
 
     <article class="editorial-frame">
@@ -600,7 +704,7 @@
         <img data-art="health-infrastructure" alt="An intravenous drip stand hung with hospital buildings in place of bags" decoding="async">
       </figure>
       <div class="editorial-frame-label" style="color: var(--teal);">Health systems</div>
-      <p class="editorial-frame-text">Biju Swasthya Kalyan Yojana reaches <b>9.6 million</b> families. Infant mortality has fallen to <b>28</b> per thousand live births.</p>
+      <p class="editorial-frame-text">Biju Swasthya Kalyan Yojana reaches <b>96 Lakhs Families</b>. Infant mortality has fallen to <b>28</b> per thousand live births.</p>
     </article>
 
     <article class="editorial-frame">
@@ -640,7 +744,7 @@
         <img data-art="density-crowd" alt="A tangled ball of figures of many ages pressed together" decoding="async">
       </figure>
       <div class="editorial-frame-label" style="color: var(--orange);">Dependency</div>
-      <p class="editorial-frame-text">As the over-sixty share climbs toward <b>15.9%</b> by 2036, the ratio of earners to dependents tightens at both ends at once.</p>
+      <p class="editorial-frame-text">As the over-sixty share climbs toward <b>15.9%</b> by 2036, the ratio of earners to dependents is expected to tighten at both ends at once.</p>
     </article>
 
     <article class="editorial-frame is-wide">
@@ -695,7 +799,7 @@
 <!-- ═══════════════════════════════════════════════
      ODISHA DEMOGRAPHIC & DEVELOPMENT LANDSCAPE (11-SECTION SUITE)
 ═══════════════════════════════════════════════ -->
-<section style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 40px max(20px, 4vw); box-sizing: border-box;">
+<section class="pm-dash" style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 40px max(20px, 4vw); box-sizing: border-box;">
   <div style="margin-bottom: 18px;">
     <div class="label" style="color: var(--teal); margin-bottom: 12px;">Strategic Demographic Dashboard</div>
     <h2 style="font-family: var(--serif); font-size: var(--fs-h2); color: var(--blue); margin: 4px 0 0;">
@@ -761,7 +865,12 @@ function startField() {
   var opts = {
     yearEl:  document.getElementById('dfYear'),
     shareEl: document.getElementById('dfShare'),
-    loop:    true
+    loop:    true,
+    /* light dots for the dark hero (home_pm.css) */
+    palette: document.body.classList.contains('pm-home') ? {
+      youth: '#9fd3f0', work: '#d7ecf7', senior: '#f08a4b', eldest: '#f4c534',
+      hover: '#f4c534', ripple: '255, 255, 255', label: '#ffffff'
+    } : null
   };
   if (window.dotfield3d) {
     window.dotfield3d(canvas, opts);
@@ -771,66 +880,92 @@ function startField() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   2. INTRO TITLE SEQUENCE
+   2. WELCOME SCREEN
+   The live estimate (soochana_live.js) over a faded district map.
+   It waits for the reader: "Start exploring" goes to the guided tour,
+   "Go to the home page" (or Esc) parts the panels onto this page.
+   Once seen, it is not shown again for the rest of the browser
+   session, so moving around the site does not replay it. A link
+   straight to a section (index.html#state-stats) skips it too.
    ───────────────────────────────────────────────────────────── */
 (function () {
+  var KEY = 'soochana-welcome-seen';
   var intro  = document.getElementById('intro');
   var lander = document.getElementById('lander');
-  var yearEl = document.getElementById('introYear');
-  var numEl  = document.getElementById('introNum');
-  var TRENDS = (window.dotfield && window.dotfield.TRENDS) ? window.dotfield.TRENDS : [
-    [1901, 10302917], [1911, 11378875], [1921, 11158586], [1931, 12491056],
-    [1941, 13767988], [1951, 14645946], [1961, 17548846], [1971, 21944615],
-    [1981, 26370271], [1991, 31659736], [2001, 36804660], [2011, 41974218],
-    [2021, 46254277]
-  ];
-  var fmt = function (n) { return (n || 0).toLocaleString('en-IN'); };
+  var L = window.SoochanaLive;
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (!intro || reduced) {
-    if (intro) intro.style.display = 'none';
+  var seen = false;
+  try { seen = sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+  function remember() { try { sessionStorage.setItem(KEY, '1'); } catch (e) {} }
+
+  function openPage() {
     if (lander) lander.classList.add('in');
     startField();
+  }
+
+  if (!intro || seen || location.hash.length > 1) {
+    if (intro) intro.classList.add('done');
+    openPage();
     return;
   }
 
-  intro.classList.add('go');
-
-  var idx = 0;
-  var totalTicks = TRENDS.length;
-  var stepTime = 160;
-
-  var timer = setInterval(function () {
-    if (idx < totalTicks) {
-      yearEl.textContent = TRENDS[idx][0];
-      numEl.textContent  = fmt(TRENDS[idx][1]);
-      idx++;
-    } else {
-      clearInterval(timer);
-      intro.classList.add('title');
-      setTimeout(dismiss, 1200);
-    }
-  }, stepTime);
-
-  function dismiss() {
-    intro.classList.add('clear');
-    setTimeout(function() {
-      intro.classList.add('part');
-      if (lander) lander.classList.add('in');
-      startField();
-      setTimeout(function () {
-        intro.classList.add('done');
-      }, 1100);
-    }, 400);
-  }
-
+  var root = document.documentElement;
+  root.classList.add('welcome-open');
+  var goBtn = document.getElementById('welcomeGo');
   var skipBtn = document.getElementById('introSkip');
-  if (skipBtn) {
-    skipBtn.addEventListener('click', function () {
-      clearInterval(timer);
-      dismiss();
+  var stopCount = function () {};
+  var closed = false;
+
+  /* let the first frame paint, then stage everything in */
+  setTimeout(function () {
+    intro.classList.add('go');
+    try { goBtn.focus({ preventScroll: true }); } catch (e) {}
+  }, 30);
+
+  if (L) {
+    L.load().then(function () {
+      if (closed) return;
+      var paths = L.drawMap(document.getElementById('welcomeMap'));
+      L.paintMap(paths, L.yearNow());
+      document.getElementById('welcomeNote').textContent = L.paceNote();
+      /* start counting once the number has faded in */
+      setTimeout(function () {
+        if (!closed) stopCount = L.countUp(document.getElementById('welcomeCount'), { ms: 7000 });
+      }, reduced ? 0 : 1200);
+    }).catch(function () {
+      document.getElementById('welcomeCount').textContent = '4.7 crore';
     });
   }
+
+  function dismiss() {
+    if (closed) return;
+    closed = true;
+    remember();
+    document.removeEventListener('keydown', onKey);
+    intro.classList.add('clear');
+    setTimeout(function () {
+      stopCount();
+      root.classList.remove('welcome-open');
+      intro.classList.add('part');
+      openPage();
+      setTimeout(function () { intro.classList.add('done'); }, 1700);
+    }, reduced ? 0 : 700);
+  }
+
+  function onKey(e) {
+    if (e.key === 'Escape') { dismiss(); return; }
+    /* keep Tab inside the welcome screen while it is open */
+    if (e.key === 'Tab') {
+      var first = goBtn, last = skipBtn;
+      if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+    }
+  }
+
+  document.addEventListener('keydown', onKey);
+  skipBtn.addEventListener('click', dismiss);
+  goBtn.addEventListener('click', remember);
 })();
 </script>
 

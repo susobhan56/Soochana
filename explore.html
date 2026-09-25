@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore Odisha · Soochana</title>
+<meta name="description" content="A guided tour of Odisha's population: a live estimate, seven decades of district growth on one map, a changing age pyramid, your district's story and two quick guessing games.">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- tour type: Anton (display), Merriweather (reading), Hind (labels) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="explore.css">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<!-- in <head> and not deferred, so the saved text size applies before first paint -->
+<script src="ui.js"></script>
+<script src="soochana_live.js" defer></script>
+<script src="share_card.js" defer></script>
+<script src="explore.js" defer></script>
+</head>
+<body class="ex-body" data-scene="start">
+
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+      <div style="width:10px; height:10px; background:var(--orange); border-radius:50%;"></div>
+      <div>
+        <h1 style="line-height:1; margin:0;">Soochana</h1>
+        <div style="font-family:var(--mono); font-size:10px; letter-spacing: 0.005em; color:var(--muted); text-transform: none; margin-top:3px; font-weight:600;">from numbers to narrative</div>
+      </div>
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap:12px;">
+    <a href="index.html" class="btn-elegant">Odisha at a glance</a>
+    <a href="explore.html" class="btn-elegant" aria-current="page">Explore</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="about.html" class="btn-elegant">About Us</a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     EXPLORE — one screen per chapter, moved with the arrows.
+     The map layer stays put between chapters so it can carry
+     the story from the live count into the year slider.
+═══════════════════════════════════════════════ -->
+<main class="ex" id="ex" data-scene="start">
+
+  <div class="ex-map" id="exMap" aria-hidden="true">
+    <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="ex-map-status" id="exMapStatus">Loading the map…</div>
+  </div>
+  <div class="ex-tip" id="exTip" role="tooltip" hidden></div>
+
+  <!-- 1 · Odisha today -->
+  <section class="ex-scene" data-scene="start" aria-labelledby="exStartHead">
+    <div class="ex-start">
+      <h2 class="ex-display ex-rise" id="exStartHead" tabindex="-1">Odisha's population right now</h2>
+      <div class="ex-counter ex-rise" id="exCounter" style="--i:1" aria-live="off">&nbsp;</div>
+      <p class="ex-start-sub ex-rise" style="--i:2">
+        More people live in Odisha than ever before, but the way the state grows has changed.
+        Families are smaller, people live longer, and growth is slowing district by district.
+        Each shift changes what Odisha will need from its schools, hospitals and jobs.
+      </p>
+      <p class="ex-start-ask ex-rise" style="--i:3">Ready to see how it happened?</p>
+      <button type="button" class="btn-pill solid ex-go ex-rise" style="--i:4" data-go="growth">Start exploring</button>
+      <p class="ex-note ex-rise" style="--i:5" id="exCounterNote">An estimate from district population projections.</p>
+    </div>
+  </section>
+
+  <!-- 2 · Seven decades -->
+  <section class="ex-scene ex-scene-growth" data-scene="growth" aria-labelledby="exGrowthHead">
+    <div class="ex-growth-head">
+      <h2 class="ex-display" id="exGrowthHead" tabindex="-1">Odisha's population in <span id="exYearWord">1951</span>: <span id="exYearPop">–</span></h2>
+      <div class="ex-growth-num"><span class="ex-chip" id="exYearKind">Census count</span>
+        <button type="button" class="ex-play" id="exPlay" aria-pressed="false">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-play" d="M4 2.5v11l9-5.5z"/><path class="i-pause" d="M4 2.5h3v11H4zM9 2.5h3v11H9z"/></svg>
+          <span>Play</span>
+        </button>
+      </div>
+    </div>
+
+    <svg class="ex-chart" id="exChart" aria-hidden="true"></svg>
+
+    <p class="ex-caption" id="exCaption" aria-live="polite"></p>
+
+    <div class="ex-legend" aria-hidden="true">
+      <span>Fewer people</span><i></i><span>More people</span>
+    </div>
+
+    <div class="ex-slider" id="exSlider">
+      <div class="ex-bubble" id="exBubble" aria-hidden="true">1951</div>
+      <div class="ex-hint" id="exHint" aria-hidden="true">Slide the year to watch the districts grow</div>
+      <input type="range" id="exYear" min="1951" max="2036" step="1" value="1951"
+             aria-label="Year" aria-valuetext="1951">
+      <div class="ex-ticks" id="exTicks" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- 3 · Guess: growing older -->
+  <section class="ex-scene" data-scene="ageing" aria-labelledby="exAgeHead">
+    <div class="ex-guess">
+      <div class="ex-guess-copy">
+        <p class="ex-kicker ex-rise">Guess the number</p>
+        <p class="ex-lead ex-rise" style="--i:1">In 2021, <b>11 of every 100</b> people in Odisha were aged 60 or over.</p>
+        <h2 class="ex-display ex-rise" style="--i:2" id="exAgeHead" tabindex="-1">How many of every 100 will be 60 or over by 2036?</h2>
+
+        <div class="ex-guess-ctl ex-rise" style="--i:3" id="exAgeCtl">
+          <label for="exAgeGuess">Your guess: <b id="exAgeGuessOut">11</b> of 100</label>
+          <input type="range" id="exAgeGuess" min="0" max="40" step="1" value="11">
+          <button type="button" class="btn-pill solid" id="exAgeTell">Tell me</button>
+        </div>
+
+        <div class="ex-result" id="exAgeResult" aria-live="polite" hidden>
+          <p class="ex-result-big"><b>15.9 of every 100</b>, nearly one in six.</p>
+          <p id="exAgeVerdict"></p>
+          <p id="exAgeWhy"></p>
+          <p class="ex-result-links">
+            <button type="button" class="btn-pill solid ex-share" data-card="ageing">Share my result</button>
+            <a href="theme_detail.html?theme=ageing">Read more about ageing</a>
+            <button type="button" class="ex-link" id="exAgeAgain">Guess again</button>
+          </p>
+        </div>
+      </div>
+
+      <div class="ex-guess-art ex-rise" style="--i:2">
+        <div class="ex-people" id="exPeople" aria-hidden="true"></div>
+        <p class="ex-people-key" id="exPeopleKey"><span><i class="k-guess"></i>Your guess</span></p>
+      </div>
+    </div>
+    <p class="ex-source">Source: Population Projections for India and States 2011–2036 (Bayesian approach), ORGI.</p>
+  </section>
+
+  <!-- 4 · Watch it happen: the age pyramid -->
+  <section class="ex-scene" data-scene="pyramid" aria-labelledby="exPyrHead">
+    <div class="ex-pyr">
+      <div class="ex-pyr-copy">
+        <p class="ex-kicker ex-rise">Watch it happen</p>
+        <h2 class="ex-display ex-rise" style="--i:1" id="exPyrHead" tabindex="-1">Odisha is growing older</h2>
+        <p class="ex-lead ex-rise" style="--i:2">
+          Each bar is a five-year age group, as a share of everyone. As fewer babies are born and
+          people live longer, the base of the pyramid narrows and the top widens.
+        </p>
+        <div class="ex-pyr-ctl ex-rise" style="--i:3">
+          <label for="exPyrPlace">Show</label>
+          <select id="exPyrPlace"><option value="">All of Odisha</option></select>
+        </div>
+        <div class="ex-years ex-rise" style="--i:3" id="exPyrYears" role="group" aria-label="Year"></div>
+        <dl class="ex-pyr-stats ex-rise" style="--i:4">
+          <div class="is-old"><dt>Aged 60+</dt><dd id="exPyrOld">–</dd></div>
+          <div><dt>Aged 15–59</dt><dd id="exPyrWork">–</dd></div>
+          <div><dt>Under 15</dt><dd id="exPyrKids">–</dd></div>
+        </dl>
+      </div>
+      <div class="ex-pyr-art ex-rise" style="--i:2">
+        <svg class="ex-pyr-svg" id="exPyr" role="img" aria-labelledby="exPyrDesc"><desc id="exPyrDesc">Age pyramid</desc></svg>
+        <p class="ex-pyr-key" aria-hidden="true"><span><i class="k-men"></i>Men</span><span><i class="k-women"></i>Women</span><span><i class="k-old"></i>60 and over</span></p>
+      </div>
+    </div>
+    <p class="ex-source">Source: district population by five-year age group and sex, 2011–2036, from Soochana's district age dataset.</p>
+  </section>
+
+  <!-- 5 · Guess: fastest growth -->
+  <section class="ex-scene" data-scene="fastest" aria-labelledby="exFastHead">
+    <div class="ex-fast">
+      <p class="ex-kicker ex-rise">Pick a district</p>
+      <h2 class="ex-display ex-rise" style="--i:1" id="exFastHead" tabindex="-1">Which district will have grown the most between 1951 and 2036?</h2>
+      <p class="ex-lead ex-rise" style="--i:2">Compare each district's 2036 population with its population in 1951.</p>
+      <div class="ex-options" id="exOptions"></div>
+      <div class="ex-result" id="exFastResult" aria-live="polite" hidden>
+        <p class="ex-result-big" id="exFastBig"></p>
+        <p id="exFastWhy"></p>
+        <p class="ex-result-links">
+          <button type="button" class="btn-pill solid ex-share" data-card="fastest">Share my result</button>
+          <button type="button" class="ex-link" id="exFastAgain">Pick again</button>
+        </p>
+      </div>
+    </div>
+    <p class="ex-source">Source: Census of India 1951–2011 and district population projections to 2036, from Soochana's district population dataset.</p>
+  </section>
+
+  <!-- 6 · Find your district -->
+  <section class="ex-scene" data-scene="district" aria-labelledby="exDistHead">
+    <div class="ex-dist">
+      <div class="ex-dist-pick">
+        <p class="ex-kicker ex-rise">Find your district</p>
+        <h2 class="ex-display ex-rise" style="--i:1" id="exDistHead" tabindex="-1">How is your district changing?</h2>
+        <div class="ex-pyr-ctl ex-rise" style="--i:2">
+          <label for="exDistSel">District</label>
+          <select id="exDistSel"><option value="">Choose a district</option></select>
+        </div>
+        <p class="ex-note ex-rise" style="--i:2">Or tap it on the map.</p>
+        <svg class="ex-dist-map ex-rise" style="--i:3" id="exDistMap" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+      </div>
+
+      <div class="ex-dist-card" id="exDistCard" aria-live="polite">
+        <div class="ex-dc-empty" id="exDcEmpty">
+          <p>Choose a district to see how many people live there, how its age mix is shifting, and how it compares with the rest of Odisha.</p>
+        </div>
+        <div class="ex-dc-body" id="exDcBody" hidden>
+          <div class="ex-dc-a">
+            <h3 class="ex-display" id="exDcName"></h3>
+            <p class="ex-dc-rank" id="exDcRank"></p>
+            <div class="ex-dc-row">
+              <div class="ex-dc-stat"><b id="exDcPop">–</b><span>people by 2036</span></div>
+              <div class="ex-dc-stat"><b id="exDcGrowth">–</b><span>its 1951 size</span></div>
+            </div>
+            <svg class="ex-dc-spark" id="exDcSpark" aria-hidden="true"></svg>
+            <p class="ex-dc-spark-key" id="exDcSparkKey"></p>
+          </div>
+          <div class="ex-dc-b">
+            <p class="ex-dc-label">Age mix, 2011 and 2036</p>
+            <div class="ex-dc-age" id="exDcAge"></div>
+            <dl class="ex-dc-facts" id="exDcFacts"></dl>
+          </div>
+
+          <p class="ex-result-links">
+            <button type="button" class="btn-pill solid ex-share" data-card="district">Share this card</button>
+            <a id="exDcLink" href="district.html">Full district profile</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <p class="ex-source">Sources: Soochana's district datasets — population 1951–2036, age and sex 2011–2036, fertility (NFHS-4 and projections), life expectancy (NFHS-5).</p>
+  </section>
+
+  <!-- 7 · Keep exploring -->
+  <section class="ex-scene" data-scene="more" aria-labelledby="exMoreHead">
+    <div class="ex-more">
+      <p class="ex-kicker ex-rise">Keep exploring</p>
+      <h2 class="ex-display ex-rise" style="--i:1" id="exMoreHead" tabindex="-1">Choose a theme to learn more</h2>
+      <div class="ex-themes">
+        <a class="ex-theme ex-rise" style="--i:2" href="theme_detail.html?theme=demography"><img src="icons/demography.gif" alt=""><b>Demography</b><span>Births, deaths and the shape of the population</span></a>
+        <a class="ex-theme ex-rise" style="--i:3" href="theme_detail.html?theme=health"><img src="icons/health.gif" alt=""><b>Health</b><span>Mothers, children and care close to home</span></a>
+        <a class="ex-theme ex-rise" style="--i:4" href="theme_detail.html?theme=education"><img src="icons/education.gif" alt=""><b>Education</b><span>Schools, enrolment and learning</span></a>
+        <a class="ex-theme ex-rise" style="--i:5" href="theme_detail.html?theme=ageing"><img src="icons/ageing.gif" alt=""><b>Ageing</b><span>A state growing older, fast</span></a>
+        <a class="ex-theme ex-rise" style="--i:6" href="theme_detail.html?theme=migration"><img src="icons/urban.gif" alt=""><b>Migration &amp; Urbanization</b><span>Who moves, and to where</span></a>
+        <a class="ex-theme ex-rise" style="--i:7" href="theme_detail.html?theme=employment"><img src="icons/employement.gif" alt=""><b>Employment</b><span>Work for a changing workforce</span></a>
+      </div>
+      <div class="ex-more-cta ex-rise" style="--i:8">
+        <a href="index.html" class="btn-pill solid">Odisha at a glance</a>
+        <a href="district-health.html" class="btn-pill ghost">How healthy is your district?</a>
+        <button type="button" class="btn-pill ghost" id="exShare">Share this tour</button>
+        <button type="button" class="ex-link" data-go="start">Start again</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="ex-bar">
+    <nav class="ex-foot" aria-label="About this tour">
+      <a href="about.html">About this tool</a>
+      <a href="repository.html">Data sources</a>
+      <a href="index.html">Main site</a>
+    </nav>
+    <div class="ex-nav">
+      <button type="button" class="ex-arrow prev" id="exPrev" aria-label="Previous chapter">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <nav class="ex-dots" id="exDots" aria-label="Chapters"></nav>
+      <button type="button" class="ex-arrow next" id="exNext" aria-label="Next chapter">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <span class="ex-count" id="exCount" aria-hidden="true">1 / 7</span>
+  </div>
+
+  <div class="ex-toast" id="exToast" role="status" hidden></div>
+</main>
+
+</body>
+</html>

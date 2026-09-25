@@ -1,0 +1,490 @@
+/* ═══════════════════════════════════════════════════════════════════
+   HOME — the Population Matters look (index.html only)
+   Loaded after style.css and the page's own <style>, and scoped to
+   body.pm-home, so no other page changes. Same system as the tour
+   (explore.css): Anton for display, Merriweather for reading, Hind for
+   labels; white type on deep grounds, one ground per section, bright
+   blue pill buttons. Anything that holds a chart, a map or a table stays
+   a white card, so the data keeps the colours it was drawn in.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.pm-home {
+  --pm-display: 'Anton', 'Oswald', 'Arial Narrow', Impact, sans-serif;
+  --pm-read:    'Merriweather', Georgia, serif;
+  --pm-ui:      'Hind', 'Outfit', system-ui, sans-serif;
+
+  --pm-navy:   #0d2b45;
+  --pm-night:  #0a2236;
+  --pm-blue:   #1f6fa6;
+  --pm-ocean:  #0e4c6e;
+  --pm-teal:   #16587d;
+  --pm-purple: #7b4f8f;
+  --pm-green:  #2a6b54;
+  --pm-sky:    #0f9dde;
+  --pm-sky-hi: #36b4ee;
+  --pm-soft:   rgba(255, 255, 255, 0.86);
+  --pm-faint:  rgba(255, 255, 255, 0.68);
+  --pm-rule:   rgba(255, 255, 255, 0.14);
+  --pm-orange: #f08a4b;
+  --pm-yellow: #f4c534;
+  --pm-ease:   cubic-bezier(0.45, 0.05, 0.2, 1);
+
+  /* Type scale. Kept deliberately small: only the hero and a section's
+     heading are large; everything else sits close to reading size. */
+  --pm-t-hero:  calc(clamp(30px, 3.4vw, 48px) * var(--type-scale));
+  --pm-t-h2:    calc(clamp(22px, 2.1vw, 30px) * var(--type-scale));
+  --pm-t-h3:    calc(clamp(18px, 1.5vw, 22px) * var(--type-scale));
+  --pm-t-quote: calc(clamp(20px, 1.9vw, 27px) * var(--type-scale));
+  --pm-t-lead:  calc(clamp(15px, 1.15vw, 17px) * var(--type-scale));
+  --pm-t-body:  calc(15px * var(--type-scale));
+  --pm-t-small: calc(13px * var(--type-scale));
+
+  /* Labels and small UI across the page, charts included. style.css
+     resolves its aliases at :root, so each one is pointed here again. */
+  --font-sans: var(--pm-ui);
+  --sans: var(--pm-ui);
+  --serif: var(--pm-ui);
+  --mono: var(--pm-ui);
+  --font-geist: var(--pm-ui);
+  --font-geist-mono: var(--pm-ui);
+  --font-manrope: var(--pm-ui);
+  --font-inter: var(--pm-ui);
+  font-family: var(--pm-ui);
+
+  background: var(--pm-navy);
+  color: #fff;
+}
+
+/* White type is the default on these grounds, so every light surface
+   sets its ink back explicitly. Without this, text that relies on the
+   inherited colour (the dashboard's figures, tooltips) turns white on white. */
+.pm-home :is(.report-section-card, .report-index-container, .district-card,
+             .editorial-frame, #map-container, .tooltip, #soochana-chatbot) {
+  color: var(--ink-body);
+}
+
+.pm-home .report-section-card .stat-value { color: var(--ink-heading); }
+
+/* In the dashboard tiles the value reads as part of one line with its
+   label ("Area sq km: 155,707"), so it takes the label's size; weight
+   alone marks it out. */
+.pm-home .dossier-stat .stat-value {
+  font-size: inherit !important;
+  font-weight: 600 !important;
+  line-height: inherit;
+  color: var(--pm-blue) !important;   /* one colour for every value; 5.2:1 on white */
+}
+
+/* Every tile in a grid the same height: each row as tall as the tallest
+   tile anywhere in it. Only grids of figure tiles; the tribal-names grid
+   holds an expanding list and keeps its natural height. */
+.pm-home .dossier-stat-grid:has(> .stat-tile) {
+  align-items: stretch;
+  grid-auto-rows: 1fr;
+}
+
+/* every section: its own ground, a soft top-left light, hairline rules */
+.pm-home .lander,
+.pm-home .stat-hub,
+.pm-home .scrolly,
+.pm-home .editorial-band,
+.pm-home .editorial-gallery,
+.pm-home .timeline-section,
+.pm-home .pm-dash,
+.pm-home .full-section,
+.pm-home footer {
+  background-image: radial-gradient(ellipse 70% 55% at 15% 0%, rgba(255, 255, 255, 0.09), transparent 60%);
+  border-color: var(--pm-rule) !important;
+}
+
+.pm-home .lander                                   { background-color: var(--pm-navy); }
+.pm-home .stat-hub                                 { background-color: var(--pm-blue); }
+.pm-home .scrolly                                  { background-color: var(--pm-ocean); }
+.pm-home .editorial-band[aria-labelledby="eb-move"] { background-color: var(--pm-purple); }
+.pm-home .editorial-band[aria-labelledby="eb-fert"] { background-color: var(--pm-teal); }
+.pm-home .editorial-band[aria-labelledby="eb-age"]  { background-color: var(--pm-green); }
+.pm-home .editorial-gallery                        { background-color: var(--pm-blue); }
+.pm-home .timeline-section                         { background-color: var(--pm-navy); }
+.pm-home .pm-dash                                  { background-color: var(--pm-ocean) !important; }
+.pm-home .full-section                             { background-color: var(--pm-purple); }
+.pm-home footer                                    { background-color: var(--pm-night); }
+
+/* ── shared type ──────────────────────────────────────── */
+.pm-home :is(.stat-hub, .scrolly, .editorial-band, .editorial-gallery-head, .timeline-section, .pm-dash > div:first-child, .full-section > .label, footer) :is(.kicker, .label, .map-kicker, .step-idx),
+.pm-home .full-section > .label {
+  font-family: var(--pm-ui) !important;
+  font-size: calc(13px * var(--type-scale)) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--pm-faint) !important;
+}
+
+/* The pages write accent colours inline for a light ground. On these
+   grounds the same accents are lifted to lighter tints of themselves. */
+.pm-home :is(.scrolly .steps, .editorial-band, .timeline-section, .lander) [style*="--teal"]   { color: #9fd3f0 !important; }
+.pm-home :is(.scrolly .steps, .editorial-band, .timeline-section, .lander) [style*="--yellow"] { color: var(--pm-yellow) !important; }
+.pm-home :is(.scrolly .steps, .editorial-band, .timeline-section, .lander) [style*="--purple"] { color: #e3c6f0 !important; }
+.pm-home :is(.scrolly .steps, .editorial-band, .timeline-section, .lander) [style*="--orange"] { color: #ffc59e !important; }
+.pm-home :is(.scrolly .steps, .editorial-band, .timeline-section, .lander) [style*="--red"]    { color: #ffb4a8 !important; }
+.pm-home .scrolly .steps .step-idx[style] { color: var(--pm-yellow) !important; }
+
+/* ── header ───────────────────────────────────────────── */
+.pm-home header,
+.pm-home header:hover {
+  background: var(--pm-navy);
+  border-bottom-color: var(--pm-rule);
+  box-shadow: none;
+}
+
+.pm-home header h1 { color: #fff; }
+.pm-home header .nav-group a > div > div { color: var(--pm-faint) !important; }
+.pm-home header .btn-elegant { color: #fff; background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.3); }
+.pm-home header .btn-elegant:hover { color: #fff; border-color: #fff; background: rgba(255, 255, 255, 0.14); }
+.pm-home header .btn-elegant[aria-current="page"] { background: var(--pm-sky); border-color: var(--pm-sky); box-shadow: none; }
+.pm-home .type-ctl { border-color: rgba(255, 255, 255, 0.3); }
+.pm-home .type-ctl button { color: #fff; border-color: rgba(255, 255, 255, 0.3); background: transparent; }
+.pm-home .type-ctl button[aria-pressed="true"] { background: var(--pm-sky); color: #fff; }
+
+/* ── buttons ──────────────────────────────────────────── */
+.pm-home .lander .btn-pill,
+.pm-home .pm-btn {
+  font-family: var(--pm-display) !important;
+  font-weight: 400 !important;
+  font-size: calc(17px * var(--type-scale)) !important;
+  letter-spacing: 0.02em !important;
+  text-transform: uppercase;
+  line-height: 1.1;
+  padding: 10px 22px 9px !important;
+  border-radius: 999px;
+  box-shadow: none;
+  transition: background 0.6s var(--pm-ease), border-color 0.6s var(--pm-ease), transform 0.6s var(--pm-ease), box-shadow 0.6s var(--pm-ease) !important;
+}
+
+.pm-home .lander .btn-pill::before,
+.pm-home .lander .btn-pill::after { display: none; }
+
+.pm-home .lander .btn-pill.solid { background: var(--pm-sky); border: 2px solid var(--pm-sky); color: #fff; }
+.pm-home .lander .btn-pill.solid:hover { background: var(--pm-sky-hi); border-color: var(--pm-sky-hi); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25); }
+
+.pm-home .lander .btn-pill.ghost { background: transparent !important; border: 2px solid rgba(255, 255, 255, 0.7) !important; color: #fff !important; }
+.pm-home .lander .btn-pill.ghost:hover { background: rgba(255, 255, 255, 0.1) !important; border-color: #fff !important; transform: translateY(-2px); }
+.pm-home .lander .btn-pill:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+/* ── hero ─────────────────────────────────────────────── */
+.pm-home .lander { --pm-hero: var(--pm-t-hero); padding-top: 48px; padding-bottom: 56px; }
+.pm-home .lander-inner { max-width: 700px; }
+.pm-home .lander-kicker { margin-bottom: 20px; }
+.pm-home .lander-sub { margin-top: 22px; }
+.pm-home .lander-cta { margin-top: 28px; }
+
+.pm-home .lander-kicker {
+  font-family: var(--pm-ui);
+  font-size: calc(13px * var(--type-scale));
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pm-faint);
+  transition: opacity 1.2s ease 0.2s, transform 1.4s var(--pm-ease) 0.2s;
+}
+
+/* the line masks, re-measured for the condensed face */
+.pm-home .reveal {
+  padding: calc(var(--pm-hero) * 0.06) calc(var(--pm-hero) * 0.1) calc(var(--pm-hero) * 0.12) 0;
+  margin: calc(var(--pm-hero) * -0.06) calc(var(--pm-hero) * -0.1) calc(var(--pm-hero) * -0.12) 0;
+}
+
+.pm-home .reveal > * { transition: transform 1.5s var(--pm-ease); }
+.pm-home .lander.in .reveal:nth-of-type(1) > * { transition-delay: 0.2s; }
+.pm-home .lander.in .reveal:nth-of-type(2) > * { transition-delay: 0.42s; }
+.pm-home .lander.in .reveal:nth-of-type(3) > * { transition-delay: 0.64s; }
+
+.pm-home .display-line {
+  font-family: var(--pm-display);
+  font-weight: 400;
+  font-size: var(--pm-hero);
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #fff;
+  padding-bottom: 0;
+}
+
+.pm-home .display-line em {
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--pm-yellow);
+  background: none;
+  animation: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pm-home .lander-sub {
+  font-family: var(--pm-read);
+  font-weight: 300;
+  font-size: var(--pm-t-lead);
+  line-height: 1.7;
+  color: var(--pm-soft);
+  transition: opacity 1.3s ease 0.95s, transform 1.4s var(--pm-ease) 0.95s;
+}
+
+.pm-home .lander-cta { transition: opacity 1.3s ease 1.15s; }
+.pm-home .lander-inner > div[style] > span { color: var(--pm-faint) !important; font-family: var(--pm-ui) !important; }
+
+.pm-home .lander-readout { font-family: var(--pm-ui); color: var(--pm-faint); transition: opacity 1.6s ease 1.4s; }
+.pm-home .lander-readout .readout-title { color: #fff !important; font-family: var(--pm-display); font-weight: 400 !important; font-size: calc(16px * var(--type-scale)); letter-spacing: 0.04em !important; }
+.pm-home .lander-readout b { color: var(--pm-yellow); }
+
+/* ── Odisha in numbers ────────────────────────────────── */
+.pm-home .stat-hub-title {
+  background: transparent;
+  color: #fff;
+  font-family: var(--pm-display);
+  font-weight: 400;
+  font-size: calc(17px * var(--type-scale));
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-top: 16px;
+  padding-bottom: 8px;
+}
+
+.pm-home .stat-hub .stat-strip { background: rgba(255, 255, 255, 0.18); border-color: transparent; }
+.pm-home .stat-hub .stat-cell { background: var(--pm-blue); padding: 14px 18px 16px; transition: background 0.6s var(--pm-ease); }
+.pm-home .stat-hub .stat-cell .stat-value { margin-bottom: 4px; }
+.pm-home .stat-hub .stat-label { font-size: var(--pm-t-small) !important; margin-bottom: 0; }
+.pm-home .stat-hub .stat-source { font-size: 11.5px; margin-top: 4px; }
+.pm-home .stat-hub .stat-cell:hover { background: #2479b3; }
+
+.pm-home .stat-hub .stat-value {
+  font-family: var(--pm-display) !important;
+  font-weight: 400 !important;
+  font-size: calc(clamp(24px, 1.9vw, 30px) * var(--type-scale)) !important;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  color: #fff !important;
+}
+
+.pm-home .stat-hub .stat-value.orange { color: #ffc59e !important; }
+.pm-home .stat-hub .stat-value.purple { color: #e3c6f0 !important; }
+.pm-home .stat-hub .stat-value.green  { color: #bfe8c9 !important; }
+.pm-home .stat-hub .stat-value.red    { color: #ffb4a8 !important; }
+.pm-home .stat-hub .stat-value.blue   { color: #cfe8f7 !important; }
+
+.pm-home .stat-hub .stat-label { font-family: var(--pm-ui); color: var(--pm-soft); }
+.pm-home .stat-hub .stat-part { border-left-color: rgba(255, 255, 255, 0.2); }
+.pm-home .stat-hub .stat-part-label { color: var(--pm-faint); }
+.pm-home .stat-hub .stat-source { color: var(--pm-faint); opacity: 1; }
+
+/* ── the map story ────────────────────────────────────── */
+.pm-home .scrolly .sticky-map { background: transparent; border-right-color: var(--pm-rule); }
+.pm-home .scrolly .sticky-map > p { color: var(--pm-faint) !important; font-family: var(--pm-ui) !important; }
+.pm-home .scrolly .map-title {
+  font-family: var(--pm-display);
+  font-weight: 400 !important;
+  font-size: var(--pm-t-h2) !important;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.pm-home .scrolly #map-container { border: 0 !important; border-radius: 18px !important; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22) !important; }
+
+.pm-home .scrolly .steps { background: transparent; }
+/* shorter steps: at 75vh each, four of them took over two screens of scrolling */
+.pm-home .scrolly .step { min-height: 52vh; padding: 36px 24px; border-bottom-color: var(--pm-rule); transition: opacity 1.1s var(--pm-ease); }
+.pm-home .scrolly .step h2 {
+  font-family: var(--pm-display);
+  font-weight: 400 !important;
+  font-size: var(--pm-t-h3) !important;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.pm-home .scrolly .step p {
+  font-family: var(--pm-read);
+  font-weight: 300 !important;
+  font-size: var(--pm-t-body) !important;
+  line-height: 1.7 !important;
+  color: var(--pm-soft) !important;
+}
+.pm-home .scrolly .step p span { font-weight: 700; }
+
+/* ── editorial bands ──────────────────────────────────── */
+.pm-home .editorial-band { padding-top: 32px; padding-bottom: 32px; gap: clamp(24px, 4vw, 56px); }
+.pm-home .editorial-band .editorial-figure { border-radius: 18px; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22); }
+.pm-home .editorial-band-figure { height: clamp(190px, 20vw, 260px); }
+.pm-home .editorial-band-quote { margin: 6px 0 12px; }
+.pm-home .editorial-band-source { margin-top: 12px; }
+
+.pm-home .editorial-band-quote {
+  font-family: var(--pm-display);
+  font-weight: 400;
+  font-size: var(--pm-t-quote);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.pm-home .editorial-band-quote em { font-style: normal; color: var(--pm-yellow); }
+
+.pm-home .editorial-band-note {
+  font-family: var(--pm-read);
+  font-weight: 300;
+  font-size: var(--pm-t-body);
+  line-height: 1.7;
+  color: var(--pm-soft);
+}
+
+.pm-home .editorial-band-source { font-family: var(--pm-ui); font-size: calc(13px * var(--type-scale)); color: var(--pm-faint); }
+
+.pm-home .editorial-band .editorial-band-figure,
+.pm-home .editorial-band .editorial-band-copy {
+  transition: opacity 1.4s var(--pm-ease), transform 1.6s var(--pm-ease);
+}
+.pm-home .editorial-band .editorial-band-copy { transition-delay: 0.25s; }
+
+/* ── gallery ──────────────────────────────────────────── */
+.pm-home .editorial-gallery-head h2 {
+  font-family: var(--pm-display);
+  font-weight: 400;
+  font-size: var(--pm-t-h2);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.pm-home .editorial-gallery-head p {
+  font-family: var(--pm-read);
+  font-weight: 300;
+  font-size: var(--pm-t-lead);
+  line-height: 1.7;
+  color: var(--pm-soft);
+}
+
+.pm-home .editorial-gallery { padding-top: 34px; padding-bottom: 34px; }
+.pm-home .editorial-gallery-head { margin-bottom: 20px; }
+.pm-home .editorial-frame { border: 0; border-radius: 16px; }
+.pm-home .editorial-frame:not(.is-wide) .editorial-figure { aspect-ratio: 16 / 10; margin-bottom: 10px; }
+.pm-home .editorial-gallery.in .editorial-frame:hover { box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28); border-color: transparent; }
+.pm-home .editorial-frame-label { font-family: var(--pm-display); font-weight: 400; font-size: calc(16px * var(--type-scale)); letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 4px; }
+.pm-home .editorial-frame-text { font-family: var(--pm-read); font-weight: 300; font-size: calc(14px * var(--type-scale)); line-height: 1.6; color: #3a3f44; }
+.pm-home .editorial-frame-text b { font-family: var(--pm-display); font-weight: 400; font-size: 1.15em; letter-spacing: 0.01em; color: var(--pm-blue); }
+
+/* ── policy timeline ──────────────────────────────────── */
+.pm-home .timeline-section h2,
+.pm-home .full-section h2 {
+  font-family: var(--pm-display);
+  font-weight: 400;
+  font-size: var(--pm-t-h2);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.pm-home .policy-timeline::before { background: rgba(255, 255, 255, 0.28); }
+.pm-home .policy-item { transition: opacity 1.3s var(--pm-ease), transform 1.4s var(--pm-ease); }
+.pm-home .policy-item::before { background: rgba(255, 255, 255, 0.7); border-color: var(--pm-navy); }
+.pm-home .policy-item.key::before { background: var(--pm-orange); box-shadow: 0 0 0 4px rgba(240, 138, 75, 0.25); }
+.pm-home .policy-year { font-family: var(--pm-display); font-weight: 400; font-size: calc(17px * var(--type-scale)); margin-bottom: 2px; letter-spacing: 0.03em; color: var(--pm-orange); }
+.pm-home .policy-item:not(.key) .policy-year { color: var(--pm-faint); }
+.pm-home .policy-title { font-family: var(--pm-display); font-weight: 400; font-size: var(--pm-t-h3); margin-bottom: 6px; letter-spacing: 0.01em; text-transform: uppercase; line-height: 1.15; color: #fff; }
+.pm-home .policy-item:hover .policy-title { color: var(--pm-yellow); }
+.pm-home .policy-desc { font-family: var(--pm-read); font-weight: 300; font-size: var(--pm-t-body); color: var(--pm-soft); line-height: 1.65; }
+.pm-home .policy-item { padding-bottom: 22px; }
+.pm-home .timeline-section { padding-top: 36px; padding-bottom: 28px; }
+
+/* On a wide screen the heading sits beside the timeline rather than above
+   it: a single 800px column left half the section empty. */
+@media (min-width: 1000px) {
+  .pm-home .timeline-section {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(0, 2.2fr);
+    grid-template-rows: auto 1fr;   /* label, then heading at the top of the rest */
+    column-gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+  .pm-home .timeline-section > .label,
+  .pm-home .timeline-section > h2 { grid-column: 1; }
+  .pm-home .timeline-section > h2 { margin-bottom: 0; }
+  .pm-home .timeline-section > .policy-timeline { grid-column: 2; grid-row: 1 / span 2; max-width: none; }
+}
+
+/* ── analytics dashboard ──────────────────────────────── */
+.pm-home .pm-dash > div:first-child h2 {
+  font-family: var(--pm-display) !important;
+  font-weight: 400;
+  font-size: var(--pm-t-h2) !important;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: #fff !important;
+}
+
+.pm-home .pm-dash > div:first-child p { color: var(--pm-soft) !important; font-family: var(--pm-read) !important; font-weight: 300; font-size: calc(15px * var(--type-scale)) !important; }
+.pm-home .report-index-container { border: 0; border-radius: 18px; }
+.pm-home .report-index-header { font-family: var(--pm-ui); letter-spacing: 0.12em; text-transform: uppercase; }
+.pm-home .slide-tab-btn { font-family: var(--pm-ui); font-weight: 600; }
+.pm-home .slide-tab-btn.active { background: var(--pm-sky); border-color: var(--pm-sky); box-shadow: none; }
+
+/* the section cards stay light: charts and tables are drawn for a white page */
+.pm-home .pm-dash { padding-top: 32px !important; padding-bottom: 32px !important; }
+.pm-home #all-sections-container { gap: 18px !important; }
+.pm-home .report-index-container { padding: 16px 20px; margin-bottom: 18px; }
+.pm-home .report-section-card { border: 0 !important; background: #fff !important; padding: 22px 24px !important; border-radius: 16px !important; }
+.pm-home .report-section-card .narrative-block { font-size: calc(14.5px * var(--type-scale)) !important; line-height: 1.65 !important; padding: 16px 18px !important; margin-bottom: 14px !important; }
+.pm-home .report-section-card h3 {
+  font-family: var(--pm-display) !important;
+  font-weight: 400;
+  font-size: var(--pm-t-h3) !important;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin: 2px 0 12px !important;
+  color: var(--pm-navy) !important;
+}
+.pm-home .report-section-card .narrative-block { font-family: var(--pm-read); font-weight: 300; }
+.pm-home .report-section-card.anim-ready { transition-duration: 1.3s, 1.3s, 1.3s; }
+
+/* ── district leaderboard ─────────────────────────────── */
+.pm-home .full-section { padding-top: 34px; padding-bottom: 34px; }
+.pm-home .full-section h2 { margin-bottom: 8px; }
+.pm-home .full-section .intro-text { font-family: var(--pm-read); font-weight: 300; font-size: var(--pm-t-body); color: var(--pm-soft); line-height: 1.65; margin-bottom: 0; }
+.pm-home .districts-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 18px; }
+.pm-home .district-card { padding: 12px 14px; }
+.pm-home .district-card { border: 0; border-radius: 16px; background: #fff; }
+.pm-home .district-card::before { background: linear-gradient(90deg, var(--pm-sky), var(--pm-orange)); }
+.pm-home .district-card:hover { box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25); }
+.pm-home .district-name { font-family: var(--pm-display); font-size: calc(15px * var(--type-scale)); margin-bottom: 2px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--pm-navy); }
+.pm-home .district-pop { font-family: var(--pm-display); font-weight: 400; font-size: calc(21px * var(--type-scale)); line-height: 1.2; margin-bottom: 6px; letter-spacing: 0.01em; color: var(--pm-blue); }
+
+/* ── footer ───────────────────────────────────────────── */
+.pm-home footer::before { background: linear-gradient(90deg, transparent, var(--pm-sky), var(--pm-orange), transparent); background-size: 200% 100%; }
+.pm-home footer { padding-top: 28px; padding-bottom: 28px; }
+.pm-home .footer-brand { font-family: var(--pm-display); font-weight: 400; font-size: calc(20px * var(--type-scale)); letter-spacing: 0.03em; text-transform: uppercase; color: #fff; }
+.pm-home .footer-brand span { color: var(--pm-orange); }
+.pm-home footer div[style] { color: var(--pm-faint) !important; font-family: var(--pm-ui) !important; }
+.pm-home .footer-meta { color: var(--pm-faint); font-family: var(--pm-ui); }
+
+/* Below 1100px the dot pyramid centres itself behind the headline
+   (dotfield3d.js). Bright dots on navy would fight the words there, so
+   they drop back to a faint texture. */
+@media (max-width: 1119px) {
+  .pm-home #dotfield { opacity: 0.3; }
+}
+
+/* On phones the map sits above the steps rather than beside them, so a
+   step only needs to be as tall as its words. */
+@media (max-width: 900px) {
+  .pm-home .scrolly .step { min-height: auto; padding: 26px 16px; }
+  .pm-home .lander { padding-top: 36px; padding-bottom: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-home .reveal > *,
+  .pm-home .editorial-band .editorial-band-figure,
+  .pm-home .editorial-band .editorial-band-copy,
+  .pm-home .policy-item { transition: none !important; }
+}
