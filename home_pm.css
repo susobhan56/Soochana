@@ -93,7 +93,12 @@
 .pm-home .pm-dash,
 .pm-home .full-section,
 .pm-home footer {
-  background-image: radial-gradient(ellipse 70% 55% at 15% 0%, rgba(255, 255, 255, 0.09), transparent 60%);
+  /* wash and grain first, blended softly into the section colour; then the
+     soft top-left light */
+  background-image: var(--pm-wash), var(--pm-paper),
+                    radial-gradient(ellipse 70% 55% at 15% 0%, rgba(255, 255, 255, 0.09), transparent 60%);
+  background-size: 900px 900px, 220px 220px, auto;
+  background-blend-mode: soft-light, soft-light, normal;
   border-color: var(--pm-rule) !important;
 }
 
@@ -106,6 +111,8 @@
 .pm-home .editorial-gallery                        { background-color: var(--pm-blue); }
 .pm-home .timeline-section                         { background-color: var(--pm-navy); }
 .pm-home .pm-dash                                  { background-color: var(--pm-ocean) !important; }
+/* its inline `background:` shorthand would otherwise clear the texture */
+.pm-home .pm-dash { background-image: var(--pm-wash), var(--pm-paper), radial-gradient(ellipse 70% 55% at 15% 0%, rgba(255, 255, 255, 0.09), transparent 60%) !important; }
 .pm-home .full-section                             { background-color: var(--pm-purple); }
 .pm-home footer                                    { background-color: var(--pm-night); }
 
@@ -133,6 +140,9 @@
 .pm-home header,
 .pm-home header:hover {
   background: var(--pm-navy);
+  background-image: var(--pm-paper);
+  background-size: 220px 220px;
+  background-blend-mode: soft-light;
   border-bottom-color: var(--pm-rule);
   box-shadow: none;
 }

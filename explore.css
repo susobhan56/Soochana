@@ -41,9 +41,14 @@
   color: var(--pm-white);
   font-family: var(--pm-ui);
   background-color: #0d2b45;
+  /* painted-paper texture (style.css) blended into whichever chapter
+     colour is showing, then the soft top-left light and bottom shade */
   background-image:
+    var(--pm-wash), var(--pm-paper),
     radial-gradient(ellipse 80% 60% at 18% 8%, rgba(255, 255, 255, 0.11), transparent 60%),
     radial-gradient(ellipse 70% 60% at 85% 100%, rgba(0, 0, 0, 0.28), transparent 65%);
+  background-size: 900px 900px, 220px 220px, auto, auto;
+  background-blend-mode: soft-light, soft-light, normal, normal;
   transition: background-color 1.4s var(--pm-ease);
 }
 
