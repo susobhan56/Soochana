@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css?v=20260925-2">
 <script src="ui.js?v=20260925-2"></script>
-<script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
   /* ═══════════════════════════════════════════════════════════════════
      SOOCHANA ABOUT US — PREMIUM EDITORIAL DESIGN SYSTEM
@@ -28,244 +27,6 @@
   main {
     display: block;
     width: 100%;
-  }
-
-  /* 1. WARM EDITORIAL HERO LANDER */
-  .about-hero-editorial {
-    position: relative;
-    background: linear-gradient(180deg, #f5f3ec 0%, #faf9f5 100%);
-    color: var(--text, #1e2530);
-    padding: 70px 24px 80px 24px;
-    border-bottom: 1px solid var(--border, rgba(0, 0, 0, 0.08));
-    overflow: hidden;
-  }
-
-  .hero-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1.15fr;
-    gap: 48px;
-    align-items: center;
-  }
-
-  @media (max-width: 992px) {
-    .hero-container { grid-template-columns: 1fr; text-align: left; }
-  }
-
-  .hero-left-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  @media (max-width: 992px) {
-    .hero-left-content { align-items: center; }
-  }
-
-  .hero-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 18px;
-    border-radius: 30px;
-    background: #ffffff;
-    border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
-    color: var(--teal, #1a535c);
-    font-family: var(--mono, 'Inter', monospace);
-    font-size: 0.78125rem;
-    font-weight: 700;
-    letter-spacing: 0.005em;
-    text-transform: none;
-    margin-bottom: 24px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-  }
-
-  .hero-pill-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--orange, #bb4500);
-  }
-
-  .about-hero-editorial h1 {
-    font-family: var(--serif, 'Manrope', sans-serif);
-    font-size: clamp(3rem, 5.2vw, 4.5rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-    margin: 0 0 10px 0;
-    color: var(--blue, #1f385c);
-  }
-
-  .about-hero-editorial .tagline {
-    font-family: var(--serif, 'Manrope', sans-serif);
-    font-size: clamp(1.4rem, 2.6vw, 1.85rem);
-    font-weight: 700;
-    color: var(--orange, #bb4500);
-    margin-bottom: 22px;
-    letter-spacing: -0.01em;
-  }
-
-  .about-hero-editorial .hero-desc {
-    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
-    color: var(--muted, #4f5664);
-    max-width: 580px;
-    margin: 0 0 36px 0;
-    line-height: 1.65;
-  }
-
-  .hero-stats-band {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    width: 100%;
-    max-width: 620px;
-  }
-
-  @media (max-width: 576px) {
-    .hero-stats-band { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  .hero-stat-card {
-    background: #ffffff;
-    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
-    border-radius: 14px;
-    padding: 16px 10px;
-    text-align: left;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
-  }
-
-  .hero-stat-card:hover {
-    border-color: var(--teal, #1a535c);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(26, 83, 92, 0.08);
-  }
-
-  .hero-stat-val {
-    font-family: var(--serif, 'Manrope', sans-serif);
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--blue, #1f385c);
-    margin-bottom: 2px;
-  }
-
-  .hero-stat-lbl {
-    font-size: 0.75rem;
-    color: var(--muted, #4f5664);
-    font-weight: 600;
-  }
-
-  /* RIGHT COLUMN: WARM EDITORIAL ODISHA DEMOGRAPHIC MAP STAGE */
-  .hero-map-editorial-stage {
-    position: relative;
-    background: #ffffff;
-    border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
-    border-radius: 24px;
-    padding: 28px;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.04);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .map-stage-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--hairline, rgba(0, 0, 0, 0.06));
-  }
-
-  .map-stage-title {
-    font-family: var(--serif, 'Manrope', sans-serif);
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: var(--blue, #1f385c);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .live-indicator-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #22c55e;
-    box-shadow: 0 0 6px #22c55e;
-  }
-
-  .map-svg-container {
-    width: 100%;
-    height: 340px;
-    position: relative;
-  }
-
-  .map-svg-container svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .district-path-editorial {
-    fill: #f1f5f9;
-    stroke: #cbd5e1;
-    stroke-width: 1px;
-    transition: all 0.25s ease;
-    cursor: pointer;
-  }
-
-  .district-path-editorial:hover {
-    fill: rgba(187, 69, 0, 0.15);
-    stroke: var(--orange, #bb4500);
-    stroke-width: 2px;
-  }
-
-  .district-path-editorial.active-dist {
-    fill: rgba(26, 83, 92, 0.2);
-    stroke: var(--teal, #1a535c);
-    stroke-width: 2px;
-  }
-
-  /* Live Stream Floating Editorial Card */
-  .editorial-stream-card {
-    width: 100%;
-    background: var(--bg, #faf9f5);
-    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
-    border-radius: 16px;
-    padding: 16px 20px;
-    margin-top: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
-  }
-
-  .stream-district-name {
-    font-family: var(--serif, 'Manrope', sans-serif);
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--blue, #1f385c);
-  }
-
-  .stream-district-info {
-    font-size: 0.8125rem;
-    color: var(--muted, #4f5664);
-    margin-top: 2px;
-  }
-
-  .stream-metrics-tag {
-    font-family: var(--mono, 'Inter', monospace);
-    font-size: 0.8125rem;
-    background: rgba(187, 69, 0, 0.08);
-    color: var(--orange, #bb4500);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-weight: 700;
   }
 
   /* GENERAL SECTION LAYOUT */
@@ -323,25 +84,6 @@
     border-radius: 20px;
     padding: 44px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-  }
-
-  .narrative-paragraphs {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 900px;
-    margin: 0 auto 40px auto;
-  }
-
-  .narrative-paragraphs p {
-    font-size: 1.125rem;
-    line-height: 1.75;
-    color: var(--text, #1e2530);
-    margin: 0;
-  }
-
-  .narrative-paragraphs p strong {
-    color: var(--blue, #1f385c);
   }
 
   .feature-grid {
@@ -404,70 +146,20 @@
     margin: 0;
   }
 
-  /* 3. WHY WE BUILT SOOCHANA */
-  .pillars-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 940px;
-    margin: 0 auto;
-  }
-
-  .pillar-row {
-    background: #ffffff;
-    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
-    border-radius: 16px;
-    padding: 28px 32px;
-    display: flex;
-    align-items: flex-start;
-    gap: 24px;
-    transition: all 0.3s ease;
-  }
-
-  .pillar-row:hover {
-    border-color: var(--orange, #bb4500);
-    box-shadow: 0 8px 28px rgba(187, 69, 0, 0.08);
-    transform: translateX(4px);
-  }
-
-  .pillar-badge {
-    font-family: var(--serif, 'Manrope', sans-serif);
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: var(--orange, #bb4500);
-    background: rgba(187, 69, 0, 0.08);
-    width: 50px;
-    height: 50px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .pillar-info h3 {
-    font-family: var(--serif, 'Manrope', sans-serif);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--blue, #1f385c);
-    margin: 0 0 6px 0;
-  }
-
-  .pillar-info p {
-    font-size: 1.0625rem;
-    color: var(--muted, #4f5664);
-    line-height: 1.6;
-    margin: 0;
-  }
-
   /* 4, 5, 6. INSTITUTIONAL FOUNDATIONS */
+  /* all four partners side by side in one row */
   .institutions-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
   }
+  .institutions-grid .institution-card { padding: 30px 22px; }
+  .institutions-grid .institution-card h3 { font-size: 1.15rem; }
 
   @media (max-width: 992px) {
+    .institutions-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
     .institutions-grid { grid-template-columns: 1fr; }
   }
 
@@ -495,6 +187,7 @@
   .inst-diu::before { background: linear-gradient(90deg, #bb4500, #f97316); }
   .inst-cysd::before { background: linear-gradient(90deg, #1a535c, #387478); }
   .inst-unfpa::before { background: linear-gradient(90deg, #1f385c, #3b82f6); }
+  .inst-odi::before { background: linear-gradient(90deg, #c0272d, #e8554e); }
 
   .institution-card:hover {
     transform: translateY(-6px);
@@ -544,6 +237,34 @@
   .inst-diu .inst-tag { background: rgba(187, 69, 0, 0.1); color: #bb4500; }
   .inst-cysd .inst-tag { background: rgba(26, 83, 92, 0.1); color: #1a535c; }
   .inst-unfpa .inst-tag { background: rgba(31, 56, 92, 0.1); color: #1f385c; }
+  .inst-odi .inst-tag { background: rgba(192, 39, 45, 0.1); color: #a61f25; }
+
+  /* partner links: logo, title and a "Visit" link all go to the partner's site */
+  a.inst-logo-wrap { text-decoration: none; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+  a.inst-logo-wrap:hover { border-color: var(--teal, #1a535c); box-shadow: 0 6px 18px rgba(26, 83, 92, 0.1); }
+  a.inst-logo-wrap:hover img { transform: scale(1.04); }
+  .inst-link { color: inherit; text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size 0.4s var(--ease, ease); }
+  .inst-link:hover { background-size: 100% 1px; }
+  .inst-visit {
+    position: relative;
+    white-space: nowrap;
+    margin-top: auto;
+    padding-top: 18px;
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--teal, #1a535c);
+    text-decoration: none;
+  }
+  .inst-visit svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s var(--ease, ease); }
+  .inst-visit svg path { stroke: inherit; stroke-width: inherit; cursor: inherit; filter: none; }
+  .inst-visit:hover { color: var(--orange, #bb4500); }
+  .inst-visit:hover svg { transform: translate(2px, -2px); }
+  .inst-visit-note { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .inst-link:focus-visible, .inst-visit:focus-visible, a.inst-logo-wrap:focus-visible { outline: 2px solid var(--teal, #1a535c); outline-offset: 3px; border-radius: 6px; }
 
   .institution-card h3 {
     font-family: var(--serif, 'Manrope', sans-serif);
@@ -838,6 +559,9 @@
     margin-top: auto;
   }
 
+  .team-header { text-align: center; }
+  .team-header h2 { margin: 0; }
+
   .unit-tag {
     font-size: 0.75rem;
     font-weight: 600;
@@ -846,6 +570,395 @@
     padding: 4px 10px;
     border-radius: 12px;
     border: 1px solid var(--hairline, rgba(0, 0, 0, 0.06));
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     UNIFORM SCROLL-REVEAL SYSTEM
+     Reuses the site's easing tokens so every section arrives the same way:
+     a single element rises and fades; a group staggers its children.
+     ═══════════════════════════════════════════════════════════════════ */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
+                transform 0.9s var(--ease-cine, cubic-bezier(0.48, 0.05, 0.35, 0.99));
+    will-change: opacity, transform;
+  }
+  [data-reveal].in { opacity: 1; transform: none; }
+
+  [data-reveal-group] > * {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
+                transform 0.8s var(--ease-cine, cubic-bezier(0.48, 0.05, 0.35, 0.99));
+    will-change: opacity, transform;
+  }
+  [data-reveal-group].in > * { opacity: 1; transform: none; }
+  [data-reveal-group].in > *:nth-child(1) { transition-delay: 0.04s; }
+  [data-reveal-group].in > *:nth-child(2) { transition-delay: 0.12s; }
+  [data-reveal-group].in > *:nth-child(3) { transition-delay: 0.20s; }
+  [data-reveal-group].in > *:nth-child(4) { transition-delay: 0.28s; }
+  [data-reveal-group].in > *:nth-child(5) { transition-delay: 0.36s; }
+  [data-reveal-group].in > *:nth-child(6) { transition-delay: 0.44s; }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     ESSENCE OF SOOCHANA — the meaning-carrying centrepiece
+     The word in Odia script, its definition, and a live demonstration
+     of the platform's whole reason for being: numbers becoming narrative.
+     ═══════════════════════════════════════════════════════════════════ */
+  .essence-band {
+    position: relative;
+    background:
+      radial-gradient(120% 90% at 50% -10%, rgba(26, 83, 92, 0.06), transparent 60%),
+      linear-gradient(180deg, #faf9f5 0%, #f5f3ec 100%);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  /* A colossal, low-contrast watermark of the word — this is the "volume":
+     the name of the platform physically fills the band behind everything. */
+  .essence-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-weight: 800;
+    font-size: clamp(9rem, 34vw, 32rem);
+    line-height: 1;
+    color: var(--teal, #1a535c);
+    opacity: 0.05;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.02em;
+  }
+
+  .essence-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .essence-script {
+    font-size: clamp(3.2rem, 8vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--teal, #1a535c);
+    margin-bottom: 14px;
+    letter-spacing: 0.01em;
+  }
+
+  .essence-def {
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 26px;
+  }
+  .essence-word {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--blue, #1f385c);
+  }
+  .essence-ipa {
+    font-family: var(--mono, 'Inter', monospace);
+    font-size: 0.9rem;
+    color: var(--muted, #4f5664);
+    font-weight: 600;
+  }
+
+  .essence-statement {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: clamp(1.9rem, 4.2vw, 3rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--blue, #1f385c);
+    margin: 0 0 24px 0;
+    max-width: 760px;
+  }
+  .essence-statement em {
+    font-style: normal;
+    color: var(--orange, #bb4500);
+    position: relative;
+  }
+
+  .essence-lead {
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    line-height: 1.7;
+    color: var(--muted, #4f5664);
+    max-width: 660px;
+    margin: 0;
+  }
+  .essence-lead strong { color: var(--teal, #1a535c); }
+
+  /* style.css strokes every <path> faintly for the district maps. That beats
+     the stroke these icons inherit (and the arrow's presentation attributes),
+     so give the page's icons their own stroke back. */
+  .feature-card-icon svg path,
+  .ci-next svg path {
+    stroke: inherit;
+    stroke-width: inherit;
+    cursor: inherit;
+    filter: none;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     CHAPTER INDEX — right-hand rail: where you are, and what comes next
+     ═══════════════════════════════════════════════════════════════════ */
+  .chapter-index {
+    --ci-ink: var(--ink-heading, #1e2530);
+    --ci-muted: var(--muted, #4f5664);
+    --ci-card: rgba(250, 249, 245, 0.8);
+    --ci-line: rgba(0, 0, 0, 0.08);
+    position: fixed;
+    right: 18px;
+    top: 50%;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    font-family: var(--font-sans, 'Outfit', sans-serif);
+    opacity: 0;
+    transform: translate(12px, -50%);
+    pointer-events: none;
+    transition: opacity 0.6s ease, transform 0.8s var(--ease, ease);
+  }
+  .chapter-index.ready { opacity: 1; transform: translate(0, -50%); pointer-events: auto; }
+
+  .ci-toggle {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 4px 6px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    color: var(--ci-muted);
+    transition: color 0.4s ease;
+  }
+  .ci-count {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+  }
+  .ci-count b { font-size: 16px; color: var(--ci-ink); transition: color 0.4s ease; }
+  .ci-stack { display: none; }
+
+  .ci-list {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 10px 8px 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: 16px;
+    background: var(--ci-card);
+    border: 1px solid var(--ci-line);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: background 0.5s ease, border-color 0.5s ease;
+  }
+  /* reading progress through the whole page, down the rail's left edge */
+  .ci-list::before,
+  .ci-list::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 14px;
+    width: 2px;
+    border-radius: 2px;
+  }
+  .ci-list::before { bottom: 14px; background: var(--ci-line); }
+  .ci-list::after {
+    height: calc((100% - 28px) * var(--ci-progress, 0));
+    background: var(--orange, #bb4500);
+    transition: height 0.2s linear;
+  }
+
+  .ci-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 5px 6px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--ci-muted);
+    transition: color 0.3s ease, background 0.3s ease;
+  }
+  .ci-link:hover { color: var(--ci-ink); background: var(--ci-line); }
+  .ci-link:focus-visible { outline: 2px solid var(--teal, #1a535c); outline-offset: 1px; }
+
+  .ci-label {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    font-size: 13px;
+    font-weight: 500;
+    transition: max-width 0.5s var(--ease, ease), opacity 0.3s ease;
+  }
+  .ci-num {
+    width: 18px;
+    text-align: right;
+    font-size: 11px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .ci-tick {
+    width: 12px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    opacity: 0.45;
+    transition: width 0.5s var(--ease, ease), background 0.3s ease, opacity 0.3s ease;
+  }
+  .ci-link.is-past .ci-tick { opacity: 0.9; background: var(--teal-lit, #387478); }
+  .ci-link.is-current { color: var(--ci-ink); }
+  .ci-link.is-current .ci-tick { width: 26px; opacity: 1; background: var(--orange, #bb4500); }
+  .ci-link.is-current .ci-label { font-weight: 600; }
+
+  /* Labels open on hover, on keyboard focus, when pinned, and for a few
+     seconds each time a new chapter arrives — then fold away so the rail
+     never sits on top of the page for long. Wide screens keep them open. */
+  .chapter-index:hover .ci-label,
+  .chapter-index:focus-within .ci-label,
+  .chapter-index.is-open .ci-label,
+  .chapter-index.is-peek .is-current .ci-label { max-width: 170px; opacity: 1; }
+
+  .ci-next {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 240px;
+    padding: 7px 10px 7px 14px;
+    border-radius: 999px;
+    background: var(--ci-card);
+    border: 1px solid var(--ci-line);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    text-decoration: none;
+    font-size: 12px;
+    color: var(--ci-muted);
+    transition: background 0.5s ease, border-color 0.5s ease, color 0.3s ease;
+  }
+  .ci-next:hover { border-color: var(--orange, #bb4500); }
+  .ci-next-text {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    transition: max-width 0.5s var(--ease, ease), opacity 0.3s ease;
+  }
+  .ci-next b { color: var(--ci-ink); font-weight: 600; font-size: 13px; }
+  .chapter-index:hover .ci-next-text,
+  .chapter-index:focus-within .ci-next-text,
+  .chapter-index.is-open .ci-next-text,
+  .chapter-index.is-peek .ci-next-text { max-width: 200px; opacity: 1; }
+  .ci-next svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: var(--orange, #bb4500);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    animation: ciNudge 2.2s ease-in-out infinite;
+  }
+  .ci-next.is-end svg { transform: rotate(180deg); animation: none; }
+  @keyframes ciNudge {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(3px); }
+  }
+
+  @media (min-width: 1560px) {
+    .chapter-index .is-current .ci-label { max-width: 170px; opacity: 1; }
+    .chapter-index .ci-next-text { max-width: 200px; opacity: 1; }
+  }
+
+  /* Phones and tablets: the rail becomes a pill in the bottom-left corner
+     (the chat button owns the bottom-right). It names the chapter you are
+     in and the one after it; tap it for the full list. */
+  @media (max-width: 1100px) {
+    .chapter-index {
+      top: auto;
+      right: auto;
+      left: 16px;
+      bottom: 20px;
+      align-items: flex-start;
+      max-width: calc(100vw - 112px);
+      transform: translateY(12px);
+    }
+    .chapter-index.ready { transform: none; }
+    .ci-toggle {
+      order: 2;
+      align-items: center;
+      padding: 9px 16px 9px 12px;
+      border-radius: 999px;
+      background: var(--ci-card);
+      border: 1px solid var(--ci-line);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      max-width: 100%;
+    }
+    .ci-stack { display: flex; flex-direction: column; min-width: 0; text-align: left; }
+    .ci-upnext {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 11px;
+      color: var(--ci-muted);
+    }
+    .ci-current {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ci-ink);
+    }
+    .ci-next { display: none; }
+    .ci-list {
+      order: 1;
+      display: none;
+      padding-left: 16px;
+    }
+    .chapter-index.is-open .ci-list { display: flex; }
+    .ci-link { justify-content: flex-start; flex-direction: row-reverse; }
+    .ci-label { max-width: 200px; opacity: 1; }
+    .ci-list::before, .ci-list::after { display: none; }
+  }
+
+  /* Respect users who prefer less motion: reveals resolve instantly and
+     the decorative loops stop. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal],
+    [data-reveal-group] > * {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+      transition: none !important;
+    }
+    .ci-next svg { animation: none; }
   }
 </style>
 </head>
@@ -863,91 +976,63 @@
     </a>
   </div>
   <div class="nav-group flex-wrap" style="gap: 12px;">
-    <a href="index.html" class="btn-elegant">Odisha at a glance</a>
+    <a href="about.html" class="btn-elegant" aria-current="page">About Us</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant">Repository</a>
-    <a href="about.html" class="btn-elegant" aria-current="page">About Us</a>
   </div>
 </header>
 
 <!-- MAIN CONTENT WRAPPER -->
 <main>
 
-  <!-- 1. WARM EDITORIAL HERO LANDER -->
-  <section class="about-hero-editorial">
-    <div class="hero-container">
-      
-      <!-- Left Column: Hero Text & Metrics -->
-      <div class="hero-left-content">
-        <div class="hero-pill">
-          <span class="hero-pill-dot"></span>
-          Odisha Demographic Knowledge Portal
-        </div>
-        <h1>Soochana</h1>
-        <div class="tagline">From Numbers to Narratives</div>
-        <p class="hero-desc">
-          Transforming demographic statistics into accessible narratives through interactive map visualizers, analytical stories, and evidence-based population resources.
-        </p>
+  <!-- CHAPTER INDEX — filled in from each section's data-index -->
+  <nav class="chapter-index" id="chapterIndex" aria-label="On this page">
+    <button type="button" class="ci-toggle" id="ciToggle" aria-expanded="false" aria-controls="ciList">
+      <span class="ci-count"><b id="ciNow">01</b> / <span id="ciTotal">04</span></span>
+      <span class="ci-stack">
+        <span class="ci-current" id="ciCurrent">The word</span>
+        <span class="ci-upnext" id="ciUpnext">Next · What we offer</span>
+      </span>
+      <span class="visually-hidden-ci" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Show all sections</span>
+    </button>
+    <ol class="ci-list" id="ciList"></ol>
+    <a class="ci-next" id="ciNext" href="#offer">
+      <span class="ci-next-text"><span id="ciNextK">Up next</span><b id="ciNextName">What we offer</b></span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg>
+    </a>
+  </nav>
 
-        <div class="hero-stats-band">
-          <div class="hero-stat-card">
-            <div class="hero-stat-val">30</div>
-            <div class="hero-stat-lbl">Districts Tracked</div>
-          </div>
-          <div class="hero-stat-card">
-            <div class="hero-stat-val">10+</div>
-            <div class="hero-stat-lbl">Demographic Themes</div>
-          </div>
-          <div class="hero-stat-card">
-            <div class="hero-stat-val">40+ Yrs</div>
-            <div class="hero-stat-lbl">Survey Evidence</div>
-          </div>
-          <div class="hero-stat-card">
-            <div class="hero-stat-val">100%</div>
-            <div class="hero-stat-lbl">Open Access Data</div>
-          </div>
-        </div>
+  <!-- 1B. ESSENCE OF SOOCHANA — meaning-carrying centrepiece -->
+  <section class="section-wrap essence-band" id="meaning" data-index="The word">
+    <div class="essence-watermark" aria-hidden="true">ସୂଚନା</div>
+    <div class="content-container essence-inner">
+      <div class="essence-script" data-reveal lang="or">ସୂଚନା</div>
+      <div class="essence-def" data-reveal>
+        <span class="essence-word">Soochana</span>
+        <span class="essence-ipa">/suːˈtʃə.naː/ · noun · Odia — <em>information; the act of making known</em></span>
       </div>
-
-      <!-- Right Column: Warm Editorial Interactive Odisha Demographic Map Stage -->
-      <div class="hero-map-editorial-stage">
-        <div class="map-svg-container" id="heroMapSvg"></div>
-
-        <div class="editorial-stream-card">
-          <div>
-            <div class="stream-district-name" id="streamDistrict">Khordha District</div>
-            <div class="stream-district-info" id="streamInfo">State Capital Region · Demographic Hub</div>
-          </div>
-          <div class="stream-metrics-tag" id="streamMetrics">TFR: 1.6 · Urban: 48.2% · Lit: 86.9%</div>
-        </div>
-      </div>
+      <h2 class="essence-statement" data-reveal>
+        We turn a state's <em>numbers</em> into stories you can read, question, and act on.
+      </h2>
+      <p class="essence-lead" data-reveal>
+        Every figure in Odisha's demographic record is a life counted — a birth, a school, a household growing older.
+        Soochana exists to give those figures <strong>their meaning back</strong>.
+      </p>
 
     </div>
   </section>
 
   <!-- 2. WHAT IS SOOCHANA -->
-  <section class="section-wrap alt-bg">
+  <section class="section-wrap alt-bg" id="offer" data-index="What we offer">
     <div class="content-container">
-      <div class="section-header">
-        <div class="kicker">Platform Overview</div>
-        <h2>About Soochana</h2>
-        <p>A digital ecosystem built to make demographic evidence accessible, contextual, and actionable.</p>
+      <div class="section-header" data-reveal>
+        <div class="kicker">What you'll find</div>
+        <h2>Inside Soochana</h2>
+        <p>Built for policymakers, researchers, students, journalists and citizens: Odisha's demographic transition in one place, told four ways.</p>
       </div>
 
-      <div class="about-narrative-card">
-        <div class="narrative-paragraphs">
-          <p>
-            <strong>Soochana</strong> is a digital knowledge platform that transforms demographic statistics into accessible narratives through interactive data visualizations, analytical stories, and evidence-based resources.
-          </p>
-          <p>
-            The platform enables policymakers, researchers, students, media professionals, and citizens to explore Odisha's demographic transition through dynamic dashboards, thematic articles, reports, datasets, and factsheets.
-          </p>
-          <p>
-            Rather than presenting numbers in isolation, <strong>Soochana connects data with context</strong>, making complex demographic changes easier to understand.
-          </p>
-        </div>
-
-        <div class="feature-grid">
+      <div class="about-narrative-card" data-reveal>
+        <div class="feature-grid" data-reveal-group>
           <div class="feature-card">
             <div class="feature-card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
@@ -984,71 +1069,16 @@
     </div>
   </section>
 
-  <!-- 3. WHY WE BUILT SOOCHANA -->
-  <section class="section-wrap">
-    <div class="content-container">
-      <div class="section-header">
-        <div class="kicker">Core Objectives</div>
-        <h2>Why We Built Soochana</h2>
-        <p>Population is constantly changing, and every demographic shift influences education, healthcare, employment, urbanization, ageing, and economic development.</p>
-      </div>
-
-      <div class="pillars-stack">
-        
-        <div class="pillar-row">
-          <div class="pillar-badge">01</div>
-          <div class="pillar-info">
-            <h3>Understand Demographic Trends</h3>
-            <p>Gain comprehensive insights into fertility transition, mortality decline, age structural shifts, and urbanization patterns across Odisha.</p>
-          </div>
-        </div>
-
-        <div class="pillar-row">
-          <div class="pillar-badge">02</div>
-          <div class="pillar-info">
-            <h3>Explore Interactive Visualizations</h3>
-            <p>Engage with intuitive choropleth maps, comparative district trend lines, and population pyramids built for instant clarity.</p>
-          </div>
-        </div>
-
-        <div class="pillar-row">
-          <div class="pillar-badge">03</div>
-          <div class="pillar-info">
-            <h3>Access Reliable Datasets & Reports</h3>
-            <p>Download verified survey datasets from Census of India, NFHS-5, PLFS, UDISE+, and state survey repositories seamlessly.</p>
-          </div>
-        </div>
-
-        <div class="pillar-row">
-          <div class="pillar-badge">04</div>
-          <div class="pillar-info">
-            <h3>Discover Evidence-Based Narratives</h3>
-            <p>Read contextualized thematic articles examining how population dynamics intersect with public welfare, health, and economic growth.</p>
-          </div>
-        </div>
-
-        <div class="pillar-row">
-          <div class="pillar-badge">05</div>
-          <div class="pillar-info">
-            <h3>Support Research & Policy Decisions</h3>
-            <p>Provide researchers, policymakers, media, and development practitioners with empirical evidence for targeted interventions.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
   <!-- 4, 5, 6. INSTITUTIONAL FOUNDATIONS -->
-  <section class="section-wrap alt-bg">
+  <section class="section-wrap alt-bg" id="partners" data-index="Partners">
     <div class="content-container">
-      <div class="section-header">
+      <div class="section-header" data-reveal>
         <div class="kicker">Institutional Foundations</div>
         <h2>Pioneering Demographic Intelligence</h2>
         <p>Soochana is powered by a strategic collaboration committed to evidence-based development and population research.</p>
       </div>
 
-      <div class="institutions-grid">
+      <div class="institutions-grid" data-reveal-group>
         
         <!-- DIU Card -->
         <div class="institution-card inst-diu">
@@ -1063,39 +1093,57 @@
           <p>
             DIU works at the intersection of demographic research, data visualization, policy communication, and evidence generation to promote informed development planning in Odisha.
           </p>
-          <p>
-            Its objective is to make demographic evidence more accessible for governments, researchers, development practitioners, media, and the public.
-          </p>
         </div>
 
         <!-- CYSD Card -->
         <div class="institution-card inst-cysd">
           <div class="inst-tag">Founding Organisation</div>
-          <div class="inst-logo-wrap">
+          <a class="inst-logo-wrap" href="https://www.cysd.org/" target="_blank" rel="noopener noreferrer" aria-label="Centre for Youth and Social Development (CYSD) website (opens in a new tab)">
             <img src="images/logo_cysd.png" alt="Centre for Youth and Social Development Logo">
-          </div>
-          <h3>Centre for Youth and Social Development (CYSD)</h3>
+          </a>
+          <h3><a class="inst-link" href="https://www.cysd.org/" target="_blank" rel="noopener noreferrer">Centre for Youth and Social Development (CYSD)</a></h3>
           <p>
-            The <strong>Centre for Youth and Social Development (CYSD)</strong> is a leading development organization based in Odisha, working since 1982 to promote inclusive, equitable, and sustainable development.
+            The <strong>Centre for Youth and Social Development (CYSD)</strong> is a non-governmental, non-profit organization established in 1982, has been working towards improving the quality of life of the tribal and rural poor by focusing on eradicating extreme poverty and hunger, and educating socio-economically distressed people to access their entitlements.
           </p>
-          <p>
-            CYSD works across governance, livelihoods, disaster resilience, climate change, social inclusion, and policy advocacy while strengthening evidence-based development through research and innovation.
-          </p>
+          <a class="inst-visit" href="https://www.cysd.org/" target="_blank" rel="noopener noreferrer">
+            Visit website
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            <span class="inst-visit-note">(opens in a new tab)</span>
+          </a>
         </div>
 
         <!-- UNFPA Card -->
         <div class="institution-card inst-unfpa">
           <div class="inst-tag">Technical Partner</div>
-          <div class="inst-logo-wrap">
+          <a class="inst-logo-wrap" href="https://www.unfpa.org/" target="_blank" rel="noopener noreferrer" aria-label="United Nations Population Fund (UNFPA) website (opens in a new tab)">
             <img src="images/logo_unfpa.png" alt="United Nations Population Fund Logo">
-          </div>
-          <h3>United Nations Population Fund (UNFPA)</h3>
+          </a>
+          <h3><a class="inst-link" href="https://www.unfpa.org/" target="_blank" rel="noopener noreferrer">United Nations Population Fund (UNFPA)</a></h3>
           <p>
-            <strong>UNFPA</strong> is the United Nations agency dedicated to ensuring that every pregnancy is wanted, every childbirth is safe, and every young person's potential is fulfilled.
+            <strong>UNFPA</strong>, the United Nations Population Fund, is the sexual and reproductive health agency of the UN. It works to uphold the rights and choices of women, girls and young people across more than 150 countries. UNFPA aims to ensure that every pregnancy is wanted, every childbirth is safe, and every young person can fulfil their potential.
           </p>
+          <a class="inst-visit" href="https://www.unfpa.org/" target="_blank" rel="noopener noreferrer">
+            Visit website
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            <span class="inst-visit-note">(opens in a new tab)</span>
+          </a>
+        </div>
+
+        <!-- ODI Card -->
+        <div class="institution-card inst-odi">
+          <div class="inst-tag">Knowledge Partner</div>
+          <a class="inst-logo-wrap" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Odisha Development Initiative (ODI) website (opens in a new tab)">
+            <img src="images/logo_odi.png" alt="Odisha Development Initiative logo">
+          </a>
+          <h3><a class="inst-link" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer">Odisha Development Initiative (ODI)</a></h3>
           <p>
-            In Odisha, UNFPA supports evidence-based planning and policy by strengthening demographic intelligence, population research, gender equality, reproductive health, and youth development.
+            <strong>Odisha Development Initiative (ODI)</strong> was established as a broad coalition bringing together Civil Society Organisations, Government, Academia, the Corporate Sector, Panchayati Raj Institutions, and the Media to foster collaboration.
           </p>
+          <a class="inst-visit" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer">
+            Visit website
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+            <span class="inst-visit-note">(opens in a new tab)</span>
+          </a>
         </div>
 
       </div>
@@ -1103,12 +1151,10 @@
   </section>
 
   <!-- 7. MEET THE TEAM — 1-BY-1 SEQUENTIAL AUTOPLAY THEN ALL-AT-ONCE GRID REVEAL -->
-  <section class="section-wrap" id="teamSection">
+  <section class="section-wrap" id="teamSection" data-index="The team">
     <div class="content-container">
-      <div class="section-header">
-        <div class="kicker">Our Experts</div>
+      <div class="section-header team-header" data-reveal>
         <h2>Meet the Team</h2>
-        <p>Demographic Intelligence Unit</p>
       </div>
 
       <!-- MODE 1: SEQUENTIAL 1-BY-1 SPOTLIGHT INTRO (AUTOPLAY) -->
@@ -1135,8 +1181,8 @@
       <div class="all-team-grid-wrapper" id="allTeamGridWrapper">
         <div class="all-team-header">
           <div>
-            <h3>Demographic Intelligence Team</h3>
-            <p>All core members of the Demographic Intelligence Unit</p>
+            <h3>Everyone at once</h3>
+            <p>Six people across CYSD, UNFPA and the unit itself</p>
           </div>
           <button type="button" class="replay-btn" id="replayBtn">↺ Replay Sequential Intro</button>
         </div>
@@ -1163,128 +1209,6 @@
 </footer>
 
 <script>
-  /* ═══════════════════════════════════════════════════════════════════
-     EDITORIAL ODISHA DEMOGRAPHIC MAP DATA ENGINE
-     ═══════════════════════════════════════════════════════════════════ */
-  const DEMO_STREAMS = [
-    { district: "Khordha", info: "State Capital Region · Demographic Hub", metrics: "TFR: 1.6 · Urban: 48.2% · Lit: 86.9%" },
-    { district: "Ganjam", info: "Southern Migration & Demographic Corridor", metrics: "Pop: 3.53M · TFR: 1.7 · Sex Ratio: 983" },
-    { district: "Cuttack", info: "Central Healthcare & Academic Belt", metrics: "TFR: 1.6 · Lit: 85.5% · WPR: 37.4%" },
-    { district: "Sambalpur", info: "Western Industrial & Trade Gateway", metrics: "Urban: 29.5% · Lit: 76.2% · TFR: 1.7" },
-    { district: "Koraput", info: "Southern Tribal Demographic Profile", metrics: "Working Cohort: 62.4% · Literacy: 49.2%" },
-    { district: "Mayurbhanj", info: "Northern Forest & Community Belt", metrics: "Pop: 2.52M · Sex Ratio: 1006" },
-    { district: "Sundargarh", info: "Northern Mining & Youth Demographics", metrics: "Urban: 35.3% · Lit: 73.3% · Youth: 28.5%" },
-    { district: "Puri", info: "Coastal Heritage & Ageing Profile", metrics: "Elderly Share: 11.2% · Lit: 84.7%" }
-  ];
-
-  let streamIndex = 0;
-
-  function initEditorialHeroMap() {
-    const container = d3.select("#heroMapSvg");
-    const width = container.node().getBoundingClientRect().width || 520;
-    const height = 340;
-
-    const svg = container.append("svg")
-      .attr("viewBox", `0 0 ${width} ${height}`)
-      .attr("preserveAspectRatio", "xMidYMid meet");
-
-    d3.json("Orissa.geojson").then(geoData => {
-      const projection = d3.geoMercator().fitSize([width, height], geoData);
-      const path = d3.geoPath().projection(projection);
-
-      const colorPalette = ["#e2e8f0", "#cbd5e1", "#94a3b8", "#64748b", "#387478", "#1a535c", "#1f385c"];
-
-      svg.selectAll("path")
-        .data(geoData.features)
-        .enter()
-        .append("path")
-        .attr("d", path)
-        .attr("class", "district-path-editorial")
-        .style("fill", (d, i) => colorPalette[i % colorPalette.length])
-        .style("opacity", 0.75)
-        .on("mouseenter", function(event, d) {
-          svg.selectAll(".district-path-editorial").classed("active-dist", false);
-          d3.select(this).classed("active-dist", true);
-
-          const distName = d.properties.Dist_Name || d.properties.DISTRICT || "District";
-          d3.select("#streamDistrict").text(`${distName} District`);
-          const matched = DEMO_STREAMS.find(s => s.district.toLowerCase() === distName.toLowerCase());
-          if (matched) {
-            d3.select("#streamInfo").text(matched.info);
-            d3.select("#streamMetrics").text(matched.metrics);
-          } else {
-            d3.select("#streamInfo").text("Demographic Data Record");
-            d3.select("#streamMetrics").text("Census & NFHS Evidence Base");
-          }
-        })
-        .on("mouseleave", function() {
-          d3.select(this).classed("active-dist", false);
-        });
-
-      const hubs = [
-        { name: "Khordha", coords: [85.8245, 20.2961] },
-        { name: "Cuttack", coords: [85.8830, 20.4625] },
-        { name: "Ganjam", coords: [84.9000, 19.3800] },
-        { name: "Sambalpur", coords: [83.9800, 21.4700] },
-        { name: "Koraput", coords: [82.7167, 18.8167] }
-      ];
-
-      const hubG = svg.append("g");
-      hubs.forEach(h => {
-        const pt = projection(h.coords);
-        if (pt) {
-          hubG.append("circle")
-            .attr("cx", pt[0])
-            .attr("cy", pt[1])
-            .attr("r", 4)
-            .attr("fill", "#bb4500");
-
-          hubG.append("circle")
-            .attr("cx", pt[0])
-            .attr("cy", pt[1])
-            .attr("r", 10)
-            .attr("fill", "none")
-            .attr("stroke", "#bb4500")
-            .attr("stroke-width", 1.5)
-            .attr("opacity", 0.5)
-            .append("animate")
-            .attr("attributeName", "r")
-            .attr("values", "4;16;4")
-            .attr("dur", "3s")
-            .attr("repeatCount", "indefinite");
-        }
-      });
-
-      highlightDistrictOnMap(DEMO_STREAMS[0].district);
-    }).catch(err => {
-      console.warn("GeoJSON load fallback:", err);
-    });
-  }
-
-  function highlightDistrictOnMap(distName) {
-    d3.selectAll(".district-path-editorial")
-      .classed("active-dist", function(d) {
-        const name = d.properties.Dist_Name || d.properties.DISTRICT || "";
-        return name.toLowerCase() === distName.toLowerCase();
-      });
-  }
-
-  function startStreamCycling() {
-    setInterval(() => {
-      streamIndex = (streamIndex + 1) % DEMO_STREAMS.length;
-      const s = DEMO_STREAMS[streamIndex];
-      const distEl = document.getElementById('streamDistrict');
-      const infoEl = document.getElementById('streamInfo');
-      const metricsEl = document.getElementById('streamMetrics');
-      if (distEl && metricsEl) {
-        distEl.textContent = `${s.district} District`;
-        infoEl.textContent = s.info;
-        metricsEl.textContent = s.metrics;
-        highlightDistrictOnMap(s.district);
-      }
-    }, 3500);
-  }
-
   /* ═══════════════════════════════════════════════════════════════════
      TEAM INTRO SEQUENTIAL AUTOPLAY ENGINE & ALL-AT-ONCE GRID REVEAL
      ═══════════════════════════════════════════════════════════════════ */
@@ -1442,11 +1366,164 @@
     }, 400);
   }
 
+  /* ═══════════════════════════════════════════════════════════════════
+     UNIFORM SCROLL-REVEAL — one observer drives every section
+     ═══════════════════════════════════════════════════════════════════ */
+  const REDUCED_MOTION = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function initScrollReveals() {
+    const targets = document.querySelectorAll('[data-reveal], [data-reveal-group]');
+    if (!targets.length) return;
+
+    if (REDUCED_MOTION || !('IntersectionObserver' in window)) {
+      targets.forEach(el => el.classList.add('in'));
+      return;
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    targets.forEach(el => io.observe(el));
+
+    /* A restored scroll position or an in-page jump can carry a section past
+       the viewport without the observer ever firing; catch those on scroll. */
+    let ticking = false;
+    function sweep() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        document.querySelectorAll('[data-reveal]:not(.in), [data-reveal-group]:not(.in)')
+          .forEach(el => {
+            if (el.getBoundingClientRect().bottom < 0) {
+              el.classList.add('in');
+              io.unobserve(el);
+            }
+          });
+      });
+    }
+    window.addEventListener('scroll', sweep, { passive: true });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     CHAPTER INDEX — built from every section's data-index. Tracks the
+     chapter under the reading line, names the one after it, and fills a
+     progress bar down the rail as the page is read.
+     ═══════════════════════════════════════════════════════════════════ */
+  function initChapterIndex() {
+    const nav = document.getElementById('chapterIndex');
+    const chapters = [...document.querySelectorAll('main section[data-index]')];
+    if (!nav || !chapters.length) return;
+
+    const pad = n => String(n).padStart(2, '0');
+    const list = document.getElementById('ciList');
+    const toggle = document.getElementById('ciToggle');
+    const els = {
+      now: document.getElementById('ciNow'),
+      current: document.getElementById('ciCurrent'),
+      upnext: document.getElementById('ciUpnext'),
+      next: document.getElementById('ciNext'),
+      nextK: document.getElementById('ciNextK'),
+      nextName: document.getElementById('ciNextName')
+    };
+    document.getElementById('ciTotal').textContent = pad(chapters.length);
+
+    list.innerHTML = chapters.map((c, i) => `
+      <li><a class="ci-link" href="#${c.id}">
+        <span class="ci-label">${c.dataset.index}</span>
+        <span class="ci-num">${pad(i + 1)}</span>
+        <span class="ci-tick" aria-hidden="true"></span>
+      </a></li>`).join('');
+    const links = [...list.querySelectorAll('.ci-link')];
+
+    let current = -1;
+    let peekTimer = null;
+
+    function setCurrent(i) {
+      if (i === current) return;
+      const first = current === -1;
+      current = i;
+
+      links.forEach((l, j) => {
+        l.classList.toggle('is-current', j === i);
+        l.classList.toggle('is-past', j < i);
+        if (j === i) l.setAttribute('aria-current', 'location');
+        else l.removeAttribute('aria-current');
+      });
+
+      els.now.textContent = pad(i + 1);
+      els.current.textContent = chapters[i].dataset.index;
+
+      const nxt = chapters[i + 1];
+      if (nxt) {
+        els.next.href = '#' + nxt.id;
+        els.nextK.textContent = 'Up next';
+        els.nextName.textContent = nxt.dataset.index;
+        els.upnext.textContent = 'Next · ' + nxt.dataset.index;
+        els.next.classList.remove('is-end');
+      } else {
+        els.next.href = '#' + chapters[0].id;
+        els.nextK.textContent = 'The end';
+        els.nextName.textContent = 'Back to top';
+        els.upnext.textContent = 'Last section';
+        els.next.classList.add('is-end');
+      }
+
+      /* Open the labels briefly so each new chapter announces itself. */
+      if (!first) {
+        nav.classList.add('is-peek');
+        clearTimeout(peekTimer);
+        peekTimer = setTimeout(() => nav.classList.remove('is-peek'), 2600);
+      }
+    }
+
+    function update() {
+      const line = window.innerHeight * 0.42;
+      let idx = 0;
+      chapters.forEach((c, i) => { if (c.getBoundingClientRect().top <= line) idx = i; });
+      const doc = document.documentElement;
+      const max = Math.max(1, doc.scrollHeight - window.innerHeight);
+      // the final section is short: once the page bottoms out, it has arrived
+      if (window.scrollY >= max - 4) idx = chapters.length - 1;
+      setCurrent(idx);
+
+      nav.style.setProperty('--ci-progress', Math.min(1, Math.max(0, window.scrollY / max)).toFixed(4));
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; update(); });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    function setOpen(open) {
+      nav.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    }
+    toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
+    list.addEventListener('click', e => { if (e.target.closest('.ci-link')) setOpen(false); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
+    document.addEventListener('click', e => { if (!nav.contains(e.target)) setOpen(false); });
+
+    update();
+    requestAnimationFrame(() => nav.classList.add('ready'));
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    initEditorialHeroMap();
-    startStreamCycling();
     renderAllTeamGrid();
     startSequentialIntro();
+    initScrollReveals();
+    initChapterIndex();
 
     document.getElementById('skipToAllBtn').addEventListener('click', revealAllMembersGrid);
     document.getElementById('replayBtn').addEventListener('click', startSequentialIntro);

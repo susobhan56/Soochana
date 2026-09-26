@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Explore Odisha · Soochana</title>
-<meta name="description" content="A guided tour of Odisha's population: a live estimate, seven decades of district growth on one map, a changing age pyramid, your district's story and two quick guessing games.">
+<meta name="description" content="A guided tour of Odisha's population: a live estimate, seven decades of district growth on one map, what lies beneath the headline numbers, a changing age pyramid, your district's story and two quick guessing games.">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
@@ -13,13 +13,13 @@
 <!-- tour type: Anton (display), Merriweather (reading), Hind (labels) -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css?v=20260925-2">
-<link rel="stylesheet" href="explore.css?v=20260925-2">
+<link rel="stylesheet" href="explore.css?v=20260926-1">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <!-- in <head> and not deferred, so the saved text size applies before first paint -->
 <script src="ui.js?v=20260925-2"></script>
 <script src="soochana_live.js?v=20260925-2" defer></script>
 <script src="share_card.js?v=20260925-2" defer></script>
-<script src="explore.js?v=20260925-2" defer></script>
+<script src="explore.js?v=20260926-1" defer></script>
 </head>
 <body class="ex-body" data-scene="start">
 
@@ -34,11 +34,10 @@
     </a>
   </div>
   <div class="nav-group flex-wrap" style="gap:12px;">
-    <a href="index.html" class="btn-elegant">Odisha at a glance</a>
-    <a href="explore.html" class="btn-elegant" aria-current="page">Explore</a>
+    <a href="about.html" class="btn-elegant">About Us</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant">Repository</a>
-    <a href="about.html" class="btn-elegant">About Us</a>
+    <a href="explore.html" class="btn-elegant" aria-current="page">Explore</a>
   </div>
 </header>
 
@@ -100,7 +99,128 @@
     </div>
   </section>
 
-  <!-- 3 · Guess: growing older -->
+  <!-- 3 · Beneath the numbers: the demographic iceberg.
+       The one chapter that scrolls on purpose: what is counted sits above the
+       water, the shifts that drive it and what they mean lie beneath, so the
+       reader dives from the headline figures down to their consequences. -->
+  <section class="ex-scene ex-scene-berg" data-scene="iceberg" aria-labelledby="exBergHead">
+   <div class="berg">
+
+    <div class="berg-sky">
+      <div class="berg-head">
+        <p class="ex-kicker ex-rise">Beneath the numbers</p>
+        <h2 class="ex-display ex-rise" style="--i:1" id="exBergHead" tabindex="-1">What we count is only the tip</h2>
+        <p class="ex-lead ex-rise" style="--i:2">
+          The population you just watched climb is what everyone sees. Beneath it, slower shifts are
+          reshaping what Odisha will need from its schools, hospitals, towns and jobs.
+        </p>
+      </div>
+
+      <div class="berg-above" data-berg>
+        <p class="berg-tag berg-tag-see">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          What we see
+        </p>
+        <ul class="berg-seen">
+          <li style="--i:0">Population size</li>
+          <li style="--i:1">Urban population</li>
+          <li style="--i:2">Age structure</li>
+          <li style="--i:3">Sex ratio</li>
+        </ul>
+        <svg class="berg-tip" viewBox="0 0 400 230" aria-hidden="true">
+          <polygon points="0,230 38,176 78,150 112,92 150,60 186,8 214,50 248,62 282,112 318,140 356,184 400,230" fill="#e6f4fb"/>
+          <polygon points="186,8 150,60 112,92 150,124 198,118" fill="#ffffff"/>
+          <polygon points="186,8 214,50 248,62 282,112 318,140 356,184 400,230 236,230 198,118" fill="#c3e2f2"/>
+          <polygon points="198,118 236,230 146,230" fill="#a9d4ea"/>
+          <polygon points="112,92 78,150 38,176 0,230 146,230 150,124" fill="#d6ecf7"/>
+          <polyline points="186,8 198,118 236,230" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.7"/>
+        </svg>
+      </div>
+
+      <div class="berg-waterline" aria-hidden="true">
+        <div class="berg-wave berg-wave-back"></div>
+        <div class="berg-wave berg-wave-front"></div>
+      </div>
+    </div>
+
+    <div class="berg-deep">
+      <div class="berg-body" aria-hidden="true"></div>
+      <div class="berg-rays" aria-hidden="true"></div>
+      <div class="berg-bubbles" aria-hidden="true">
+        <i style="--x:14%;--s:6px;--d:9s;--w:0s"></i>
+        <i style="--x:22%;--s:4px;--d:12s;--w:3s"></i>
+        <i style="--x:31%;--s:8px;--d:10s;--w:6s"></i>
+        <i style="--x:44%;--s:5px;--d:13s;--w:1s"></i>
+        <i style="--x:57%;--s:7px;--d:11s;--w:4s"></i>
+        <i style="--x:66%;--s:4px;--d:9s;--w:7s"></i>
+        <i style="--x:74%;--s:6px;--d:14s;--w:2s"></i>
+        <i style="--x:83%;--s:5px;--d:10s;--w:5s"></i>
+        <i style="--x:90%;--s:3px;--d:12s;--w:8s"></i>
+      </div>
+
+      <div class="berg-surface" data-berg>
+        <span class="berg-surface-kicker">Waterline</span>
+        <strong class="berg-display">Demographic shift</strong>
+      </div>
+
+      <div class="berg-drivers" data-berg>
+        <div class="berg-descend" aria-hidden="true"><span></span></div>
+        <p class="berg-tag">Beneath the surface</p>
+        <ol class="berg-chain">
+          <li style="--i:0"><b>Fertility decline</b><span>Smaller families, fewer births</span></li>
+          <li style="--i:1"><b>Longer lives</b><span>More people reach old age</span></li>
+          <li style="--i:2"><b>Migration</b><span>Moving for work, in and out</span></li>
+          <li style="--i:3"><b>Urbanisation</b><span>Towns grow, villages thin</span></li>
+          <li style="--i:4"><b>Ageing</b><span>A larger share over sixty</span></li>
+        </ol>
+        <div class="berg-descend" aria-hidden="true"><span></span></div>
+      </div>
+
+      <div class="berg-means" data-berg>
+        <p class="berg-tag berg-tag-deep">What it means</p>
+        <h3 class="berg-display berg-display-sm">Eight things Odisha must plan for</h3>
+        <ul class="berg-grid">
+          <li style="--i:0">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>
+            <b>Jobs &amp; skills</b><span>A large working-age generation needs work to match.</span>
+          </li>
+          <li style="--i:1">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8L12 22l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/><path d="M3.5 12h4l2-3 3 6 2-3h6"/></svg>
+            <b>Health systems</b><span>Longer lives bring more chronic illness to care for.</span>
+          </li>
+          <li style="--i:2">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h7a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v14a2 2 0 0 1 2-2h8z"/></svg>
+            <b>Schools</b><span>Fewer children changes where classrooms are needed.</span>
+          </li>
+          <li style="--i:3">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="4" r="2"/><path d="M10 8v6l-3 7"/><path d="M10 14l3 7"/><path d="M6 12l4-4 3 3"/><path d="M17 11v10"/><path d="M17 11a2 2 0 0 1 2-2"/></svg>
+            <b>Elder care</b><span>More older people, many of them living alone.</span>
+          </li>
+          <li style="--i:4">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3l4 4-4 4"/><path d="M3 7h18"/><path d="M7 21l-4-4 4-4"/><path d="M21 17H3"/></svg>
+            <b>Migration policy</b><span>Those who leave, and the families left behind.</span>
+          </li>
+          <li style="--i:5">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V7l6-4v18"/><path d="M19 21V11l-8-4"/><path d="M8 9h.01M8 13h.01M8 17h.01M15 14h.01M15 18h.01"/></svg>
+            <b>Urban planning</b><span>Towns growing faster than their water, housing and transport.</span>
+          </li>
+          <li style="--i:6">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 10h8M8 14h8"/></svg>
+            <b>Gender equality</b><span>Women's schooling and work shape the whole transition.</span>
+          </li>
+          <li style="--i:7">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+            <b>Social protection</b><span>Pensions and safety nets that must last longer.</span>
+          </li>
+        </ul>
+        <p class="berg-close">Soochana brings all three layers into view, so decisions are made on the whole iceberg, not just the tip.</p>
+        <p class="berg-next"><button type="button" class="btn-pill solid" data-go="ageing">Next: growing older</button></p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- 4 · Guess: growing older -->
   <section class="ex-scene" data-scene="ageing" aria-labelledby="exAgeHead">
     <div class="ex-guess">
       <div class="ex-guess-copy">
@@ -134,7 +254,7 @@
     <p class="ex-source">Source: Population Projections for India and States 2011–2036 (Bayesian approach), ORGI.</p>
   </section>
 
-  <!-- 4 · Watch it happen: the age pyramid -->
+  <!-- 5 · Watch it happen: the age pyramid -->
   <section class="ex-scene" data-scene="pyramid" aria-labelledby="exPyrHead">
     <div class="ex-pyr">
       <div class="ex-pyr-copy">
@@ -163,7 +283,7 @@
     <p class="ex-source">Source: district population by five-year age group and sex, 2011–2036, from Soochana's district age dataset.</p>
   </section>
 
-  <!-- 5 · Guess: fastest growth -->
+  <!-- 6 · Guess: fastest growth -->
   <section class="ex-scene" data-scene="fastest" aria-labelledby="exFastHead">
     <div class="ex-fast">
       <p class="ex-kicker ex-rise">Pick a district</p>
@@ -182,7 +302,7 @@
     <p class="ex-source">Source: Census of India 1951–2011 and district population projections to 2036, from Soochana's district population dataset.</p>
   </section>
 
-  <!-- 6 · Find your district -->
+  <!-- 7 · Find your district -->
   <section class="ex-scene" data-scene="district" aria-labelledby="exDistHead">
     <div class="ex-dist">
       <div class="ex-dist-pick">
@@ -227,7 +347,7 @@
     <p class="ex-source">Sources: Soochana's district datasets — population 1951–2036, age and sex 2011–2036, fertility (NFHS-4 and projections), life expectancy (NFHS-5).</p>
   </section>
 
-  <!-- 7 · Keep exploring -->
+  <!-- 8 · Keep exploring -->
   <section class="ex-scene" data-scene="more" aria-labelledby="exMoreHead">
     <div class="ex-more">
       <p class="ex-kicker ex-rise">Keep exploring</p>
@@ -249,6 +369,11 @@
     </div>
   </section>
 
+  <button type="button" class="ex-dive" id="exDive">
+    Dive beneath the surface
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg>
+  </button>
+
   <div class="ex-bar">
     <nav class="ex-foot" aria-label="About this tour">
       <a href="about.html">About this tool</a>
@@ -264,7 +389,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
       </button>
     </div>
-    <span class="ex-count" id="exCount" aria-hidden="true">1 / 7</span>
+    <span class="ex-count" id="exCount" aria-hidden="true">1 / 8</span>
   </div>
 
   <div class="ex-toast" id="exToast" role="status" hidden></div>

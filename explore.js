@@ -13,10 +13,11 @@
 (function () {
   'use strict';
 
-  var SCENES = ['start', 'growth', 'ageing', 'pyramid', 'fastest', 'district', 'more'];
+  var SCENES = ['start', 'growth', 'iceberg', 'ageing', 'pyramid', 'fastest', 'district', 'more'];
   var LABELS = {
     start:    'Odisha today',
     growth:   'Seven decades of growth',
+    iceberg:  'Beneath the numbers',
     ageing:   'Guess: growing older',
     pyramid:  'Watch it happen: the age pyramid',
     fastest:  'Guess: fastest growth',
@@ -983,6 +984,53 @@
       setTimeout(function () { shareBtn.textContent = 'Share this tour'; }, 2200);
     };
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, function () {});
+  });
+
+  /* ── beneath the numbers: the iceberg ──────────────────
+     The one chapter that scrolls. Its stages surface as they reach the
+     viewport, watched only once the chapter is first shown — the chapters
+     are stacked on one another, so watching earlier would play the whole
+     descent out of sight. */
+  var bergScene = root.querySelector('[data-scene="iceberg"]');
+  var dive = $('exDive');
+  var bergIO = null;
+
+  function canDive() {
+    return bergScene.scrollHeight - bergScene.clientHeight > 60;
+  }
+
+  enter.iceberg = function () {
+    bergScene.scrollTop = 0;
+    /* on a screen tall enough to show the whole iceberg there is nowhere to dive */
+    dive.classList.toggle('is-gone', !canDive());
+    if (bergIO) return;
+
+    var stages = [].slice.call(bergScene.querySelectorAll('[data-berg]'));
+    if (reduce || !('IntersectionObserver' in window)) {
+      stages.forEach(function (el) { el.classList.add('in'); });
+      bergIO = true;
+      return;
+    }
+    bergIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        bergIO.unobserve(entry.target);
+        /* reaching the deep is the end of the chapter: point at the next one */
+        if (entry.target.classList.contains('berg-means')) setTimeout(nudgeNext, 1800);
+      });
+    }, { root: bergScene, threshold: 0.15 });
+    stages.forEach(function (el) { bergIO.observe(el); });
+  };
+
+  bergScene.addEventListener('scroll', function () {
+    dive.classList.toggle('is-gone', bergScene.scrollTop > 60 || !canDive());
+  }, { passive: true });
+
+  dive.addEventListener('click', function () {
+    var surface = bergScene.querySelector('.berg-surface');
+    var top = surface.getBoundingClientRect().top - bergScene.getBoundingClientRect().top + bergScene.scrollTop - 24;
+    bergScene.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
   });
 
   /* ── load ────────────────────────────────────────────── */

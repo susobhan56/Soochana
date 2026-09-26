@@ -1194,6 +1194,640 @@
   .ex-pyr-stats div { padding: 10px; }
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   3 · BENEATH THE NUMBERS — the demographic iceberg
+   The one chapter that scrolls: headline figures above the water, the
+   shifts that drive them at and below the waterline, and what they mean
+   in the deep. Stages surface as they scroll into view (explore.js).
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* full bleed: the sky and the sea are the chapter's own ground */
+.ex-scene-berg { padding: 0; }
+.ex-body[data-scene="iceberg"] { background-color: #0f4467; }
+.berg {
+  --sky-foot:   #8cc6e4;
+  --sea-top:    #1c6d99;
+  --tipw:       400px;            /* the tip's width; the submerged body starts at the same width */
+  position: relative;
+  min-height: 100%;
+  color: var(--pm-white);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.berg-display {
+  font-family: var(--pm-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.06;
+  color: #ffffff;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* ── above the water ─────────────────────────────────── */
+.berg-sky {
+  position: relative;
+  padding: clamp(28px, 4vw, 56px) var(--gutter) 0;
+  background-color: #16587d;
+  background-image:
+    var(--pm-wash), var(--pm-paper),
+    linear-gradient(180deg, #0f4467 0%, #2673a3 55%, var(--sky-foot) 100%);
+  /* the wash is stretched rather than tiled: its 900px tile leaves a seam */
+  background-size: cover, 220px 220px, auto;
+  background-blend-mode: soft-light, soft-light, normal;
+}
+
+/* dawn light low on the horizon, behind the ice */
+.berg-sky::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 46% 42% at 50% 100%, rgba(249, 213, 191, 0.6), transparent 70%);
+  pointer-events: none;
+}
+
+.berg-head {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.berg-head .ex-kicker { justify-content: center; }
+.berg-head .ex-lead { max-width: 640px; margin: 0 auto; }
+
+/* The four headline figures flank the tip, two either side, each tied
+   to the ice by a short leader line. */
+.berg-above {
+  position: relative;
+  z-index: 1;
+  max-width: 1040px;
+  margin: 64px auto 0;
+  display: grid;
+  grid-template-columns: 1fr var(--tipw) 1fr;
+  grid-template-rows: auto 1fr 1fr;
+  column-gap: 34px;
+  align-items: center;
+}
+
+.berg-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding: 7px 16px 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+.berg-tag svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.berg-tag-see { grid-column: 1 / -1; justify-self: center; }
+.berg-tag-deep {
+  border-color: rgba(240, 138, 75, 0.75);
+  background: rgba(240, 138, 75, 0.14);
+  color: #ffdcc6;
+}
+
+.berg-seen { display: contents; list-style: none; }
+.berg-seen li {
+  position: relative;
+  padding: 11px 20px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 26px rgba(8, 40, 66, 0.16);
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #ffffff;
+}
+.berg-seen li:nth-child(1) { grid-column: 1; grid-row: 2; justify-self: end; }
+.berg-seen li:nth-child(2) { grid-column: 1; grid-row: 3; justify-self: end; margin-right: 44px; }
+.berg-seen li:nth-child(3) { grid-column: 3; grid-row: 2; justify-self: start; }
+.berg-seen li:nth-child(4) { grid-column: 3; grid-row: 3; justify-self: start; margin-left: 44px; }
+
+.berg-seen li::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 1px;
+}
+.berg-seen li:nth-child(-n+2)::after {
+  left: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
+}
+.berg-seen li:nth-child(n+3)::after {
+  right: 100%;
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0.8), transparent);
+}
+
+.berg-tip {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  align-self: end;
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 -8px 34px rgba(255, 255, 255, 0.28));
+}
+
+/* ── the waterline ───────────────────────────────────── */
+/* The waves sit over the foot of the sky, so the base of the tip
+   disappears into moving water rather than ending on a hard edge. */
+.berg-waterline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 64px;
+  z-index: 2;
+  pointer-events: none;
+}
+.berg-sky { padding-bottom: 0; }
+.berg-above { padding-bottom: 26px; }
+
+.berg-wave {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat-x;
+  background-size: 720px 64px;
+  background-position: 0 bottom;
+}
+.berg-wave-back {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='64' viewBox='0 0 720 64'%3E%3Cpath d='M0 26 C90 12 270 12 360 26 S630 40 720 26 V64 H0Z' fill='%232f8cbf'/%3E%3C/svg%3E");
+  opacity: 0.6;
+  animation: bergDrift 16s linear infinite;
+}
+.berg-wave-front {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='64' viewBox='0 0 720 64'%3E%3Cpath d='M0 38 C120 24 240 24 360 38 S600 52 720 38 V64 H0Z' fill='%231c6d99'/%3E%3C/svg%3E");
+  opacity: 0.84;
+  animation: bergDrift 10s linear infinite reverse;
+}
+@keyframes bergDrift {
+  from { background-position-x: 0; }
+  to   { background-position-x: 720px; }
+}
+
+/* ── below the water ─────────────────────────────────── */
+.berg-deep {
+  position: relative;
+  padding: 40px var(--gutter) 150px;
+  background-color: #0d2b45;
+  background-image:
+    var(--pm-wash), var(--pm-paper),
+    linear-gradient(180deg, var(--sea-top) 0%, #145a82 16%, #0e3b5c 46%, #0a2742 74%, #061626 100%);
+  /* the wash is stretched rather than tiled: its 900px tile leaves a seam */
+  background-size: cover, 220px 220px, auto;
+  background-blend-mode: soft-light, soft-light, normal;
+}
+
+/* The submerged mass: it leaves the surface at exactly the tip's width,
+   then swells far wider than anything visible above. */
+.berg-body {
+  position: absolute;
+  top: 0;
+  bottom: 70px;
+  left: 50%;
+  width: min(1120px, 98%);
+  transform: translateX(-50%);
+  z-index: 0;
+  clip-path: polygon(
+    calc(50% - var(--tipw) / 2) 0, calc(50% + var(--tipw) / 2) 0,
+    78% 6%, 89% 15%, 96% 29%, 100% 44%, 97% 58%, 91% 70%, 81% 82%,
+    67% 92%, 55% 100%, 43% 97%, 29% 89%, 17% 77%, 7% 61%, 0 46%,
+    3% 30%, 11% 16%, 23% 6%
+  );
+  background: linear-gradient(180deg,
+    rgba(190, 228, 246, 0.48) 0%,
+    rgba(159, 211, 240, 0.22) 26%,
+    rgba(159, 211, 240, 0.09) 64%,
+    rgba(159, 211, 240, 0.03) 100%);
+}
+/* two facets, so the ice reads as a solid with a lit face and a shaded one */
+.berg-body::before,
+.berg-body::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.berg-body::before {
+  clip-path: polygon(30% 0, 50% 0, 46% 36%, 35% 70%, 15% 76%, 0 46%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.02));
+}
+.berg-body::after {
+  clip-path: polygon(50% 0, 100% 0, 100% 100%, 57% 100%, 62% 58%, 54% 28%);
+  background: linear-gradient(180deg, rgba(4, 28, 50, 0.16), rgba(4, 28, 50, 0.34));
+}
+
+/* light shafts from the surface, swaying slowly */
+.berg-rays {
+  position: absolute;
+  top: 0;
+  left: -10%;
+  right: -10%;
+  height: 70%;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(105deg,
+    rgba(255, 255, 255, 0.07) 0 60px, transparent 60px 190px);
+  -webkit-mask-image: linear-gradient(180deg, #000, transparent);
+  mask-image: linear-gradient(180deg, #000, transparent);
+  transform-origin: top center;
+  animation: bergSway 12s ease-in-out infinite alternate;
+}
+@keyframes bergSway {
+  from { transform: skewX(-5deg) translateX(-2%); }
+  to   { transform: skewX(5deg) translateX(2%); }
+}
+
+.berg-bubbles { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.berg-bubbles i {
+  position: absolute;
+  bottom: -20px;
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.12);
+  opacity: 0;
+  animation: bergBubble var(--d) linear var(--w) infinite;
+}
+@keyframes bergBubble {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  10%  { opacity: 0.8; }
+  50%  { transform: translate(10px, -520px); }
+  90%  { opacity: 0.4; }
+  100% { transform: translate(-6px, -1040px); opacity: 0; }
+}
+
+.berg-surface,
+.berg-drivers,
+.berg-means { position: relative; z-index: 1; }
+
+.berg-surface { text-align: center; }
+.berg-surface-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+.berg-surface-kicker::before,
+.berg-surface-kicker::after {
+  content: '';
+  width: 44px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+}
+.berg-surface .berg-display {
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(32px, 4.6vw, 58px);
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* ── what drives it ── */
+.berg-drivers { max-width: 1060px; margin: 0 auto; text-align: center; }
+
+.berg-descend {
+  position: relative;
+  width: 2px;
+  height: 64px;
+  margin: 16px auto;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5));
+}
+.berg-descend::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 1px;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.75);
+  transform: translateX(-50%) rotate(45deg);
+}
+.berg-descend span {
+  position: absolute;
+  left: -2px;
+  width: 6px;
+  height: 18px;
+  border-radius: 3px;
+  background: #ffffff;
+  box-shadow: 0 0 12px var(--pm-cyan);
+  animation: bergDescend 2.4s var(--pm-ease) infinite;
+}
+@keyframes bergDescend {
+  0%   { top: -18px; opacity: 0; }
+  30%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.berg-chain {
+  list-style: none;
+  counter-reset: drv;
+  position: relative;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+/* a current running through the five drivers */
+.berg-chain::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.55) 0 6px, transparent 6px 12px);
+  animation: bergCurrent 1.4s linear infinite;
+}
+@keyframes bergCurrent {
+  from { background-position: 0 0; }
+  to   { background-position: 12px 0; }
+}
+.berg-chain li {
+  counter-increment: drv;
+  position: relative;
+  padding: 18px 14px 16px;
+  border-radius: 16px;
+  background: rgba(9, 44, 70, 0.6);
+  border: 1px solid rgba(159, 211, 240, 0.35);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+.berg-chain li::before {
+  content: '0' counter(drv);
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--pm-cyan);
+}
+.berg-chain b {
+  display: block;
+  font-family: var(--pm-display);
+  font-weight: 400;
+  font-size: 21px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.berg-chain span {
+  display: block;
+  margin-top: 7px;
+  font-family: var(--pm-read);
+  font-weight: 300;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* ── what it means ── */
+.berg-means { max-width: 1080px; margin: 64px auto 0; text-align: center; }
+.berg-display-sm { font-size: clamp(26px, 3.3vw, 44px); margin-bottom: 34px; }
+
+.berg-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  text-align: left;
+}
+.berg-grid li {
+  padding: 22px 20px 20px;
+  border-radius: 18px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition: transform 0.6s var(--pm-ease), background 0.6s var(--pm-ease),
+              border-color 0.6s var(--pm-ease), opacity 1s var(--pm-ease);
+}
+.berg-grid li:hover {
+  border-color: rgba(240, 138, 75, 0.7);
+  background: linear-gradient(160deg, rgba(240, 138, 75, 0.2), rgba(255, 255, 255, 0.03));
+}
+.berg-grid svg {
+  display: block;
+  width: 28px;
+  height: 28px;
+  margin-bottom: 14px;
+  fill: none;
+  stroke: #f7b489;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.berg-grid b {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--pm-display);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.berg-grid span {
+  display: block;
+  font-family: var(--pm-read);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.berg-close {
+  max-width: 620px;
+  margin: 46px auto 0;
+  font-family: var(--pm-read);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(15px, 1.4vw, 17.5px);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+/* ── the descent, choreographed ──
+   The tip rises out of the water, the four figures settle in beside it,
+   the drivers drop into place one after another, then the eight
+   consequences surface from the deep. */
+.berg-tip {
+  opacity: 0;
+  transform: translateY(70px);
+  transition: opacity 1.2s var(--pm-ease), transform 1.8s var(--pm-ease);
+}
+.berg-above.in .berg-tip {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.5s;
+  animation: bergBob 7s ease-in-out 2s infinite;
+}
+@keyframes bergBob {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 5px; }
+}
+
+.berg-above .berg-tag,
+.berg-seen li,
+.berg-surface > *,
+.berg-drivers .berg-tag,
+.berg-chain li,
+.berg-means .berg-tag,
+.berg-means .berg-display,
+.berg-grid li,
+.berg-close {
+  opacity: 0;
+  transition: opacity 1s var(--pm-ease), transform 1.2s var(--pm-ease),
+              letter-spacing 1.4s var(--pm-ease), background 0.6s, border-color 0.6s;
+}
+.berg-seen li            { transform: translateY(16px) scale(0.96); }
+.berg-chain li           { transform: translateY(-22px); }
+.berg-grid li            { transform: translateY(26px); }
+.berg-means .berg-display,
+.berg-close              { transform: translateY(16px); }
+.berg-surface .berg-display { letter-spacing: 0.18em; }
+
+.berg-above.in .berg-tag   { opacity: 1; transition-delay: 0.3s; }
+.berg-above.in .berg-seen li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(0.9s + var(--i, 0) * 0.14s);
+}
+.berg-surface.in > * { opacity: 1; }
+.berg-surface.in .berg-display { letter-spacing: 0.01em; transition-delay: 0.15s; }
+.berg-drivers.in .berg-tag { opacity: 1; }
+.berg-drivers.in .berg-chain li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(0.25s + var(--i, 0) * 0.16s);
+}
+.berg-means.in .berg-tag,
+.berg-means.in .berg-display { opacity: 1; transform: none; }
+.berg-means.in .berg-display { transition-delay: 0.12s; }
+.berg-means.in .berg-grid li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(0.3s + var(--i, 0) * 0.08s);
+}
+.berg-means.in .berg-grid li:hover { transform: translateY(-4px); transition-delay: 0s; }
+.berg-means.in .berg-close { opacity: 1; transform: none; transition-delay: 1.1s; }
+
+/* ── narrower screens ── */
+@media (max-width: 960px) {
+  .berg-chain { grid-template-columns: repeat(3, 1fr); }
+  .berg-chain::before { display: none; }
+  .berg-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  .berg { --tipw: 230px; }
+  .berg-sky { padding-top: 80px; }
+  .berg-above {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    row-gap: 10px;
+    column-gap: 10px;
+    margin-top: 44px;
+  }
+  .berg-seen li { font-size: 14px; padding: 9px 14px 7px; white-space: normal; text-align: center; }
+  .berg-seen li:nth-child(1) { grid-column: 1; grid-row: 2; justify-self: stretch; }
+  .berg-seen li:nth-child(2) { grid-column: 2; grid-row: 2; justify-self: stretch; margin: 0; }
+  .berg-seen li:nth-child(3) { grid-column: 1; grid-row: 3; justify-self: stretch; }
+  .berg-seen li:nth-child(4) { grid-column: 2; grid-row: 3; justify-self: stretch; margin: 0; }
+  .berg-seen li::after { display: none; }
+  .berg-tip { grid-column: 1 / -1; grid-row: 4; justify-self: center; width: var(--tipw); margin-top: 18px; }
+  .berg-chain { grid-template-columns: 1fr; max-width: 340px; }
+  .berg-chain::before {
+    display: block;
+    top: 0; bottom: 0; left: 50%; right: auto;
+    width: 1px; height: auto;
+    background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0 6px, transparent 6px 12px);
+  }
+  .berg-body { width: 140%; }
+}
+@media (max-width: 520px) {
+  .berg-grid { grid-template-columns: 1fr; }
+}
+
+
+.berg-next { margin: 34px 0 0; }
+
+/* style.css strokes every <path> faintly for the maps; give the icons theirs back */
+.berg svg path { stroke: inherit; stroke-width: inherit; cursor: inherit; filter: none; }
+
+/* "dive" cue: floats in the lower-right corner, clear of the waterline
+   heading, until the reader starts scrolling. Centred on phones. */
+.ex-dive {
+  position: absolute;
+  z-index: 4;
+  right: var(--gutter);
+  bottom: 82px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(9, 44, 70, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--pm-white);
+  font-family: var(--pm-ui);
+  font-size: calc(14px * var(--type-scale));
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.8s var(--pm-ease), transform 0.8s var(--pm-ease), background 0.4s ease;
+}
+.ex-dive svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; animation: exDiveNudge 2.2s ease-in-out infinite; }
+.ex-dive svg path { stroke: inherit; stroke-width: inherit; cursor: inherit; filter: none; }
+.ex-dive:hover { background: rgba(9, 44, 70, 0.8); }
+.ex-dive:focus-visible { outline: 3px solid var(--pm-white); outline-offset: 3px; }
+.ex[data-scene="iceberg"] .ex-dive:not(.is-gone) {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+  transition-delay: 1.6s, 1.6s, 0s;
+}
+@keyframes exDiveNudge {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+@media (max-width: 760px) {
+  .ex-dive { right: auto; left: 50%; transform: translate(-50%, 10px); }
+  .ex[data-scene="iceberg"] .ex-dive:not(.is-gone) { transform: translate(-50%, 0); }
+}
+@media (max-width: 480px) { .ex-dive { bottom: 128px; } }
+
 /* ── reduced motion ───────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .ex-body, .ex-scene, .ex-rise, .ex-map, .ex-opt, .ex-caption, .ex-p, .ex-map path,
@@ -1206,4 +1840,11 @@
   .ex-map svg, .ex-arrow.next.is-nudging,
   .ex-slider.is-hinting input[type="range"]::-webkit-slider-thumb { animation: none !important; }
   .ex-result, .ex-dc-body, .ex-toast { animation: none; }
+  .berg *, .berg *::before, .berg *::after { animation: none !important; transition: none !important; }
+  .berg-tip, .berg-seen li, .berg-surface > *, .berg-drivers .berg-tag, .berg-chain li,
+  .berg-means .berg-tag, .berg-means .berg-display, .berg-grid li, .berg-close,
+  .berg-above .berg-tag { opacity: 1 !important; transform: none !important; }
+  .berg-surface .berg-display { letter-spacing: 0.01em !important; }
+  .berg-bubbles { display: none; }
+  .ex-dive svg { animation: none; }
 }
