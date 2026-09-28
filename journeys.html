@@ -121,7 +121,7 @@
       <div class="chart-subtitle label" id="chartSub">Total population (billions) · UN projections</div>
     </div>
     <div class="chart-body">
-      <svg id="mainChart"></svg>
+      <svg id="mainChart" data-download data-download-title="#chartTitle" data-download-slot=".sticky-chart" data-download-place="overlay"></svg>
     </div>
     <div class="chart-legend">
       <div class="legend-item" id="legendLineA">
@@ -244,11 +244,11 @@
   <div class="pyramid-dual">
     <div class="pyramid-panel">
       <div class="pyramid-header green" style="color: var(--green);">India Pyramid (%)</div>
-      <svg id="pyramidIndia"></svg>
+      <svg id="pyramidIndia" data-download data-download-title="India age pyramid (%)"></svg>
     </div>
     <div class="pyramid-panel">
       <div class="pyramid-header purple" style="color: var(--purple);">Odisha Pyramid (%)</div>
-      <svg id="pyramidOdisha"></svg>
+      <svg id="pyramidOdisha" data-download data-download-title="Odisha age pyramid (%)"></svg>
     </div>
   </div>
 </section>
@@ -271,7 +271,7 @@
     <a href="index.html" class="btn-elegant" style="background: var(--orange); color: white; border-color: var(--orange);">
       Open Odisha Regional Explorer</a>
   </div>
-  <div id="india-map-container" style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); height: 500px; position: relative;">
+  <div id="india-map-container" data-download data-download-title="Explore Odisha's regional diversity" style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); height: 500px; position: relative;">
     <div style="position: absolute; top: 20px; left: 20px; z-index: 10;">
       <div class="kicker" style="color: var(--orange); margin: 0;">Interactive Map</div>
       <h3 style="font-family: var(--serif); font-size: 1.2rem; margin: 4px 0 0 0;">Click on Odisha to zoom in</h3>
@@ -1330,5 +1330,6 @@ window.addEventListener('resize', () => {
 });
 </script>
 <script src="chatbot.js?v=20260925-2"></script>
+<script src="chart-download.js?v=20260928-2" defer></script>
 </body>
 </html>

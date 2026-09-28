@@ -297,7 +297,7 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
   <div class="tally-key" id="tallyKey"></div>
   <div class="swarmwrap">
     <div class="swhead"><h3>Every indicator, one dot</h3><select id="swarmSec" aria-label="Highlight a theme"></select></div>
-    <div id="swarm"></div>
+    <div id="swarm" data-download data-download-title=".swhead h3"></div>
     <p class="note">Each dot is a state indicator, placed by how many points it moved in the healthy direction. Hover for details; select a dot to open it in the district explorer.</p>
   </div>
 </header>
@@ -312,7 +312,7 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
       <div class="sidelab">Topic</div>
       <div class="slist short" id="picChips" role="group" aria-label="Topics"></div>
     </aside>
-    <div class="panel pic-panel"><div id="picSay"></div><div id="pic"></div>
+    <div class="panel pic-panel"><div id="picSay"></div><div id="pic" data-download data-download-title="#simple h2"></div>
       <p class="note">Blue figures show something good (like insurance). Orange figures show a problem (like stunting), so for orange, fewer is better.</p></div>
   </div>
 
@@ -330,7 +330,7 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
     <select id="hB" aria-label="Second place"></select>
     <select id="hR" aria-label="Survey round"><option value="6">Today (2023–24)</option><option value="5">Five years ago (2019–21)</option></select>
   </div>
-  <div class="panel"><div id="hSum"></div><div id="h2h"></div><p class="note">All values are percentages (% of the population group in the NFHS fact sheet, e.g. % of households, % of children under 5). Hover a row to see its exact unit.</p></div>
+  <div class="panel"><div id="hSum"></div><div id="h2h" data-download data-download-title="#h2hsec h2"></div><p class="note">All values are percentages (% of the population group in the NFHS fact sheet, e.g. % of households, % of children under 5). Hover a row to see its exact unit.</p></div>
 </section>
 
 <section id="findings">
@@ -348,21 +348,21 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
   <div class="mainc">
   <div class="controls"><button class="btn" id="stateReplay">▶ Replay the change</button></div>
   <div class="legend"><span><i class="dot o"></i>NFHS-5 (2019–21)</span><span><i class="dot bg-up"></i>Improved</span><span><i class="dot bg-down"></i>Worsened</span><span><i class="dot bg-flat"></i>Little change (&lt;1 pt)</span><span>Values in %, changes in percentage points (pts)</span><span><i class="dot bg-neu"></i>No clear direction</span></div>
-  <div class="panel"><div class="d3db" id="stateDB"></div></div>
+  <div class="panel"><div class="d3db" id="stateDB" data-download data-download-title="#state h2"></div></div>
   </div></div>
 </section>
 
 <section id="themes">
   <h2>Progress by theme</h2>
   <p class="sub">Count of state indicators in each theme that improved, barely moved or worsened. Education, internet, tobacco and empowerment moved forward almost uniformly; child feeding, family planning and blood sugar went backwards.</p>
-  <div class="panel"><div class="d3st" id="themeBars"></div></div>
+  <div class="panel"><div class="d3st" id="themeBars" data-download data-download-title="#themes h2"></div></div>
 </section>
 
 <section id="gap">
   <h2>The urban–rural gap in NFHS-6</h2>
   <p class="sub">Indicators where urban and rural Odisha differ by 8 points or more. Hollow dot is rural, filled dot is urban.</p>
   <div class="legend"><span><i class="dot o"></i>Rural</span><span><i class="dot" style="background:var(--ink)"></i>Urban</span></div>
-  <div class="panel"><div class="d3db" id="gapDB"></div></div>
+  <div class="panel"><div class="d3db" id="gapDB" data-download data-download-title="#gap h2"></div></div>
 </section>
 
 
@@ -371,7 +371,7 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
   <p class="sub">Odisha’s three revenue divisions and the KBK districts (Koraput, Balangir, Kalahandi, Malkangiri, Nabarangpur, Nuapada, Rayagada, Sonepur) compared side by side. Values are simple averages of district figures.</p>
   <div class="split">
     <aside class="side" aria-label="Choose an indicator"><div class="sidelab">Indicator</div><select id="regSel" class="sfull mob-only" aria-label="Indicator for region chart"></select><div class="slist long" id="regList"></div></aside>
-    <div class="panel"><p class="unitline" id="regUnit"></p><div class="legend"><span><i class="dot" style="background:var(--old)"></i>NFHS-5 (top bar)</span><span>Coloured bar: NFHS-6</span></div><div id="regChart"></div><p class="note" id="regNote"></p></div>
+    <div class="panel"><p class="unitline" id="regUnit"></p><div class="legend"><span><i class="dot" style="background:var(--old)"></i>NFHS-5 (top bar)</span><span>Coloured bar: NFHS-6</span></div><div id="regChart" data-download data-download-title="#regions h2"></div><p class="note" id="regNote"></p></div>
   </div>
   <h3 style="margin-top:28px">Cross-table: key indicators by region</h3>
   <div class="controls" role="group" aria-label="Cell display">
@@ -403,11 +403,11 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
   </div>
   <p class="unitline" id="expUnit"></p>
   <div class="legend" id="expLegend"></div>
-  <div class="panel"><div class="stats" id="expStats"></div><div class="d3db" id="expDB"></div>
+  <div class="panel"><div class="stats" id="expStats"></div><div class="d3db" id="expDB" data-download data-download-title="#explore h2"></div>
   <p class="note" id="expNote"></p></div>
   <div class="two stackd" style="margin-top:24px">
     <div class="panel"><h3>Where is each district heading?</h3><p class="note" style="margin:0 0 10px">Cross-table of level (NFHS-6 vs state) and trend (change since NFHS-5).</p><div id="quad"></div></div>
-    <div class="panel"><h3>Then vs now</h3><p class="note" style="margin:0 0 6px">Each dot is a district. Above the line means the value went up.</p><div id="thenNow"></div><p class="note" id="convNote"></p></div>
+    <div class="panel"><h3>Then vs now</h3><p class="note" style="margin:0 0 6px">Each dot is a district. Above the line means the value went up.</p><div id="thenNow" data-download data-download-title="Then vs now"></div><p class="note" id="convNote"></p></div>
   </div>
   </div></div>
 </section>
@@ -421,7 +421,7 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
       <div class="sidelab">Up (Y axis)</div><select id="relY" class="sfull" aria-label="Y indicator"></select>
       <div class="sidelab">Suggested pairs</div><div class="slist short" id="relPresets"></div>
     </aside>
-    <div class="panel"><p class="unitline" id="relUnit"></p><div class="stats" id="relStats"></div><div id="relChart"></div><p class="note" id="relNote"></p></div>
+    <div class="panel"><p class="unitline" id="relUnit"></p><div class="stats" id="relStats"></div><div id="relChart" data-download data-download-title="#rel h2"></div><p class="note" id="relNote"></p></div>
   </div>
 </section>
 
@@ -430,7 +430,7 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
   <p class="sub">Share of each district’s comparable indicators that improved between rounds (small-sample estimates excluded). Select a district to open its profile. Districts that started from a high base, like Puri and Khordha, have less room to improve, so read this as momentum, not rank.</p>
   <div class="controls"><select id="scoreSort" aria-label="Sort scorecard"><option value="u">Sort by share improved</option><option value="w">Sort by share worsened</option><option value="r">Group by region</option><option value="az">Sort A–Z</option></select></div>
   <div class="legend"><span><i class="dot bg-up"></i>Improved</span><span><i class="dot bg-flat"></i>Little change</span><span><i class="dot bg-down"></i>Worsened</span></div>
-  <div class="panel"><div class="d3st" id="scoreRows"></div></div>
+  <div class="panel"><div class="d3st" id="scoreRows" data-download data-download-title="#score h2"></div></div>
 </section>
 
 <section id="profile">
@@ -439,12 +439,12 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
   <div class="panel">
     <div class="stats" id="profStats"></div>
     <div class="two">
-      <div><h3 class="up">Biggest improvements</h3><div class="d3db" id="profUp"></div></div>
-      <div><h3 class="down">Biggest setbacks</h3><div class="d3db" id="profDown"></div></div>
+      <div><h3 class="up">Biggest improvements</h3><div class="d3db" id="profUp" data-download data-download-title="#profile h2, h3.up"></div></div>
+      <div><h3 class="down">Biggest setbacks</h3><div class="d3db" id="profDown" data-download data-download-title="#profile h2, h3.down"></div></div>
     </div>
     <h3 style="margin-top:28px">Where it trails the state most in NFHS-6</h3>
     <p class="note" style="margin:0 0 8px">Hollow dot is the Odisha average, filled dot is the district.</p>
-    <div class="d3db" id="profBehind"></div>
+    <div class="d3db" id="profBehind" data-download data-download-title="#profile h2"></div>
   </div>
 </section>
 
@@ -1267,5 +1267,6 @@ renderExp(); renderScore(); renderProf(); swarm();
 onView($("#pic"),renderPic); onResize($("#pic"),renderPic); onView($("#h2h"),renderH2H);
 document.querySelectorAll(".fc").forEach(c=>onView(c,()=>c.querySelectorAll(".mt span[data-w]").forEach((s,k)=>setTimeout(()=>s.style.width=s.dataset.w+"%",RM?0:k*90))));
 </script>
+<script src="chart-download.js?v=20260928-2" defer></script>
 </body>
 </html>

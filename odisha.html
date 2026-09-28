@@ -357,7 +357,7 @@
     <div class="map-kicker" style="color: var(--purple);">Regional Explorer</div>
     <h2 class="map-title" id="mapSectionTitle">The State Overview</h2>
     <p style="font-size: var(--fs-caption); color: var(--muted); margin: 6px 0 20px 0; font-family: var(--mono);">Click on any district to explore deep-dive metrics</p>
-    <div id="map-container" style="flex:1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.01);"></div>
+    <div id="map-container" data-download data-download-title="#mapSectionTitle" style="flex:1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.01);"></div>
   </div>
 
   <!-- RIGHT: Scroll steps -->
@@ -576,7 +576,7 @@
     <div id="section-4" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--teal);">Section 04 · Population Growth</div>
       <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Population Growth Trajectory (1901–2036)</h3>
-      <div id="chart-section-4" style="width: 100%; height: 350px;"></div>
+      <div id="chart-section-4" data-download data-download-title="#section-4 h3" style="width: 100%; height: 350px;"></div>
     </div>
 
     <!-- Section 5: Population Pyramids -->
@@ -590,35 +590,35 @@
           <button onclick="renderPyramidIn('2036', '#chart-section-5')" class="btn-elegant" style="padding:3px 8px; font-size:11px;">2036</button>
         </div>
       </div>
-      <div id="chart-section-5" style="width: 100%; height: 350px;"></div>
+      <div id="chart-section-5" data-download data-download-title="#section-5 h3" style="width: 100%; height: 350px;"></div>
     </div>
 
     <!-- Section 6: Age Cohorts -->
     <div id="section-6" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--orange);">Section 06 · Demographic Dividend</div>
       <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Age-wise Population Share (%) (1991–2036)</h3>
-      <div id="chart-section-6" style="width: 100%; height: 350px;"></div>
+      <div id="chart-section-6" data-download data-download-title="#section-6 h3" style="width: 100%; height: 350px;"></div>
     </div>
 
     <!-- Section 7: Sex Ratio -->
     <div id="section-7" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--purple);">Section 07 · Gender Equity</div>
       <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Odisha Overall Sex Ratio (1951–2036)</h3>
-      <div id="chart-section-7" style="width: 100%; height: 350px;"></div>
+      <div id="chart-section-7" data-download data-download-title="#section-7 h3" style="width: 100%; height: 350px;"></div>
     </div>
 
     <!-- Section 8: Sex Ratio at Birth -->
     <div id="section-8" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--blue);">Section 08 · Birth Dynamics</div>
       <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Sex Ratio at Birth (SRB) (1951–2036)</h3>
-      <div id="chart-section-8" style="width: 100%; height: 350px;"></div>
+      <div id="chart-section-8" data-download data-download-title="#section-8 h3" style="width: 100%; height: 350px;"></div>
     </div>
 
     <!-- Section 9: TFR Trajectory -->
     <div id="section-9" class="report-section-card" style="scroll-margin-top: 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
       <div class="kicker" style="color: var(--orange);">Section 09 · Fertility Transition</div>
       <h3 style="font-family: var(--serif); font-size: 1.5rem; color: var(--blue); margin: 6px 0 12px;">Total Fertility Rate Trajectory (1971–2036)</h3>
-      <div id="chart-section-9" style="width: 100%; height: 350px;"></div>
+      <div id="chart-section-9" data-download data-download-title="#section-9 h3" style="width: 100%; height: 350px;"></div>
     </div>
 
     <!-- Section 10: Tribal Scale -->
@@ -1287,5 +1287,6 @@ function startField() {
     document.querySelectorAll('.report-section-card').forEach(card => sectionObserver.observe(card));
 </script>
 <script src="chatbot.js?v=20260925-2"></script>
+<script src="chart-download.js?v=20260928-2" defer></script>
 </body>
 </html>

@@ -617,7 +617,7 @@
     <div class="map-kicker" style="color: var(--purple);">Regional Explorer</div>
     <h2 class="map-title" id="mapSectionTitle">The State Overview</h2>
     <p style="font-size: calc(16px * var(--type-scale)); color: var(--muted); margin: 4px 0 12px 0; font-family: var(--mono);">Click on any district to explore deep-dive metrics</p>
-    <div id="map-container" style="flex:1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.01);"></div>
+    <div id="map-container" data-download data-download-title="#mapSectionTitle" style="flex:1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.01);"></div>
   </div>
 
   <!-- RIGHT: Scroll steps -->
@@ -1516,5 +1516,6 @@ function startField() {
     });
 </script>
 <script src="chatbot.js?v=20260925-2"></script>
+<script src="chart-download.js?v=20260928-2" defer></script>
 </body>
 </html>

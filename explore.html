@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <svg class="ex-chart" id="exChart" aria-hidden="true"></svg>
+    <svg class="ex-chart" id="exChart" aria-hidden="true" data-download data-download-title="#exGrowthHead" data-download-slot=".ex-growth-num"></svg>
 
     <p class="ex-caption" id="exCaption" aria-live="polite"></p>
 
@@ -280,7 +280,7 @@
         </dl>
       </div>
       <div class="ex-pyr-art ex-rise" style="--i:2">
-        <svg class="ex-pyr-svg" id="exPyr" role="img" aria-labelledby="exPyrDesc"><desc id="exPyrDesc">Age pyramid</desc></svg>
+        <svg class="ex-pyr-svg" id="exPyr" role="img" aria-labelledby="exPyrDesc" data-download data-download-title="#exPyrHead, #exPyrYears [aria-pressed='true']" data-download-slot=".ex-pyr-art"><desc id="exPyrDesc">Age pyramid</desc></svg>
         <p class="ex-pyr-key" aria-hidden="true"><span><i class="k-men"></i>Men</span><span><i class="k-women"></i>Women</span><span><i class="k-old"></i>60 and over</span></p>
       </div>
     </div>
@@ -399,5 +399,6 @@
   <div class="ex-toast" id="exToast" role="status" hidden></div>
 </main>
 
+<script src="chart-download.js?v=20260928-2" defer></script>
 </body>
 </html>
