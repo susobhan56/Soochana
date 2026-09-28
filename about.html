@@ -7,7 +7,10 @@
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- the guided tour's type: Anton (display), Merriweather (reading), Hind (labels) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css?v=20260925-2">
 <script src="ui.js?v=20260925-2"></script>
 <style>
@@ -31,8 +34,11 @@
 
   /* GENERAL SECTION LAYOUT */
   .section-wrap {
-    padding: 90px 24px;
+    padding: 64px 24px;
     border-bottom: 1px solid var(--hairline, rgba(0, 0, 0, 0.06));
+  }
+  @media (max-width: 640px) {
+    .section-wrap { padding: 48px 20px; }
   }
 
   .section-wrap.alt-bg {
@@ -47,7 +53,7 @@
   .section-header {
     text-align: left;
     max-width: 760px;
-    margin: 0 auto 56px auto;
+    margin: 0 auto 36px auto;
   }
 
   .section-header .kicker {
@@ -208,7 +214,7 @@
 
   .inst-logo-wrap {
     width: 100%;
-    height: 110px;
+    height: 96px;
     background: #ffffff;
     border: 1px solid var(--border, rgba(0, 0, 0, 0.08));
     border-radius: 12px;
@@ -292,7 +298,7 @@
     background: #ffffff;
     border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
     border-radius: 24px;
-    padding: 44px 36px;
+    padding: 28px 32px 36px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
     position: relative;
     overflow: hidden;
@@ -313,7 +319,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 4px;
   }
 
   .skip-to-all-btn {
@@ -711,6 +717,187 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════════
+     WHAT WE DO · QUESTIONS · CALL TO ACTION · KEEP EXPLORING
+     ═══════════════════════════════════════════════════════════════════ */
+  /* same 760px measure as every section header, so the left edges line up */
+  .mission { max-width: 760px; }
+  .mission .kicker {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--orange, #bb4500);
+    margin-bottom: 14px;
+  }
+  .mission-vision {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--blue, #1f385c);
+    margin: 0 0 26px;
+    text-wrap: balance;
+  }
+  .mission-vision em { font-style: normal; color: var(--teal, #1a535c); }
+  .mission-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border-top: 1px solid var(--border, rgba(0, 0, 0, 0.09));
+    padding-top: 28px;
+  }
+  .mission-body p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--muted, #4f5664);
+  }
+
+  /* question-led: the heading stays in view while the answers scroll past */
+  .faq {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+    gap: 56px;
+    align-items: start;
+  }
+  .faq-head { position: sticky; top: 40px; }
+  .faq-head .kicker {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--orange, #bb4500);
+    margin-bottom: 12px;
+  }
+  .faq-head h2 {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: clamp(2rem, 3.2vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--blue, #1f385c);
+    margin: 0;
+  }
+  .faq-list { border-top: 1px solid var(--border, rgba(0, 0, 0, 0.1)); }
+  .faq-item { border-bottom: 1px solid var(--border, rgba(0, 0, 0, 0.1)); }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 4px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--blue, #1f385c);
+    transition: color 0.25s ease;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: '';
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateY(-3px) rotate(45deg);
+    transition: transform 0.35s var(--ease, ease);
+  }
+  .faq-item[open] summary::after { transform: translateY(3px) rotate(-135deg); }
+  .faq-item summary:hover { color: var(--teal, #1a535c); }
+  .faq-item summary:focus-visible { outline: 2px solid var(--teal, #1a535c); outline-offset: 2px; border-radius: 6px; }
+  .faq-item p {
+    margin: 0;
+    padding: 0 40px 24px 4px;
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: var(--muted, #4f5664);
+  }
+  .faq-item[open] p { animation: fadeInUp 0.5s var(--ease, ease) both; }
+  .faq-item a { color: var(--teal, #1a535c); font-weight: 600; }
+  @media (max-width: 860px) {
+    .faq { grid-template-columns: 1fr; gap: 28px; }
+    .faq-head { position: static; }
+  }
+
+  .cta-band {
+    position: relative;
+    padding: 64px 24px;
+    background-color: var(--teal, #1a535c);
+    background-image: var(--pm-wash), var(--pm-paper),
+      linear-gradient(135deg, #123f47 0%, #1a535c 55%, #22656f 100%);
+    background-size: cover, 220px 220px, auto;
+    background-blend-mode: soft-light, soft-light, normal;
+    color: #ffffff;
+    text-align: center;
+  }
+  .cta-inner { max-width: 760px; }
+  .cta-band h2 {
+    font-family: var(--serif, 'Manrope', sans-serif);
+    font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .cta-band p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 30px;
+  }
+  .cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.98rem;
+    text-decoration: none;
+    transition: transform 0.3s var(--ease, ease), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .cta-btn:hover { transform: translateY(-2px); }
+  .cta-btn:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }
+  .cta-btn-solid { background: var(--orange, #bb4500); color: #ffffff; border: 2px solid var(--orange, #bb4500); }
+  .cta-btn-solid:hover { box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22); }
+  .cta-btn-ghost { background: transparent; color: #ffffff; border: 2px solid rgba(255, 255, 255, 0.7); }
+  .cta-btn-ghost:hover { border-color: #ffffff; background: rgba(255, 255, 255, 0.1); }
+
+  .next-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  .next-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 28px 26px 30px;
+    border-radius: 18px;
+    background: var(--bg, #faf9f5);
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
+    text-decoration: none;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .next-card b { font-size: 1.2rem; font-weight: 700; color: var(--blue, #1f385c); }
+  .next-card span { font-size: 0.97rem; line-height: 1.55; color: var(--muted, #4f5664); padding-right: 28px; }
+  .next-card i {
+    position: absolute;
+    right: 24px;
+    bottom: 26px;
+    font-style: normal;
+    font-size: 1.2rem;
+    color: var(--orange, #bb4500);
+    transition: transform 0.3s var(--ease, ease);
+  }
+  .next-card:hover { transform: translateY(-4px); border-color: var(--teal, #1a535c); box-shadow: 0 12px 30px rgba(26, 83, 92, 0.1); }
+  .next-card:hover i { transform: translateX(4px); }
+  .next-card:focus-visible { outline: 2px solid var(--teal, #1a535c); outline-offset: 3px; }
+  @media (max-width: 760px) { .next-cards { grid-template-columns: 1fr; } }
+
+  /* ═══════════════════════════════════════════════════════════════════
      CHAPTER INDEX — right-hand rail: where you are, and what comes next
      ═══════════════════════════════════════════════════════════════════ */
   .chapter-index {
@@ -948,6 +1135,219 @@
     .ci-list::before, .ci-list::after { display: none; }
   }
 
+  /* ═══════════════════════════════════════════════════════════════════
+     POPULATION MATTERS LOOK — the guided tour's type and colour system
+     (explore.css), which is itself modelled on populationmatters.org:
+     condensed capitals for headings (Anton standing in for their Neue
+     Plak), Merriweather for reading, Hind for labels, white and light-grey
+     grounds, sky-blue accents and pill buttons, and one deep ground at
+     the top. Layered last so it restyles every section without touching
+     the layout above.
+     ═══════════════════════════════════════════════════════════════════ */
+  body.pm-about {
+    --pm-display: 'Anton', 'Oswald', 'Arial Narrow', Impact, sans-serif;
+    --pm-read:    'Merriweather', Georgia, 'Times New Roman', serif;
+    --pm-ui:      'Hind', 'Outfit', system-ui, sans-serif;
+    --pm-sky:     #0f9dde;
+    --pm-sky-hi:  #36b4ee;
+    --pm-sky-ink: #0b6fa0;   /* sky dark enough for text on white: 5.5:1 */
+    --pm-sky-deep: #0879ad;  /* white text on it passes AA: 4.8:1 (their #0f9dde is 3.0:1) */
+    --pm-pale:    #cfebf8;
+    --pm-navy:    #00364a;
+    --pm-ink:     #141414;
+    --pm-body:    #3d434b;
+    --pm-grey:    #f4f4f4;
+    --pm-line:    #d6d6d6;
+    --pm-orange:  #f08a4b;
+    background: #ffffff;
+  }
+
+  /* reading text */
+  .pm-about main { font-family: var(--pm-read); color: var(--pm-body); }
+  .pm-about main p { font-family: var(--pm-read); font-weight: 300; line-height: 1.8; }
+  .pm-about main p strong, .pm-about main p b { font-weight: 700; color: var(--pm-ink); }
+
+  /* headings: condensed capitals */
+  .pm-about main h2,
+  .pm-about main h3,
+  .pm-about main h4,
+  .pm-about .unit-name,
+  .pm-about .spotlight-member-name,
+  .pm-about .next-card b,
+  .pm-about .faq-item summary {
+    font-family: var(--pm-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: var(--pm-ink);
+  }
+  .pm-about .section-header h2,
+  .pm-about .faq-head h2 {
+    font-size: clamp(34px, 4.2vw, 54px);
+    line-height: 1.04;
+    margin-bottom: 18px;
+  }
+
+  /* labels: small spaced capitals */
+  .pm-about .kicker,
+  .pm-about .section-header .kicker,
+  .pm-about .faq-head .kicker,
+  .pm-about .mission .kicker {
+    font-family: var(--pm-ui);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    /* style.css greys every .kicker with !important for site-wide
+       uniformity; on this page the labels take the sky blue instead */
+    color: var(--pm-sky-ink) !important;
+  }
+
+  /* grounds alternate white and light grey, as on populationmatters.org */
+  .pm-about .section-wrap { background: var(--pm-grey); border-bottom-color: var(--pm-line); }
+  .pm-about .section-wrap.alt-bg { background: #ffffff; }
+
+  /* ── the word: the one deep ground, like the tour's opening ── */
+  .pm-about .essence-band {
+    background-color: #0d2b45;
+    background-image:
+      var(--pm-wash), var(--pm-paper),
+      radial-gradient(ellipse 80% 60% at 18% 8%, rgba(255, 255, 255, 0.11), transparent 60%),
+      radial-gradient(ellipse 70% 60% at 85% 100%, rgba(0, 0, 0, 0.28), transparent 65%);
+    background-size: cover, 220px 220px, auto, auto;
+    background-blend-mode: soft-light, soft-light, normal, normal;
+    border-bottom: 0;
+  }
+  .pm-about .essence-watermark { color: #ffffff; opacity: 0.045; }
+  .pm-about .essence-script { color: var(--pm-sky-hi); }
+  .pm-about .essence-word { font-family: var(--pm-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.04em; color: #ffffff; }
+  .pm-about .essence-ipa { font-family: var(--pm-ui); color: rgba(255, 255, 255, 0.7); }
+  .pm-about .essence-ipa em { color: rgba(255, 255, 255, 0.86); }
+  .pm-about .essence-statement {
+    font-size: clamp(34px, 4.6vw, 60px);
+    line-height: 1.04;
+    color: #ffffff;
+    text-wrap: balance;
+  }
+  .pm-about .essence-statement em { color: var(--pm-orange); }
+  .pm-about .essence-lead { color: rgba(255, 255, 255, 0.86); font-size: clamp(16px, 1.4vw, 18px); }
+  .pm-about .essence-lead strong { color: #ffffff; }
+
+  /* ── what we do ── */
+  .pm-about .mission-vision { font-size: clamp(32px, 4vw, 52px); line-height: 1.05; }
+  .pm-about .mission-vision em { color: var(--pm-sky-ink); }
+  .pm-about .mission-body { border-top-color: var(--pm-line); }
+  .pm-about .mission-body p { color: var(--pm-body); font-size: 1.05rem; }
+
+  /* ── inside soochana ── */
+  .pm-about .about-narrative-card { border-color: var(--pm-line); box-shadow: none; }
+  .pm-about .feature-card { background: var(--pm-grey); border-color: transparent; border-radius: 16px; }
+  .pm-about .feature-card:hover { border-color: var(--pm-sky); box-shadow: 0 10px 26px rgba(15, 157, 222, 0.12); }
+  .pm-about .feature-card-icon { background: var(--pm-pale); color: var(--pm-navy); }
+  .pm-about .feature-card h4 { font-size: 21px; line-height: 1.1; }
+  .pm-about .feature-card p { font-size: 0.93rem; line-height: 1.7; }
+
+  /* ── questions ── */
+  .pm-about .faq-list,
+  .pm-about .faq-item { border-color: var(--pm-line); }
+  .pm-about .faq-item summary { font-size: clamp(19px, 1.7vw, 23px); line-height: 1.15; padding: 24px 4px; }
+  .pm-about .faq-item summary:hover { color: var(--pm-sky-ink); }
+  .pm-about .faq-item p { font-size: 1rem; }
+  .pm-about .faq-item a { color: var(--pm-sky-ink); }
+
+  /* ── call to action: populationmatters.org's sky-blue band ── */
+  .pm-about .cta-band {
+    background-color: var(--pm-sky-deep);
+    background-image: var(--pm-wash), var(--pm-paper);
+    background-size: cover, 220px 220px;
+    background-blend-mode: soft-light, soft-light;
+  }
+  .pm-about .cta-band h2 { color: #ffffff; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.04; }
+  .pm-about .cta-band p { color: #ffffff; font-weight: 400; }
+  .pm-about .cta-btn {
+    font-family: var(--pm-display);
+    font-weight: 400;
+    font-size: 17px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 12px 28px 11px;
+  }
+  .pm-about .cta-btn-solid { background: #ffffff; border-color: #ffffff; color: var(--pm-navy); }
+  .pm-about .cta-btn-ghost { border-color: #ffffff; }
+  .pm-about .cta-btn:focus-visible { outline-color: var(--pm-navy); }
+
+  /* ── partners ── */
+  .pm-about .institution-card { border-color: var(--pm-line); border-radius: 18px; }
+  .pm-about .institutions-grid .institution-card h3 { font-size: 21px; line-height: 1.1; }
+  .pm-about .inst-link { color: inherit; }
+  .pm-about .institution-card p { font-size: 0.93rem; line-height: 1.75; }
+  .pm-about .inst-tag { font-family: var(--pm-ui); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-size: 11px; }
+  .pm-about .inst-visit {
+    font-family: var(--pm-ui);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: var(--pm-sky-ink);
+  }
+  .pm-about .inst-visit:hover { color: var(--pm-navy); }
+
+  /* ── the team ── */
+  .pm-about .team-spotlight-container { border-color: var(--pm-line); box-shadow: none; }
+  .pm-about .spotlight-progress-bar { background: linear-gradient(90deg, var(--pm-sky), var(--pm-navy)); }
+  .pm-about .spotlight-avatar-frame,
+  .pm-about .unit-avatar-ring { background: linear-gradient(135deg, var(--pm-sky) 0%, var(--pm-navy) 100%); }
+  .pm-about .spotlight-member-name { font-size: clamp(30px, 3.4vw, 42px); line-height: 1.05; }
+  .pm-about .spotlight-member-role-badge,
+  .pm-about .unit-role {
+    font-family: var(--pm-ui);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+  .pm-about .spotlight-member-role-badge { background: var(--pm-pale); color: var(--pm-navy); }
+  .pm-about .unit-role { color: var(--pm-sky-ink); }
+  .pm-about .spotlight-member-org,
+  .pm-about .unit-org { font-family: var(--pm-ui); color: var(--pm-body); }
+  .pm-about .spotlight-member-bio { font-family: var(--pm-read); font-weight: 300; line-height: 1.8; background: var(--pm-grey); border: 0; }
+  .pm-about .spotlight-tag,
+  .pm-about .unit-tag { font-family: var(--pm-ui); border-color: var(--pm-line); }
+  .pm-about .unit-name { font-size: 24px; line-height: 1.08; }
+  .pm-about .team-card-unit { border-color: var(--pm-line); box-shadow: none; }
+  .pm-about .team-card-unit:hover { border-color: var(--pm-sky); box-shadow: 0 12px 30px rgba(15, 157, 222, 0.12); }
+  .pm-about .all-team-header h3 { font-size: clamp(26px, 2.6vw, 34px); }
+  .pm-about .all-team-header p { font-family: var(--pm-ui); }
+  .pm-about .skip-to-all-btn,
+  .pm-about .replay-btn {
+    font-family: var(--pm-display);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-size: 15px;
+    padding: 9px 20px 8px;
+    border-radius: 999px;
+    background: var(--pm-sky-deep);
+    border: 2px solid var(--pm-sky-deep);
+    color: #ffffff;
+  }
+  .pm-about .skip-to-all-btn:hover,
+  .pm-about .replay-btn:hover { background: var(--pm-sky-ink); border-color: var(--pm-sky-ink); color: #ffffff; box-shadow: none; }
+
+  /* ── keep exploring ── */
+  .pm-about .next-card { background: var(--pm-grey); border-color: transparent; }
+  .pm-about .next-card b { font-size: 24px; line-height: 1.05; }
+  .pm-about .next-card span { font-family: var(--pm-read); font-weight: 300; line-height: 1.7; color: var(--pm-body); }
+  .pm-about .next-card i { color: var(--pm-sky-ink); }
+  .pm-about .next-card:hover { border-color: var(--pm-sky); box-shadow: 0 12px 30px rgba(15, 157, 222, 0.12); }
+
+  /* ── the section index ── */
+  .pm-about .chapter-index { font-family: var(--pm-ui); }
+  .pm-about .ci-link.is-current .ci-tick,
+  .pm-about .ci-list::after { background: var(--pm-sky); }
+  .pm-about .ci-next svg { stroke: var(--pm-sky); }
+  .pm-about .ci-next:hover { border-color: var(--pm-sky); }
+
   /* Respect users who prefer less motion: reveals resolve instantly and
      the decorative loops stop. */
   @media (prefers-reduced-motion: reduce) {
@@ -962,7 +1362,7 @@
   }
 </style>
 </head>
-<body>
+<body class="pm-about">
 
 <!-- GLOBAL HEADER -->
 <header>
@@ -988,16 +1388,16 @@
   <!-- CHAPTER INDEX — filled in from each section's data-index -->
   <nav class="chapter-index" id="chapterIndex" aria-label="On this page">
     <button type="button" class="ci-toggle" id="ciToggle" aria-expanded="false" aria-controls="ciList">
-      <span class="ci-count"><b id="ciNow">01</b> / <span id="ciTotal">04</span></span>
+      <span class="ci-count"><b id="ciNow">01</b> / <span id="ciTotal">07</span></span>
       <span class="ci-stack">
         <span class="ci-current" id="ciCurrent">The word</span>
-        <span class="ci-upnext" id="ciUpnext">Next · What we offer</span>
+        <span class="ci-upnext" id="ciUpnext">Next · What we do</span>
       </span>
       <span class="visually-hidden-ci" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Show all sections</span>
     </button>
     <ol class="ci-list" id="ciList"></ol>
-    <a class="ci-next" id="ciNext" href="#offer">
-      <span class="ci-next-text"><span id="ciNextK">Up next</span><b id="ciNextName">What we offer</b></span>
+    <a class="ci-next" id="ciNext" href="#mission">
+      <span class="ci-next-text"><span id="ciNextK">Up next</span><b id="ciNextName">What we do</b></span>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg>
     </a>
   </nav>
@@ -1022,8 +1422,23 @@
     </div>
   </section>
 
+  <!-- 1C. WHAT WE DO — vision, then mission in plain "we" sentences -->
+  <section class="section-wrap alt-bg" id="mission" data-index="What we do">
+    <div class="content-container mission">
+      <div class="kicker" data-reveal>What we do</div>
+      <h2 class="mission-vision" data-reveal>
+        Our vision is an Odisha where every plan starts from an <em>honest picture</em> of its people.
+      </h2>
+      <div class="mission-body" data-reveal-group>
+        <p>Odisha's population is changing faster than most plans can keep up with. Families are smaller, people live longer, and more of them move for work. Soochana exists so that change is seen early and understood clearly.</p>
+        <p>We gather the state's demographic record from official sources, explain what it shows in plain language, and put it in the hands of the people who plan schools, hospitals, jobs and services.</p>
+        <p>We work with government, civil society, academia and the media, so that population is part of every development conversation, not an afterthought.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- 2. WHAT IS SOOCHANA -->
-  <section class="section-wrap alt-bg" id="offer" data-index="What we offer">
+  <section class="section-wrap" id="offer" data-index="What we offer">
     <div class="content-container">
       <div class="section-header" data-reveal>
         <div class="kicker">What you'll find</div>
@@ -1065,6 +1480,51 @@
             <p>Empowering local decision-makers with population insights for sustainable planning.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. QUESTIONS — the page answers what visitors actually wonder -->
+  <section class="section-wrap alt-bg" id="questions" data-index="Questions">
+    <div class="content-container faq">
+      <div class="faq-head" data-reveal>
+        <div class="kicker">Counting · Explaining · Connecting</div>
+        <h2>Questions we're often asked</h2>
+      </div>
+
+      <div class="faq-list" data-reveal-group>
+        <details class="faq-item" open>
+          <summary>How does Soochana turn data into understanding?</summary>
+          <p>We start with official statistics and ask what they mean for people's lives. Every figure carries its source, its year, and whether it was counted or projected. Maps, charts and short stories then explain the change behind it, district by district.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Where does the data come from?</summary>
+          <p>From published official sources: the Census of India, the National Family Health Survey, the Sample Registration System, the Periodic Labour Force Survey, UDISE+ school data, projections by the Office of the Registrar General of India, and Government of Odisha reports. The datasets and reports are in the <a href="repository.html">Repository</a>.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is Soochana about controlling population?</summary>
+          <p>No. Soochana describes how Odisha's population is changing; it does not argue for fewer people, or for more. We support voluntary, rights-based choices and reject coercion in any form. The questions we care about are about wellbeing: whether young people find work, whether older people are cared for, and whether women can make informed choices about their own lives.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Who is Soochana for?</summary>
+          <p>Anyone who needs to understand Odisha's people: officials planning services, researchers and students, journalists checking a claim, and citizens curious about their own district. No statistics training is needed; every chart is explained in plain words.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Why is population so easy to misread?</summary>
+          <p>A single number rarely tells the whole story. The population can keep growing after families become smaller, because so many young people are already born. A state average can hide very different districts, and a projection is an estimate, not a count. Soochana puts figures side by side and in context, so they are harder to misread and easier to use.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3B. CALL TO ACTION — between the explaining and the people behind it -->
+  <section class="cta-band" aria-labelledby="ctaHead">
+    <div class="content-container cta-inner" data-reveal>
+      <h2 id="ctaHead">Numbers only matter when someone uses them.</h2>
+      <p>Explore your district, download the data, or take the guided tour of Odisha's population.</p>
+      <div class="cta-actions">
+        <a href="explore.html" class="cta-btn cta-btn-solid">Take the guided tour</a>
+        <a href="repository.html" class="cta-btn cta-btn-ghost">Browse the data</a>
       </div>
     </div>
   </section>
@@ -1190,6 +1650,32 @@
         <div class="all-team-grid" id="allTeamGrid"></div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- 8. KEEP EXPLORING — where to go from here -->
+  <section class="section-wrap alt-bg" id="next" data-index="Keep exploring">
+    <div class="content-container">
+      <div class="section-header team-header" data-reveal>
+        <h2>Keep exploring</h2>
+      </div>
+      <div class="next-cards" data-reveal-group>
+        <a class="next-card" href="contact.html">
+          <b>Contact us</b>
+          <span>Questions, corrections, or a dataset we should add.</span>
+          <i aria-hidden="true">&rarr;</i>
+        </a>
+        <a class="next-card" href="themes.html">
+          <b>Explore themes</b>
+          <span>Health, education, ageing, migration and work.</span>
+          <i aria-hidden="true">&rarr;</i>
+        </a>
+        <a class="next-card" href="repository.html">
+          <b>Data &amp; reports</b>
+          <span>Download datasets, factsheets and reports.</span>
+          <i aria-hidden="true">&rarr;</i>
+        </a>
+      </div>
     </div>
   </section>
 

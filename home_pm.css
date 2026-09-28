@@ -31,7 +31,7 @@
 
   /* Type scale. Kept deliberately small: only the hero and a section's
      heading are large; everything else sits close to reading size. */
-  --pm-t-hero:  calc(clamp(30px, 3.4vw, 48px) * var(--type-scale));
+  --pm-t-hero:  calc(clamp(24px, 2.4vw, 34px) * var(--type-scale));
   --pm-t-h2:    calc(clamp(22px, 2.1vw, 30px) * var(--type-scale));
   --pm-t-h3:    calc(clamp(18px, 1.5vw, 22px) * var(--type-scale));
   --pm-t-quote: calc(clamp(20px, 1.9vw, 27px) * var(--type-scale));
@@ -161,11 +161,11 @@
 .pm-home .pm-btn {
   font-family: var(--pm-display) !important;
   font-weight: 400 !important;
-  font-size: calc(17px * var(--type-scale)) !important;
+  font-size: calc(15px * var(--type-scale)) !important;
   letter-spacing: 0.02em !important;
   text-transform: uppercase;
   line-height: 1.1;
-  padding: 10px 22px 9px !important;
+  padding: 9px 18px 8px !important;
   border-radius: 999px;
   box-shadow: none;
   transition: background 0.6s var(--pm-ease), border-color 0.6s var(--pm-ease), transform 0.6s var(--pm-ease), box-shadow 0.6s var(--pm-ease) !important;
@@ -182,11 +182,12 @@
 .pm-home .lander .btn-pill:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 
 /* ── hero ─────────────────────────────────────────────── */
-.pm-home .lander { --pm-hero: var(--pm-t-hero); padding-top: 48px; padding-bottom: 56px; }
-.pm-home .lander-inner { max-width: 700px; }
-.pm-home .lander-kicker { margin-bottom: 20px; }
-.pm-home .lander-sub { margin-top: 22px; }
-.pm-home .lander-cta { margin-top: 28px; }
+.pm-home .lander { --pm-hero: var(--pm-t-hero); padding-top: 32px; padding-bottom: 40px; }
+.pm-home .lander-inner { max-width: 760px; }
+.pm-home .lander-kicker { margin-bottom: 14px; }
+.pm-home .lander-sub { margin-top: 16px; max-width: 42em; }
+.pm-home .lander-sub-cue { display: block; margin-top: 8px; color: #fff; }
+.pm-home .lander-cta { margin-top: 20px; gap: 10px; }
 
 .pm-home .lander-kicker {
   font-family: var(--pm-ui);
@@ -214,16 +215,24 @@
   font-weight: 400;
   font-size: var(--pm-hero);
   line-height: 1.08;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #fff;
   padding-bottom: 0;
 }
 
+/* Each line has its own slide-up mask and must stay on one row. On a phone
+   the longest line only just fits, so it steps down a touch in size and
+   spacing rather than wrap. */
+@media (max-width: 420px) {
+  .pm-home .lander { --pm-hero: calc(22px * var(--type-scale)); }
+  .pm-home .display-line { letter-spacing: 0.04em; }
+}
+
 .pm-home .display-line em {
   font-style: normal;
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: inherit;
   color: var(--pm-yellow);
   background: none;
   animation: none;
@@ -276,16 +285,14 @@
   color: #fff !important;
 }
 
-.pm-home .stat-hub .stat-value.orange { color: #ffc59e !important; }
-.pm-home .stat-hub .stat-value.purple { color: #e3c6f0 !important; }
-.pm-home .stat-hub .stat-value.green  { color: #bfe8c9 !important; }
-.pm-home .stat-hub .stat-value.red    { color: #ffb4a8 !important; }
-.pm-home .stat-hub .stat-value.blue   { color: #cfe8f7 !important; }
-
-.pm-home .stat-hub .stat-label { font-family: var(--pm-ui); color: var(--pm-soft); }
+/* Every figure, label and source in this section is plain white: the
+   per-figure tints (the orange/purple/green/red/blue classes the builder
+   adds) are overridden by the white .stat-value rule above. Hierarchy
+   comes from size and weight alone. */
+.pm-home .stat-hub .stat-label { font-family: var(--pm-ui); color: #fff; }
 .pm-home .stat-hub .stat-part { border-left-color: rgba(255, 255, 255, 0.2); }
-.pm-home .stat-hub .stat-part-label { color: var(--pm-faint); }
-.pm-home .stat-hub .stat-source { color: var(--pm-faint); opacity: 1; }
+.pm-home .stat-hub .stat-part-label { color: #fff; }
+.pm-home .stat-hub .stat-source { color: #fff; opacity: 1; }
 
 /* ── the map story ────────────────────────────────────── */
 .pm-home .scrolly .sticky-map { background: transparent; border-right-color: var(--pm-rule); }
