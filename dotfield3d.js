@@ -394,8 +394,21 @@
       return { stop: function () {} };
     }
 
+    /* The field loops for as long as the page is open, and each frame draws
+       every dot. Once the hero has scrolled away nobody can see it, but it
+       would keep the main thread busy and make the rest of the page scroll
+       unevenly, so it sleeps while it is off screen. */
+    var onScreen = true;
+    var pausedAt = null;
+
     function frame(ts) {
       if (stopped) return;
+      if (!onScreen) { raf = 0; pausedAt = ts; return; }
+      if (pausedAt !== null) {
+        /* pick the year transition up where it left off */
+        if (t0 !== null) t0 += ts - pausedAt;
+        pausedAt = null;
+      }
       if (t0 === null) t0 = ts;
       var k = (ts - t0) / dur;
 
@@ -432,6 +445,13 @@
       new global.ResizeObserver(onResize).observe(canvas);
     } else {
       global.addEventListener('resize', onResize);
+    }
+
+    if (global.IntersectionObserver) {
+      new global.IntersectionObserver(function (entries) {
+        onScreen = entries[0].isIntersecting;
+        if (onScreen && !raf && !stopped) raf = global.requestAnimationFrame(frame);
+      }).observe(canvas);
     }
 
     raf = global.requestAnimationFrame(frame);

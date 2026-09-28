@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <!-- Outfit for the site; Anton, Merriweather and Hind for the welcome screen -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=20260925-2">
+<link rel="stylesheet" href="style.css?v=20260928-6">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <!-- live population estimate + district map, used by the welcome screen -->
 <script src="soochana_live.js?v=20260925-2"></script>
@@ -20,7 +20,7 @@
 <script src="data/key_stats.js?v=20260925-2"></script>
 <!-- Three.js 3D WebGL Engine for Interactive Background Particle System -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="dotfield3d.js?v=20260925-2"></script>
+<script src="dotfield3d.js?v=20260928-1"></script>
 <!-- in <head> and not deferred, so the saved text size applies before first paint -->
 <script src="ui.js?v=20260925-2"></script>
 <noscript><style>
@@ -104,8 +104,9 @@
     .scrolly { display: grid; grid-template-columns: 1fr 340px; position: relative; background: var(--surface); }
     .sticky-map { 
       position: sticky; 
-      top: 70px; 
-      height: calc(100vh - 70px); 
+      top: 0; 
+      height: 100vh; 
+      height: 100dvh; 
       display: flex; 
       flex-direction: column; 
       border-right: 1px solid var(--border); 
@@ -300,6 +301,46 @@
       transform: translateY(-1px);
     }
 
+    /* On wide screens the module index becomes a sidebar that stays in view
+       for the whole dashboard (over 9,000px long). It scrolls on its own if
+       the twenty modules outrun a short screen. */
+    @media (min-width: 1101px) {
+      .pm-dash .dash-body {
+        display: grid;
+        grid-template-columns: 250px minmax(0, 1fr);
+        gap: 28px;
+        align-items: start;
+      }
+      .pm-dash .dash-body .report-index-container {
+        position: sticky;
+        top: 20px;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        margin-bottom: 0;
+        padding: 16px 12px 14px;
+      }
+      .pm-dash .dash-body .report-index-header { padding: 0 8px; }
+      .pm-dash .dash-body .report-index-nav {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 2px;
+      }
+      .pm-dash .dash-body .slide-tab-btn {
+        justify-content: flex-start;
+        text-align: left;
+        white-space: normal;
+        line-height: 1.25;
+        padding: 6px 10px 5px;
+        border: 0;
+        border-radius: 10px;
+      }
+      .pm-dash .dash-body .slide-tab-btn:hover,
+      .pm-dash .dash-body .slide-tab-btn.active { transform: none; }
+      .pm-dash .dash-body .slide-tab-btn:hover { box-shadow: none; }
+    }
+
     /* Executive Presentation 2-Column Dashboard Grid */
     .report-grid-layout {
       display: grid;
@@ -316,7 +357,7 @@
     }
 </style>
 <!-- the Population Matters look, home page only; after the block above so it wins -->
-<link rel="stylesheet" href="home_pm.css?v=20260926-5">
+<link rel="stylesheet" href="home_pm.css?v=20260928-5">
 </head>
 <body class="pm-home">
 
@@ -368,8 +409,12 @@
       <div style="width:10px; height:10px; background:var(--orange); border-radius:50%;"></div>
       <div>
         <h1 style="line-height:1; margin:0;">Soochana</h1>
-        <div style="font-family:var(--mono); font-size:10px; letter-spacing: 0.005em; color:var(--muted); text-transform: none; margin-top:3px; font-weight:600;">from numbers to narrative</div>
+        <div class="brand-tag">from numbers to narrative</div>
       </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
   <div class="nav-group flex-wrap" style="gap:12px;">
@@ -382,7 +427,7 @@
 <!-- ═══════════════════════════════════════════════
      HERO — ambient dot field behind display type
 ═══════════════════════════════════════════════ -->
-<section class="lander" id="lander">
+<section class="lander" id="lander" data-index="Introduction">
   <canvas id="dotfield" aria-hidden="true"></canvas>
   <h2 class="sr-only">Soochana, a demographic portal for Odisha</h2>
 
@@ -423,7 +468,7 @@
      there, not here. Rows lay themselves out, so tiles can be added or
      deleted in that file without touching this page.
 ═══════════════════════════════════════════════ -->
-<section class="stat-hub" id="state-stats" aria-label="Odisha in numbers"></section>
+<section class="stat-hub" id="state-stats" aria-label="Odisha in numbers" data-index="Odisha in numbers"></section>
 
 <script>
 (function () {
@@ -566,12 +611,12 @@
 <!-- ═══════════════════════════════════════════════
      SCROLLYTELLING MAP SECTION
 ═══════════════════════════════════════════════ -->
-<div class="scrolly" id="scrollySection">
+<div class="scrolly" id="scrollySection" data-index="30 districts">
   <!-- LEFT: Sticky Map -->
   <div class="sticky-map">
     <div class="map-kicker" style="color: var(--purple);">Regional Explorer</div>
     <h2 class="map-title" id="mapSectionTitle">The State Overview</h2>
-    <p style="font-size: var(--fs-caption); color: var(--muted); margin: 6px 0 20px 0; font-family: var(--mono);">Click on any district to explore deep-dive metrics</p>
+    <p style="font-size: calc(16px * var(--type-scale)); color: var(--muted); margin: 4px 0 12px 0; font-family: var(--mono);">Click on any district to explore deep-dive metrics</p>
     <div id="map-container" style="flex:1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.01);"></div>
   </div>
 
@@ -606,7 +651,7 @@
 <!-- ═══════════════════════════════════════════════
      EDITORIAL BAND — MOVEMENT
 ═══════════════════════════════════════════════ -->
-<section class="editorial-band" aria-labelledby="eb-move">
+<section class="editorial-band" id="movement" aria-labelledby="eb-move" data-index="Movement">
   <figure class="editorial-figure editorial-band-figure" style="margin:0;">
     <img data-art="migration-journey" alt="Silhouetted figures walking in a line carrying bags and bundles" loading="lazy" decoding="async">
   </figure>
@@ -627,7 +672,7 @@
      Followed directly by the ageing band: falling fertility, then what it
      does to the other end of the age structure.
 ═══════════════════════════════════════════════ -->
-<section class="editorial-band alt flip" aria-labelledby="eb-fert">
+<section class="editorial-band alt flip" id="fertility" aria-labelledby="eb-fert" data-index="Below replacement">
   <figure class="editorial-figure editorial-band-figure" style="margin:0;">
     <img data-art="fertility-motherland" alt="Profile of an expectant mother rendered as a printed road map" loading="lazy" decoding="async">
   </figure>
@@ -646,7 +691,7 @@
 <!-- ═══════════════════════════════════════════════
      EDITORIAL BAND — THE OTHER END OF THE CURVE
 ═══════════════════════════════════════════════ -->
-<section class="editorial-band" aria-labelledby="eb-age">
+<section class="editorial-band" id="ageing" aria-labelledby="eb-age" data-index="Ageing">
   <figure class="editorial-figure editorial-band-figure" style="margin:0;">
     <img data-art="ageing-cohort" alt="Silhouettes of older adults with walking frames, wheelchairs and mobility aids" loading="lazy" decoding="async">
   </figure>
@@ -665,10 +710,10 @@
 <!-- ═══════════════════════════════════════════════
      THEMATIC GALLERY — the forces behind the numbers
 ═══════════════════════════════════════════════ -->
-<section class="editorial-gallery" id="thematicGallery" aria-labelledby="eg-head">
+<section class="editorial-gallery" id="thematicGallery" aria-labelledby="eg-head" data-index="Nine frames">
   <div class="editorial-gallery-head">
     <div class="label" style="color: var(--teal);">The forces behind the numbers</div>
-    <h2 id="eg-head">Nine frames on a state in transition</h2>
+    <h2 id="eg-head">Eight frames on a state in transition</h2>
     <p>
       Every figure on this page is the trace of something happening to real households:
       a birth deferred, a clinic reached, a train taken out of the district. These are the
@@ -758,7 +803,7 @@
 <!-- ═══════════════════════════════════════════════
      POLICY TIMELINE
 ═══════════════════════════════════════════════ -->
-<section class="timeline-section">
+<section class="timeline-section" id="milestones" data-index="Welfare milestones">
   <div class="label" style="color: var(--orange); margin-bottom: 16px;">Policy History</div>
   <h2>Decades of Progress: Odisha's Welfare Milestones</h2>
 
@@ -794,7 +839,7 @@
 <!-- ═══════════════════════════════════════════════
      ODISHA DEMOGRAPHIC & DEVELOPMENT LANDSCAPE (11-SECTION SUITE)
 ═══════════════════════════════════════════════ -->
-<section class="pm-dash" style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 40px max(20px, 4vw); box-sizing: border-box;">
+<section class="pm-dash" id="dashboard" data-index="State dashboard" style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 40px max(20px, 4vw); box-sizing: border-box;">
   <div style="margin-bottom: 18px;">
     <div class="label" style="color: var(--teal); margin-bottom: 12px;">Strategic Demographic Dashboard</div>
     <h2 style="font-family: var(--serif); font-size: var(--fs-h2); color: var(--blue); margin: 4px 0 0;">
@@ -805,20 +850,24 @@
     </p>
   </div>
 
-  <!-- Section Index Navigation Box (populated dynamically) -->
-  <div class="report-index-container">
-    <div class="report-index-header">Analytics Index &amp; Quick Module Jump:</div>
-    <div id="slide-tabs-bar" class="report-index-nav"></div>
-  </div>
+  <!-- Index and modules side by side on wide screens: the index sticks on
+       the left for the whole length of the dashboard -->
+  <div class="dash-body">
+    <!-- Section Index Navigation Box (populated dynamically) -->
+    <nav class="report-index-container" aria-label="Analytics index">
+      <div class="report-index-header">Analytics Index &amp; Quick Module Jump</div>
+      <div id="slide-tabs-bar" class="report-index-nav"></div>
+    </nav>
 
-  <!-- All Sections Rendered Dynamically from state_details.json -->
-  <div id="all-sections-container" style="display: flex; flex-direction: column; gap: 26px; width: 100%;"></div>
+    <!-- All Sections Rendered Dynamically from state_details.json -->
+    <div id="all-sections-container" style="display: flex; flex-direction: column; gap: 26px; width: 100%; min-width: 0;"></div>
+  </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
      30 DISTRICT LEADERBOARD
 ═══════════════════════════════════════════════ -->
-<section class="full-section">
+<section class="full-section" id="rankings" data-index="District rankings">
   <div class="label" style="color: var(--purple); margin-bottom: 12px;">Leaderboard Grid</div>
   <h2>Odisha District Rankings</h2>
   <p class="intro-text">
@@ -848,6 +897,7 @@
 </footer>
 
 <script src="dotfield.js?v=20260925-2"></script>
+<script src="chapter-index.js?v=20260928-2" defer></script>
 <script>
 /* ─────────────────────────────────────────────────────────────
    1. AMBIENT 3D / 2D DEMOGRAPHIC PARTICLE MATRIX
@@ -984,6 +1034,15 @@ function startField() {
         .attr("preserveAspectRatio", "xMidYMid meet");
 
     const g = svg.append("g");
+    const MAP_BASE = "#9fc2dc";   /* resting fill: reads on the white card */
+    const MAP_DIM  = "#dce7f0";   /* districts a step is not about */
+    let labels = null;
+    /* d3 can only blend real colours, and a "var(--teal)" string makes the
+       fill snap instead of fading, so the story colours are resolved first */
+    const cssColor = v => {
+        const m = /^var\((--[^)]+)\)$/.exec(v);
+        return m ? (getComputedStyle(document.body).getPropertyValue(m[1]).trim() || v) : v;
+    };
     const tip = d3.select("body").selectAll(".map-tooltip").data([null]).join("div")
         .attr("class", "tooltip map-tooltip")
         .style("opacity", 0);
@@ -995,7 +1054,7 @@ function startField() {
         
         // Calculate tight geographic bounding box of Odisha map features
         const b = path.bounds(geoData);
-        const pad = 10;
+        const pad = 3;
         const vx = b[0][0] - pad;
         const vy = b[0][1] - pad;
         const vw = (b[1][0] - b[0][0]) + pad * 2;
@@ -1007,21 +1066,38 @@ function startField() {
         g.selectAll("path")
             .data(geoData.features).enter().append("path")
             .attr("d", path)
-            .attr("fill", "#eaedef")
-            .attr("stroke", "rgba(0,0,0,0.14)")
-            .attr("stroke-width", "0.8px")
-            .attr("class", d => `dist-${d.properties.Dist_Name.replace(/\s+/g, '')}`)
+            .attr("fill", MAP_BASE)
+            .attr("class", d => `district dist-${d.properties.Dist_Name.replace(/\s+/g, '')}`)
             .on("mouseover", function(event, d) {
-                d3.select(this).style("stroke", "var(--purple)").style("stroke-width", "2.2px").raise();
+                /* One outline drawn over the map follows the pointer. Outlining
+                   the district itself meant raising it, and moving a node from
+                   under the pointer can swallow its mouseout: outlines were
+                   left behind on every district the pointer crossed. */
+                hoverRing.attr("d", path(d)).classed("is-on", true);
                 tip.transition().duration(200).style("opacity", 1);
                 tip.html(`<strong>${d.properties.Dist_Name}</strong><br><span style="font-size:var(--fs-caption);color:var(--muted)">Click to enter deep dive</span>`)
                    .style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 10) + "px");
             })
             .on("mouseout", function() {
-                d3.select(this).style("stroke", "rgba(0,0,0,0.14)").style("stroke-width", "0.8px");
+                hoverRing.classed("is-on", false);
                 tip.transition().duration(400).style("opacity", 0);
             })
             .on("click", (e, d) => window.location.href = `district.html?id=${encodeURIComponent(d.properties.Dist_Name)}`);
+
+        const hoverRing = g.append("path").attr("class", "map-hover").attr("aria-hidden", "true");
+        /* and never leave it behind if the pointer exits the map in one move */
+        svg.on("mouseleave", () => {
+            hoverRing.classed("is-on", false);
+            tip.transition().duration(400).style("opacity", 0);
+        });
+
+        labels = g.append("g").attr("class", "map-labels").attr("aria-hidden", "true");
+        labels.selectAll("text")
+            .data(geoData.features).enter().append("text")
+            .attr("class", d => `lbl-${d.properties.Dist_Name.replace(/\s+/g, '')}`)
+            .attr("x", d => path.centroid(d)[0])
+            .attr("y", d => path.centroid(d)[1])
+            .text(d => d.properties.Dist_Name);
 
         // Observe Narrative Steps Scroll
         const observer = new IntersectionObserver(entries => {
@@ -1043,21 +1119,21 @@ function startField() {
         document.querySelectorAll('.step').forEach(s => observer.observe(s));
     });
 
+    /* Resting state: every district a clear mid-tone with white borders.
+       A step recolours the districts it is about and softens the rest to a
+       lighter tint (still readable, never faded out) and names them. */
     function highlightDistricts(names) {
         if (!names) return;
-        g.selectAll("path").transition().duration(500).attr("fill", "#eaedef").attr("opacity", 0.25);
-        if (names === 'all') { 
-            g.selectAll("path").transition().duration(500).attr("opacity", 1).attr("fill", "#eaedef"); 
-        }
-        else {
-            names.split(',').forEach(name => {
-                const color = colors[name] || "var(--teal)";
-                g.select(`.dist-${name.replace(/\s+/g, '')}`)
-                 .transition().duration(500)
-                 .attr("opacity", 1)
-                 .attr("fill", color);
+        const focus = names === 'all' ? [] : names.split(',').map(n => n.replace(/\s+/g, ''));
+        const key = d => d.properties.Dist_Name.replace(/\s+/g, '');
+        /* districts only: the hover outline is a <path> too, with no data */
+        g.selectAll("path.district").interrupt().transition().duration(700).ease(d3.easeCubicInOut)
+            .attr("fill", d => {
+                if (!focus.length) return MAP_BASE;
+                const i = focus.indexOf(key(d));
+                return i === -1 ? MAP_DIM : cssColor(colors[d.properties.Dist_Name] || "var(--teal)");
             });
-        }
+        if (labels) labels.selectAll("text").classed("is-on", d => focus.indexOf(key(d)) !== -1);
     }
 
     // STATE STAT STRIP & LEADERBOARD DYNAMIC LOADING
@@ -1213,6 +1289,21 @@ function startField() {
       var container = document.getElementById('all-sections-container');
       var tabsBar = document.getElementById('slide-tabs-bar');
 
+      function markModule(id) {
+        var active = null;
+        document.querySelectorAll('.slide-tab-btn').forEach(function(btn) {
+          var on = btn.getAttribute('data-slide') === id;
+          btn.classList.toggle('active', on);
+          if (on) { btn.setAttribute('aria-current', 'true'); active = btn; }
+          else btn.removeAttribute('aria-current');
+        });
+        var box = tabsBar.closest('.report-index-container');
+        if (!active || !box || box.scrollHeight <= box.clientHeight) return;
+        var a = active.getBoundingClientRect(), b = box.getBoundingClientRect();
+        if (a.top < b.top + 40) box.scrollTop -= (b.top + 40) - a.top;
+        else if (a.bottom > b.bottom - 16) box.scrollTop += a.bottom - (b.bottom - 16);
+      }
+
       // Build Quick Module Jump buttons
       slides.forEach(function(slide, idx) {
         var sNum = String(slide.slide_num).padStart(2, '0');
@@ -1222,7 +1313,16 @@ function startField() {
         btn.textContent = sNum + ' ' + slide.title.split(':')[0].split('–')[0].trim();
         btn.addEventListener('click', function() {
           var target = document.getElementById('section-' + slide.slide_num);
-          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            /* Charts above the target load as the page passes them and can
+               push it down after the jump lands; settle it once more. */
+            setTimeout(function () {
+              var top = target.getBoundingClientRect().top;
+              if (Math.abs(top - 24) > 40) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 1200);
+          }
+          markModule(String(slide.slide_num));
         });
         tabsBar.appendChild(btn);
       });
@@ -1235,7 +1335,7 @@ function startField() {
         var card = document.createElement('div');
         card.id = 'section-' + slide.slide_num;
         card.className = 'report-section-card';
-        card.style.cssText = 'scroll-margin-top:140px; background:var(--panel); border:1px solid var(--border); border-radius:20px; padding:32px; width:100%; box-sizing:border-box;';
+        card.style.cssText = 'scroll-margin-top:24px; background:var(--panel);border:1px solid var(--border); border-radius:20px; padding:32px; width:100%; box-sizing:border-box;';
 
         var html = '';
         html += '<div class="kicker kicker-anim" style="color:' + color + ';">' + sNum + ' &middot; ' + slide.title + '</div>';
@@ -1325,17 +1425,15 @@ function startField() {
 
       document.querySelectorAll('.lazy-chart-wrapper').forEach(function(el) { chartObserver.observe(el); });
 
-      // Section scroll observer for Quick Module Jump highlight
+      // Section scroll observer for Quick Module Jump highlight.
+      // It watches a thin band 20% down the screen rather than a share of
+      // each module: at "25% visible" a module taller than four screens
+      // could never become current.
       var sectionObserver = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            var id = entry.target.id.replace('section-', '');
-            document.querySelectorAll('.slide-tab-btn').forEach(function(btn) {
-              btn.classList.toggle('active', btn.getAttribute('data-slide') === id);
-            });
-          }
+          if (entry.isIntersecting) markModule(entry.target.id.replace('section-', ''));
         });
-      }, { threshold: 0.25 });
+      }, { rootMargin: '-20% 0px -79% 0px', threshold: 0 });
 
       document.querySelectorAll('.report-section-card').forEach(function(card) { sectionObserver.observe(card); });
 

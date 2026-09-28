@@ -869,7 +869,8 @@ html.welcome-open #soochana-chatbot { display: none; }
 .welcome .intro-panel {
   background-color: var(--w-navy);
   background-image: var(--pm-wash), var(--pm-paper);
-  background-size: 900px 900px, 220px 220px;
+  /* the wash is stretched, not tiled: its 900px tile shows as a grid of patches */
+  background-size: cover, 220px 220px;
   background-blend-mode: soft-light, soft-light;
 }
 .welcome .intro-panel { transition-duration: 1.5s; }
@@ -2986,4 +2987,344 @@ footer::before {
 @media (prefers-reduced-motion: reduce) {
     .pvtg-chevron { transition: none; }
     .pvtg-dropdown[open] .pvtg-list { animation: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CHAPTER INDEX — right-hand rail: where you are, and what comes next
+   Built by chapter-index.js from every element with data-index. Pages
+   restyle it through the --ci-* properties (home_pm.css, about.html).
+   ═══════════════════════════════════════════════════════════════════ */
+.chapter-index {
+  --ci-ink: var(--ink-heading, #1e2530);
+  --ci-muted: var(--muted, #4f5664);
+  --ci-card: rgba(250, 249, 245, 0.8);
+  --ci-line: rgba(0, 0, 0, 0.08);
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  font-family: var(--font-sans, 'Outfit', sans-serif);
+  opacity: 0;
+  transform: translate(12px, -50%);
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.8s var(--ease, ease);
+}
+.chapter-index.ready { opacity: 1; transform: translate(0, -50%); pointer-events: auto; }
+
+.ci-toggle {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 6px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  color: var(--ci-muted);
+  transition: color 0.4s ease;
+}
+.ci-count {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+.ci-count b { font-size: 16px; color: var(--ci-ink); transition: color 0.4s ease; }
+.ci-stack { display: none; }
+
+.ci-list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 10px 8px 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: 16px;
+  background: var(--ci-card);
+  border: 1px solid var(--ci-line);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: background 0.5s ease, border-color 0.5s ease;
+}
+/* reading progress through the whole page, down the rail's left edge */
+.ci-list::before,
+.ci-list::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 14px;
+  width: 2px;
+  border-radius: 2px;
+}
+.ci-list::before { bottom: 14px; background: var(--ci-line); }
+.ci-list::after {
+  height: calc((100% - 28px) * var(--ci-progress, 0));
+  background: var(--orange, #bb4500);
+  transition: height 0.2s linear;
+}
+
+.ci-link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 5px 6px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--ci-muted);
+  transition: color 0.3s ease, background 0.3s ease;
+}
+.ci-link:hover { color: var(--ci-ink); background: var(--ci-line); }
+.ci-link:focus-visible { outline: 2px solid var(--teal, #1a535c); outline-offset: 1px; }
+
+.ci-label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  font-size: 13px;
+  font-weight: 500;
+  transition: max-width 0.5s var(--ease, ease), opacity 0.3s ease;
+}
+.ci-num {
+  width: 18px;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.ci-tick {
+  width: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.45;
+  transition: width 0.5s var(--ease, ease), background 0.3s ease, opacity 0.3s ease;
+}
+.ci-link.is-past .ci-tick { opacity: 0.9; background: var(--teal-lit, #387478); }
+.ci-link.is-current { color: var(--ci-ink); }
+.ci-link.is-current .ci-tick { width: 26px; opacity: 1; background: var(--orange, #bb4500); }
+.ci-link.is-current .ci-label { font-weight: 600; }
+
+/* Labels open on hover, on keyboard focus, when pinned, and for a few
+   seconds each time a new chapter arrives — then fold away so the rail
+   never sits on top of the page for long. Wide screens keep them open. */
+.chapter-index:hover .ci-label,
+.chapter-index:focus-within .ci-label,
+.chapter-index.is-open .ci-label,
+.chapter-index.is-peek .is-current .ci-label { max-width: 170px; opacity: 1; }
+
+.ci-next {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 240px;
+  padding: 7px 10px 7px 14px;
+  border-radius: 999px;
+  background: var(--ci-card);
+  border: 1px solid var(--ci-line);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  text-decoration: none;
+  font-size: 12px;
+  color: var(--ci-muted);
+  transition: background 0.5s ease, border-color 0.5s ease, color 0.3s ease;
+}
+.ci-next:hover { border-color: var(--orange, #bb4500); }
+.ci-next-text {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition: max-width 0.5s var(--ease, ease), opacity 0.3s ease;
+}
+.ci-next b { color: var(--ci-ink); font-weight: 600; font-size: 13px; }
+.chapter-index:hover .ci-next-text,
+.chapter-index:focus-within .ci-next-text,
+.chapter-index.is-open .ci-next-text,
+.chapter-index.is-peek .ci-next-text { max-width: 200px; opacity: 1; }
+.ci-next svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--orange, #bb4500);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: ciNudge 2.2s ease-in-out infinite;
+}
+.ci-next.is-end svg { transform: rotate(180deg); animation: none; }
+@keyframes ciNudge {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+
+@media (min-width: 1560px) {
+  .chapter-index .is-current .ci-label { max-width: 170px; opacity: 1; }
+  .chapter-index .ci-next-text { max-width: 200px; opacity: 1; }
+}
+
+/* Phones and tablets: the rail becomes a pill in the bottom-left corner
+   (the chat button owns the bottom-right). It names the chapter you are
+   in and the one after it; tap it for the full list. */
+@media (max-width: 1100px) {
+  .chapter-index {
+    top: auto;
+    right: auto;
+    left: 16px;
+    bottom: 20px;
+    align-items: flex-start;
+    max-width: calc(100vw - 112px);
+    transform: translateY(12px);
+  }
+  .chapter-index.ready { transform: none; }
+  .ci-toggle {
+    order: 2;
+    align-items: center;
+    padding: 9px 16px 9px 12px;
+    border-radius: 999px;
+    background: var(--ci-card);
+    border: 1px solid var(--ci-line);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    max-width: 100%;
+  }
+  .ci-stack { display: flex; flex-direction: column; min-width: 0; text-align: left; }
+  .ci-upnext {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    color: var(--ci-muted);
+  }
+  .ci-current {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ci-ink);
+  }
+  .ci-next { display: none; }
+  .ci-list {
+    order: 1;
+    display: none;
+    padding-left: 16px;
+  }
+  .chapter-index.is-open .ci-list { display: flex; }
+  .ci-link { justify-content: flex-start; flex-direction: row-reverse; }
+  .ci-label { max-width: 200px; opacity: 1; }
+  .ci-list::before, .ci-list::after { display: none; }
+}
+
+.ci-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* style.css strokes every <path> faintly for the maps; the arrow keeps its own */
+.ci-next svg path { stroke: inherit; stroke-width: inherit; cursor: inherit; filter: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ci-next svg { animation: none; }
+  .chapter-index, .ci-label, .ci-next-text, .ci-tick { transition: none; }
+}
+
+/* On the Population Matters pages (home, About) the rail takes the page's
+   type: section names and numbers in the condensed display face, like the
+   section headings; the small labels in spaced UI capitals, like the
+   kickers. Both pages define --pm-display and --pm-ui on <body>. */
+:is(.pm-home, .pm-about) .chapter-index { font-family: var(--pm-ui); }
+:is(.pm-home, .pm-about) :is(.ci-label, .ci-current, .ci-next b) {
+  font-family: var(--pm-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+:is(.pm-home, .pm-about) .ci-label { font-size: 14px; }
+:is(.pm-home, .pm-about) .ci-link.is-current .ci-label { font-weight: 400; }
+:is(.pm-home, .pm-about) .ci-current { font-size: 15px; font-weight: 400; }
+:is(.pm-home, .pm-about) .ci-next b { font-size: 14px; font-weight: 400; }
+:is(.pm-home, .pm-about) :is(.ci-num, .ci-count b) {
+  font-family: var(--pm-display);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+:is(.pm-home, .pm-about) .ci-num { font-size: 12px; }
+:is(.pm-home, .pm-about) .ci-count b { font-size: 18px; }
+:is(.pm-home, .pm-about) :is(.ci-count, .ci-next-k, .ci-upnext) {
+  font-family: var(--pm-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HEADER BRAND — Soochana, its tagline, and the initiative it belongs to
+   The ODI logo is a white-ground PNG, so it sits on its own small white
+   badge: on the dark headers (home, tour) as much as on the light ones.
+   ═══════════════════════════════════════════════════════════════════ */
+.brand-tag {
+  font-family: var(--mono);
+  font-size: calc(13px * var(--type-scale));
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+.brand-partner {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 6px;
+  padding-left: 18px;
+  border-left: 1px solid var(--border);
+  text-decoration: none;
+}
+.brand-partner-k {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--muted);
+}
+.brand-partner img {
+  display: block;
+  height: 54px;              /* border-box: the logo itself is about 46px tall */
+  width: auto;
+  padding: 3px 8px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+.brand-partner:hover img { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); }
+.brand-partner:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 8px; }
+
+/* the dark headers: home (home_pm.css) and the guided tour (explore.css) */
+:is(.pm-home, .ex-body) .brand-partner { border-left-color: rgba(255, 255, 255, 0.25); }
+:is(.pm-home, .ex-body) .brand-partner-k { color: rgba(255, 255, 255, 0.72); }
+:is(.pm-home, .ex-body) .brand-partner img { border-color: transparent; }
+:is(.pm-home, .ex-body) .brand-partner:focus-visible { outline-color: #ffffff; }
+
+/* phones: the words go, the logo stays, and the header keeps one band */
+@media (max-width: 600px) {
+  .brand-partner { padding-left: 12px; gap: 0; }
+  .brand-partner-k { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .brand-partner img { height: 38px; padding: 2px 6px; }
+  .brand-tag { font-size: calc(11.5px * var(--type-scale)); }
 }
