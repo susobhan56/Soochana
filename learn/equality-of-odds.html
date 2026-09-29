@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equality of Odds · Soochana Learn</title>
+<meta name="description" content="How a model can serve one group of districts less well than another without ever seeing group membership, and what each definition of fairness costs, explained with child stunting across Odisha's 30 districts.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20260929">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  /* page-only marks: group B is drawn as squares, "not in need" as hollow */
+  .ln-k.eo-sq::before { border-radius: 2px; }
+  .eo-gap { color: var(--orange); font-weight: 600; }
+  .eo-eq { color: var(--ink-heading); font-weight: 600; }
+  .eo-vs { color: var(--ink-subtle); font-weight: 400; font-size: 14px; margin: 0 3px; }
+  .ln-figure svg.eo-sw { display: inline-block; width: auto; height: auto; overflow: visible; vertical-align: -0.05em; }
+  .ln-stat-v .eo-sw { margin-right: 4px; }
+  .ln-legend .eo-sw + .eo-sw { margin-left: -3px; }
+  /* style.css strokes every <path> faintly for the maps (with hover effects);
+     here strokes are set inline, and the rest is switched off */
+  .ln-page .ln-figure path, .ln-page .ln-figure path:hover { transition: none; filter: none; cursor: default; }
+  .ln-page .ln-figure .eo-handle, .ln-page .ln-figure .eo-handle * { cursor: ew-resize; }
+  .ln-page .ln-figure path.eo-vertex { cursor: pointer; }
+  .eo-row-t { font-size: 13px; font-weight: 600; fill: var(--ink-heading); }
+  .eo-row-s { font-size: 12.5px; fill: var(--ink-body); font-weight: 500; }
+  .eo-cell-t { font-size: 12px; fill: var(--ink-body); }
+  .eo-cell-n { font-size: 15px; font-weight: 600; fill: var(--ink-heading); }
+  .eo-lock { display: inline-flex; align-items: center; gap: 6px; }
+  .eo-lock input { accent-color: var(--teal); width: 16px; height: 16px; }
+  #presetNote { color: var(--ink-subtle); }
+  .ln-controls .eo-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ln-btn.ghost[aria-pressed="true"] { background: var(--ink-heading); color: #fff; }
+  @media (max-width: 860px) {
+    /* the SVGs scale down on phones; keep their own text near 10–12px */
+    .eo-row-t { font-size: 17px; }
+    .eo-row-s, .eo-cell-t { font-size: 16px; }
+    .eo-cell-n { font-size: 18px; }
+  }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · 06</div>
+    <h2 class="ln-title">Equality <em>of</em> Odds</h2>
+    <p class="ln-dek">A model can serve one group of districts less well than another without ever being told who is in which group. Here is how to check, and what each idea of “fair” costs, using child stunting across Odisha's 30 districts.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census 2011, NFHS-4 and NFHS-5 · Every number on this page is computed live in your browser</div>
+  </section>
+
+  <div class="ln-prose">
+    <p>Suppose the state has money for an extra child-nutrition programme and wants it to reach the districts that need it. Call a district <strong>in need</strong> if the share of children under five who are stunted (too short for their age) is at or above the Odisha average of <b data-v="stAvg"></b> in NFHS-5 (2019–21).</p>
+    <p>The catch: survey results arrive years late. So planners score each district from data they already have, and fund every district whose score clears a bar. We will build such a score, then ask a question that overall accuracy cannot answer: <strong>does it work equally well for every kind of district?</strong></p>
+    <p>We compare two groups: the <b data-v="nA"></b> districts where at least 30% of people belong to Scheduled Tribes (ST), and the other <b data-v="nB"></b>. We call them <span class="ln-k ln-k-ga"><span>higher-ST districts</span></span> and <span class="ln-k ln-k-gb eo-sq"><span>other districts</span></span>. The point is not the groups themselves. It is that a model can treat them differently even though it never sees which group a district is in.</p>
+  </div>
+
+  <!-- ── scroll story ─────────────────────────────── -->
+  <section class="ln-scrolly" id="story">
+    <div class="ln-steps">
+      <div class="ln-step"><div class="ln-card">
+        <h3>Thirty districts</h3>
+        <p>Each mark is one district, placed by the share of its children under five who are stunted (NFHS-5). The dashed line is the Odisha average, <b data-v="stAvg"></b>.</p>
+        <p><b>Filled</b> marks sit at or above it: the <b data-v="needAll"></b> districts we call <em>in need</em>. <b>Hollow</b> marks are below it.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Two groups, different starting points</h3>
+        <p>The same districts in two rows. Top: the <b data-v="nA"></b> <span class="ln-k ln-k-ga"><span>higher-ST districts</span></span> (circles). <b data-v="needA"></b> of them are in need (<b data-v="baseA"></b>).</p>
+        <p>Bottom: the <b data-v="nB"></b> <span class="ln-k ln-k-gb eo-sq"><span>other districts</span></span> (squares). <b data-v="needB"></b> are in need (<b data-v="baseB"></b>).</p>
+        <p>How common need is in a group is called its <b>base rate</b>. The two base rates differ a lot, and that difference drives everything that follows.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>A score from older data</h3>
+        <p>NFHS-5 was not out when the plan had to be made. So we train a logistic regression (see explainer 03) on two things known earlier: <b>female literacy</b> (Census 2011) and <b>child stunting in NFHS-4</b> (2015–16). More past stunting raises the score; more female literacy lowers it.</p>
+        <p>Across the chart is now each district's <b>need score</b>, from 0 to 100. <b>Tribal share is not in the model.</b></p>
+        <p>To keep the check honest (explainer 01), each district is scored by a copy of the model trained on the other <b data-v="nMinus1"></b>, so no district is graded by a model that saw its answer.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>One bar for everyone</h3>
+        <p>The state funds every district scoring <b data-v="t0"></b> or more: everything right of the line.</p>
+        <p>That funds <b data-v="fundA"></b> of the <b data-v="nA"></b> higher-ST districts and <b data-v="fundB"></b> of the <b data-v="nB"></b> others, <b data-v="fundAll"></b> in all. The same rule for everyone sounds fair. Is it?</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Four kinds of outcome</h3>
+        <p>Filled and right of the line: needy and funded (<b>true positives</b>). Hollow and left: rightly not funded (<b>true negatives</b>).</p>
+        <p>The two mistakes are highlighted. Filled but left of the line: needy districts the rule <b>misses</b> (false negatives), <span data-v="fnNamesA"></span> among higher-ST districts and <span data-v="fnNamesB"></span> among the others.</p>
+        <p>Hollow but right of the line: <b>funded without need</b> (false positives), <span data-v="fpNamesA"></span>; and <span data-v="fpNamesB"></span>.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>If a district is in need, will it be funded?</h3>
+        <p>Look only at the filled marks. Of <b data-v="needA"></b> needy higher-ST districts, <b data-v="tpA"></b> are funded: a <b>true-positive rate</b> of <b data-v="tprA"></b>. Of <b data-v="needB"></b> needy other districts, <b data-v="tpB"></b> are: <b data-v="tprB"></b>.</p>
+        <p>So a needy district is less likely to be funded if it is not a higher-ST district. The model never saw tribal share. The gap comes from how well its two signals track need in each group.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>If it is not in need, will it be funded anyway?</h3>
+        <p>Now only the hollow marks. <b data-v="fpA"></b> of the <b data-v="negA"></b> higher-ST districts not in need is funded (<b data-v="fprA"></b>); <b data-v="fpB"></b> of <b data-v="negB"></b> other districts are (<b data-v="fprB"></b>). This is the <b>false-positive rate</b>.</p>
+        <p>Careful: the top row has only <b data-v="negA"></b> such districts, so a single district moves its rate by <b data-v="stepFprA"></b> points.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Three ways to define “fair”</h3>
+        <p><b>Demographic parity</b>: fund the same share of each group. Now <b data-v="flagA"></b> against <b data-v="flagB"></b>.</p>
+        <p><b>Equal opportunity</b>: a needy district has the same chance of funding in either group, so equal true-positive rates. Now <b data-v="tprA"></b> against <b data-v="tprB"></b>.</p>
+        <p><b>Equalised odds</b>: equal true-positive <em>and</em> equal false-positive rates. The false-positive rates are <b data-v="fprA"></b> against <b data-v="fprB"></b>.</p>
+        <p>One bar for everyone meets none of the three.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>They cannot all hold at once</h3>
+        <p>In any group, the share funded is the base rate × the true-positive rate + (1 − base rate) × the false-positive rate.</p>
+        <p>If both rates were equal across the groups, the share funded could still only match if the base rates matched (here <b data-v="baseA"></b> against <b data-v="baseB"></b>), or if the score were useless, funding needy and non-needy districts at the same rate. So we have to choose which kind of fairness matters.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>A bar for each group: equal opportunity</h3>
+        <p>To give needy districts the same chance in both groups, we can set a separate bar for each. The closest match: <b data-v="oppThrA"></b> for higher-ST districts and <b data-v="oppThrB"></b> for the others.</p>
+        <p>Needy districts are now funded at <b data-v="oppTprA"></b> and <b data-v="oppTprB"></b>. But the lower bar also funds <b data-v="oppFpB"></b> of the <b data-v="negB"></b> other districts not in need. <b data-v="oppFund"></b> districts are funded in all, up from <b data-v="fundAll"></b>.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Equalised odds, and levelling down</h3>
+        <p>Matching both rates is harder. With bars alone, two groups land on the same pair of rates only if they have an operating point in common, and <span data-v="sharedText"></span>.</p>
+        <p>The closest the bars get: <b data-v="oddsThrA"></b> and <b data-v="oddsThrB"></b>. True-positive rates <b data-v="oddsTprA"></b> and <b data-v="oddsTprB"></b>; false-positive rates <b data-v="oddsFprA"></b> and <b data-v="oddsFprB"></b>.</p>
+        <p>Only <b data-v="oddsFund"></b> districts are funded, and <b data-v="oddsMissed"></b> needy districts are missed. The groups are treated alike by treating both worse.</p>
+      </div></div>
+    </div>
+    <div class="ln-graphic" aria-live="polite">
+      <figure class="ln-figure" style="margin:0">
+        <p class="ln-figure-t" id="figTitle">Child stunting, 30 districts</p>
+        <p class="ln-figure-s" id="figSub">Hover a mark for the district</p>
+        <div class="ln-legend" id="figLegend"></div>
+        <svg id="storySvg" role="img" aria-label="Odisha's 30 districts placed by child stunting or by the model's need score, split into higher-ST and other districts"></svg>
+        <div class="ln-source">Stunting: NFHS-4 (2015–16), NFHS-5 (2019–21) · Female literacy and ST share: Census 2011</div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── interactive: two bars, ROC ──────────────── -->
+  <div class="ln-prose">
+    <h2>Try it: set the bars yourself</h2>
+    <p>Move each group's bar with the sliders, or drag the lines on the score chart. Tick <em>Same bar for both</em> to move them together. The buttons search every pair of bars for the setting that comes closest to each definition of fairness.</p>
+    <p>The chart on the right is a <b>ROC curve</b> for each group. It traces every possible bar, from the strictest (bottom left: fund no one) to the most lenient (top right: fund everyone). Higher up means more needy districts funded; further right means more districts funded that are not in need. Each group's current bar is one point on its curve. <b>Equalised odds means the two points sit on top of each other.</b></p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <label><span class="ln-k ln-k-ga"><span>Higher-ST bar</span></span><input type="range" id="thrA" min="0" max="100" step="any" value="50" aria-label="Funding bar for higher-ST districts"><output id="outA">50</output></label>
+        <label><span class="ln-k ln-k-gb eo-sq"><span>Other bar</span></span><input type="range" id="thrB" min="0" max="100" step="any" value="50" aria-label="Funding bar for other districts"><output id="outB">50</output></label>
+        <label class="eo-lock"><input type="checkbox" id="lock" checked> Same bar for both</label>
+      </div>
+      <div class="ln-controls">
+        <div class="eo-btns" role="group" aria-label="Fairness presets">
+          <button class="ln-btn ghost" data-preset="one" aria-pressed="true">One bar of 50</button>
+          <button class="ln-btn ghost" data-preset="opp" aria-pressed="false">Equalise opportunity</button>
+          <button class="ln-btn ghost" data-preset="odds" aria-pressed="false">Equalise odds (closest)</button>
+          <button class="ln-btn ghost" data-preset="parity" aria-pressed="false">Equal share funded</button>
+        </div>
+      </div>
+      <p class="ln-figure-s" id="presetNote"></p>
+      <div class="ln-grid2">
+        <div>
+          <p class="ln-figure-t">Need scores and each group's bar</p>
+          <p class="ln-figure-s">Right of a bar = funded · drag a bar to move it</p>
+          <svg id="stripSvg" role="img" aria-label="Need scores of the districts in each group with that group's funding bar"></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t">ROC curves: every possible bar, per group</p>
+          <p class="ln-figure-s" id="rocSub"></p>
+          <svg id="rocSvg" role="img" aria-label="ROC curves for higher-ST and other districts with each group's current operating point"></svg>
+        </div>
+      </div>
+      <div class="ln-grid2" style="margin-top:14px">
+        <div>
+          <p class="ln-figure-t"><span class="ln-k ln-k-ga"><span>Higher-ST districts</span></span> <span id="gridAT" style="font-weight:400;color:var(--ink-subtle)"></span></p>
+          <svg id="gridA" role="img" aria-label="Higher-ST districts sorted into funded or not, in need or not"></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t"><span class="ln-k ln-k-gb eo-sq"><span>Other districts</span></span> <span id="gridBT" style="font-weight:400;color:var(--ink-subtle)"></span></p>
+          <svg id="gridB" role="img" aria-label="Other districts sorted into funded or not, in need or not"></svg>
+        </div>
+      </div>
+      <div class="ln-stats" id="eoStats"></div>
+    </div>
+  </div>
+
+  <div class="ln-prose">
+    <h2>Small numbers, big jumps</h2>
+    <p id="jumpText"></p>
+    <p>Real targeting would work with blocks or villages, where there are hundreds of units per group, and would put error bars on every rate. NFHS stunting is itself a sample estimate: <b data-v="nearLine"></b> of the 30 districts sit within 2 points of the <b data-v="stAvg"></b> line, so a slightly different survey sample could move them across it.</p>
+
+    <h2>So which is fair?</h2>
+    <p>No formula can settle this. Each definition protects against a different harm. <b>Equal opportunity</b> asks that needy children have the same chance of help wherever they live. <b>Equalised odds</b> adds that districts not in need should be funded equally often too, so no group gets more than its share of spare money. <b>Demographic parity</b> ignores need altogether, which makes little sense for a programme meant to follow need.</p>
+    <p>For a nutrition programme, missing a needy district is usually the costlier mistake, which points to equal opportunity. Its price here is money spent in districts that did not need it. Setting a different bar for each group is also a decision that uses group membership, which is a policy and legal question, not a statistical one.</p>
+    <p>The better fix is often a better score. The gaps exist because female literacy and past stunting track need well in one group and less well in the other. Pick a needy and a non-needy higher-ST district at random, and the score ranks the needy one higher <b data-v="aucA"></b> of the time; among the other districts, only <b data-v="aucB"></b>. A score built on indicators that track need equally well in every group closes the gap without trading one harm for another.</p>
+    <div class="ln-callout">
+      <span class="ln-callout-t">Take-aways</span>
+      Leaving group membership out of a model does not make it fair: other inputs can carry the same pattern. Check error rates <em>per group</em>, not only overall accuracy. When base rates differ, demographic parity, equal opportunity and equalised odds cannot all hold, so decide which harm matters most before you tune anything. Equalising by lowering one group's bar or raising another's has real costs, which you should count in districts, not percentages. And with a few districts per group, every rate jumps in big steps.
+    </div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p>A district is <em>in need</em> if NFHS-5 child stunting (under 5, height-for-age) is at or above the Odisha average given in the state fact sheet. Higher-ST districts are those with a Scheduled Tribe share of 30% or more in Census 2011. The need score is a logistic regression on female literacy (Census 2011) and NFHS-4 stunting, both standardised, trained by gradient descent (learning rate 0.5, 2,000 steps, no penalty). Each district's score comes from a model trained on the other <span data-v="nMinus1"></span> districts (leave-one-out), so the error rates are not flattered by the model having seen the answer. A district is funded if its score is at or above its group's bar.</p>
+    <p>The preset buttons try every pair of bars that give each group a different outcome, leaving out pairs that fund everyone or no one in a group. They pick the pair with the smallest gap on the chosen measure (for equalised odds, the larger of the two gaps), then the fewest wrong decisions, then the fewest needy districts missed. Research papers sometimes close the remaining gap by randomly mixing two bars for one group; we leave that out, since a lottery is hard to defend for public funding. With <span data-v="nAll"></span> districts, this is a teaching example, not a targeting tool.</p>
+    <details class="ln-details">
+      <summary>Show the data table</summary>
+      <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
+    </details>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="train-test-validation.html"><small>Back to 01</small><b>Train, Test and Validation</b></a>
+    <a href="logistic-regression.html"><small>03</small><b>Logistic Regression</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* eo-core:start — scoring and threshold search (also run by tests/equality-of-odds.test.js) */
+  var EO = (function (SL) {
+    var FEATURES = ['f.female_lit', 'nfhs4.stunted'];
+    var TRAIN = { lr: 0.5, iters: 2000 };
+    var TRIBAL_CUT = 30;
+
+    /** Rows with need (0/1), group ('a' higher-ST, 'b' other) and a leave-one-out need score. */
+    function prepare(data) {
+      var st = data.meta.state_nfhs5.stunted;
+      var R = SL.rows(data.districts, FEATURES.concat(['nfhs5.stunted', 'f.tribal_pct']));
+      R.forEach(function (d) {
+        d.need = d['nfhs5.stunted'] >= st ? 1 : 0;
+        d.g = d['f.tribal_pct'] >= TRIBAL_CUT ? 'a' : 'b';
+      });
+      var X0 = R.map(function (d) { return FEATURES.map(function (k) { return d[k]; }); });
+      var y = R.map(function (d) { return d.need; });
+      var sc = SL.scaler(X0);
+      var full = SL.models.logreg(X0.map(sc.apply), y, TRAIN);
+      R.forEach(function (d, i) {
+        var idx = SL.range(R.length).filter(function (j) { return j !== i; });
+        var tr = idx.map(function (j) { return X0[j]; }), s = SL.scaler(tr);
+        var m = SL.models.logreg(tr.map(s.apply), idx.map(function (j) { return y[j]; }), TRAIN);
+        d.score = m.proba(s.apply(X0[i]));
+      });
+      return { R: R, st: st, full: full, features: FEATURES };
+    }
+
+    function rates(list, t) {
+      return SL.metrics.confusion(list.map(function (d) { return d.need; }), list.map(function (d) { return d.score >= t ? 1 : 0; }));
+    }
+
+    /** Every distinct outcome for a group: fund none, then each distinct score as the bar. */
+    function cutoffs(list) {
+      var u = Array.from(new Set(list.map(function (d) { return d.score; }))).sort(function (a, b) { return b - a; });
+      return [Infinity].concat(u);
+    }
+
+    /** A bar that gives the same outcome as t but sits between scores, safe for a slider. */
+    function between(list, t) {
+      var s = list.map(function (d) { return d.score; });
+      if (t === Infinity) return (Math.max.apply(null, s) + 1) / 2;
+      var lower = s.filter(function (v) { return v < t; });
+      return lower.length ? (t + Math.max.apply(null, lower)) / 2 : t / 2;
+    }
+
+    function gapOf(a, b, mode) {
+      if (mode === 'opp') return Math.abs(a.tpr - b.tpr);
+      if (mode === 'odds') return Math.max(Math.abs(a.tpr - b.tpr), Math.abs(a.fpr - b.fpr));
+      return Math.abs(a.flagged - b.flagged);
+    }
+
+    /** Best pair of bars for mode 'opp' | 'odds' | 'parity'. */
+    function search(A, B, mode) {
+      var best = null, EPS = 1e-9;
+      cutoffs(A).forEach(function (ta) {
+        var a = rates(A, ta);
+        if (a.flagged === 0 || a.flagged === 1) return;
+        cutoffs(B).forEach(function (tb) {
+          var b = rates(B, tb);
+          if (b.flagged === 0 || b.flagged === 1) return;
+          var c = { ta: ta, tb: tb, a: a, b: b, gap: gapOf(a, b, mode), err: a.fp + a.fn + b.fp + b.fn, fn: a.fn + b.fn };
+          if (!best || c.gap < best.gap - EPS ||
+              (Math.abs(c.gap - best.gap) <= EPS && (c.err < best.err || (c.err === best.err && c.fn < best.fn)))) best = c;
+        });
+      });
+      best.barA = between(A, best.ta);
+      best.barB = between(B, best.tb);
+      return best;
+    }
+
+    function roc(list) {
+      return SL.metrics.roc(list.map(function (d) { return d.need; }), list.map(function (d) { return d.score; }));
+    }
+
+    /** Operating points both groups can reach exactly, other than the two corners. */
+    function shared(pa, pb) {
+      var out = [];
+      pa.forEach(function (p) {
+        var corner = (p.fpr === 0 && p.tpr === 0) || (p.fpr === 1 && p.tpr === 1);
+        if (!corner && pb.some(function (q) { return Math.abs(q.fpr - p.fpr) < 1e-9 && Math.abs(q.tpr - p.tpr) < 1e-9; })) out.push(p);
+      });
+      return out;
+    }
+
+    return { prepare: prepare, rates: rates, cutoffs: cutoffs, between: between, search: search, roc: roc, shared: shared, TRIBAL_CUT: TRIBAL_CUT };
+  })(SL);
+  /* eo-core:end */
+
+  var C = { a: SL.color('ga'), b: SL.color('gb'), ink: '#64748b', card: '#ffffff' };
+  var GROUP = { a: 'Higher-ST district', b: 'Other district' };
+  var GROUP_S = { a: 'Higher-ST', b: 'Other' };
+  var tip = SL.tooltip();
+  var T0 = 0.5;
+
+  function names(list) {
+    var n = list.map(function (d) { return d.name; }).sort();
+    if (!n.length) return 'none';
+    if (n.length === 1) return n[0];
+    return n.slice(0, -1).join(', ') + ' and ' + n[n.length - 1];
+  }
+  function pts(v) { return SL.fmt(100 * v, 0); }
+  function bar(v) { return SL.fmt(100 * v, 1); }
+  function funded(d, tA, tB) { return d.score >= (d.g === 'a' ? tA : tB); }
+  function outcome(d, f) { return d.need ? (f ? 'needy, funded' : 'needy, missed') : (f ? 'funded without need' : 'rightly not funded'); }
+
+  /* mark shapes: circle = higher-ST, square = other; filled = in need, hollow = not */
+  var SYM = 132;
+  var symA = d3.symbol(d3.symbolCircle, SYM)(), symB = d3.symbol(d3.symbolSquare, SYM)();
+  function symPath(g, grouped) { return !grouped || g === 'a' ? symA : symB; }
+  function markStyle(sel, grouped) {
+    sel.attr('d', function (d) { return symPath(d.g, grouped); })
+      .attr('fill', function (d) { return d.need ? (grouped ? C[d.g] : C.ink) : C.card; })
+      .style('stroke', function (d) { return d.need ? C.card : (grouped ? C[d.g] : C.ink); })
+      .style('stroke-width', function (d) { return d.need ? 1.2 : 1.8; });
+  }
+  function swatch(g, need, grouped, size) {
+    size = size || 12;
+    var col = grouped === false ? C.ink : C[g], h = size / 2, r = h - 1.2;
+    var shape = (grouped === false || g === 'a') ? '<circle cx="' + h + '" cy="' + h + '" r="' + r + '"' : '<rect x="1.2" y="1.2" width="' + (size - 2.4) + '" height="' + (size - 2.4) + '" rx="1"';
+    return '<svg class="eo-sw" width="' + size + '" height="' + size + '" aria-hidden="true">' + shape +
+      ' fill="' + (need ? col : '#fff') + '" stroke="' + col + '" stroke-width="' + (need ? 0 : 1.6) + '"/></svg>';
+  }
+
+  /** Beeswarm: y offsets so marks of radius r never overlap, closest to the centre line. */
+  function dodge(list, xOf, r) {
+    var order = SL.range(list.length).sort(function (i, j) { return xOf(list[i]) - xOf(list[j]) || (list[i].name < list[j].name ? -1 : 1); });
+    var placed = [], off = new Array(list.length), d2 = 4 * r * r;
+    order.forEach(function (i) {
+      var x = xOf(list[i]), cands = [0];
+      placed.forEach(function (p) {
+        var dx = x - p.x;
+        if (dx * dx < d2) { var dy = Math.sqrt(d2 - dx * dx); cands.push(p.y + dy + 0.01, p.y - dy - 0.01); }
+      });
+      cands.sort(function (a, b) { return Math.abs(a) - Math.abs(b) || b - a; });
+      for (var k = 0; k < cands.length; k++) {
+        var c = cands[k];
+        var ok = placed.every(function (p) { var dx = x - p.x, dy = c - p.y; return dx * dx + dy * dy >= d2 - 0.05; });
+        if (ok) { off[i] = c; placed.push({ x: x, y: c }); break; }
+      }
+    });
+    return off;
+  }
+
+  SL.loadData().then(function (data) {
+    var P = EO.prepare(data), R = P.R;
+    var A = R.filter(function (d) { return d.g === 'a'; }), B = R.filter(function (d) { return d.g === 'b'; });
+    var LIST = { a: A, b: B };
+    var r0 = { a: EO.rates(A, T0), b: EO.rates(B, T0) };
+    var opp = EO.search(A, B, 'opp'), odds = EO.search(A, B, 'odds'), parity = EO.search(A, B, 'parity');
+    var rocA = EO.roc(A), rocB = EO.roc(B), sharedPts = EO.shared(rocA, rocB);
+    function inGroupWhere(g, fn) { return LIST[g].filter(fn); }
+    var needAll = R.filter(function (d) { return d.need; }).length;
+
+    /* ── numbers for the prose ─────────────────── */
+    var V = {
+      stAvg: SL.fmt(P.st, 0) + '%', nAll: R.length, nA: A.length,
+      aucA: SL.pct(SL.metrics.auc(rocA)), aucB: SL.pct(SL.metrics.auc(rocB)), nB: B.length, nMinus1: R.length - 1, needAll: needAll,
+      needA: r0.a.tp + r0.a.fn, needB: r0.b.tp + r0.b.fn, negA: r0.a.fp + r0.a.tn, negB: r0.b.fp + r0.b.tn,
+      baseA: SL.pct((r0.a.tp + r0.a.fn) / A.length), baseB: SL.pct((r0.b.tp + r0.b.fn) / B.length),
+      t0: SL.fmt(100 * T0, 0),
+      fundA: r0.a.tp + r0.a.fp, fundB: r0.b.tp + r0.b.fp, fundAll: r0.a.tp + r0.a.fp + r0.b.tp + r0.b.fp,
+      tpA: r0.a.tp, tpB: r0.b.tp, fpA: r0.a.fp, fpB: r0.b.fp,
+      tprA: SL.pct(r0.a.tpr), tprB: SL.pct(r0.b.tpr), fprA: SL.pct(r0.a.fpr), fprB: SL.pct(r0.b.fpr),
+      flagA: SL.pct(r0.a.flagged), flagB: SL.pct(r0.b.flagged),
+      fnNamesA: names(inGroupWhere('a', function (d) { return d.need && d.score < T0; })),
+      fnNamesB: names(inGroupWhere('b', function (d) { return d.need && d.score < T0; })),
+      fpNamesA: names(inGroupWhere('a', function (d) { return !d.need && d.score >= T0; })),
+      fpNamesB: names(inGroupWhere('b', function (d) { return !d.need && d.score >= T0; })),
+      stepFprA: SL.fmt(100 / (r0.a.fp + r0.a.tn), 0),
+      oppThrA: bar(opp.barA), oppThrB: bar(opp.barB), oppTprA: SL.pct(opp.a.tpr), oppTprB: SL.pct(opp.b.tpr),
+      oppFpB: opp.b.fp, oppFund: opp.a.tp + opp.a.fp + opp.b.tp + opp.b.fp,
+      sharedText: sharedPts.length ? 'here they share ' + sharedPts.length + ' such point' + (sharedPts.length > 1 ? 's' : '') + ' besides funding everyone or no one'
+        : 'here the two groups share none, apart from funding everyone or funding no one',
+      oddsThrA: bar(odds.barA), oddsThrB: bar(odds.barB), oddsTprA: SL.pct(odds.a.tpr), oddsTprB: SL.pct(odds.b.tpr),
+      oddsFprA: SL.pct(odds.a.fpr), oddsFprB: SL.pct(odds.b.fpr),
+      oddsFund: odds.a.tp + odds.a.fp + odds.b.tp + odds.b.fp, oddsMissed: odds.a.fn + odds.b.fn,
+      nearLine: R.filter(function (d) { return Math.abs(d['nfhs5.stunted'] - P.st) <= 2; }).length,
+    };
+    document.querySelectorAll('[data-v]').forEach(function (el) { el.textContent = V[el.dataset.v]; });
+
+    document.getElementById('jumpText').innerHTML = 'Every rate on this page is a fraction of a handful of districts. Among higher-ST districts, one district moves the true-positive rate by <b>' +
+      SL.fmt(100 / V.needA, 0) + '</b> points and the false-positive rate by <b>' + SL.fmt(100 / V.negA, 0) + '</b>. Among the others, one district moves them by <b>' +
+      SL.fmt(100 / V.needB, 0) + '</b> and <b>' + SL.fmt(100 / V.negB, 0) + '</b> points. That is why the bars can rarely make two rates match exactly, and why a gap of ' +
+      SL.fmt(100 / V.negB, 0) + ' points here can be a single district. Try nudging a slider and watch the rates jump rather than slide.';
+
+    /* ── sticky story graphic ───────────────────── */
+    var W = 560, H = 440, M = { t: 8, r: 18, b: 42, l: 18 };
+    var svg = d3.select('#storySvg').attr('viewBox', [0, 0, W, H]);
+    var xSt = d3.scaleLinear([10, 50], [M.l, W - M.r]), xSc = d3.scaleLinear([0, 100], [M.l, W - M.r]);
+    var ROWY = { a: 132, b: 306 }, ONEY = 220, BAND = 62, AXY = H - M.b;
+    var R_COL = 7.6;
+
+    var layer = { rows: svg.append('g'), avg: svg.append('g'), thr: svg.append('g'), marks: svg.append('g'), labels: svg.append('g'), bars: svg.append('g').style('opacity', 0) };
+    var gx = svg.insert('g', ':first-child').attr('class', 'ln-axis').attr('transform', 'translate(0,' + AXY + ')');
+    var xLab = svg.append('text').attr('class', 'ln-axis-label').attr('x', W - M.r).attr('y', H - 6).attr('text-anchor', 'end');
+
+    /* precomputed layouts */
+    function offsets(list, xs, key) {
+      var o = dodge(list, function (d) { return xs(key(d)); }, R_COL);
+      list.forEach(function (d, i) { d._o = o[i]; });
+      return list.map(function (d) { return d._o; });
+    }
+    var LAY = { stAll: {}, stRow: {}, scRow: {} };
+    var stK = function (d) { return d['nfhs5.stunted']; }, scK = function (d) { return 100 * d.score; };
+    offsets(R, xSt, stK).forEach(function (o, i) { LAY.stAll[R[i].name] = [xSt(stK(R[i])), ONEY + o]; });
+    ['a', 'b'].forEach(function (g) {
+      var L = LIST[g];
+      offsets(L, xSt, stK).forEach(function (o, i) { LAY.stRow[L[i].name] = [xSt(stK(L[i])), ROWY[g] + o]; });
+      offsets(L, xSc, scK).forEach(function (o, i) { LAY.scRow[L[i].name] = [xSc(scK(L[i])), ROWY[g] + o]; });
+    });
+
+    /* row bands: title, funded shading, per-row stat */
+    var bands = layer.rows.selectAll('g').data(['a', 'b']).join('g').style('opacity', 0);
+    bands.append('rect').attr('class', 'eo-shade').attr('y', function (g) { return ROWY[g] - BAND; }).attr('height', 2 * BAND)
+      .attr('fill', function (g) { return C[g]; }).attr('fill-opacity', 0.07).attr('x', W - M.r).attr('width', 0);
+    bands.append('line').attr('x1', M.l).attr('x2', W - M.r).attr('y1', function (g) { return ROWY[g]; }).attr('y2', function (g) { return ROWY[g]; }).style('stroke', 'var(--ln-grid)');
+    bands.append('text').attr('class', 'eo-row-t').attr('x', M.l).attr('y', function (g) { return ROWY[g] - BAND - 27; })
+      .text(function (g) { return g === 'a' ? 'Higher-ST districts · ' + A.length : 'Other districts · ' + B.length; });
+    var rowStat = bands.append('text').attr('class', 'eo-row-s').attr('x', M.l).attr('y', function (g) { return ROWY[g] - BAND - 9; });
+
+    /* state average line */
+    layer.avg.append('line').attr('x1', xSt(P.st)).attr('x2', xSt(P.st)).attr('y1', 40).attr('y2', AXY).style('stroke', 'var(--ink-heading)').attr('stroke-dasharray', '4 4').style('stroke-width', 1.2);
+    layer.avg.append('text').attr('class', 'ln-dlabel').attr('x', xSt(P.st) + 6).attr('y', 34).text('Odisha average ' + V.stAvg);
+
+    /* thresholds, one per row */
+    var thr = layer.thr.selectAll('g').data(['a', 'b']).join('g').style('opacity', 0);
+    thr.append('line').attr('y1', function (g) { return ROWY[g] - BAND; }).attr('y2', function (g) { return ROWY[g] + BAND; }).style('stroke', 'var(--ink-heading)').style('stroke-width', 2);
+    var thrLab = thr.append('text').attr('class', 'ln-dlabel').attr('y', function (g) { return ROWY[g] + BAND - 5; });
+
+    var marks = layer.marks.selectAll('path').data(R, function (d) { return d.name; }).join('path').attr('class', 'eo-mark')
+      .attr('transform', function (d) { var p = LAY.stAll[d.name]; return 'translate(' + p[0] + ',' + p[1] + ')'; })
+      .on('pointerenter', function (e, d) { d3.select(this).raise().style('stroke', 'var(--ink-heading)').style('stroke-width', 2); tip.show(e, storyTip(d)); })
+      .on('pointermove', function (e, d) { tip.show(e, storyTip(d)); })
+      .on('pointerleave', function (e, d) { d3.select(this).style('stroke', d.need ? C.card : (step >= 1 ? C[d.g] : C.ink)).style('stroke-width', d.need ? 1.2 : 1.8); tip.hide(); });
+    markStyle(marks, false);
+
+    var cur = { tA: T0, tB: T0, show: false };
+    function storyTip(d) {
+      var s = '<b>' + d.name + '</b><br>' + (step >= 1 ? GROUP[d.g] + ' · ST ' + SL.fmt(d['f.tribal_pct'], 1) + '%<br>' : '') +
+        'Stunted ' + SL.fmt(d['nfhs5.stunted'], 1) + '% · ' + (d.need ? 'in need' : 'not in need');
+      if (step >= 2) s += '<br>Need score ' + SL.fmt(100 * d.score, 1);
+      if (cur.show) { var f = funded(d, cur.tA, cur.tB); s += '<br>' + (f ? 'Funded' : 'Not funded') + ' · <span class="muted">' + outcome(d, f) + '</span>'; }
+      return s;
+    }
+
+    /* bars mode (steps 7–8) */
+    var BARS = [
+      { k: 'base', t: 'In need (base rate)', s: '', a: V.needA / A.length, b: V.needB / B.length },
+      { k: 'flag', t: 'Share of districts funded', s: 'demographic parity compares these', a: r0.a.flagged, b: r0.b.flagged },
+      { k: 'tpr', t: 'Needy districts funded (true-positive rate)', s: 'equal opportunity compares these', a: r0.a.tpr, b: r0.b.tpr },
+      { k: 'fpr', t: 'Not-in-need districts funded (false-positive rate)', s: 'equalised odds adds these', a: r0.a.fpr, b: r0.b.fpr },
+    ];
+    var bx = d3.scaleLinear([0, 1], [M.l, W - 150]);
+    var bBlocks = layer.bars.selectAll('g').data(BARS).join('g').attr('transform', function (d, i) { return 'translate(0,' + (44 + i * 94) + ')'; });
+    bBlocks.append('text').attr('class', 'eo-row-t').attr('x', M.l).attr('y', 0).text(function (d) { return d.t; });
+    bBlocks.append('text').attr('class', 'ln-axis-label').attr('x', M.l).attr('y', 18).text(function (d) { return d.s; });
+    ['a', 'b'].forEach(function (g, j) {
+      bBlocks.append('rect').attr('x', M.l).attr('y', 29 + j * 24).attr('height', 18).attr('rx', 3).attr('fill', C[g])
+        .attr('width', function (d) { return Math.max(1, bx(d[g]) - M.l); });
+      bBlocks.append('rect').attr('x', M.l).attr('y', 29 + j * 24).attr('height', 18).attr('width', bx(1) - M.l).attr('fill', 'none').style('stroke', 'var(--ln-grid)');
+      bBlocks.append('text').attr('class', 'ln-dlabel').attr('y', 29 + j * 24 + 13)
+        .attr('x', function (d) { return bx(Math.max(d[g], 1)) + 8; })
+        .text(function (d) { return GROUP_S[g] + ' ' + SL.pct(d[g]); });
+    });
+
+    /* greedy label placement around each mark: first spot that clashes with no mark or label */
+    function placeLabels(list) {
+      var cw = matchMedia('(max-width: 860px)').matches ? 8.4 : 6.4, lh = cw * 2, out = {}, boxes = [];
+      var markBoxes = list.map(function (d) { var p = LAY.scRow[d.name]; return [p[0] - R_COL, p[1] - R_COL, p[0] + R_COL, p[1] + R_COL]; });
+      var spots = [[0, -15, 'middle'], [0, 15 + lh * 0.8, 'middle'], [14, 4, 'start'], [-14, 4, 'end'], [0, -15 - lh, 'middle'], [0, 15 + lh * 1.8, 'middle'], [14, -lh, 'start'], [-14, -lh, 'end'], [0, -15 - 2 * lh, 'middle'], [0, 15 + lh * 2.8, 'middle']];
+      function hit(b, list2) { return list2.some(function (o) { return b[0] < o[2] && b[2] > o[0] && b[1] < o[3] && b[3] > o[1]; }); }
+      list.slice().sort(function (p, q) { return LAY.scRow[p.name][0] - LAY.scRow[q.name][0]; }).forEach(function (d) {
+        var p = LAY.scRow[d.name], w = d.name.length * cw, pick = null;
+        for (var k = 0; k < spots.length && !pick; k++) {
+          var sp = spots[k], x = p[0] + sp[0], y = p[1] + sp[1];
+          var x0 = sp[2] === 'middle' ? x - w / 2 : sp[2] === 'start' ? x : x - w;
+          var b = [x0 - 2, y - lh * 0.75, x0 + w + 2, y + lh * 0.25];
+          if (b[0] < M.l || b[2] > W - M.r) continue;
+          if (!hit(b, boxes) && !hit(b, markBoxes)) pick = { x: x, y: y, a: sp[2], b: b };
+        }
+        if (!pick) { var xm = Math.min(Math.max(p[0], M.l + w / 2), W - M.r - w / 2); pick = { x: xm, y: p[1] - 15, a: 'middle', b: [xm - w / 2, p[1] - 15 - lh, xm + w / 2, p[1] - 15] }; }
+        boxes.push(pick.b); out[d.name] = pick;
+      });
+      return out;
+    }
+
+    function legend(items) {
+      document.getElementById('figLegend').innerHTML = items.map(function (it) { return '<span>' + it[0] + it[1] + '</span>'; }).join('');
+    }
+
+    var step = -1;
+    function setStep(i) {
+      step = i;
+      var t = d3.transition().duration(SL.dur(750)).ease(d3.easeCubicInOut);
+      var isBars = i === 7 || i === 8, scoreMode = i >= 2, grouped = i >= 1;
+      var tA = T0, tB = T0, showThr = i >= 3 && !isBars;
+      if (i === 9) { tA = opp.barA; tB = opp.barB; }
+      if (i >= 10) { tA = odds.barA; tB = odds.barB; }
+      cur = { tA: tA, tB: tB, show: i >= 3 };
+      var TH = { a: tA, b: tB };
+
+      /* axis */
+      var xs = scoreMode ? xSc : xSt;
+      gx.transition(t).style('opacity', isBars ? 0 : 1)
+        .call(d3.axisBottom(xs).ticks(scoreMode ? 10 : 8).tickFormat(function (v) { return scoreMode ? v : v + '%'; }));
+      xLab.transition(t).style('opacity', isBars ? 0 : 1);
+      xLab.text(scoreMode ? 'Need score (0–100) from the model →' : 'Children under 5 stunted, NFHS-5 →');
+      layer.avg.transition(t).style('opacity', i <= 1 ? 1 : 0);
+      bands.transition(t).style('opacity', grouped && !isBars ? 1 : 0);
+      bands.select('.eo-shade').transition(t)
+        .attr('x', function (g) { return showThr ? xSc(100 * TH[g]) : W - M.r; })
+        .attr('width', function (g) { return showThr ? W - M.r - xSc(100 * TH[g]) : 0; });
+      thr.transition(t).style('opacity', showThr ? 1 : 0).attr('transform', function (g) { return 'translate(' + xSc(100 * TH[g]) + ',0)'; });
+      thrLab.text(function (g) { return 'bar ' + bar(TH[g]); })
+        .attr('text-anchor', function (g) { return TH[g] < 0.15 ? 'start' : 'end'; })
+        .attr('dx', function (g) { return TH[g] < 0.15 ? 6 : -6; });
+      layer.bars.transition(t).style('opacity', isBars ? 1 : 0);
+      bBlocks.transition(t).style('opacity', function (d) { return i === 7 && d.k === 'base' ? 0.3 : 1; });
+
+      /* marks */
+      var lay = !grouped ? LAY.stAll : scoreMode ? LAY.scRow : LAY.stRow;
+      markStyle(marks, grouped);
+      marks.style('pointer-events', isBars ? 'none' : null);
+      marks.transition(t)
+        .attr('transform', function (d) { var p = lay[d.name]; return 'translate(' + p[0] + ',' + p[1] + ')'; })
+        .style('opacity', function (d) {
+          if (isBars) return 0;
+          var f = funded(d, tA, tB);
+          if (i === 4) return (d.need && !f) || (!d.need && f) ? 1 : 0.2;
+          if (i === 5) return d.need ? 1 : 0.1;
+          if (i === 6) return d.need ? 0.1 : 1;
+          return 1;
+        });
+
+      /* labels on the mistakes (step 4) */
+      var errs = i === 4 ? R.filter(function (d) { var f = funded(d, tA, tB); return (d.need && !f) || (!d.need && f); }) : [];
+      var lp = placeLabels(errs);
+      var lb = layer.labels.selectAll('g').data(errs, function (d) { return d.name; });
+      lb.exit().remove();
+      var lbE = lb.enter().append('g');
+      lbE.append('circle').attr('r', 11).attr('fill', 'none').style('stroke', 'var(--ink-heading)').style('stroke-width', 1.2).attr('stroke-dasharray', '2 2');
+      lbE.append('text').attr('class', 'ln-dlabel');
+      lb = lbE.merge(lb);
+      lb.select('circle').attr('cx', function (d) { return LAY.scRow[d.name][0]; }).attr('cy', function (d) { return LAY.scRow[d.name][1]; });
+      lb.select('text').attr('x', function (d) { return lp[d.name].x; }).attr('y', function (d) { return lp[d.name].y; })
+        .attr('text-anchor', function (d) { return lp[d.name].a; }).text(function (d) { return d.name; });
+      layer.labels.style('opacity', 0).transition(t).style('opacity', 1);
+
+      /* per-row stat */
+      rowStat.text(function (g) {
+        var c = EO.rates(LIST[g], TH[g]), need = c.tp + c.fn, neg = c.fp + c.tn;
+        if (i === 1) return need + ' of ' + LIST[g].length + ' in need';
+        if (i === 3) return (c.tp + c.fp) + ' of ' + LIST[g].length + ' funded';
+        if (i === 4) return c.fn + ' needy missed · ' + c.fp + ' funded without need';
+        if (i === 5) return c.tp + ' of ' + need + ' needy funded · ' + SL.pct(c.tpr);
+        if (i === 6) return c.fp + ' of ' + neg + ' not in need funded · ' + SL.pct(c.fpr);
+        if (i >= 9) return 'needy funded ' + SL.pct(c.tpr) + ' · not in need ' + SL.pct(c.fpr);
+        return '';
+      });
+
+      /* titles and legend */
+      var title = 'Child stunting, 30 districts', sub = 'Hover a mark for the district';
+      if (i === 0) sub = 'Filled: at or above the Odisha average of ' + V.stAvg;
+      if (i === 1) sub = 'Base rates: ' + V.baseA + ' of higher-ST districts in need, ' + V.baseB + ' of the others';
+      if (scoreMode) title = 'Need score from the model, 30 districts';
+      if (i === 2) sub = 'Scored from female literacy (2011) and NFHS-4 stunting; tribal share not used';
+      if (i === 3) sub = 'Funded: score ' + V.t0 + ' or more (shaded)';
+      if (i === 4) sub = 'Labelled: the ' + (r0.a.fn + r0.b.fn + r0.a.fp + r0.b.fp) + ' mistakes';
+      if (i === 5) sub = 'Needy districts only: true-positive rate';
+      if (i === 6) sub = 'Districts not in need only: false-positive rate';
+      if (isBars) { title = 'One bar of ' + V.t0 + ': three measures of fairness'; sub = i === 8 ? 'The base rates differ, so the three cannot all match' : 'Each pair should match under its definition'; }
+      if (i === 9) sub = 'Equal opportunity: bars of ' + V.oppThrA + ' and ' + V.oppThrB;
+      if (i >= 10) sub = 'Closest to equalised odds: bars of ' + V.oddsThrA + ' and ' + V.oddsThrB;
+      document.getElementById('figTitle').textContent = title;
+      document.getElementById('figSub').textContent = sub;
+      if (!grouped) legend([[swatch('a', 1, false), 'In need'], [swatch('a', 0, false), 'Not in need']]);
+      else if (isBars) legend([['<i style="background:' + C.a + ';border-radius:2px"></i>', 'Higher-ST districts'], ['<i style="background:' + C.b + ';border-radius:2px"></i>', 'Other districts']]);
+      else legend([[swatch('a', 1) + swatch('a', 0), 'Higher-ST'], [swatch('b', 1) + swatch('b', 0), 'Other'], ['', 'filled = in need · hollow = not in need']]);
+    }
+    SL.scrolly('#story', { onStep: setStep });
+
+    /* ── interactive ─────────────────────────────── */
+    var slA = document.getElementById('thrA'), slB = document.getElementById('thrB'), lock = document.getElementById('lock');
+    var state = { tA: T0, tB: T0 };
+
+    /* strips */
+    var sW = 460, sH = 262, sM = { t: 6, r: 14, b: 40, l: 14 }, SROW = { a: 70, b: 168 }, SB = 44, R_S = 6.2;
+    var ssvg = d3.select('#stripSvg').attr('viewBox', [0, 0, sW, sH]);
+    var sx = d3.scaleLinear([0, 100], [sM.l, sW - sM.r]);
+    ssvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (sH - sM.b) + ')').call(d3.axisBottom(sx).ticks(10));
+    ssvg.append('text').attr('class', 'ln-axis-label').attr('x', sW - sM.r).attr('y', sH - 6).attr('text-anchor', 'end').text('Need score (0–100) →');
+    var sShade = ssvg.append('g').selectAll('rect').data(['a', 'b']).join('rect')
+      .attr('y', function (g) { return SROW[g] - SB; }).attr('height', 2 * SB).attr('fill', function (g) { return C[g]; }).attr('fill-opacity', 0.07);
+    ssvg.append('g').selectAll('text').data(['a', 'b']).join('text').attr('class', 'eo-row-t').attr('x', sM.l).attr('y', function (g) { return SROW[g] - SB - 6; })
+      .text(function (g) { return g === 'a' ? 'Higher-ST' : 'Other'; });
+    var SLAY = {};
+    ['a', 'b'].forEach(function (g) {
+      var L = LIST[g], o = dodge(L, function (d) { return sx(100 * d.score); }, R_S);
+      L.forEach(function (d, i) { SLAY[d.name] = [sx(100 * d.score), SROW[g] + o[i]]; });
+    });
+    var smallA = d3.symbol(d3.symbolCircle, 90)(), smallB = d3.symbol(d3.symbolSquare, 90)();
+    var sMarks = ssvg.append('g').selectAll('path').data(R).join('path').attr('class', 'eo-mark')
+      .attr('d', function (d) { return d.g === 'a' ? smallA : smallB; })
+      .attr('transform', function (d) { return 'translate(' + SLAY[d.name] + ')'; })
+      .attr('fill', function (d) { return d.need ? C[d.g] : C.card; })
+      .style('stroke', function (d) { return d.need ? C.card : C[d.g]; })
+      .style('stroke-width', function (d) { return d.need ? 1 : 1.6; })
+      .on('pointerenter', function (e, d) { tip.show(e, iTip(d)); })
+      .on('pointermove', function (e, d) { tip.show(e, iTip(d)); })
+      .on('pointerleave', function () { tip.hide(); });
+    var sThr = ssvg.append('g').selectAll('g').data(['a', 'b']).join('g').attr('class', 'eo-handle');
+    sThr.append('rect').attr('x', -9).attr('width', 18).attr('y', function (g) { return SROW[g] - SB; }).attr('height', 2 * SB).attr('fill', 'transparent');
+    sThr.append('line').attr('y1', function (g) { return SROW[g] - SB; }).attr('y2', function (g) { return SROW[g] + SB; }).style('stroke', 'var(--ink-heading)').style('stroke-width', 2);
+    sThr.append('rect').attr('x', -5).attr('width', 10).attr('y', function (g) { return SROW[g] - SB; }).attr('height', 12).attr('rx', 3).attr('fill', 'var(--ink-heading)');
+    var sThrLab = sThr.append('text').attr('class', 'ln-dlabel').attr('y', function (g) { return SROW[g] + SB - 6; });
+    sThr.call(d3.drag().on('drag', function (e, g) {
+      var v = Math.max(0, Math.min(100, sx.invert(e.x))) / 100;
+      setThr(g, v); markPreset(null); update();
+    }));
+
+    function iTip(d) {
+      var f = funded(d, state.tA, state.tB);
+      return '<b>' + d.name + '</b><br>' + GROUP[d.g] + ' · ST ' + SL.fmt(d['f.tribal_pct'], 1) + '%<br>Stunted ' + SL.fmt(d['nfhs5.stunted'], 1) + '% · ' +
+        (d.need ? 'in need' : 'not in need') + '<br>Need score ' + SL.fmt(100 * d.score, 1) + '<br>' + (f ? 'Funded' : 'Not funded') + ' · <span class="muted">' + outcome(d, f) + '</span>';
+    }
+
+    /* ROC */
+    var rW = 460, rH = 344, rM = { t: 30, r: 16, b: 42, l: 46 };
+    var rsvg = d3.select('#rocSvg').attr('viewBox', [0, 0, rW, rH]);
+    var rx = d3.scaleLinear([0, 1], [rM.l, rW - rM.r]), ry = d3.scaleLinear([0, 1], [rH - rM.b, rM.t]);
+    rsvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + rM.l + ',0)').call(d3.axisLeft(ry).ticks(5).tickSize(-(rW - rM.l - rM.r)).tickFormat(''));
+    rsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (rH - rM.b) + ')').call(d3.axisBottom(rx).ticks(5).tickFormat(function (v) { return pts(v) + '%'; }));
+    rsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + rM.l + ',0)').call(d3.axisLeft(ry).ticks(5).tickFormat(function (v) { return pts(v) + '%'; }));
+    rsvg.append('text').attr('class', 'ln-axis-label').attr('x', rW - rM.r).attr('y', rH - 6).attr('text-anchor', 'end').text('Not-in-need districts funded (false-positive rate) →');
+    rsvg.append('text').attr('class', 'ln-axis-label').attr('x', rM.l).attr('y', 12).text('↑ Needy districts funded (true-positive rate)');
+    rsvg.append('line').attr('class', 'ln-ghost').attr('x1', rx(0)).attr('y1', ry(0)).attr('x2', rx(1)).attr('y2', ry(1)).attr('stroke-dasharray', '3 4');
+    rsvg.append('text').attr('class', 'ln-axis-label').attr('transform', 'translate(' + rx(0.8) + ',' + (ry(0.8) + 14) + ') rotate(' + (Math.atan2(ry(1) - ry(0), rx(1) - rx(0)) * 180 / Math.PI) + ')').attr('text-anchor', 'middle').text('no better than chance');
+    var rocLine = d3.line().x(function (p) { return rx(p.fpr); }).y(function (p) { return ry(p.tpr); });
+    [['a', rocA, null], ['b', rocB, '6 4']].forEach(function (s) {
+      rsvg.append('path').attr('d', rocLine(s[1])).attr('fill', 'none').style('stroke', C[s[0]]).style('stroke-width', 2).attr('stroke-dasharray', s[2]);
+    });
+    /* shared exact points (corners always shared) */
+    var cornerPts = [{ fpr: 0, tpr: 0 }, { fpr: 1, tpr: 1 }].concat(sharedPts);
+    rsvg.append('g').selectAll('circle').data(cornerPts).join('circle').attr('cx', function (p) { return rx(p.fpr); }).attr('cy', function (p) { return ry(p.tpr); })
+      .attr('r', 9).attr('fill', 'none').style('stroke', 'var(--ink-heading)').style('stroke-width', 1.2).attr('stroke-dasharray', '2 2');
+    var vtx = rsvg.append('g');
+    [['a', rocA], ['b', rocB]].forEach(function (s) {
+      var g = s[0], L = LIST[g], cuts = [Infinity].concat(s[1].slice(1).map(function (p) { return p.threshold; }));
+      vtx.append('g').selectAll('path').data(s[1]).join('path').attr('class', 'eo-vertex')
+        .attr('d', g === 'a' ? d3.symbol(d3.symbolCircle, 22)() : d3.symbol(d3.symbolSquare, 22)())
+        .attr('transform', function (p) { return 'translate(' + rx(p.fpr) + ',' + ry(p.tpr) + ')'; })
+        .attr('fill', '#fff').style('stroke', C[g]).style('stroke-width', 1.3)
+        .on('pointerenter', function (e, p) {
+          var c = EO.rates(L, p.threshold);
+          tip.show(e, '<b>' + GROUP_S[g] + ' districts</b><br>' + (p.threshold === Infinity ? 'Fund none' : 'Bar just below ' + SL.fmt(100 * p.threshold, 1)) +
+            '<br>Funds ' + (c.tp + c.fp) + ' of ' + L.length + ' · needy funded ' + SL.pct(c.tpr) + ' · not in need funded ' + SL.pct(c.fpr) + '<br><span class="muted">Click to set this bar</span>');
+        })
+        .on('pointerleave', function () { tip.hide(); })
+        .on('click', function (e, p) { lock.checked = false; setThr(g, EO.between(L, p.threshold), true); markPreset(null); update(); });
+      void cuts;
+    });
+    var rGap = rsvg.append('line').style('stroke', 'var(--ink-heading)').style('stroke-width', 1.2).attr('stroke-dasharray', '2 3');
+    var rPt = rsvg.append('g').selectAll('g').data(['b', 'a']).join('g').style('pointer-events', 'none');
+    rPt.append('path').attr('d', function (g) { return g === 'a' ? d3.symbol(d3.symbolCircle, 150)() : d3.symbol(d3.symbolSquare, 150)(); })
+      .attr('fill', function (g) { return C[g]; }).style('stroke', '#fff').style('stroke-width', 1.8);
+    var rPtLab = rPt.append('text').attr('class', 'ln-dlabel').style('font-weight', 600);
+
+    /* 2 × 2 unit grids */
+    var gW = 460, gH = 196, gM = { l: 92, t: 22 }, colW = (gW - gM.l) / 2, rowH = (gH - gM.t) / 2;
+    function makeGrid(id, g) {
+      var gs = d3.select(id).attr('viewBox', [0, 0, gW, gH]);
+      gs.append('rect').attr('x', gM.l).attr('y', gM.t).attr('width', colW).attr('height', 2 * rowH).attr('fill', C[g]).attr('fill-opacity', 0.07).attr('rx', 6);
+      gs.append('rect').attr('x', gM.l).attr('y', gM.t).attr('width', 2 * colW).attr('height', 2 * rowH).attr('fill', 'none').style('stroke', 'var(--border)').attr('rx', 6);
+      gs.append('line').attr('x1', gM.l + colW).attr('x2', gM.l + colW).attr('y1', gM.t).attr('y2', gH).style('stroke', 'var(--border)');
+      gs.append('line').attr('x1', gM.l).attr('x2', gW).attr('y1', gM.t + rowH).attr('y2', gM.t + rowH).style('stroke', 'var(--border)');
+      [['Funded', 0], ['Not funded', 1]].forEach(function (c) { gs.append('text').attr('class', 'eo-row-t').attr('x', gM.l + c[1] * colW + colW / 2).attr('y', 14).attr('text-anchor', 'middle').text(c[0]); });
+      [['In need', 0], ['Not in need', 1]].forEach(function (r) { gs.append('text').attr('class', 'eo-row-t').attr('x', gM.l - 10).attr('y', gM.t + r[1] * rowH + rowH / 2).attr('dy', '0.35em').attr('text-anchor', 'end').text(r[0]); });
+      var caps = gs.append('g').selectAll('text').data([[0, 0, 'needy, funded'], [1, 0, 'needy, missed'], [0, 1, 'funded without need'], [1, 1, 'rightly not funded']]).join('text')
+        .attr('class', 'eo-cell-t').attr('x', function (c) { return gM.l + c[0] * colW + 8; }).attr('y', function (c) { return gM.t + c[1] * rowH + 17; });
+      var units = gs.append('g').selectAll('path').data(LIST[g], function (d) { return d.name; }).join('path').attr('class', 'eo-mark')
+        .attr('d', g === 'a' ? d3.symbol(d3.symbolCircle, 110)() : d3.symbol(d3.symbolSquare, 110)())
+        .attr('fill', function (d) { return d.need ? C[g] : C.card; }).style('stroke', function (d) { return d.need ? C.card : C[g]; })
+        .style('stroke-width', function (d) { return d.need ? 1 : 1.6; })
+        .on('pointerenter', function (e, d) { tip.show(e, iTip(d)); })
+        .on('pointermove', function (e, d) { tip.show(e, iTip(d)); })
+        .on('pointerleave', function () { tip.hide(); });
+      return { caps: caps, units: units, g: g };
+    }
+    var grids = [makeGrid('#gridA', 'a'), makeGrid('#gridB', 'b')];
+    function drawGrid(G, t) {
+      var cells = {}, T = G.g === 'a' ? state.tA : state.tB;
+      LIST[G.g].slice().sort(function (p, q) { return q.score - p.score; }).forEach(function (d) {
+        var key = (d.score >= T ? 0 : 1) + ',' + (d.need ? 0 : 1);
+        (cells[key] = cells[key] || []).push(d);
+      });
+      var pos = {};
+      Object.keys(cells).forEach(function (k) {
+        var cx = +k.split(',')[0], cy = +k.split(',')[1], per = 9, gap = 18;
+        cells[k].forEach(function (d, j) {
+          pos[d.name] = [gM.l + cx * colW + 16 + (j % per) * gap, gM.t + cy * rowH + 36 + Math.floor(j / per) * gap];
+        });
+      });
+      G.units.transition(t).attr('transform', function (d) { return 'translate(' + pos[d.name] + ')'; });
+      G.caps.text(function (c) { var n = (cells[c[0] + ',' + c[1]] || []).length; return n + ' · ' + c[2]; });
+    }
+
+    function setThr(g, v, noLock) {
+      if (lock.checked && !noLock) { state.tA = state.tB = v; } else if (g === 'a') state.tA = v; else state.tB = v;
+    }
+    function markPreset(k) {
+      document.querySelectorAll('[data-preset]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.preset === k)); });
+      if (!k) document.getElementById('presetNote').textContent = '';
+    }
+    function tile(label, a, b, fmtFn, gapLabel) {
+      var gap = Math.abs(a - b), eq = gap < 1e-9, gtxt = gap < 0.01 ? SL.fmt(100 * gap, 1) : pts(gap);
+      return '<div class="ln-stat" style="flex:1 1 250px"><div class="ln-stat-v">' + swatch('a', 1, true, 11) + fmtFn(a) + '<span class="eo-vs">vs</span>' + swatch('b', 1, true, 11) + fmtFn(b) +
+        '</div><div class="ln-stat-l">' + label + ' · ' + (eq ? '<span class="eo-eq">equal</span>' : '<span class="eo-gap">gap ' + gtxt + ' ' + gapLabel + '</span>') + '</div></div>';
+    }
+    function update() {
+      var t = d3.transition().duration(SL.dur(450)).ease(d3.easeCubicOut);
+      slA.value = 100 * state.tA; slB.value = 100 * state.tB;
+      document.getElementById('outA').textContent = bar(state.tA);
+      document.getElementById('outB').textContent = bar(state.tB);
+      var TH = { a: state.tA, b: state.tB }, c = { a: EO.rates(A, state.tA), b: EO.rates(B, state.tB) };
+      sShade.attr('x', function (g) { return sx(100 * TH[g]); }).attr('width', function (g) { return sW - sM.r - sx(100 * TH[g]); });
+      sThr.attr('transform', function (g) { return 'translate(' + sx(100 * TH[g]) + ',0)'; });
+      sThrLab.text(function (g) { return 'bar ' + bar(TH[g]); })
+        .attr('text-anchor', function (g) { return TH[g] > 0.85 ? 'end' : 'start'; })
+        .attr('dx', function (g) { return TH[g] > 0.85 ? -7 : 7; });
+      sMarks.style('opacity', function (d) { return funded(d, state.tA, state.tB) ? 1 : 0.55; });
+      /* ROC points */
+      var P2 = { a: [rx(c.a.fpr), ry(c.a.tpr)], b: [rx(c.b.fpr), ry(c.b.tpr)] };
+      rPt.transition(t).attr('transform', function (g) { return 'translate(' + P2[g] + ')'; });
+      rGap.transition(t).attr('x1', P2.a[0]).attr('y1', P2.a[1]).attr('x2', P2.b[0]).attr('y2', P2.b[1]);
+      var same = Math.abs(c.a.tpr - c.b.tpr) < 1e-9 && Math.abs(c.a.fpr - c.b.fpr) < 1e-9;
+      rPtLab.text(function (g) { return same ? (g === 'a' ? 'Both groups' : '') : GROUP_S[g]; })
+        .attr('x', function (g) { var right = P2[g][0] < rW - 90; return right ? 11 : -11; })
+        .attr('text-anchor', function (g) { return P2[g][0] < rW - 90 ? 'start' : 'end'; })
+        .attr('y', function (g) { var top = c[g].tpr > 0.9; return g === 'a' ? (top ? 19 : -9) : (top ? 33 : 17); });
+      document.getElementById('rocSub').textContent = same ? 'The two points coincide: equalised odds holds'
+        : (sharedPts.length ? 'Ringed: the ' + (sharedPts.length + 2) + ' points both groups can reach exactly' : 'Ringed: the only exact matches, funding no one or everyone');
+      grids.forEach(function (G) { drawGrid(G, t); });
+      document.getElementById('gridAT').textContent = '· bar ' + bar(state.tA);
+      document.getElementById('gridBT').textContent = '· bar ' + bar(state.tB);
+      var fundT = c.a.tp + c.a.fp + c.b.tp + c.b.fp, missT = c.a.fn + c.b.fn;
+      document.getElementById('eoStats').innerHTML =
+        tile('Needy districts funded (true-positive rate)', c.a.tpr, c.b.tpr, SL.pct, 'points') +
+        tile('Not-in-need districts funded (false-positive rate)', c.a.fpr, c.b.fpr, SL.pct, 'points') +
+        tile('Share of each group funded', c.a.flagged, c.b.flagged, SL.pct, 'points') +
+        '<div class="ln-stat" style="flex:1 1 90px"><div class="ln-stat-v" style="white-space:nowrap">' + fundT + ' of ' + R.length + '</div><div class="ln-stat-l">Districts funded</div></div>' +
+        '<div class="ln-stat" style="flex:1 1 90px"><div class="ln-stat-v" style="white-space:nowrap">' + missT + ' of ' + needAll + '</div><div class="ln-stat-l">Needy districts missed</div></div>' +
+        '<div class="ln-stat" style="flex:1 1 90px"><div class="ln-stat-v" style="white-space:nowrap">' + (missT + c.a.fp + c.b.fp) + '</div><div class="ln-stat-l">Wrong decisions (missed + funded without need)</div></div>';
+    }
+    slA.addEventListener('input', function () { setThr('a', slA.value / 100); markPreset(null); update(); });
+    slB.addEventListener('input', function () { setThr('b', slB.value / 100); markPreset(null); update(); });
+    lock.addEventListener('change', function () { if (lock.checked) { state.tB = state.tA; markPreset(null); update(); } });
+
+    var PRESET = { opp: opp, odds: odds, parity: parity };
+    var NOTE = {
+      one: 'One bar of ' + V.t0 + ' for every district.',
+      opp: 'Smallest gap in true-positive rates, then fewest wrong decisions.',
+      odds: 'Smallest possible larger gap across both rates. No pair of bars matches both exactly (other than funding everyone or no one).',
+      parity: 'Same share of each group funded, as near as whole districts allow, ignoring need.',
+    };
+    document.querySelectorAll('[data-preset]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var k = b.dataset.preset;
+        if (k === 'one') { lock.checked = true; state.tA = state.tB = T0; }
+        else { lock.checked = false; state.tA = PRESET[k].barA; state.tB = PRESET[k].barB; }
+        markPreset(k);
+        document.getElementById('presetNote').textContent = NOTE[k];
+        update();
+      });
+    });
+    if (sharedPts.length) NOTE.odds = 'Smallest larger gap across both rates, then fewest wrong decisions.';
+    document.getElementById('presetNote').textContent = NOTE.one;
+    update();
+
+    /* ── data table ─────────────────────────────── */
+    document.getElementById('dataTable').innerHTML = '<thead><tr><th>District</th><th>Group</th><th>ST %</th><th>Female literacy %</th><th>Stunted % NFHS-4</th><th>Stunted % NFHS-5</th><th>In need</th><th>Need score</th><th>Funded at ' + V.t0 + '</th></tr></thead><tbody>' +
+      R.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).map(function (d) {
+        return '<tr><td>' + d.name + '</td><td>' + GROUP_S[d.g] + '</td><td>' + SL.fmt(d['f.tribal_pct'], 1) + '</td><td>' + SL.fmt(d['f.female_lit'], 1) + '</td><td>' +
+          SL.fmt(d['nfhs4.stunted'], 1) + '</td><td>' + SL.fmt(d['nfhs5.stunted'], 1) + '</td><td>' + (d.need ? 'Yes' : 'No') + '</td><td>' + SL.fmt(100 * d.score, 1) + '</td><td>' +
+          (d.score >= T0 ? 'Yes' : 'No') + '</td></tr>';
+      }).join('') + '</tbody>';
+  }).catch(function (err) {
+    console.error(err);
+    document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+/* learn.css — Soochana Learn explainers.
+   Loads after ../style.css and reuses its tokens (--bg, --ink-*, --teal …);
+   adds only the scroll-story layout, figure styling and the role colours
+   the models use. Palette checked with the dataviz validator against the
+   cream surface: teal / violet / orange pass lightness, chroma, CVD
+   (deutan/protan/tritan) and 3:1 contrast. */
+
+:root {
+  color-scheme: light;
+  /* Role colours — categorical, fixed order. */
+  --ln-train:  #00899e;   /* slot 1 teal   — training data / class "no" / group A */
+  --ln-val:    #7b52c7;   /* slot 2 violet — validation data / group B          */
+  --ln-test:   #d4460f;   /* slot 3 orange — test data / class "yes"            */
+  --ln-neg:    var(--ln-train);
+  --ln-pos:    var(--ln-test);
+  --ln-ga:     var(--ln-train);
+  --ln-gb:     var(--ln-val);
+  --ln-fit:    #0f172a;   /* a fitted curve: ink, so it never competes with data */
+  --ln-ghost:  rgba(15, 23, 42, 0.14);
+  --ln-grid:   rgba(15, 23, 42, 0.07);
+  --ln-axis:   rgba(15, 23, 42, 0.35);
+  --ln-card:   #ffffff;
+  --ln-soft:   #f2f1ec;
+  --ln-radius: 10px;
+  --ln-w:      1180px;
+}
+
+body.ln-page { background: var(--bg); overflow-x: clip; }
+/* style.css makes <main> the map shell (a two-column grid, overflow hidden);
+   undo that here, since any overflow other than visible/clip on an ancestor
+   stops the sticky graphic from sticking. */
+body.ln-page main { display: block; overflow: visible; }
+
+/* ── hero ─────────────────────────────────────────────── */
+.ln-hero {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 72px 20px 40px;
+  text-align: center;
+}
+.ln-kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: var(--fs-label); font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--orange);
+  margin-bottom: 18px;
+}
+.ln-kicker a { color: inherit; text-decoration: none; }
+.ln-kicker a:hover { text-decoration: underline; }
+.ln-title {
+  font-size: clamp(34px, 6vw, 60px);
+  line-height: 1.04; letter-spacing: -0.035em; font-weight: 600;
+  color: var(--ink-heading); margin: 0 0 18px;
+}
+.ln-title em { font-style: normal; color: var(--teal); }
+.ln-dek {
+  font-size: clamp(17px, 2.1vw, 21px); line-height: 1.5; color: var(--ink-body);
+  max-width: 680px; margin: 0 auto 22px;
+}
+.ln-byline { font-size: var(--fs-caption); color: var(--ink-subtle); }
+.ln-byline b { color: var(--ink-body); font-weight: 600; }
+
+/* ── prose sections ───────────────────────────────────── */
+.ln-prose {
+  max-width: 700px; margin: 0 auto; padding: 8px 20px;
+  font-size: 18px; line-height: 1.7; color: var(--ink-body);
+}
+.ln-prose h2 {
+  font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.02em; line-height: 1.2;
+  color: var(--ink-heading); margin: 56px 0 14px;
+}
+.ln-prose h3 { font-size: 20px; color: var(--ink-heading); margin: 34px 0 8px; }
+.ln-prose p { margin: 0 0 18px; }
+.ln-prose strong { color: var(--ink-heading); }
+.ln-prose a { color: var(--teal); }
+.ln-prose ul, .ln-prose ol { padding-left: 22px; margin: 0 0 18px; }
+.ln-prose li { margin-bottom: 8px; }
+
+/* Inline colour keys, so prose can say "the <span class=ln-k-train>training</span> set". */
+.ln-k { font-weight: 600; white-space: nowrap; }
+.ln-k::before {
+  content: ''; display: inline-block; width: 0.62em; height: 0.62em;
+  border-radius: 50%; margin-right: 0.3em; vertical-align: 0.06em; background: currentColor;
+}
+.ln-k-train { color: var(--ln-train); }
+.ln-k-val   { color: var(--ln-val); }
+.ln-k-test  { color: var(--ln-test); }
+.ln-k-neg   { color: var(--ln-neg); }
+.ln-k-pos   { color: var(--ln-pos); }
+.ln-k-ga    { color: var(--ln-ga); }
+.ln-k-gb    { color: var(--ln-gb); }
+/* the marker carries the colour; the word stays in readable ink */
+.ln-k > span { color: var(--ink-heading); }
+
+.ln-callout {
+  background: var(--ln-card); border: 1px solid var(--border);
+  border-left: 4px solid var(--teal); border-radius: var(--ln-radius);
+  padding: 16px 20px; margin: 26px 0; font-size: 16px; line-height: 1.6;
+}
+.ln-callout.warn { border-left-color: var(--orange); }
+.ln-callout-t { font-weight: 600; color: var(--ink-heading); display: block; margin-bottom: 4px; }
+
+.ln-eq {
+  display: block; text-align: center; margin: 22px 0; padding: 14px 16px;
+  background: var(--ln-soft); border-radius: var(--ln-radius);
+  font-size: 19px; color: var(--ink-heading); overflow-x: auto;
+  font-variant-numeric: tabular-nums;
+}
+.ln-eq var { font-style: italic; font-family: Georgia, 'Times New Roman', serif; }
+
+/* ── scroll story: sticky graphic + step cards ─────────── */
+.ln-scrolly {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  gap: 40px;
+  max-width: var(--ln-w); margin: 24px auto; padding: 0 20px;
+}
+.ln-scrolly.flip { grid-template-columns: minmax(0, 1fr) minmax(280px, 380px); }
+.ln-scrolly.flip .ln-steps { order: 2; }
+.ln-steps { position: relative; z-index: 2; padding: 30vh 0 40vh; }
+.ln-step {
+  min-height: 70vh;
+  display: flex; align-items: center;
+}
+.ln-step > .ln-card {
+  background: var(--ln-card); border: 1px solid var(--border);
+  border-radius: var(--ln-radius); padding: 20px 22px;
+  font-size: 16.5px; line-height: 1.6; color: var(--ink-body);
+  box-shadow: 0 1px 2px rgba(0,0,0,.03), 0 8px 24px -12px rgba(0,0,0,.12);
+  opacity: 0.35; transition: opacity .35s var(--ease), transform .35s var(--ease);
+}
+.ln-step.is-active > .ln-card { opacity: 1; }
+.ln-card h3 { margin: 0 0 8px; font-size: 18px; color: var(--ink-heading); letter-spacing: -0.01em; }
+.ln-card p { margin: 0 0 10px; }
+.ln-card p:last-child { margin-bottom: 0; }
+
+.ln-graphic {
+  position: sticky;
+  top: 16px;                 /* the portal header scrolls away, so use the full height */
+  height: calc(100vh - 32px);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.ln-figure {
+  background: var(--ln-card); border: 1px solid var(--border);
+  border-radius: calc(var(--ln-radius) + 4px); padding: 16px 16px 10px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.03), 0 18px 40px -24px rgba(0,0,0,.18);
+}
+.ln-figure-t { font-size: 15px; font-weight: 600; color: var(--ink-heading); margin: 0 0 2px; }
+.ln-figure-s { font-size: 13px; color: var(--ink-subtle); margin: 0 0 8px; }
+.ln-figure svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ln-figure canvas { display: block; width: 100%; }
+.ln-source { font-size: 12px; color: var(--ink-subtle); margin-top: 6px; }
+
+/* stand-alone interactive figures between prose */
+.ln-wide { max-width: 980px; margin: 30px auto; padding: 0 20px; }
+.ln-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.ln-grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+/* ── controls ─────────────────────────────────────────── */
+.ln-controls {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px;
+  margin: 4px 0 10px; font-size: 14px; color: var(--ink-body);
+}
+.ln-controls label { display: inline-flex; align-items: center; gap: 8px; }
+.ln-controls output { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink-heading); min-width: 2.5ch; }
+.ln-controls select {
+  font: inherit; padding: 6px 10px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--ln-card); color: var(--ink-heading);
+}
+.ln-btn {
+  font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;
+  padding: 7px 14px; border-radius: 999px;
+  border: 1px solid var(--ink-heading); background: var(--ink-heading); color: #fff;
+  transition: transform .15s var(--ease), background .15s;
+}
+.ln-btn:hover { transform: translateY(-1px); }
+.ln-btn.ghost { background: transparent; color: var(--ink-heading); }
+.ln-btn:focus-visible, .ln-controls select:focus-visible, input[type=range]:focus-visible {
+  outline: 2px solid var(--teal); outline-offset: 2px;
+}
+input[type=range] { accent-color: var(--teal); width: 150px; }
+.ln-seg { display: inline-flex; border: 1px solid var(--border); border-radius: 999px; padding: 3px; background: var(--ln-card); }
+.ln-seg button {
+  font: inherit; font-size: 13px; border: 0; background: transparent; color: var(--ink-body);
+  padding: 5px 12px; border-radius: 999px; cursor: pointer;
+}
+.ln-seg button[aria-pressed="true"] { background: var(--ink-heading); color: #fff; }
+
+/* ── stat tiles & tables ──────────────────────────────── */
+.ln-stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0; }
+.ln-stat {
+  flex: 1 1 110px; background: var(--ln-soft); border-radius: 8px; padding: 8px 12px;
+}
+.ln-stat-v { font-size: 22px; font-weight: 600; color: var(--ink-heading); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.ln-stat-l { font-size: 12px; color: var(--ink-subtle); }
+.ln-stat i { font-style: normal; display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; }
+
+.ln-table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.ln-table th, .ln-table td { padding: 7px 10px; border-bottom: 1px solid var(--hairline); text-align: right; }
+.ln-table th:first-child, .ln-table td:first-child { text-align: left; }
+.ln-table th { font-weight: 600; color: var(--ink-subtle); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.ln-details { margin: 10px 0 0; font-size: 14px; }
+.ln-details summary { cursor: pointer; color: var(--teal); font-weight: 500; }
+.ln-details[open] summary { margin-bottom: 8px; }
+.ln-details .ln-table-wrap { max-height: 320px; overflow: auto; }
+
+/* ── chart marks (SVG) ────────────────────────────────── */
+.ln-axis text { fill: var(--ink-subtle); font-size: 12px; font-family: var(--font-sans); }
+.ln-axis path, .ln-axis line { stroke: var(--ln-axis); }
+.ln-axis .domain { stroke: var(--ln-axis); }
+.ln-gridlines line { stroke: var(--ln-grid); }
+.ln-gridlines .domain { display: none; }
+.ln-axis-label { fill: var(--ink-subtle); font-size: 12px; font-weight: 500; }
+.ln-dot { stroke: var(--ln-card); stroke-width: 1.5px; }
+.ln-dot.is-hover { stroke: var(--ink-heading); stroke-width: 2px; }
+.ln-fit { fill: none; stroke: var(--ln-fit); stroke-width: 2px; stroke-linecap: round; }
+.ln-ghost { fill: none; stroke: var(--ln-ghost); stroke-width: 1.5px; }
+.ln-dlabel { font-size: 12px; fill: var(--ink-body); font-weight: 500; paint-order: stroke; stroke: var(--ln-card); stroke-width: 3px; }
+.ln-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-body); margin: 2px 0 6px; }
+.ln-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.ln-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.ln-legend i.line { width: 16px; height: 2px; border-radius: 1px; }
+
+/* ── tooltip ──────────────────────────────────────────── */
+.ln-tip {
+  position: fixed; left: 0; top: 0; z-index: 1000; pointer-events: none;
+  background: var(--ink-heading); color: #fff; border-radius: 8px;
+  padding: 8px 10px; font-size: 13px; line-height: 1.45; max-width: 260px;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,.4);
+  opacity: 0; transition: opacity .12s;
+}
+.ln-tip.is-on { opacity: 1; }
+.ln-tip b { font-weight: 600; }
+.ln-tip .muted { color: rgba(255,255,255,.7); }
+
+/* ── next / footer nav ────────────────────────────────── */
+.ln-next {
+  max-width: var(--ln-w); margin: 70px auto 40px; padding: 0 20px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;
+}
+.ln-next a {
+  display: block; text-decoration: none; background: var(--ln-card);
+  border: 1px solid var(--border); border-radius: var(--ln-radius); padding: 16px 18px;
+  transition: transform .2s var(--ease), box-shadow .2s;
+}
+.ln-next a:hover { transform: translateY(-2px); box-shadow: 0 12px 30px -18px rgba(0,0,0,.3); }
+.ln-next small { display: block; font-size: 12px; color: var(--ink-subtle); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .05em; }
+.ln-next b { color: var(--ink-heading); font-size: 16px; font-weight: 600; }
+
+.ln-notes { max-width: 700px; margin: 50px auto 0; padding: 0 20px; font-size: 14px; line-height: 1.65; color: var(--ink-subtle); }
+.ln-notes h2 { font-size: 16px; color: var(--ink-heading); margin: 0 0 8px; }
+.ln-notes a { color: var(--teal); }
+
+/* ── small screens: graphic sticks on top, cards scroll over it ─ */
+@media (max-width: 860px) {
+  /* The graphic follows the steps in the markup (for desktop reading order);
+     here it moves above them and pins to the top while the cards scroll over. */
+  .ln-scrolly, .ln-scrolly.flip { display: flex; flex-direction: column; padding: 0 16px; }
+  .ln-graphic {
+    order: -1;
+    top: 6px; height: auto;
+    z-index: 1; padding-bottom: 8px;
+  }
+  .ln-scrolly.flip .ln-steps { order: 0; }
+  .ln-steps { padding: 45vh 0 40vh; }
+  .ln-step { min-height: 80vh; align-items: flex-start; }
+  /* inactive cards scroll over the pinned chart, so let it show through */
+  .ln-step > .ln-card { opacity: 0.18; font-size: 15.5px; }
+  .ln-step.is-active > .ln-card { opacity: 0.97; }
+  .ln-grid2, .ln-grid3 { grid-template-columns: 1fr; }
+  .ln-prose { font-size: 17px; padding: 8px 16px; }
+  .ln-wide { padding: 0 16px; }
+  .ln-hero { padding: 48px 16px 28px; }
+  input[type=range] { width: 120px; }
+  /* SVGs scale down to the phone's width; bump chart text so it lands near 10px */
+  .ln-axis text, .ln-axis-label, .ln-dlabel { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ln-step > .ln-card, .ln-next a, .ln-btn { transition: none; }
+}
+
+/* ── neutralise style.css's global map styling of <path> ───
+   style.css gives every path a thin grey stroke, a teal hover glow and a
+   transition (for its maps). Stylesheet rules beat SVG presentation
+   attributes, so explainer marks set their stroke inline (.style) or via
+   the classes below, and hover changes nothing. */
+.ln-page svg path { transition: none; cursor: inherit; }
+.ln-page svg path:hover { filter: none; }
+.ln-page svg path:not([style*="stroke"]):hover { stroke: rgba(0, 0, 0, 0.15); stroke-width: 0.8px; }
+.ln-page svg path.ln-fit, .ln-page svg path.ln-fit:hover { stroke: var(--ln-fit); stroke-width: 2px; }
+.ln-page svg path.ln-ghost, .ln-page svg path.ln-ghost:hover { stroke: var(--ln-ghost); stroke-width: 1.5px; }
+.ln-page .ln-axis path, .ln-page .ln-axis path:hover { stroke: var(--ln-axis); stroke-width: 1px; }
+/* hovered dots keep their ink ring, whether drawn as <circle> or d3.symbol <path> */
+.ln-page svg path.ln-dot.is-hover, .ln-page svg path.ln-dot:hover { stroke: var(--ink-heading); stroke-width: 2px; }
+
+/* style.css turns every <select> into a large pill with !important (for its
+   page-level pickers); explainer controls sit inline, so bring them back down. */
+.ln-page .ln-controls select {
+  padding: 6px 34px 6px 12px !important;
+  min-width: 0 !important;
+  width: auto !important;
+  background-position: right 10px center !important;
+  background-size: 14px !important;
+  font-size: 14px !important;
+  box-shadow: none !important;
+  transform: none !important;
+}

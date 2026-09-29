@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soochana Learn · Machine learning, explained with Odisha's data</title>
+<meta name="description" content="Visual, interactive explainers of core machine-learning ideas, each built on the portal's own data for Odisha's 30 districts.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20260929">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  .hub-grid {
+    max-width: var(--ln-w); margin: 10px auto 0; padding: 0 20px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+  }
+  .hub-card {
+    display: flex; flex-direction: column; text-decoration: none; color: inherit;
+    background: var(--ln-card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .hub-card:hover, .hub-card:focus-visible { transform: translateY(-3px); box-shadow: 0 20px 40px -24px rgba(0,0,0,.28); }
+  .hub-card:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+  .hub-thumb { background: var(--ln-soft); aspect-ratio: 16 / 9; display: block; }
+  .hub-thumb svg { width: 100%; height: 100%; display: block; }
+  .hub-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .hub-num { font-size: 12px; font-weight: 600; letter-spacing: .08em; color: var(--orange); text-transform: uppercase; }
+  .hub-title { font-size: 21px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink-heading); margin: 0; line-height: 1.2; }
+  .hub-desc { font-size: 15px; line-height: 1.55; color: var(--ink-body); margin: 0; }
+  .hub-data { margin-top: auto; padding-top: 8px; font-size: 13px; color: var(--ink-subtle); }
+  .hub-data b { color: var(--ink-body); font-weight: 500; }
+
+  .xt-wrap { max-width: var(--ln-w); margin: 0 auto; padding: 0 20px; }
+  .xt-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .xt-cell { cursor: pointer; }
+  .xt-cell:hover, .xt-cell.is-on { stroke: var(--ink-heading); stroke-width: 2px; }
+  .xt-lab { font-size: 11.5px; fill: var(--ink-body); cursor: default; }
+  .xt-lab.is-on { font-weight: 600; fill: var(--ink-heading); }
+  .xt-scale { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-subtle); margin: 6px 0 0; }
+  .xt-scale span.bar { flex: 0 0 180px; height: 10px; border-radius: 5px; }
+  @media (max-width: 960px) { .xt-layout { grid-template-columns: 1fr; } }
+  @media (max-width: 860px) { .hub-grid, .xt-wrap { padding: 0 16px; } .hub-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker">Soochana Learn</div>
+    <h2 class="ln-title">Machine learning, <em>explained with Odisha's data</em></h2>
+    <p class="ln-dek">Six visual essays on the ideas behind prediction models. Each one uses the portal's own figures for Odisha's 30 districts (literacy, child health, fertility, tribal share and more) and runs every model live in your browser.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Sources: Census 2011, NFHS-4 and NFHS-5, UDISE+, Government of Odisha</div>
+  </section>
+
+  <div class="hub-grid" id="hubGrid"></div>
+
+  <div class="ln-prose">
+    <h2>The data behind the explainers</h2>
+    <p>Every explainer draws on one table: the portal's district profiles, mortality and nutrition figures, fertility estimates, population projections and school statistics, joined into <b data-v="nFeat"></b> indicators for each of the <b data-v="nDist"></b> districts. The matrix below cross-tabulates them. Each square shows how closely two indicators move together across the districts.</p>
+    <p>Choose a square to see the districts behind it.</p>
+  </div>
+  <div class="xt-wrap">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <div class="ln-seg" role="group" aria-label="Indicator set">
+          <button aria-pressed="true" data-set="core">Key indicators</button>
+          <button aria-pressed="false" data-set="all">All indicators</button>
+        </div>
+        <span style="color:var(--ink-subtle)">Correlation across the 30 districts</span>
+      </div>
+      <div class="xt-layout">
+        <div>
+          <svg id="xtSvg" role="img" aria-label="Correlation matrix of district indicators"></svg>
+          <div class="xt-scale"><span>−1 move opposite</span><span class="bar" id="xtBar"></span><span>+1 move together</span></div>
+        </div>
+        <div>
+          <p class="ln-figure-t" id="xtTitle"></p>
+          <p class="ln-figure-s" id="xtSub"></p>
+          <svg id="xtScatter" role="img" aria-label="Scatter plot of the selected pair of indicators"></svg>
+          <div class="ln-source" id="xtSource"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <div class="ln-callout warn">
+      <span class="ln-callout-t">Moving together is not causing</span>
+      A strong correlation says two indicators rise and fall together across districts. It does not say one drives the other: both may follow a third factor such as income, remoteness or when the district was surveyed. With only 30 districts, a correlation near ±0.3 can easily arise by chance.
+    </div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>About Soochana Learn</h2>
+    <p>Inspired by <a href="https://mlu-explain.github.io/" target="_blank" rel="noopener noreferrer">MLU-Explain</a>, Amazon's visual machine-learning essays, and rebuilt around Odisha's own statistics so that every example is a real district. The models are deliberately small and transparent: they are there to teach how prediction works and where it goes wrong, not to rank districts or guide funding. The modelling table is built by <code>learn/tools/build_learn_data.py</code> from files already in the portal. <a href="data/districts.json">Download the table (JSON)</a>.</p>
+  </section>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var C = { train: SL.color('train'), val: SL.color('val'), test: SL.color('test'), fit: SL.color('fit') };
+  var tip = SL.tooltip();
+
+  var ESSAYS = [
+    { n: '01', href: 'train-test-validation.html', t: 'Train, Test and Validation',
+      d: 'Why a model graded on answers it has already seen always looks clever, and how to measure it honestly.',
+      data: 'Female literacy and child stunting', thumb: 'split' },
+    { n: '02', href: 'bias-variance.html', t: 'The Bias–Variance Tradeoff',
+      d: 'Too simple and a model misses the pattern; too flexible and it chases noise. Finding the sweet spot.',
+      data: 'District health and literacy', thumb: 'fan' },
+    { n: '03', href: 'logistic-regression.html', t: 'Logistic Regression',
+      d: 'Turning a straight line into a probability: how likely is a district to have above-average stunting?',
+      data: 'Female literacy and child stunting', thumb: 'sigmoid' },
+    { n: '04', href: 'decision-tree.html', t: 'Decision Trees',
+      d: 'A model that plays twenty questions with the data, splitting districts until each group is alike.',
+      data: 'Child health, literacy and tribal share', thumb: 'tree' },
+    { n: '05', href: 'neural-networks.html', t: 'Neural Networks',
+      d: 'Stacking simple neurons into a model that can bend its decision boundary, and why that can backfire on 30 districts.',
+      data: 'Child stunting from two district traits', thumb: 'net' },
+    { n: '06', href: 'equality-of-odds.html', t: 'Equality of Odds',
+      d: 'A targeting model can under-serve a group even when it never sees group membership. What "fair" can mean.',
+      data: 'Nutrition targeting and tribal-majority districts', thumb: 'fair' },
+  ];
+
+  SL.loadData().then(function (data) {
+    var D = data.districts, meta = data.meta;
+    var R = SL.rows(D, ['f.female_lit', 'nfhs5.stunted', 'f.tribal_pct']);
+    var st = meta.state_nfhs5.stunted;
+
+    /* ── cards ─────────────────────────────────── */
+    /* Thumbnails: tiny, real charts from the same table. */
+    var tx = d3.scaleLinear([30, 85], [24, 296]), ty = d3.scaleLinear([8, 48], [160, 20]);
+    function dots(svg, colorFn, r) {
+      svg.append('g').selectAll('circle').data(R).join('circle')
+        .attr('cx', function (d) { return tx(d['f.female_lit']); }).attr('cy', function (d) { return ty(d['nfhs5.stunted']); })
+        .attr('r', r || 5).attr('fill', colorFn).attr('stroke', '#fff').attr('stroke-width', 1.2);
+    }
+    var THUMBS = {
+      split: function (svg) {
+        var S = SL.split(R.length, { a: 0.6, b: 0.2, c: 0.2 }, SL.rng(2095)), role = [];
+        S.a.forEach(function (i) { role[i] = C.train; }); S.b.forEach(function (i) { role[i] = C.val; }); S.c.forEach(function (i) { role[i] = C.test; });
+        dots(svg, function (d, i) { return role[i]; });
+      },
+      fan: function (svg) {
+        var xs = R.map(function (d) { return d['f.female_lit']; }), ys = R.map(function (d) { return d['nfhs5.stunted']; }), rnd = SL.rng(4);
+        var g = svg.append('g');
+        for (var k = 0; k < 14; k++) {
+          var b = SL.bootstrap(R.length, rnd), m = SL.models.polyfit(b.map(function (i) { return xs[i]; }), b.map(function (i) { return ys[i]; }), 6, { lo: 30, hi: 85 });
+          g.append('path').style('fill', 'none').style('stroke', 'rgba(15,23,42,.18)').style('stroke-width', '1.4px')
+            .attr('d', d3.line()(d3.range(34, 83, 1).map(function (v) { return [tx(v), Math.max(10, Math.min(170, ty(m.predict(v))))]; })));
+        }
+        dots(svg, function () { return C.train; }, 4);
+      },
+      sigmoid: function (svg) {
+        var X0 = R.map(function (d) { return [d['f.female_lit']]; }), sc = SL.scaler(X0);
+        var y = R.map(function (d) { return d['nfhs5.stunted'] >= st ? 1 : 0; });
+        var m = SL.models.logreg(X0.map(sc.apply), y, { lr: 0.5, iters: 400 });
+        var py = d3.scaleLinear([0, 1], [150, 30]);
+        svg.append('path').style('fill', 'none').style('stroke', C.fit).style('stroke-width', '2px')
+          .attr('d', d3.line()(d3.range(30, 85.5, 0.5).map(function (v) { return [tx(v), py(m.proba(sc.apply([v])))]; })));
+        svg.append('g').selectAll('circle').data(R).join('circle')
+          .attr('cx', function (d) { return tx(d['f.female_lit']); }).attr('cy', function (d, i) { return py(y[i]) + (y[i] ? -1 : 1) * 4; })
+          .attr('r', 5).attr('fill', function (d, i) { return y[i] ? C.test : C.train; }).attr('stroke', '#fff').attr('stroke-width', 1.2);
+      },
+      tree: function (svg) {
+        var X = R.map(function (d) { return [d['f.female_lit'], d['f.tribal_pct']]; }), y = R.map(function (d) { return d['nfhs5.stunted'] >= st ? 1 : 0; });
+        var t = SL.models.buildTree(X, y, { maxDepth: 2 });
+        var bx = d3.scaleLinear([30, 85], [20, 300]), by = d3.scaleLinear([0, 62], [165, 15]);
+        (function rects(nd, x0, x1, y0, y1) {
+          if (!nd.left) {
+            svg.append('rect').attr('x', bx(x0)).attr('y', by(y1)).attr('width', bx(x1) - bx(x0)).attr('height', by(y0) - by(y1))
+              .attr('fill', nd.prediction ? C.test : C.train).attr('opacity', 0.14);
+            return;
+          }
+          if (nd.feature === 0) { rects(nd.left, x0, nd.threshold, y0, y1); rects(nd.right, nd.threshold, x1, y0, y1); }
+          else { rects(nd.left, x0, x1, y0, nd.threshold); rects(nd.right, x0, x1, nd.threshold, y1); }
+        })(t.root, 30, 85, 0, 62);
+        svg.append('g').selectAll('circle').data(R).join('circle')
+          .attr('cx', function (d) { return bx(d['f.female_lit']); }).attr('cy', function (d) { return by(d['f.tribal_pct']); })
+          .attr('r', 4.5).attr('fill', function (d, i) { return y[i] ? C.test : C.train; }).attr('stroke', '#fff').attr('stroke-width', 1.2);
+      },
+      net: function (svg) {
+        var layers = [2, 5, 1], xs = [60, 160, 260], nodes = [];
+        layers.forEach(function (n, l) { for (var k = 0; k < n; k++) nodes.push({ l: l, x: xs[l], y: 90 + (k - (n - 1) / 2) * 30 }); });
+        var rnd = SL.rng(11);
+        nodes.forEach(function (a) {
+          nodes.forEach(function (b) {
+            if (b.l !== a.l + 1) return;
+            var w = rnd() * 2 - 1;
+            svg.append('line').attr('x1', a.x).attr('y1', a.y).attr('x2', b.x).attr('y2', b.y)
+              .attr('stroke', w > 0 ? C.test : C.train).attr('stroke-width', 0.6 + Math.abs(w) * 3).attr('opacity', 0.6);
+          });
+        });
+        svg.append('g').selectAll('circle').data(nodes).join('circle').attr('cx', function (n) { return n.x; }).attr('cy', function (n) { return n.y; })
+          .attr('r', 11).attr('fill', '#fff').attr('stroke', C.fit).attr('stroke-width', 1.6);
+      },
+      fair: function (svg) {
+        var A = R.filter(function (d) { return d['f.tribal_pct'] >= 30; }), B = R.filter(function (d) { return d['f.tribal_pct'] < 30; });
+        [[A, C.val, 40, 'ST ≥ 30%'], [B, C.train, 180, 'Other']].forEach(function (g) {
+          g[0].sort(function (a, b) { return b['nfhs5.stunted'] - a['nfhs5.stunted']; }).forEach(function (d, k) {
+            var need = d['nfhs5.stunted'] >= st;
+            svg.append('rect').attr('x', g[2] + (k % 5) * 22).attr('y', 46 + Math.floor(k / 5) * 22).attr('width', 16).attr('height', 16).attr('rx', 4)
+              .attr('fill', need ? g[1] : '#fff').attr('stroke', g[1]).attr('stroke-width', 1.6);
+          });
+          svg.append('text').attr('x', g[2]).attr('y', 34).attr('font-size', 12).attr('fill', '#334155').text(g[3]);
+        });
+      },
+    };
+
+    var grid = d3.select('#hubGrid');
+    ESSAYS.forEach(function (e) {
+      var a = grid.append('a').attr('class', 'hub-card').attr('href', e.href);
+      var th = a.append('span').attr('class', 'hub-thumb').attr('aria-hidden', 'true');
+      var body = a.append('div').attr('class', 'hub-body');
+      body.append('span').attr('class', 'hub-num').text('Explainer ' + e.n);
+      body.append('h3').attr('class', 'hub-title').text(e.t);
+      body.append('p').attr('class', 'hub-desc').text(e.d);
+      body.append('span').attr('class', 'hub-data').html('Data: <b>' + e.data + '</b>');
+      THUMBS[e.thumb](th.append('svg').attr('viewBox', '0 0 320 180').attr('preserveAspectRatio', 'xMidYMid meet'));
+    });
+
+
+    /* ── cross-tab (correlation matrix) ────────── */
+    var CORE = ['f.female_lit', 'f.urban_pct', 'f.tribal_pct', 'f.density', 'f.tfr_2020', 'f.elderly_pct', 'f.beds_per_100k', 'f.sec_dropout',
+      'nfhs5.stunted', 'nfhs5.u5mr', 'nfhs5.imr', 'nfhs5.inst_births', 'nfhs5.full_vax', 'nfhs5.child_marriage', 'nfhs5.le_female'];
+    var ALL = Object.keys(D[0].f).filter(function (k) { return k !== 'rainfall_mm' && k !== 'male_lit' && k !== 'literacy'; }).map(function (k) { return 'f.' + k; })
+      .concat(Object.keys(D[0].nfhs5).map(function (k) { return 'nfhs5.' + k; }));
+    document.querySelector('[data-v=nFeat]').textContent = Object.keys(meta.features).length;
+    document.querySelector('[data-v=nDist]').textContent = D.length;
+
+    function lab(key) { return meta.features[key.split('.')[1]].label + (key.indexOf('nfhs5.') === 0 && ['imr', 'u5mr', 'stunted', 'le_female'].indexOf(key.split('.')[1]) !== -1 ? ' (NFHS-5)' : ''); }
+    function unit(key) { return meta.features[key.split('.')[1]].unit; }
+
+    /* diverging: teal (−1) → neutral grey (0) → orange (+1) */
+    var div = d3.scaleLinear([-1, 0, 1], [C.train, '#eceae4', C.test]).interpolate(d3.interpolateLab).clamp(true);
+    document.getElementById('xtBar').style.background = 'linear-gradient(90deg,' + div(-1) + ',' + div(0) + ',' + div(1) + ')';
+
+    var set = 'core', sel = ['f.female_lit', 'nfhs5.stunted'];
+    function drawMatrix() {
+      var keys = set === 'core' ? CORE : ALL, n = keys.length;
+      var labW = 250, cell = Math.max(14, Math.min(30, Math.floor(420 / n))), top = 22, W = labW + n * cell + 4, H = top + n * cell + 4;
+      var svg = d3.select('#xtSvg').attr('viewBox', [0, 0, W, H]);
+      svg.selectAll('*').remove();
+      var vals = keys.map(function (k) { return D.map(function (d) { return SL.get(d, k); }); });
+      var cells = [];
+      keys.forEach(function (a, i) {
+        keys.forEach(function (b, j) {
+          var ok = D.map(function (_, t) { return vals[i][t] != null && vals[j][t] != null; });
+          var va = vals[i].filter(function (_, t) { return ok[t]; }), vb = vals[j].filter(function (_, t) { return ok[t]; });
+          cells.push({ a: a, b: b, i: i, j: j, r: i === j ? 1 : SL.corr(va, vb), n: va.length });
+        });
+      });
+      var g = svg.append('g').attr('transform', 'translate(' + labW + ',' + top + ')');
+      g.selectAll('rect').data(cells.filter(function (c) { return c.j <= c.i; })).join('rect')
+        .attr('class', function (c) { return 'xt-cell' + ((c.a === sel[1] && c.b === sel[0]) || (c.a === sel[0] && c.b === sel[1]) ? ' is-on' : ''); })
+        .attr('x', function (c) { return c.j * cell + 1; }).attr('y', function (c) { return c.i * cell + 1; })
+        .attr('width', cell - 2).attr('height', cell - 2).attr('rx', 3)
+        .attr('fill', function (c) { return c.i === c.j ? '#fff' : div(c.r); })
+        .attr('stroke', function (c) { return c.i === c.j ? 'rgba(15,23,42,.1)' : null; })
+        .on('pointerenter', function (ev, c) {
+          if (c.i === c.j) return;
+          tip.show(ev, '<b>' + lab(c.a) + '</b><br>× <b>' + lab(c.b) + '</b><br>Correlation ' + (c.r >= 0 ? '+' : '−') + SL.fmt(Math.abs(c.r), 2) + ' <span class="muted">(' + c.n + ' districts)</span>');
+          svg.selectAll('.xt-lab').classed('is-on', function (k) { return k === c.a || k === c.b; });
+        })
+        .on('pointerleave', function () { tip.hide(); svg.selectAll('.xt-lab').classed('is-on', false); })
+        .on('click', function (ev, c) { if (c.i !== c.j) { sel = [c.b, c.a]; drawMatrix(); drawScatter(); } });
+      if (cell >= 24) {
+        g.selectAll('text.xt-v').data(cells.filter(function (c) { return c.j < c.i && Math.abs(c.r) >= 0.5; })).join('text')
+          .attr('x', function (c) { return c.j * cell + cell / 2; }).attr('y', function (c) { return c.i * cell + cell / 2; })
+          .attr('text-anchor', 'middle').attr('dy', '0.35em').attr('font-size', 10).attr('pointer-events', 'none')
+          .attr('fill', function (c) { return Math.abs(c.r) > 0.72 ? '#fff' : '#0f172a'; })
+          .text(function (c) { return (c.r < 0 ? '−' : '') + SL.fmt(Math.abs(c.r), 1).replace(/^0/, ''); });
+      }
+      /* Rows carry the full name with a number; columns carry just the number,
+         so long names never spill across the figure. */
+      var fs = Math.max(9, Math.min(12, cell * 0.5));
+      svg.append('g').selectAll('text').data(keys).join('text').attr('class', 'xt-lab')
+        .attr('x', labW - 8).attr('y', function (k, i) { return top + i * cell + cell / 2; }).attr('dy', '0.35em').attr('text-anchor', 'end')
+        .attr('font-size', fs).text(function (k, i) { return lab(k) + '  ' + (i + 1); });
+      svg.append('g').selectAll('text').data(keys).join('text').attr('class', 'xt-lab')
+        .attr('x', function (k, i) { return labW + i * cell + cell / 2; }).attr('y', top - 8).attr('text-anchor', 'middle')
+        .attr('font-size', fs).text(function (k, i) { return i + 1; });
+    }
+
+    var sW = 460, sH = 360, sM = { t: 12, r: 14, b: 44, l: 52 };
+    function drawScatter() {
+      var kx = sel[0], ky = sel[1], rows = SL.rows(D, [kx, ky]);
+      var svg = d3.select('#xtScatter').attr('viewBox', [0, 0, sW, sH]);
+      svg.selectAll('*').remove();
+      var x = d3.scaleLinear().domain(d3.extent(rows, function (d) { return d[kx]; })).nice().range([sM.l, sW - sM.r]);
+      var y = d3.scaleLinear().domain(d3.extent(rows, function (d) { return d[ky]; })).nice().range([sH - sM.b, sM.t]);
+      svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + sM.l + ',0)').call(d3.axisLeft(y).ticks(5).tickSize(-(sW - sM.l - sM.r)).tickFormat(''));
+      svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (sH - sM.b) + ')').call(d3.axisBottom(x).ticks(6, '~s'));
+      svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + sM.l + ',0)').call(d3.axisLeft(y).ticks(5, '~s'));
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', sW - sM.r).attr('y', sH - 6).attr('text-anchor', 'end').text(lab(kx) + ' (' + unit(kx) + ') →');
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', sM.l + 6).attr('y', sM.t + 10).text('↑ ' + lab(ky));
+      var m = SL.models.linreg(rows.map(function (d) { return [d[kx]]; }), rows.map(function (d) { return d[ky]; }));
+      var xd = x.domain();
+      svg.append('path').attr('class', 'ln-fit').attr('stroke-dasharray', '6 5').attr('opacity', 0.6)
+        .attr('d', d3.line()([[x(xd[0]), y(m.predict([xd[0]]))], [x(xd[1]), y(m.predict([xd[1]]))]].map(function (p) { return [p[0], Math.max(sM.t, Math.min(sH - sM.b, p[1]))]; })));
+      svg.append('g').selectAll('circle').data(rows).join('circle').attr('class', 'ln-dot').attr('r', 6)
+        .attr('cx', function (d) { return x(d[kx]); }).attr('cy', function (d) { return y(d[ky]); })
+        .attr('fill', function (d) { return d.d.kbk ? C.test : C.train; })
+        .on('pointerenter', function (ev, d) { d3.select(this).classed('is-hover', true); tip.show(ev, '<b>' + d.name + '</b>' + (d.d.kbk ? ' <span class="muted">KBK</span>' : '') + '<br>' + lab(kx) + ': ' + SL.fmt(d[kx], 1) + '<br>' + lab(ky) + ': ' + SL.fmt(d[ky], 1)); })
+        .on('pointerleave', function () { d3.select(this).classed('is-hover', false); tip.hide(); });
+      var r = SL.corr(rows.map(function (d) { return d[kx]; }), rows.map(function (d) { return d[ky]; }));
+      document.getElementById('xtTitle').textContent = lab(ky) + ' against ' + lab(kx).toLowerCase();
+      document.getElementById('xtSub').innerHTML = 'Correlation ' + (r >= 0 ? '+' : '−') + SL.fmt(Math.abs(r), 2) + ' · ' + rows.length + ' districts · ' +
+        '<span class="ln-k ln-k-test"><span>KBK region</span></span> <span class="ln-k ln-k-train"><span>other districts</span></span>';
+      document.getElementById('xtSource').textContent = 'Sources: ' + meta.features[kx.split('.')[1]].source + '; ' + meta.features[ky.split('.')[1]].source + '. Dashed line: least-squares fit.';
+    }
+    document.querySelectorAll('[data-set]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('[data-set]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        set = b.dataset.set; drawMatrix();
+      });
+    });
+    drawMatrix(); drawScatter();
+  }).catch(function (err) {
+    console.error(err);
+    document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
+  });
+})();
+</script>
+</body>
+</html>

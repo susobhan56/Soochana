@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logistic Regression · Soochana Learn</title>
+<meta name="description" content="How logistic regression turns a number into a probability, explained by flagging Odisha districts with above-average child stunting from female literacy.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20260929">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  /* style.css gives every <path> a map-style stroke, a hover glow and a transition.
+     Chart paths on this page set their stroke inline; these rules stop the rest leaking in. */
+  .ln-page svg path { transition: none; }
+  .ln-page svg path:hover { filter: none; }
+  .ln-page svg path.ln-fit:hover { stroke: var(--ln-fit); stroke-width: 2px; }
+  .ln-page svg path.ln-dot:hover { stroke: var(--ln-card); stroke-width: 1.5px; }
+  .ln-page svg path.ln-dot.is-hover { stroke: var(--ink-heading); stroke-width: 2px; }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · 03</div>
+    <h2 class="ln-title">Logistic <em>Regression</em></h2>
+    <p class="ln-dek">Some questions have a yes-or-no answer. Logistic regression turns a number into a chance between 0% and 100%. Here it is at work, flagging Odisha districts where child stunting is above the state average.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census 2011 and NFHS-5 · Every number on this page is computed live in your browser</div>
+  </section>
+
+  <div class="ln-prose">
+    <p>In <a href="train-test-validation.html">explainer 01</a> we predicted a district's exact stunting rate. Planners often need something simpler: a list of districts to prioritise. So the question becomes yes or no. <strong>Is a district's child stunting at or above the Odisha average of <span data-v="thr"></span>%?</strong></p>
+    <p>Our clue is again female literacy. We want a model that looks at a district's female literacy and says how likely a "yes" is. That model is <strong>logistic regression</strong>, one of the most widely used tools in statistics.</p>
+  </div>
+
+  <!-- ── scroll story ─────────────────────────────── -->
+  <section class="ln-scrolly" id="story">
+    <div class="ln-steps">
+      <div class="ln-step"><div class="ln-card">
+        <h3>A yes-or-no question</h3>
+        <p>Each dot is a district, placed across by the share of women who could read in 2011. Districts where at least <b><span data-v="thr"></span>%</b> of children under five are stunted (the NFHS-5 state average) sit on the top row, marked <span class="ln-k ln-k-pos"><span>yes</span></span>. The rest sit on the bottom row, marked <span class="ln-k ln-k-neg"><span>no</span></span>.</p>
+        <p><b data-v="nPos"></b> of the <span data-v="n"></span> districts are on the top row. Most of them are on the left, where fewer women read.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>A straight line breaks</h3>
+        <p>The obvious move is to draw a straight line through the two rows and read its height as a chance. But a line never bends.</p>
+        <p>For <b data-v="lowName"></b>, where <span data-v="lowLit"></span>% of women read, the line gives a <b data-v="linLow"></b> chance. It passes 100% for any district below <b data-v="lin100"></b>% female literacy and falls below zero above <b data-v="lin0"></b>%.</p>
+        <p>A chance must stay between 0% and 100%. We need a curve that bends to respect that.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Squeeze it into an S</h3>
+        <p>Logistic regression keeps the straight line, but treats it as a <em>score</em> rather than a chance: <b>score = b + w × literacy</b>. The score can be any number at all.</p>
+        <p>Then the <strong>sigmoid</strong> function squeezes the score into a chance between 0 and 1:</p>
+        <svg id="sigMini" role="img" aria-label="The sigmoid function: large negative scores become chances near 0%, a score of zero becomes 50%, large positive scores become chances near 100%" style="width:100%;max-width:320px;display:block;margin:4px 0 8px"></svg>
+        <p>Large positive scores give chances near 100%, large negative ones near 0%, and a score of zero gives exactly 50%. The result is the S-shaped curve on the chart.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Reading the curve</h3>
+        <p>The curve is the fitted model. Read it like any chart: a district with <b><span data-v="xA"></span>%</b> female literacy has an estimated <b data-v="pA"></b> chance of above-average stunting. At <b><span data-v="xB"></span>%</b> the chance falls to <b data-v="pB"></b>.</p>
+        <p>The curve crosses 50% at <b><span data-v="x50"></span>%</b> literacy. That is where it is steepest, and where the model is least sure either way.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Odds, and what the weight means</h3>
+        <p>Odds are another way to say chance. A 75% chance is odds of 3 to 1: three yeses for every no. Inside the model, the score is the logarithm of the odds (the <em>log-odds</em>), which is why it can move in a straight line.</p>
+        <p>That gives the weight <b>w</b> a plain meaning. Every extra 10 points of female literacy multiplies the odds of above-average stunting by <b data-v="or10"></b>, cutting them by <b data-v="orCut"></b>. Read the other way, 10 points <em>less</em> multiplies the odds by <b data-v="orInv"></b>. The labels show the odds shrinking by the same factor at each step. (Odds of 1 to 2 mean one yes for every two noes.)</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>From a chance to a decision</h3>
+        <p>To make a list, we need a cut-off. With the usual 50%, every district to the left of <b><span data-v="x50"></span>%</b> literacy is flagged.</p>
+        <p>That gets <b data-v="nCorrect"></b> of <span data-v="n"></span> districts right (<b data-v="acc"></b>). The ringed dots are the mistakes: <b data-v="nFA"></b> false alarms (<span data-v="faNames"></span>) and <b data-v="nMiss"></b> missed districts (<span data-v="missNames"></span>).</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Scoring a curve: log-loss</h3>
+        <p>How does the computer choose <b>b</b> and <b>w</b>? It scores each possible curve by how surprised it is by what actually happened. For each district, take the chance the curve gave to the true answer. The penalty is minus its logarithm.</p>
+        <p>A confident right answer costs almost nothing; a confident wrong one costs a lot. The grey lines show each district's gap to its predicted chance. The largest penalty is <b data-v="worstName"></b>'s (<span data-v="worstLoss"></span>). Averaged over all districts the fitted curve scores <b data-v="ll"></b>. Saying 50% for everyone would score <b data-v="llCoin"></b>.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Rolling downhill</h3>
+        <p>The fitting method is called <strong>gradient descent</strong>. Start from a flat curve that says 50% for everyone. Work out which small nudge to b and w lowers the log-loss fastest, take that step, and repeat. Each pass over the districts is an <em>epoch</em>.</p>
+        <p>Watch the curve tilt into shape. After about <b data-v="epConv"></b> epochs it stops moving, because no nudge lowers the log-loss any further.</p>
+      </div></div>
+    </div>
+    <div class="ln-graphic" aria-live="polite">
+      <figure class="ln-figure" style="margin:0">
+        <p class="ln-figure-t" id="figTitle">Above-average stunting and female literacy, 30 districts</p>
+        <p class="ln-figure-s" id="figSub">Hover a dot for the district</p>
+        <div class="ln-legend" id="figLegend"></div>
+        <svg id="storySvg" role="img" aria-label="Odisha districts placed by female literacy, on a top row if child stunting is at or above the state average and a bottom row otherwise, with the model's fitted curve"></svg>
+        <div class="ln-source">Female literacy: Census 2011 · Stunting: NFHS-5 (2019–21)</div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── interactive 1: fit by hand ───────────────── -->
+  <div class="ln-prose">
+    <h2>Try it: fit the curve by hand</h2>
+    <p>The two sliders set the model. <b>b</b> is the log-odds for a district with average female literacy (<span data-v="mu"></span>%). <b>w</b> is how much the log-odds change for every 10 points of female literacy. The log-loss updates as you move them. Lower is better.</p>
+    <p>The second chart is a map of the log-loss for every pair of b and w, darker where it is lower. Click or drag on it to jump there, or press <em>Let gradient descent do it</em> and watch the model roll downhill from wherever you left it.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <label>w <input type="range" id="wSlider" min="-4" max="2" step="0.05" value="0" aria-label="Weight w: change in log-odds per 10 points of female literacy"><output id="wOut">0.00</output></label>
+        <label>b <input type="range" id="bSlider" min="-3" max="3" step="0.05" value="0" aria-label="Intercept b: log-odds at average female literacy"><output id="bOut">0.00</output></label>
+        <button class="ln-btn" id="gdBtn">Let gradient descent do it</button>
+        <button class="ln-btn ghost" id="flatBtn">Flat start</button>
+      </div>
+      <div class="ln-grid2">
+        <div>
+          <p class="ln-figure-t">Your curve</p>
+          <div class="ln-legend">
+            <span><i style="background:var(--ln-pos)"></i>At or above average (top row)</span>
+            <span><i style="background:var(--ln-neg)"></i>Below (bottom row)</span>
+          </div>
+          <svg id="handSvg" role="img" aria-label="The curve set by the sliders over the districts"></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t">Log-loss for every b and w</p>
+          <div class="ln-legend">
+            <span><i style="background:var(--ink-heading)"></i>Your model</span>
+            <span><i class="line" style="background:var(--ink-heading)"></i>Gradient descent path</span>
+          </div>
+          <svg id="lossSvg" role="img" aria-label="Contour map of log-loss across values of b and w, with the current model marked"></svg>
+        </div>
+      </div>
+      <div class="ln-stats" id="handStats"></div>
+    </div>
+  </div>
+
+  <!-- ── interactive 2: threshold ─────────────────── -->
+  <div class="ln-prose">
+    <h2>Where to draw the line</h2>
+    <p>50% is only a convention. A programme with money for more districts might flag any district with even a 30% chance, accepting more false alarms to miss fewer. A tight budget might demand 70%. Move the cut-off and watch the trade.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <label>Cut-off <input type="range" id="tSlider" min="5" max="95" step="1" value="50" aria-label="Decision cut-off in percent"><output id="tOut">50%</output></label>
+        <span id="tNote" style="color:var(--ink-subtle)"></span>
+      </div>
+      <div class="ln-grid2">
+        <div>
+          <p class="ln-figure-t">Which districts get flagged</p>
+          <div class="ln-legend">
+            <span><i style="background:var(--ln-pos)"></i>At or above average</span>
+            <span><i style="background:var(--ln-neg)"></i>Below</span>
+            <span><i style="background:transparent;border:2px solid var(--ink-heading);width:12px;height:12px"></i>Wrong call</span>
+          </div>
+          <svg id="thrSvg" role="img" aria-label="Fitted curve with the cut-off, showing which districts are flagged"></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t">Every cut-off at once: the ROC curve</p>
+          <div class="ln-legend">
+            <span><i class="line" style="background:var(--ln-fit)"></i>This model</span>
+            <span><i class="line" style="background:var(--ln-axis)"></i>Coin flip</span>
+            <span><i style="background:var(--ink-heading)"></i>Current cut-off</span>
+          </div>
+          <svg id="rocSvg" role="img" aria-label="ROC curve: share of above-average districts caught against share of other districts falsely flagged"></svg>
+        </div>
+      </div>
+      <div class="ln-stats" id="thrStats"></div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p>The <b>ROC curve</b> traces every cut-off at once. Going up means catching more of the above-average districts; going right means more false alarms. A model that guessed at random would sit on the dashed diagonal. The area under the curve (AUC) is <b data-v="auc"></b>. That is the chance that the model ranks a randomly chosen above-average district above a randomly chosen below-average one.</p>
+    <p id="cvText"></p>
+  </div>
+
+  <!-- ── interactive 3: two features ──────────────── -->
+  <div class="ln-prose">
+    <h2>Adding a second clue</h2>
+    <p>Logistic regression can use several clues at once. The score just gains a term per clue: <b>score = b + w₁ × literacy + w₂ × second clue</b>. The 50% line, where the score is zero, is now a straight line across a map.</p>
+    <p>Pick a second clue. The shading shows the model's chance for every combination, <span class="ln-k ln-k-pos"><span>orange</span></span> where it leans yes and <span class="ln-k ln-k-neg"><span>teal</span></span> where it leans no.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <div class="ln-seg" role="group" aria-label="Second clue">
+          <button aria-pressed="true" data-z="tribal">Tribal population share</button>
+          <button aria-pressed="false" data-z="urban">Urban share</button>
+          <button aria-pressed="false" data-z="births">Births in a facility</button>
+        </div>
+      </div>
+      <div class="ln-legend">
+        <span><i style="background:var(--ln-pos)"></i>At or above average (circle)</span>
+        <span><i style="background:var(--ln-neg);border-radius:2px"></i>Below (square)</span>
+        <span><i class="line" style="background:var(--ln-fit)"></i>50% line</span>
+        <span><i class="line" style="background:repeating-linear-gradient(90deg,var(--ln-fit) 0 4px,transparent 4px 7px)"></i>20% and 80% lines</span>
+      </div>
+      <svg id="twoSvg" role="img" aria-label="Map of the two-clue model's chance with the districts and the 50% decision line"></svg>
+      <div class="ln-stats" id="twoStats"></div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p id="twoText"></p>
+    <div class="ln-callout">
+      <span class="ln-callout-t">Take-aways</span>
+      Logistic regression answers yes-or-no questions with a chance, not a verdict. It fits a straight-line score and squeezes it through an S-shaped curve, so the chance always stays between 0% and 100%. Each weight reads as an odds ratio: how much the odds multiply for a given step in a clue. A cut-off turns chances into decisions, and moving it trades false alarms against missed districts. Judge the model on districts it did not see, not on the ones it was fitted to. And remember that a strong association is not a cause: literacy travels with income, remoteness and access to services.
+    </div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p>The outcome is 1 when NFHS-5 (2019–21) stunting among children under five is at or above the state figure in the portal's Health workbook (<span data-v="thr"></span>%), else 0. Female literacy, tribal share and urban share are from Census 2011; births in a facility are from NFHS-5. Each clue is standardised (mean 0, standard deviation 1) before fitting. The model is fitted by full-batch gradient descent on log-loss (learning rate 0.5, 3,000 epochs, no penalty), and the weights are converted back to percentage points for the odds ratios. On this page w is shown per 10 points of literacy and b is centred on the average literacy. Accuracy and log-loss in the charts are measured on the same districts the model was fitted to. The cross-validated figures refit the model inside 5-fold cross-validation, repeated <span data-v="cvReps"></span> times with a fixed seed. Thirty districts are far too few for a planning tool, and the model shows association, not cause.</p>
+    <details class="ln-details">
+      <summary>Show the data table</summary>
+      <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
+    </details>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="decision-tree.html"><small>Next · 04</small><b>Decision Trees</b></a>
+    <a href="bias-variance.html"><small>02</small><b>The Bias–Variance Tradeoff</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var X_KEY = 'f.female_lit', Y_KEY = 'nfhs5.stunted';
+  var Z = {
+    tribal: { key: 'f.tribal_pct', name: 'tribal population share', axis: 'Scheduled Tribe population (Census 2011)' },
+    urban: { key: 'f.urban_pct', name: 'urban share', axis: 'Population living in towns (Census 2011)' },
+    births: { key: 'nfhs5.inst_births', name: 'share of births in a health facility', axis: 'Births in a health facility (NFHS-5)' },
+  };
+  var C = { pos: SL.color('pos'), neg: SL.color('neg'), fit: SL.color('fit') };
+  var INK = 'var(--ink-heading)';
+  var tip = SL.tooltip();
+  var NARROW = window.innerWidth <= 600;
+  var X_LO = 30, X_HI = 90, LR = 0.5, ITERS = 3000, CV_REPS = 30;
+
+  function logit(p) { return Math.log(p / (1 - p)); }
+  function oddsText(p) { return p >= 0.5 ? SL.fmt(p / (1 - p), 1) + ' to 1' : '1 to ' + SL.fmt((1 - p) / p, 1); }
+  function signed(v, d) { return (v > 0 ? '+' : v < 0 ? '−' : '') + SL.fmt(Math.abs(v), d); }
+  function listNames(a) { return a.length <= 1 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+  function pctAxis(v) { return Math.round(v * 100) + '%'; }
+  /* −log of the chance given to the true answer */
+  function penalty(p, y) { return -Math.log(Math.min(Math.max(y ? p : 1 - p, 1e-9), 1)); }
+
+  /* Beeswarm offsets (pixels, outward from the row) so dots in the same row don't hide each other. */
+  function swarm(xpx, cls, r) {
+    var off = new Array(xpx.length), placed = { 0: [], 1: [] }, D = 2 * r + 1;
+    SL.range(xpx.length).sort(function (a, b) { return xpx[a] - xpx[b]; }).forEach(function (i) {
+      var P = placed[cls[i]], o = 0;
+      var hit = function (o) { return P.some(function (j) { var dx = xpx[i] - xpx[j], dy = o - off[j]; return dx * dx + dy * dy < D * D; }); };
+      while (hit(o)) o += 1;
+      off[i] = o; P.push(i);
+    });
+    return off;
+  }
+  function axes(svg, x, y, W, H, M, opts) {
+    opts = opts || {};
+    var g = {};
+    g.grid = svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + M.l + ',0)');
+    g.x = svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')')
+      .call(d3.axisBottom(x).ticks(opts.xt || 6).tickFormat(opts.xf || function (v) { return v + '%'; }));
+    g.y = svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + M.l + ',0)');
+    g.xl = svg.append('text').attr('class', 'ln-axis-label').attr('x', W - M.r).attr('y', H - 4).attr('text-anchor', 'end').text(opts.xLabel || 'Women who can read (Census 2011) →');
+    g.yl = opts.yTop
+      ? svg.append('text').attr('class', 'ln-axis-label').attr('x', 4).attr('y', 12).text(opts.yLabel || '')
+      : svg.append('text').attr('class', 'ln-axis-label').attr('x', M.l).attr('y', M.t).attr('dx', 6).attr('dy', '0.8em').text(opts.yLabel || '');
+    return g;
+  }
+  function clip(svg, id, M, W, H) {
+    svg.append('defs').append('clipPath').attr('id', id).append('rect').attr('x', M.l).attr('y', M.t).attr('width', W - M.l - M.r).attr('height', H - M.t - M.b);
+    return 'url(#' + id + ')';
+  }
+
+  SL.loadData().then(function (data) {
+    var THR = data.meta.state_nfhs5.stunted;
+    var R = SL.rows(data.districts, [X_KEY, Y_KEY, Z.tribal.key, Z.urban.key, Z.births.key]);
+    var N = R.length;
+    var xs = R.map(function (d) { return d[X_KEY]; });
+    var yb = R.map(function (d) { return d[Y_KEY] >= THR ? 1 : 0; });
+    var nPos = SL.sum(yb);
+
+    /* ── the one-clue model ───────────────────────── */
+    var sc1 = SL.scaler(xs.map(function (v) { return [v]; })), MU = sc1.mu[0], SD = sc1.sd[0];
+    var Xs = xs.map(function (v) { return [(v - MU) / SD]; });
+    var m1 = SL.models.logreg(Xs, yb, { lr: LR, iters: ITERS });
+    /* page parameterisation: z = b + w10 · (x − mean) / 10  (w10 = scaled weight × 10 / SD) */
+    function toW10(ws) { return ws * 10 / SD; }
+    function toWs(w10) { return w10 * SD / 10; }
+    function probFn(w10, b) { return function (x) { return SL.sigmoid(b + w10 * (x - MU) / 10); }; }
+    var W10 = toW10(m1.w[0]), B = m1.b;
+    var P1 = probFn(W10, B);
+    var p1 = xs.map(P1);
+    var LL = m1.loss(), LL_COIN = -Math.log(0.5);
+    var wRaw = m1.w[0] / SD, OR10 = Math.exp(10 * wRaw);
+    var X50 = MU - B * 10 / W10;
+    function cutoffX(t, w10, b) { return MU + (logit(t) - b) * 10 / w10; }
+
+    /* training history for the story animation */
+    var hist = [], gd = SL.models.logreg(Xs, yb, { lr: LR });
+    for (var e = 0; e <= 400; e++) { hist.push({ epoch: gd.epoch, w10: toW10(gd.w[0]), b: gd.b, loss: gd.loss() }); gd.step(1); }
+    var epConv = hist.filter(function (h) { return h.loss - LL > 0.001; }).length;
+
+    var pred = p1.map(function (p) { return p >= 0.5 ? 1 : 0; });
+    var cm = SL.metrics.confusion(yb, pred);
+    var faNames = [], missNames = [];
+    R.forEach(function (d, i) { if (pred[i] && !yb[i]) faNames.push(d.name); if (!pred[i] && yb[i]) missNames.push(d.name); });
+    var pens = R.map(function (d, i) { return penalty(p1[i], yb[i]); });
+    var worst = pens.indexOf(d3.max(pens));
+
+    var lin = SL.models.linreg(xs.map(function (v) { return [v]; }), yb);
+    function linP(x) { return lin.predict([x]); }
+    var low = xs.indexOf(d3.min(xs));
+    var XA = 45, XB = 75;
+
+    var rocPts = SL.metrics.roc(yb, p1), AUC = SL.metrics.auc(rocPts);
+
+    var V = {
+      thr: SL.fmt(THR, THR % 1 ? 1 : 0), n: N, nPos: nPos, mu: SL.fmt(MU, 1),
+      lowName: R[low].name, lowLit: SL.fmt(xs[low], 1), linLow: SL.pct(linP(xs[low])),
+      lin100: SL.fmt((1 - lin.w[0]) / lin.w[1], 1), lin0: SL.fmt(-lin.w[0] / lin.w[1], 1),
+      xA: XA, xB: XB, pA: SL.pct(P1(XA)), pB: SL.pct(P1(XB)), x50: SL.fmt(X50, 1),
+      or10: SL.fmt(OR10, 2), orCut: SL.pct(1 - OR10), orInv: SL.fmt(1 / OR10, 1),
+      nCorrect: cm.tp + cm.tn, acc: SL.pct(cm.accuracy), nFA: cm.fp, nMiss: cm.fn,
+      faNames: listNames(faNames), missNames: listNames(missNames),
+      worstName: R[worst].name, worstLoss: SL.fmt(pens[worst], 2), ll: SL.fmt(LL, 3), llCoin: SL.fmt(LL_COIN, 3),
+      epConv: SL.fmt(epConv), auc: SL.fmt(AUC, 2), cvReps: CV_REPS,
+    };
+    document.querySelectorAll('[data-v]').forEach(function (el) { el.textContent = V[el.dataset.v]; });
+
+    function tipDistrict(d, i, extra) {
+      return '<b>' + d.name + '</b><br>Female literacy ' + SL.fmt(xs[i], 1) + '%<br>Stunted ' + SL.fmt(d[Y_KEY], 1) + '% · ' +
+        (yb[i] ? 'at or above' : 'below') + ' average' + (extra ? '<br><span class="muted">' + extra + '</span>' : '');
+    }
+
+    /* ── mini sigmoid in the card ─────────────────── */
+    (function () {
+      var w = 320, h = 118, m = { l: 40, r: 10, t: 10, b: 30 };
+      var s = d3.select('#sigMini').attr('viewBox', [0, 0, w, h]);
+      var zx = d3.scaleLinear([-6, 6], [m.l, w - m.r]), zy = d3.scaleLinear([0, 1], [h - m.b, m.t]);
+      s.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + m.l + ',0)').call(d3.axisLeft(zy).tickValues([0, 0.5, 1]).tickSize(-(w - m.l - m.r)).tickFormat(''));
+      s.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + m.l + ',0)').call(d3.axisLeft(zy).tickValues([0, 0.5, 1]).tickFormat(pctAxis).tickSize(3));
+      s.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (h - m.b) + ')').call(d3.axisBottom(zx).tickValues([-6, -3, 0, 3, 6]).tickFormat(function (v) { return v > 0 ? '+' + v : v < 0 ? '−' + (-v) : '0'; }).tickSize(3));
+      s.append('text').attr('class', 'ln-axis-label').attr('x', w - m.r).attr('y', h - 2).attr('text-anchor', 'end').text('score →');
+      s.append('path').attr('class', 'ln-fit').attr('d', d3.line()(d3.range(-6, 6.01, 0.1).map(function (z) { return [zx(z), zy(SL.sigmoid(z))]; })));
+      s.selectAll('text').style('font-size', '11px');
+      s.append('circle').attr('cx', zx(0)).attr('cy', zy(0.5)).attr('r', 4).attr('fill', C.fit).attr('stroke', '#fff').attr('stroke-width', 1.5);
+      s.append('text').attr('class', 'ln-dlabel').attr('x', zx(0) + 8).attr('y', zy(0.5) + 14).style('font-size', '11px').text('score 0 → 50%');
+    })();
+
+    /* ── sticky story chart ───────────────────────── */
+    var W = 560, H = 420, M = { t: 12, r: 16, b: 44, l: 50 }, DOT = 6.5;
+    var svg = d3.select('#storySvg').attr('viewBox', [0, 0, W, H]);
+    var x = d3.scaleLinear([X_LO, X_HI], [M.l, W - M.r]);
+    var DOM_P = [-0.16, 1.16], DOM_L = [-0.36, 1.44];
+    var y = d3.scaleLinear(DOM_P, [H - M.b, M.t]);
+    var clipUrl = clip(svg, 'storyClip', M, W, H);
+    var zones = svg.append('g');
+    var shade = svg.append('rect').attr('fill', C.pos).attr('opacity', 0).attr('y', M.t).attr('height', H - M.t - M.b).attr('x', M.l).attr('width', 0);
+    var g = axes(svg, x, y, W, H, M, { yLabel: '↑ Chance of above-average stunting' });
+    function yTicks(sc) { return [-0.25, 0, 0.25, 0.5, 0.75, 1, 1.25].filter(function (v) { return v >= sc.domain()[0] && v <= sc.domain()[1]; }); }
+    function drawY(sc, t) {
+      var gy = t ? g.y.transition(t) : g.y, gg = t ? g.grid.transition(t) : g.grid;
+      gy.call(d3.axisLeft(sc).tickValues(yTicks(sc)).tickFormat(pctAxis));
+      gg.call(d3.axisLeft(sc).tickValues(yTicks(sc)).tickSize(-(W - M.l - M.r)).tickFormat(''));
+    }
+    drawY(y);
+    var rowLab = svg.append('g');
+    var guides = svg.append('g');
+    var curveG = svg.append('g').attr('clip-path', clipUrl);
+    var segG = svg.append('g');
+    var ringG = svg.append('g');
+    var hoverG = svg.append('g').style('pointer-events', 'none');
+    var overlay = svg.append('rect').attr('x', M.l).attr('y', M.t).attr('width', W - M.l - M.r).attr('height', H - M.t - M.b).attr('fill', 'transparent');
+    var off = swarm(xs.map(x), yb, DOT);
+    function cyOf(i, sc) { return yb[i] ? sc(1) - off[i] : sc(0) + off[i]; }
+    var dots = svg.append('g').selectAll('circle').data(R).join('circle')
+      .attr('class', 'ln-dot').attr('r', DOT)
+      .attr('cx', function (d, i) { return x(xs[i]); }).attr('cy', function (d, i) { return cyOf(i, y); })
+      .attr('fill', function (d, i) { return yb[i] ? C.pos : C.neg; })
+      .on('pointerenter', function (ev, d) { d3.select(this).classed('is-hover', true).raise(); tip.show(ev, storyTip(d)); })
+      .on('pointermove', function (ev, d) { tip.show(ev, storyTip(d)); })
+      .on('pointerleave', function () { d3.select(this).classed('is-hover', false); tip.hide(); });
+    var endLab = svg.append('g');
+
+    var cur = -1, curFn = null, anim = null;
+    function storyTip(d) {
+      var i = R.indexOf(d), ex = '';
+      if (cur === 1) ex = 'Straight line says ' + SL.pct(linP(xs[i]));
+      else if (cur === 6) ex = 'Model gives the true answer ' + SL.pct(yb[i] ? p1[i] : 1 - p1[i]) + ' · penalty ' + SL.fmt(pens[i], 2);
+      else if (cur >= 2 && curFn) ex = 'Estimated chance ' + SL.pct(curFn(xs[i])) + (cur === 5 ? (pred[i] === yb[i] ? ' · right call' : pred[i] ? ' · false alarm' : ' · missed') : '');
+      return tipDistrict(d, i, ex);
+    }
+    function curvePath(fn, sc) { return d3.line()(d3.range(X_LO, X_HI + 0.01, 0.5).map(function (v) { return [x(v), sc(fn(v))]; })); }
+    function setCurves(list, sc, t) {
+      var sel = curveG.selectAll('path').data(list, function (d) { return d.key; });
+      sel.exit().transition(t).style('opacity', 0).remove();
+      sel.enter().append('path').attr('class', 'ln-fit').style('opacity', 0).attr('d', function (d) { return curvePath(d.fn, sc); })
+        .merge(sel)
+        .style('stroke-dasharray', function (d) { return d.dash || null; })
+        .transition(t).attr('d', function (d) { return curvePath(d.fn, sc); })
+        .style('opacity', function (d) { return d.op == null ? 1 : d.op; });
+    }
+    function legend(items) {
+      document.getElementById('figLegend').innerHTML = items.map(function (it) {
+        return '<span><i class="' + (it.line ? 'line' : '') + '" style="' + (it.ring ? 'background:transparent;border:2px solid ' + it.c + ';width:12px;height:12px' : 'background:' + it.c) + (it.dash ? ';background:repeating-linear-gradient(90deg,' + it.c + ' 0 4px,transparent 4px 7px)' : '') + '"></i>' + it.t + '</span>';
+      }).join('');
+    }
+    var LEG_ROWS = [{ c: C.pos, t: 'Yes: ≥ ' + V.thr + '% stunted' }, { c: C.neg, t: 'No: below ' + V.thr + '%' }];
+
+    function stopAnim() { if (anim) { anim.stop(); anim = null; } }
+    function playDescent() {
+      stopAnim();
+      var dur = SL.dur(3200), last = hist.length - 1;
+      function frame(k) {
+        var h = hist[k], fn = probFn(h.w10, h.b);
+        curFn = fn;
+        curveG.selectAll('path.live').attr('d', curvePath(fn, y));
+        document.getElementById('figSub').textContent = 'Epoch ' + SL.fmt(h.epoch) + ' · log-loss ' + SL.fmt(h.loss, 3) + (k === last ? ' (converged)' : '');
+      }
+      curveG.selectAll('path').remove();
+      curveG.append('path').attr('class', 'ln-fit').style('stroke-dasharray', '5 5').style('opacity', 0.35).attr('d', curvePath(P1, y));
+      curveG.append('path').attr('class', 'ln-fit live');
+      if (!dur) { frame(last); return; }
+      /* ease so the fast early epochs are visible */
+      anim = d3.timer(function (el) {
+        var u = Math.min(1, el / dur), k = Math.round(last * Math.pow(u, 2.2));
+        frame(k);
+        if (u >= 1) stopAnim();
+      });
+    }
+
+    function setStep(i) {
+      var prev = cur;
+      cur = i;
+      stopAnim();
+      var t = d3.transition().duration(SL.dur(700)).ease(d3.easeCubicInOut);
+      var ys = d3.scaleLinear(i === 1 ? DOM_L : DOM_P, [H - M.b, M.t]);
+      y = ys;
+      drawY(ys, t);
+      dots.transition(t).attr('cy', function (d, k) { return cyOf(k, ys); });
+
+      /* impossible zones for the straight line */
+      var zd = i === 1 ? [{ k: 'top', y0: M.t, y1: ys(1), lab: 'Above 100%: impossible', lx: W - M.r - 6, ly: M.t + 30, a: 'end' },
+                          { k: 'bot', y0: ys(0), y1: H - M.b, lab: 'Below 0%: impossible', lx: M.l + 8, ly: H - M.b - 10, a: 'start' }] : [];
+      var zs = zones.selectAll('g').data(zd, function (d) { return d.k; });
+      zs.exit().remove();
+      var ze = zs.enter().append('g').style('opacity', 0);
+      ze.append('rect').attr('x', M.l).attr('width', W - M.l - M.r).attr('fill', 'var(--ln-ghost)').attr('opacity', 0.45);
+      ze.append('text').attr('class', 'ln-axis-label');
+      ze.merge(zs).transition(t).style('opacity', 1);
+      ze.merge(zs).select('rect').attr('y', function (d) { return d.y0; }).attr('height', function (d) { return Math.max(0, d.y1 - d.y0); });
+      ze.merge(zs).select('text').attr('x', function (d) { return d.lx; }).attr('y', function (d) { return d.ly; }).attr('text-anchor', function (d) { return d.a; }).text(function (d) { return d.lab; });
+
+      /* row labels (not while the y-axis is stretched) */
+      var rl = rowLab.selectAll('text').data(i === 1 ? [] : [
+        { t: '▲ Yes: ≥ ' + V.thr + '% stunted', x: W - M.r - 4, y: DOM_P[1], dy: -2, a: 'end' },
+        { t: 'No: below ' + V.thr + '% ▼', x: M.l + 8, y: 0, dy: 22, a: 'start' }]);
+      rl.exit().remove();
+      rl.enter().append('text').attr('class', 'ln-axis-label').merge(rl)
+        .attr('x', function (d) { return d.x; }).attr('y', function (d) { return d.dy < 0 ? ys(1) - 14 : ys(0) + d.dy; })
+        .attr('text-anchor', function (d) { return d.a; }).text(function (d) { return d.t; });
+
+      guides.selectAll('*').remove(); segG.selectAll('*').remove(); ringG.selectAll('*').remove(); endLab.selectAll('*').remove();
+      shade.transition(t).attr('opacity', 0);
+      var sub = 'Hover a dot for the district';
+      curFn = null;
+
+      if (i <= 0) { setCurves([], ys, t); legend(LEG_ROWS); }
+      if (i === 1) {
+        setCurves([{ key: 'lin', fn: linP }], ys, t); curFn = linP;
+        legend(LEG_ROWS.concat([{ c: C.fit, t: 'Straight line fitted to the rows', line: true }]));
+        sub = 'For ' + V.lowName + ' the line says ' + V.linLow + '. Hover the chart to read it anywhere.';
+      }
+      if (i >= 2 && i !== 7) { setCurves([{ key: 'fit', fn: P1 }], ys, t); curFn = P1; legend(LEG_ROWS.concat([{ c: C.fit, t: 'Logistic regression curve', line: true }])); }
+      if (i === 2) sub = 'The curve never leaves 0% to 100%. Hover to read the chance at any literacy.';
+      if (i === 3) {
+        [XA, XB].forEach(function (v) {
+          var px = x(v), py = ys(P1(v));
+          guides.append('path').attr('d', 'M' + px + ',' + (H - M.b) + 'V' + py + 'H' + M.l).attr('fill', 'none').style('stroke', INK).style('stroke-width', '1px').style('stroke-dasharray', '3 4').style('opacity', 0.45);
+          guides.append('circle').attr('cx', px).attr('cy', py).attr('r', 4.5).attr('fill', C.fit).attr('stroke', '#fff').attr('stroke-width', 1.5);
+          guides.append('text').attr('class', 'ln-dlabel').attr('x', px + (P1(v) >= 0.5 ? -8 : 8)).attr('y', py + (P1(v) >= 0.5 ? 20 : -8)).attr('text-anchor', P1(v) >= 0.5 ? 'end' : 'start').text(v + '% → ' + SL.pct(P1(v)));
+        });
+        var p50 = ys(0.5);
+        guides.append('circle').attr('cx', x(X50)).attr('cy', p50).attr('r', 4.5).attr('fill', '#fff').attr('stroke', C.fit).attr('stroke-width', 2);
+        guides.append('text').attr('class', 'ln-dlabel').attr('x', x(X50) + 9).attr('y', p50 + 4).text('50% at ' + V.x50 + '%');
+        sub = 'Hover anywhere on the chart to read the curve';
+      }
+      if (i === 4) {
+        [50, 60, 70, 80].forEach(function (v, k) {
+          var p = P1(v), px = x(v), py = ys(p), up = p < 0.5;
+          guides.append('circle').attr('cx', px).attr('cy', py).attr('r', 4).attr('fill', C.fit).attr('stroke', '#fff').attr('stroke-width', 1.5);
+          guides.append('text').attr('class', 'ln-dlabel').attr('x', px + (up ? 8 : -8)).attr('y', py + (up ? -9 : 17))
+            .attr('text-anchor', up ? 'start' : 'end').text((k ? '' : 'odds ') + oddsText(p));
+        });
+        sub = 'Each 10 points of literacy multiplies the odds by ' + V.or10;
+      }
+      if (i === 5) {
+        shade.attr('width', Math.max(0, x(X50) - M.l)).transition(t).attr('opacity', 0.08);
+        guides.append('line').attr('x1', x(X50)).attr('x2', x(X50)).attr('y1', M.t).attr('y2', H - M.b).attr('stroke', INK).attr('stroke-width', 1.5).attr('stroke-dasharray', '5 4');
+        guides.append('line').attr('x1', M.l).attr('x2', W - M.r).attr('y1', ys(0.5)).attr('y2', ys(0.5)).attr('stroke', INK).attr('stroke-width', 1).attr('stroke-dasharray', '2 4');
+        guides.append('text').attr('class', 'ln-dlabel').attr('x', x(X50) - 8).attr('y', ys(0.5) + 18).attr('text-anchor', 'end').text('← flagged');
+        guides.append('text').attr('class', 'ln-dlabel').attr('x', x(X50) + 8).attr('y', ys(0.5) - 8).text('not flagged →');
+        ringG.selectAll('circle').data(SL.range(N).filter(function (k) { return pred[k] !== yb[k]; })).join('circle')
+          .attr('cx', function (k) { return x(xs[k]); }).attr('cy', function (k) { return cyOf(k, ys); }).attr('r', DOT + 4)
+          .attr('fill', 'none').attr('stroke', INK).attr('stroke-width', 2).style('pointer-events', 'none');
+        legend(LEG_ROWS.concat([{ c: C.fit, t: 'Model', line: true }, { c: C.fit, t: 'Wrong call', ring: true }]));
+        sub = V.nCorrect + ' of ' + N + ' right at a 50% cut-off · ' + V.nFA + ' false alarms · ' + V.nMiss + ' missed';
+      }
+      if (i === 6) {
+        segG.selectAll('line').data(SL.range(N)).join('line')
+          .attr('x1', function (k) { return x(xs[k]); }).attr('x2', function (k) { return x(xs[k]); })
+          .attr('y1', function (k) { return cyOf(k, ys); }).attr('y2', function (k) { return ys(p1[k]); })
+          .attr('stroke', function (k) { return k === worst ? INK : 'var(--ln-axis)'; }).attr('stroke-width', function (k) { return k === worst ? 2 : 1.5; });
+        var wl = endLab.append('text').attr('class', 'ln-dlabel').attr('x', x(xs[worst]) + 8).attr('y', ys(p1[worst]) + 4)
+          .text(R[worst].name + ': penalty ' + V.worstLoss);
+        if (x(xs[worst]) + 8 + wl.node().getComputedTextLength() > W - 2) wl.attr('x', x(xs[worst]) - 8).attr('text-anchor', 'end');
+        sub = 'Average log-loss ' + V.ll + ' · a flat 50% guess scores ' + V.llCoin;
+      }
+      if (i === 7) {
+        legend(LEG_ROWS.concat([{ c: C.fit, t: 'Model at this epoch', line: true }, { c: C.fit, t: 'Final fit', line: true, dash: true }]));
+        playDescent();
+        sub = null;
+      }
+      if (sub !== null) document.getElementById('figSub').textContent = sub;
+      hoverG.selectAll('*').remove();
+    }
+    SL.scrolly('#story', { onStep: setStep });
+
+    /* crosshair: read the current curve at any literacy */
+    overlay.on('pointermove', function (ev) {
+      if (!curFn) { hoverG.selectAll('*').remove(); tip.hide(); return; }
+      var v = Math.max(X_LO, Math.min(X_HI, x.invert(d3.pointer(ev)[0]))), p = curFn(v), py = y(p);
+      hoverG.selectAll('*').remove();
+      hoverG.append('line').attr('x1', x(v)).attr('x2', x(v)).attr('y1', M.t).attr('y2', H - M.b).attr('stroke', INK).attr('stroke-width', 1).attr('opacity', 0.35);
+      hoverG.append('circle').attr('cx', x(v)).attr('cy', py).attr('r', 5).attr('fill', C.fit).attr('stroke', '#fff').attr('stroke-width', 1.5);
+      tip.show(ev, 'Female literacy <b>' + SL.fmt(v, 1) + '%</b><br>' + (cur === 1 ? 'Straight line says ' : 'Estimated chance of above-average stunting ') + '<b>' + SL.pct(p) + '</b>' + (cur >= 2 ? '<br><span class="muted">odds ' + oddsText(p) + '</span>' : ''));
+    }).on('pointerleave', function () { hoverG.selectAll('*').remove(); tip.hide(); });
+
+    /* ── interactive 1: fit by hand ───────────────── */
+    var hW = 460, hH = 350, hM = { t: 34, r: 12, b: 50, l: 46 }, W_DOM = [-4, 2], B_DOM = [-3, 3];
+    var hsvg = d3.select('#handSvg').attr('viewBox', [0, 0, hW, hH]);
+    var hx = d3.scaleLinear([X_LO, X_HI], [hM.l, hW - hM.r]), hy = d3.scaleLinear([-0.18, 1.18], [hH - hM.b, hM.t]);
+    var hClip = clip(hsvg, 'handClip', hM, hW, hH);
+    var hg = axes(hsvg, hx, hy, hW, hH, hM, { xLabel: 'Female literacy →', yLabel: '↑ Chance of above-average stunting', yTop: true });
+    hg.y.call(d3.axisLeft(hy).tickValues([0, 0.25, 0.5, 0.75, 1]).tickFormat(pctAxis));
+    hg.grid.call(d3.axisLeft(hy).tickValues([0, 0.25, 0.5, 0.75, 1]).tickSize(-(hW - hM.l - hM.r)).tickFormat(''));
+    var hCurve = hsvg.append('path').attr('class', 'ln-fit').attr('clip-path', hClip);
+    var hOff = swarm(xs.map(hx), yb, 6);
+    var hDots = hsvg.append('g').selectAll('circle').data(R).join('circle').attr('class', 'ln-dot').attr('r', 6)
+      .attr('cx', function (d, i) { return hx(xs[i]); }).attr('cy', function (d, i) { return yb[i] ? hy(1) - hOff[i] : hy(0) + hOff[i]; })
+      .attr('fill', function (d, i) { return yb[i] ? C.pos : C.neg; });
+
+    var lW = 460, lH = 350, lM = { t: 34, r: 12, b: 50, l: 46 };
+    var lsvg = d3.select('#lossSvg').attr('viewBox', [0, 0, lW, lH]);
+    var lx = d3.scaleLinear(W_DOM, [lM.l, lW - lM.r]), ly = d3.scaleLinear(B_DOM, [lH - lM.b, lM.t]);
+    var lClip = clip(lsvg, 'lossClip', lM, lW, lH);
+    function lossAt(w10, b) { var fn = probFn(w10, b), s = 0; for (var i = 0; i < N; i++) s += penalty(fn(xs[i]), yb[i]); return s / N; }
+    var GN = 81, grid = [];
+    for (var gj = 0; gj < GN; gj++) for (var gi = 0; gi < GN; gi++) {
+      grid.push(-lossAt(W_DOM[0] + gi * (W_DOM[1] - W_DOM[0]) / (GN - 1), B_DOM[1] - gj * (B_DOM[1] - B_DOM[0]) / (GN - 1)));
+    }
+    var steps = [0.004, 0.015, 0.04, 0.08, 0.15, 0.25, 0.4, 0.6, 0.85, 1.2, 1.7, 2.4, 3.3];
+    var contours = d3.contours().size([GN, GN]).thresholds(steps.map(function (s) { return -(LL + s); }).reverse())(grid);
+    var proj = d3.geoPath(d3.geoTransform({ point: function (px, py) {
+      this.stream.point(lx(W_DOM[0] + (px - 0.5) * (W_DOM[1] - W_DOM[0]) / (GN - 1)), ly(B_DOM[1] - (py - 0.5) * (B_DOM[1] - B_DOM[0]) / (GN - 1)));
+    } }));
+    lsvg.append('g').attr('clip-path', lClip).selectAll('path').data(contours).join('path').attr('d', proj)
+      .attr('fill', 'rgba(15,23,42,0.04)').style('stroke', 'rgba(15,23,42,0.16)').style('stroke-width', '0.75px');
+    lsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (lH - lM.b) + ')').call(d3.axisBottom(lx).ticks(6).tickFormat(function (v) { return signed(v, 0); }));
+    lsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + lM.l + ',0)').call(d3.axisLeft(ly).ticks(6).tickFormat(function (v) { return signed(v, 0); }));
+    lsvg.append('text').attr('class', 'ln-axis-label').attr('x', lW - lM.r).attr('y', lH - 4).attr('text-anchor', 'end').text('w: change in log-odds per 10 points of literacy →');
+    lsvg.append('text').attr('class', 'ln-axis-label').attr('x', 4).attr('y', 12).text('↑ b: log-odds at average literacy');
+    var best = lsvg.append('g').attr('transform', 'translate(' + lx(W10) + ',' + ly(B) + ')');
+    best.append('path').attr('d', 'M-5,-5L5,5M-5,5L5,-5').style('stroke', '#fff').style('stroke-width', '4px');
+    best.append('path').attr('d', 'M-5,-5L5,5M-5,5L5,-5').style('stroke', INK).style('stroke-width', '2px');
+    best.append('text').attr('class', 'ln-dlabel').attr('x', -10).attr('y', -10).attr('text-anchor', 'end').text('lowest log-loss');
+    var trail = lsvg.append('path').attr('fill', 'none').style('stroke', INK).style('stroke-width', '2px').attr('clip-path', lClip);
+    var curPt = lsvg.append('circle').attr('r', 6).attr('fill', INK).attr('stroke', '#fff').attr('stroke-width', 2).style('pointer-events', 'none');
+    var lHit = lsvg.append('rect').attr('x', lM.l).attr('y', lM.t).attr('width', lW - lM.l - lM.r).attr('height', lH - lM.t - lM.b).attr('fill', 'transparent').style('cursor', 'crosshair').style('touch-action', 'none');
+
+    var hand = { w10: 0, b: 0 }, path = [], gdTimer = null, gdModel = null;
+    var wS = document.getElementById('wSlider'), bS = document.getElementById('bSlider'), gdBtn = document.getElementById('gdBtn');
+    function drawHand() {
+      var fn = probFn(hand.w10, hand.b), loss = lossAt(hand.w10, hand.b);
+      var acc = SL.metrics.accuracy(yb, xs.map(function (v) { return fn(v) >= 0.5 ? 1 : 0; }));
+      hCurve.attr('d', d3.line()(d3.range(X_LO, X_HI + 0.01, 0.5).map(function (v) { return [hx(v), hy(fn(v))]; })));
+      hDots.on('pointerenter', function (ev, d) { var i = R.indexOf(d); tip.show(ev, tipDistrict(d, i, 'Your curve gives ' + SL.pct(fn(xs[i])) + ' · penalty ' + SL.fmt(penalty(fn(xs[i]), yb[i]), 2))); })
+        .on('pointerleave', function () { tip.hide(); });
+      wS.value = hand.w10; bS.value = hand.b;
+      document.getElementById('wOut').textContent = signed(hand.w10, 2);
+      document.getElementById('bOut').textContent = signed(hand.b, 2);
+      curPt.attr('cx', lx(Math.max(W_DOM[0], Math.min(W_DOM[1], hand.w10)))).attr('cy', ly(Math.max(B_DOM[0], Math.min(B_DOM[1], hand.b))));
+      trail.attr('d', path.length > 1 ? d3.line()(path.map(function (p) { return [lx(p[0]), ly(p[1])]; })) : null);
+      document.getElementById('handStats').innerHTML =
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(loss, 3) + '</div><div class="ln-stat-l">Your log-loss (lower is better)</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(LL, 3) + '</div><div class="ln-stat-l">Lowest possible log-loss</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.pct(acc) + '</div><div class="ln-stat-l">Districts called right at a 50% cut-off</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + (gdModel ? SL.fmt(gdModel.epoch) : '–') + '</div><div class="ln-stat-l">Gradient descent epochs</div></div>';
+    }
+    function stopGD() { if (gdTimer) { gdTimer.stop(); gdTimer = null; } gdBtn.disabled = false; }
+    function setHand(w10, b, keepPath) { stopGD(); hand.w10 = w10; hand.b = b; if (!keepPath) { path = []; gdModel = null; } drawHand(); }
+    wS.addEventListener('input', function () { setHand(+wS.value, hand.b); });
+    bS.addEventListener('input', function () { setHand(hand.w10, +bS.value); });
+    document.getElementById('flatBtn').addEventListener('click', function () { setHand(0, 0); });
+    function fromPointer(ev) {
+      var p = d3.pointer(ev, lsvg.node());
+      setHand(Math.round(lx.invert(p[0]) * 20) / 20, Math.round(ly.invert(p[1]) * 20) / 20);
+    }
+    var dragging = false;
+    lHit.on('pointerdown', function (ev) { dragging = true; this.setPointerCapture && this.setPointerCapture(ev.pointerId); fromPointer(ev); })
+      .on('pointerup pointercancel', function () { dragging = false; })
+      .on('pointermove', function (ev) {
+        if (dragging) fromPointer(ev);
+        var p = d3.pointer(ev, lsvg.node()), w = lx.invert(p[0]), b = ly.invert(p[1]);
+        tip.show(ev, 'w ' + signed(w, 2) + ', b ' + signed(b, 2) + '<br>log-loss <b>' + SL.fmt(lossAt(w, b), 3) + '</b><br><span class="muted">click to try this model</span>');
+      }).on('pointerleave', function () { tip.hide(); });
+    gdBtn.addEventListener('click', function () {
+      stopGD();
+      gdModel = SL.models.logreg(Xs, yb, { lr: LR, w: [toWs(hand.w10)], b: hand.b });
+      path = [[hand.w10, hand.b]];
+      gdBtn.disabled = true;
+      var prevLoss = gdModel.loss();
+      function tick() {
+        gdModel.step(SL.dur(1) ? 2 : 4000);
+        hand.w10 = toW10(gdModel.w[0]); hand.b = gdModel.b;
+        path.push([hand.w10, hand.b]);
+        drawHand();
+        var l = gdModel.loss(), done = Math.abs(prevLoss - l) < 1e-7 || gdModel.epoch >= 4000;
+        prevLoss = l;
+        return done;
+      }
+      if (!SL.dur(1)) { tick(); stopGD(); return; }
+      gdTimer = d3.interval(function () { if (tick()) stopGD(); }, 30);
+    });
+    drawHand();
+
+    /* ── interactive 2: threshold + ROC ───────────── */
+    var tW = 460, tH = 350, tM = { t: 34, r: 12, b: 50, l: 46 };
+    var tsvg = d3.select('#thrSvg').attr('viewBox', [0, 0, tW, tH]);
+    var tx = d3.scaleLinear([X_LO, X_HI], [tM.l, tW - tM.r]), ty = d3.scaleLinear([-0.18, 1.18], [tH - tM.b, tM.t]);
+    var tShade = tsvg.append('rect').attr('x', tM.l).attr('y', tM.t).attr('height', tH - tM.t - tM.b).attr('fill', C.pos).attr('opacity', 0.08);
+    var tg = axes(tsvg, tx, ty, tW, tH, tM, { xLabel: 'Female literacy →', yLabel: '↑ Chance of above-average stunting', yTop: true });
+    tg.y.call(d3.axisLeft(ty).tickValues([0, 0.25, 0.5, 0.75, 1]).tickFormat(pctAxis));
+    tg.grid.call(d3.axisLeft(ty).tickValues([0, 0.25, 0.5, 0.75, 1]).tickSize(-(tW - tM.l - tM.r)).tickFormat(''));
+    tsvg.append('path').attr('class', 'ln-fit').attr('d', d3.line()(d3.range(X_LO, X_HI + 0.01, 0.5).map(function (v) { return [tx(v), ty(P1(v))]; })));
+    var tH1 = tsvg.append('line').attr('x1', tM.l).attr('x2', tW - tM.r).attr('stroke', INK).attr('stroke-width', 1).attr('stroke-dasharray', '2 4');
+    var tV = tsvg.append('line').attr('y1', tM.t).attr('y2', tH - tM.b).attr('stroke', INK).attr('stroke-width', 1.5).attr('stroke-dasharray', '5 4');
+    var tLab = tsvg.append('text').attr('class', 'ln-dlabel');
+    var tRings = tsvg.append('g');
+    var tOff = hOff;
+    function tcy(i) { return yb[i] ? ty(1) - tOff[i] : ty(0) + tOff[i]; }
+    var tDots = tsvg.append('g').selectAll('circle').data(R).join('circle').attr('class', 'ln-dot').attr('r', 6)
+      .attr('cx', function (d, i) { return tx(xs[i]); }).attr('cy', function (d, i) { return tcy(i); })
+      .attr('fill', function (d, i) { return yb[i] ? C.pos : C.neg; });
+
+    var rW = 460, rH = 350, rM = { t: 34, r: 12, b: 50, l: 46 }, side = rH - rM.t - rM.b;
+    var rsvg = d3.select('#rocSvg').attr('viewBox', [0, 0, rW, rH]);
+    var rx = d3.scaleLinear([0, 1], [rM.l, rM.l + side]), ry = d3.scaleLinear([0, 1], [rH - rM.b, rM.t]);
+    rsvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + rM.l + ',0)').call(d3.axisLeft(ry).ticks(4).tickSize(-side).tickFormat(''));
+    rsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (rH - rM.b) + ')').call(d3.axisBottom(rx).ticks(4).tickFormat(pctAxis));
+    rsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + rM.l + ',0)').call(d3.axisLeft(ry).ticks(4).tickFormat(pctAxis));
+    rsvg.append('text').attr('class', 'ln-axis-label').attr('x', rM.l + side).attr('y', rH - 4).attr('text-anchor', 'end').text('Below-average districts falsely flagged →');
+    rsvg.append('text').attr('class', 'ln-axis-label').attr('x', 4).attr('y', 12).text('↑ Above-average districts caught');
+    rsvg.append('line').attr('x1', rx(0)).attr('y1', ry(0)).attr('x2', rx(1)).attr('y2', ry(1)).attr('stroke', 'var(--ln-axis)').attr('stroke-width', 1.5).attr('stroke-dasharray', '4 4');
+    var rocLine = rocPts.concat([{ fpr: 1, tpr: 1 }]);
+    rsvg.append('path').attr('fill', 'rgba(15,23,42,0.06)').style('stroke', 'none').attr('d', d3.area().x(function (p) { return rx(p.fpr); }).y0(ry(0)).y1(function (p) { return ry(p.tpr); })(rocLine));
+    rsvg.append('path').attr('class', 'ln-fit').attr('d', d3.line().x(function (p) { return rx(p.fpr); }).y(function (p) { return ry(p.tpr); })(rocLine));
+    var rx2 = rM.l + side + 16;
+    rsvg.append('text').attr('class', 'ln-axis-label').attr('x', rx2).attr('y', rM.t + 30).style('font-size', '13px').text('Area under');
+    rsvg.append('text').attr('class', 'ln-axis-label').attr('x', rx2).attr('y', rM.t + 46).style('font-size', '13px').text('the curve');
+    rsvg.append('text').attr('x', rx2).attr('y', rM.t + 78).style('font-size', '28px').style('font-weight', 600).style('fill', 'var(--ink-heading)').text(V.auc);
+    rsvg.append('text').attr('class', 'ln-axis-label').attr('x', rx2).attr('y', rM.t + 100).text('1 = perfect');
+    rsvg.append('text').attr('class', 'ln-axis-label').attr('x', rx2).attr('y', rM.t + 116).text('0.5 = coin flip');
+    var rPt = rsvg.append('circle').attr('r', 6).attr('fill', INK).attr('stroke', '#fff').attr('stroke-width', 2);
+    var rPtLab = rsvg.append('text').attr('class', 'ln-dlabel');
+
+    var tS = document.getElementById('tSlider');
+    function drawThr() {
+      var t = +tS.value / 100, pr = p1.map(function (p) { return p >= t ? 1 : 0; }), c = SL.metrics.confusion(yb, pr);
+      var xc = cutoffX(t, W10, B), xcC = Math.max(X_LO, Math.min(X_HI, xc));
+      document.getElementById('tOut').textContent = Math.round(t * 100) + '%';
+      tShade.attr('width', Math.max(0, tx(xcC) - tM.l));
+      tH1.attr('y1', ty(t)).attr('y2', ty(t));
+      tV.attr('x1', tx(xcC)).attr('x2', tx(xcC));
+      var right = tx(xcC) < tW - 130;
+      tLab.attr('x', tx(xcC) + (right ? 8 : -8)).attr('y', ty(0.5) + (t > 0.5 ? 16 : -8)).attr('text-anchor', right ? 'start' : 'end').text('cut-off at ' + SL.fmt(xc, 1) + '%');
+      tRings.selectAll('circle').data(SL.range(N).filter(function (k) { return pr[k] !== yb[k]; })).join('circle')
+        .attr('cx', function (k) { return tx(xs[k]); }).attr('cy', tcy).attr('r', 10).attr('fill', 'none').attr('stroke', INK).attr('stroke-width', 2);
+      tDots.on('pointerenter', function (ev, d) { var i = R.indexOf(d); tip.show(ev, tipDistrict(d, i, 'Chance ' + SL.pct(p1[i]) + ' · ' + (pr[i] ? 'flagged' : 'not flagged') + (pr[i] === yb[i] ? ' (right call)' : pr[i] ? ' (false alarm)' : ' (missed)'))); })
+        .on('pointerleave', function () { tip.hide(); });
+      rPt.attr('cx', rx(c.fpr)).attr('cy', ry(c.tpr));
+      rPtLab.attr('x', rx(c.fpr) + 10).attr('y', ry(c.tpr) + 16).text(Math.round(t * 100) + '% cut-off');
+      document.getElementById('tNote').textContent = 'Flags every district with female literacy below ' + SL.fmt(xc, 1) + '%: ' + (c.tp + c.fp) + ' of ' + N + '.';
+      document.getElementById('thrStats').innerHTML = [
+        [c.tp, 'Correctly flagged'], [c.fp, 'False alarms'], [c.fn, 'Missed'], [c.tn, 'Correctly left out'], [SL.pct(c.accuracy), 'Accuracy'],
+      ].map(function (s) { return '<div class="ln-stat"><div class="ln-stat-v">' + s[0] + '</div><div class="ln-stat-l">' + s[1] + '</div></div>'; }).join('');
+    }
+    tS.addEventListener('input', drawThr);
+    drawThr();
+
+    /* ── cross-validation (fixed seed) ────────────── */
+    function cvScore(keys) {
+      var rand = SL.rng(7), accs = [], lls = [];
+      for (var r = 0; r < CV_REPS; r++) {
+        var ok = 0, ll = 0;
+        SL.kfold(N, 5, rand).forEach(function (f) {
+          var X0 = f.train.map(function (i) { return keys.map(function (k) { return R[i][k]; }); }), sc = SL.scaler(X0);
+          var m = SL.models.logreg(X0.map(sc.apply), f.train.map(function (i) { return yb[i]; }), { lr: LR, iters: 500 });
+          f.test.forEach(function (i) {
+            var p = m.proba(sc.apply(keys.map(function (k) { return R[i][k]; })));
+            if ((p >= 0.5 ? 1 : 0) === yb[i]) ok++;
+            ll += penalty(p, yb[i]);
+          });
+        });
+        accs.push(ok / N); lls.push(ll / N);
+      }
+      return { acc: SL.mean(accs), ll: SL.mean(lls) };
+    }
+    var cv1 = cvScore([X_KEY]);
+    document.getElementById('cvText').innerHTML = 'One caution. Every accuracy above is measured on the same ' + N + ' districts the model was fitted to. When we refit it inside 5-fold cross-validation (<a href="train-test-validation.html">explainer 01</a>), so each district is judged by a model that never saw it, accuracy at the 50% cut-off is <b>' + SL.pct(cv1.acc) + '</b> instead of <b>' + SL.pct(cm.accuracy) + '</b>, and log-loss is <b>' + SL.fmt(cv1.ll, 3) + '</b> instead of <b>' + SL.fmt(LL, 3) + '</b>. That is closer to what to expect for a district the model has not seen.';
+
+    /* ── interactive 3: two clues ─────────────────── */
+    var W2 = NARROW ? 560 : 880, H2 = NARROW ? 500 : 420, M2 = { t: 14, r: 16, b: 44, l: 50 };
+    var svg2 = d3.select('#twoSvg').attr('viewBox', [0, 0, W2, H2]);
+    var x2 = d3.scaleLinear([X_LO, X_HI], [M2.l, W2 - M2.r]);
+    var clip2 = clip(svg2, 'twoClip', M2, W2, H2);
+    var bg = svg2.append('image').attr('x', M2.l).attr('y', M2.t).attr('width', W2 - M2.l - M2.r).attr('height', H2 - M2.t - M2.b).attr('preserveAspectRatio', 'none');
+    var g2grid = svg2.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + M2.l + ',0)');
+    svg2.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H2 - M2.b) + ')').call(d3.axisBottom(x2).ticks(NARROW ? 6 : 10).tickFormat(function (v) { return v + '%'; }));
+    var g2y = svg2.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + M2.l + ',0)');
+    svg2.append('text').attr('class', 'ln-axis-label').attr('x', W2 - M2.r).attr('y', H2 - 6).attr('text-anchor', 'end').text('Women who can read (Census 2011) →');
+    var y2Lab = svg2.append('text').attr('class', 'ln-dlabel').attr('x', M2.l + 6).attr('y', M2.t).attr('dy', '0.8em');
+    var lines2 = svg2.append('g').attr('clip-path', clip2);
+    var lab2 = svg2.append('g');
+    var bgHit = svg2.append('rect').attr('x', M2.l).attr('y', M2.t).attr('width', W2 - M2.l - M2.r).attr('height', H2 - M2.t - M2.b).attr('fill', 'transparent');
+    var dots2 = svg2.append('g');
+    var sym = { 1: d3.symbol(d3.symbolCircle, 150)(), 0: d3.symbol(d3.symbolSquare, 125)() };
+    var cache2 = {};
+    function model2(zk) {
+      if (cache2[zk]) return cache2[zk];
+      var keys = [X_KEY, Z[zk].key], X0 = R.map(function (d) { return keys.map(function (k) { return d[k]; }); }), sc = SL.scaler(X0);
+      var m = SL.models.logreg(X0.map(sc.apply), yb, { lr: LR, iters: ITERS });
+      var fn = function (a, b2) { return m.proba(sc.apply([a, b2])); };
+      var p = R.map(function (d) { return fn(d[X_KEY], d[Z[zk].key]); });
+      var o = { keys: keys, m: m, sc: sc, fn: fn, p: p, acc: SL.metrics.accuracy(yb, p.map(function (q) { return q >= 0.5 ? 1 : 0; })), ll: m.loss(), cv: cvScore(keys) };
+      o.or2 = Math.exp(10 * m.w[1] / sc.sd[1]);
+      /* x2 value on the p-contour at literacy a: b + w1 (a−μ1)/σ1 + w2 (v−μ2)/σ2 = logit(p) */
+      o.contour = function (a, pp) { return sc.mu[1] + sc.sd[1] * (logit(pp) - m.b - m.w[0] * (a - sc.mu[0]) / sc.sd[0]) / m.w[1]; };
+      cache2[zk] = o;
+      return o;
+    }
+    function drawTwo(zk) {
+      var o = model2(zk), zKey = Z[zk].key;
+      var ext = d3.extent(R, function (d) { return d[zKey]; }), pad = (ext[1] - ext[0]) * 0.08;
+      var y2 = d3.scaleLinear([Math.max(0, ext[0] - pad), Math.min(100, ext[1] + pad)], [H2 - M2.b, M2.t]).nice();
+      g2y.call(d3.axisLeft(y2).ticks(6).tickFormat(function (v) { return v + '%'; }));
+      g2grid.call(d3.axisLeft(y2).ticks(6).tickSize(-(W2 - M2.l - M2.r)).tickFormat(''));
+      y2Lab.text('↑ ' + Z[zk].axis);
+      /* probability shading: one pixel per cell on a small canvas, stretched (and smoothed) by the browser */
+      var NX = 150, NY = 90, cv = document.createElement('canvas'), ctx = cv.getContext('2d');
+      cv.width = NX; cv.height = NY;
+      var img = ctx.createImageData(NX, NY), cP = d3.rgb(C.pos), cN = d3.rgb(C.neg);
+      var pw = (W2 - M2.l - M2.r) / NX, ph = (H2 - M2.t - M2.b) / NY;
+      for (var j = 0; j < NY; j++) for (var i = 0; i < NX; i++) {
+        var pp = o.fn(x2.invert(M2.l + (i + 0.5) * pw), y2.invert(M2.t + (j + 0.5) * ph)), col = pp >= 0.5 ? cP : cN, k = 4 * (j * NX + i);
+        img.data[k] = col.r; img.data[k + 1] = col.g; img.data[k + 2] = col.b;
+        img.data[k + 3] = Math.round(255 * (0.04 + 0.26 * Math.abs(2 * pp - 1)));
+      }
+      ctx.putImageData(img, 0, 0);
+      bg.attr('href', cv.toDataURL());
+      var xsamp = d3.range(X_LO, X_HI + 0.01, 0.5);
+      var cs = [{ p: 0.5, dash: null }, { p: 0.2, dash: '5 4' }, { p: 0.8, dash: '5 4' }];
+      lines2.selectAll('path').data(cs).join('path').attr('class', 'ln-fit')
+        .style('stroke-dasharray', function (c) { return c.dash; }).style('stroke-width', function (c) { return c.p === 0.5 ? 2 : 1.25; })
+        .attr('d', function (c) { return d3.line()(xsamp.map(function (a) { return [x2(a), y2(Math.max(-500, Math.min(600, o.contour(a, c.p))))]; })); });
+      /* label each contour where it is inside the plot, near its upper end */
+      lab2.selectAll('*').remove();
+      cs.forEach(function (c) {
+        var inside = xsamp.filter(function (a) { var v = o.contour(a, c.p); return v > y2.domain()[0] && v < y2.domain()[1] && x2(a) > M2.l + 20 && x2(a) < W2 - M2.r - 30; });
+        if (!inside.length) return;
+        var a = inside[Math.round(inside.length * (c.p === 0.5 ? 0.5 : c.p < 0.5 ? 0.82 : 0.18))] || inside[0];
+        lab2.append('text').attr('class', 'ln-dlabel').attr('x', x2(a) + 6).attr('y', y2(o.contour(a, c.p)) - 6).text(Math.round(c.p * 100) + '%');
+      });
+      dots2.selectAll('path').data(R).join('path').attr('class', 'ln-dot')
+        .attr('d', function (d, i) { return sym[yb[i]]; })
+        .attr('transform', function (d) { return 'translate(' + x2(d[X_KEY]) + ',' + y2(d[zKey]) + ')'; })
+        .attr('fill', function (d, i) { return yb[i] ? C.pos : C.neg; })
+        .on('pointerenter', function (ev, d) { var i = R.indexOf(d); d3.select(this).classed('is-hover', true).raise(); tip.show(ev, tipDistrict(d, i, Z[zk].name.charAt(0).toUpperCase() + Z[zk].name.slice(1) + ' ' + SL.fmt(d[zKey], 1) + '%<br>Two-clue chance ' + SL.pct(o.p[i]) + ' (literacy alone ' + SL.pct(p1[i]) + ')')); })
+        .on('pointerleave', function () { d3.select(this).classed('is-hover', false); tip.hide(); });
+      bgHit.on('pointermove', function (ev) {
+        var pt = d3.pointer(ev), a = x2.invert(pt[0]), b2 = y2.invert(pt[1]);
+        tip.show(ev, 'Female literacy ' + SL.fmt(a, 1) + '%<br>' + Z[zk].name.charAt(0).toUpperCase() + Z[zk].name.slice(1) + ' ' + SL.fmt(b2, 1) + '%<br>Chance of above-average stunting <b>' + SL.pct(o.fn(a, b2)) + '</b>');
+      }).on('pointerleave', function () { tip.hide(); });
+      document.getElementById('twoStats').innerHTML =
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.pct(cm.accuracy) + ' → ' + SL.pct(o.acc) + '</div><div class="ln-stat-l">Accuracy on the fitted districts: literacy alone → two clues</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.pct(cv1.acc) + ' → ' + SL.pct(o.cv.acc) + '</div><div class="ln-stat-l">Accuracy on unseen districts (cross-validated)</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(cv1.ll, 3) + ' → ' + SL.fmt(o.cv.ll, 3) + '</div><div class="ln-stat-l">Log-loss on unseen districts (lower is better)</div></div>';
+      var dir = o.or2 >= 1 ? 'multiplies the odds by <b>' + SL.fmt(o.or2, 2) + '</b>' : 'multiplies the odds by <b>' + SL.fmt(o.or2, 2) + '</b> (cuts them by ' + SL.pct(1 - o.or2) + ')';
+      var gainFit = o.acc - cm.accuracy, gainCv = o.cv.acc - cv1.acc, llBetter = o.cv.ll < cv1.ll;
+      document.getElementById('twoText').innerHTML = 'Holding female literacy fixed, each extra 10 points of ' + Z[zk].name + ' ' + dir + '. ' +
+        'On the ' + N + ' districts it was fitted to, adding this clue changes accuracy by <b>' + signed(100 * gainFit, 0) + ' points</b>. ' +
+        'On districts held out by cross-validation the change is <b>' + signed(100 * gainCv, 0) + ' points</b>, and the held-out log-loss ' + (llBetter ? 'improves' : 'gets <em>worse</em>') + '. ' +
+        (llBetter && gainCv > 0 ? 'Here the second clue carries real information beyond literacy.' :
+          'An extra clue always helps on the districts a model was fitted to, because it has one more dial to turn. With only ' + N + ' districts, that help often vanishes on districts it has not seen.');
+    }
+    document.querySelectorAll('.ln-seg button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('.ln-seg button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        drawTwo(b.dataset.z);
+      });
+    });
+    drawTwo('tribal');
+
+    /* ── data table ─────────────────────────────── */
+    document.getElementById('dataTable').innerHTML = '<thead><tr><th>District</th><th>Female literacy %</th><th>Stunted %</th><th>At or above ' + V.thr + '%?</th><th>Model chance</th><th>Tribal %</th><th>Urban %</th><th>Facility births %</th></tr></thead><tbody>' +
+      R.map(function (d, i) { return i; }).sort(function (a, b) { return R[a].name.localeCompare(R[b].name); }).map(function (i) {
+        var d = R[i];
+        return '<tr><td>' + d.name + '</td><td>' + SL.fmt(xs[i], 1) + '</td><td>' + SL.fmt(d[Y_KEY], 1) + '</td><td>' + (yb[i] ? 'Yes' : 'No') + '</td><td>' + SL.pct(p1[i]) + '</td><td>' +
+          SL.fmt(d[Z.tribal.key], 1) + '</td><td>' + SL.fmt(d[Z.urban.key], 1) + '</td><td>' + SL.fmt(d[Z.births.key], 1) + '</td></tr>';
+      }).join('') + '</tbody>';
+  }).catch(function (err) {
+    console.error(err);
+    document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
+  });
+})();
+</script>
+</body>
+</html>

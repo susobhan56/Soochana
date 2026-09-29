@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural Networks · Soochana Learn</title>
+<meta name="description" content="How a neural network turns straight lines into curved boundaries, how it learns its weights, and why a bigger network is not a better one on Odisha's 30 districts.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20260929">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  /* page-only layout for the network diagram + decision map */
+  .nn-panels { display: grid; grid-template-columns: 1fr 1.15fr; gap: 14px; align-items: center; }
+  .nn-map { position: relative; }
+  .nn-map canvas { position: absolute; image-rendering: auto; }
+  .ln-figure .nn-map svg { position: relative; }
+  /* style.css strokes every <path> and restyles every <select> for the maps; undo that here */
+  .ln-page .nn-map svg path.ln-dot.is-hover { stroke: var(--ink-heading); stroke-width: 2px; }
+  .nn-bound, .nn-hline, .nn-ring { pointer-events: none; }
+  .ln-page .ln-controls select { min-width: 0 !important; padding: 6px 34px 6px 12px !important; background-position: right 10px center !important; font-size: 14px !important; box-shadow: none !important; }
+  .nn-bound { fill: none; stroke: var(--ln-fit); stroke-width: 1.6px; stroke-linejoin: round; }
+  .nn-hline { fill: none; stroke: var(--ln-fit); stroke-width: 1.4px; stroke-dasharray: 5 4; opacity: .8; }
+  .nn-ring { fill: none; stroke: var(--ink-heading); stroke-width: 1.4px; }
+  .nn-node { fill: var(--ln-card); stroke: var(--ln-axis); stroke-width: 1px; }
+  .nn-lab { font-size: 12px; fill: var(--ink-body); font-weight: 500; }
+  .nn-cap { font-size: 11px; fill: var(--ink-subtle); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+  .nn-val { font-size: 11.5px; font-weight: 600; fill: var(--ink-heading); font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--ln-card); stroke-width: 3px; }
+  .nn-note { font-size: 12px; color: var(--ink-subtle); margin: 6px 0 0; line-height: 1.45; }
+  .nn-ramp { display: inline-flex; align-items: center; gap: 6px; }
+  .nn-ramp i { width: 70px !important; height: 9px !important; border-radius: 3px !important; }
+  .ln-legend svg.nn-sym { width: 13px; height: 13px; overflow: visible; }
+  .ln-card .ln-eq { font-size: 14px; margin: 10px 0; padding: 10px 6px; white-space: nowrap; }
+  .ln-card .ln-btn { margin-top: 4px; }
+  .ln-btn[disabled], .ln-controls input[disabled] { opacity: .45; cursor: default; }
+  .nn-play { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 860px) {
+    .nn-panels { grid-template-columns: 1fr; gap: 2px; }
+    .nn-play { grid-template-columns: 1fr; }
+    /* these SVGs are drawn at the phone's own pixel size, so keep text at its normal size */
+    .nn-px .ln-axis text, .nn-px .ln-axis-label, .nn-px .ln-dlabel { font-size: 11.5px; }
+    .nn-lab { font-size: 11px; }
+    .ln-graphic .ln-figure { padding: 10px 10px 6px; }
+    .ln-graphic .ln-figure-s { margin-bottom: 4px; }
+    .ln-graphic .ln-legend { font-size: 12px; gap: 3px 12px; margin-bottom: 2px; }
+    .ln-graphic .nn-note { display: none; }
+  }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · 05</div>
+    <h2 class="ln-title">Neural <em>Networks</em></h2>
+    <p class="ln-dek">A neural network is a set of small logistic regressions wired together. Here is how the wiring lets it draw curved boundaries, how it learns, and why, with only 30 districts, a bigger network is not a better one.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census 2011 and NFHS-5 · Every number on this page is computed live in your browser</div>
+  </section>
+
+  <div class="ln-prose">
+    <p>In the first explainer we predicted <em>how many</em> young children are stunted in a district. Here we ask a yes-or-no question instead: is a district's child stunting <strong>above the state average</strong> of <span data-v="st"></span>%? In NFHS-5, <span data-v="nPos"></span> of the 30 districts were at or above it.</p>
+    <p>We give the model two facts about each district, both from Census 2011: the share of <strong>women who can read</strong>, and the share of people who live in <strong>towns</strong>. Two inputs means we can draw everything the model does on one flat map.</p>
+  </div>
+
+  <!-- ── scroll story ─────────────────────────────── -->
+  <section class="ln-scrolly" id="story">
+    <div class="ln-steps">
+      <div class="ln-step"><div class="ln-card">
+        <h3>Thirty districts, two facts</h3>
+        <p>Each shape is a district. Across: women who can read. Up: people living in towns.</p>
+        <p><span class="ln-k ln-k-pos"><span>Orange triangles</span></span> are the <span data-v="nPos"></span> districts where stunting is at or above the state average. <span class="ln-k ln-k-neg"><span>Teal circles</span></span> are the <span data-v="nNeg"></span> below it.</p>
+        <p>High stunting crowds the low-literacy side, but not neatly. A few orange triangles sit among the more literate districts.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>One neuron</h3>
+        <p>The smallest network is a single <b>neuron</b>. It multiplies each input by a <b>weight</b>, adds a constant (the <b>bias</b>), and squashes the total into a chance between 0 and 1:</p>
+        <span class="ln-eq" data-v="eq1"></span>
+        <p>Both inputs are first rescaled so that 0 means "an average district" and 1 means "one standard deviation above it". The weights are learned from the data.</p>
+        <p>The background shows its answer everywhere on the map: orange where it says "above average", teal where it says "below", grey where it is unsure. One neuron is exactly <a href="logistic-regression.html">logistic regression</a> (explainer 03).</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>A straight boundary</h3>
+        <p>The line where the chance crosses 50% is the model's <b>decision boundary</b>. For a single neuron it is always a straight line, whatever the data look like.</p>
+        <p>This one gets <b data-v="acc1"></b> of 30 districts right. The <span data-v="wrong1n"></span> it gets wrong are ringed: <span data-v="wrong1list"></span>.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Why the squash matters</h3>
+        <p>The squashing step is called an <b>activation function</b>. Networks use a few kinds: the S-shaped <b>sigmoid</b> (0 to 1), its cousin <b>tanh</b> (−1 to 1), and <b>ReLU</b>, which turns negatives into zero.</p>
+        <p>The bend is the point. Without it, neurons stacked on neurons add up to one big weighted sum, and a weighted sum can only ever draw a straight line.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>A hidden layer</h3>
+        <p>Now put three neurons between the inputs and the output. Each is its own small logistic regression with its own weights (using tanh), so each draws its own straight line across the map: the dashed lines <b>A</b>, <b>B</b> and <b>C</b>.</p>
+        <p>The small squares in the diagram show each neuron's output across the whole map. They are called <b>hidden</b> neurons because nobody checks their outputs against the data. Only the final answer is graded.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Lines combine into a curve</h3>
+        <p>The output neuron takes a weighted sum of the three hidden outputs and squashes it once more. Three steps, facing different ways, add up to a boundary that can bend.</p>
+        <p>This network gets <b data-v="acc3"></b> of 30 right, against <b data-v="acc1"></b> for the single neuron.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Follow one district</h3>
+        <p>Take <b>Sambalpur</b>. <b data-v="sbLit"></b> of its women can read, more than in <span data-v="sbRank"></span> of the other 29 districts, and <b data-v="sbUrb"></b> of its people live in towns. Yet <b data-v="sbSt"></b> of its young children are stunted.</p>
+        <p>Rescaled, its inputs are <b data-v="sbZ"></b>. The three hidden neurons turn them into <b data-v="sbH"></b>. The output neuron weighs those and squashes: a <b data-v="sbP3"></b> chance of above-average stunting.</p>
+        <p data-v="sbVerdict"></p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>How it learns</h3>
+        <p>Nobody sets the weights by hand. Training starts from small random weights, then nudges every weight a little in the direction that lowers the <b>log-loss</b>, a score that punishes confident wrong answers hardest.</p>
+        <p>Working out that direction, layer by layer from the output back to the inputs, is called <b>backpropagation</b>. Here every district is used in every nudge, so each nudge is one <b>epoch</b>. Watch <span data-v="epochs"></span> of them.</p>
+        <button class="ln-btn ghost" id="replay" type="button">Replay training</button>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>More neurons, more wiggle</h3>
+        <p>Give the hidden layer eight neurons and train again. It now gets <b data-v="acc8"></b> of 30 right, and its log-loss falls from <b data-v="loss3"></b> to <b data-v="loss8"></b>. The boundary bends around single districts.</p>
+        <p>But it is marking its own homework. Whether that bending is real pattern or memorised noise, only districts it has not seen can tell (see <a href="bias-variance.html">The Bias–Variance Tradeoff</a>).</p>
+      </div></div>
+    </div>
+    <div class="ln-graphic" aria-live="polite">
+      <figure class="ln-figure nn-px" style="margin:0">
+        <p class="ln-figure-t" id="figTitle">Female literacy, urban share and child stunting</p>
+        <p class="ln-figure-s" id="figSub">Hover a shape for the district</p>
+        <div class="ln-legend" id="figLegend"></div>
+        <div class="nn-panels">
+          <div id="storyNetBox"><svg id="storyNet" role="img" aria-label="Diagram of the neural network: inputs on the left, neurons joined by weighted lines, the output on the right"></svg></div>
+          <div id="storyMap"></div>
+        </div>
+        <p class="nn-note">Lines between neurons: orange = positive weight, teal = negative, thicker = larger.</p>
+        <div class="ln-source">Female literacy and urban share: Census 2011 · Stunting: NFHS-5 (2019–21)</div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── interactive: playground ─────────────────── -->
+  <div class="ln-prose">
+    <h2>Try it: build and train your own</h2>
+    <p>Choose how many hidden layers and neurons the network has, which activation it uses and how big each nudge is (the <b>learning rate</b>). Then press <em>Play</em> and watch it learn. The ringed districts are the ones it currently gets wrong.</p>
+    <p>Things to try: <em>No hidden layer</em> can only draw a straight line. Eight neurons will eventually get almost every district right. A learning rate of 0.3 lurches about; 0.003 crawls. <em>New random start</em> trains the same network from different starting weights, and often finds a different boundary.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure nn-px">
+      <div class="ln-controls">
+        <button class="ln-btn" id="pgPlay" type="button">Play</button>
+        <button class="ln-btn ghost" id="pgStep" type="button" title="Train for 10 more epochs">Step</button>
+        <button class="ln-btn ghost" id="pgReset" type="button">Reset</button>
+        <button class="ln-btn ghost" id="pgSeed" type="button">New random start</button>
+      </div>
+      <div class="ln-controls">
+        <div class="ln-seg" role="group" aria-label="Hidden layers" id="pgLayers">
+          <button type="button" aria-pressed="false" data-l="0">No hidden layer</button>
+          <button type="button" aria-pressed="true" data-l="1">1 hidden layer</button>
+          <button type="button" aria-pressed="false" data-l="2">2 layers</button>
+        </div>
+        <label>Neurons per layer <input type="range" id="pgN" min="1" max="8" value="3"><output id="pgNOut">3</output></label>
+        <label>Activation <select id="pgAct"><option value="tanh">tanh</option><option value="relu">ReLU</option><option value="sigmoid">sigmoid</option></select></label>
+        <label>Learning rate <select id="pgLr"><option>0.003</option><option>0.01</option><option selected>0.03</option><option>0.1</option><option>0.3</option></select></label>
+      </div>
+      <div class="ln-stats" id="pgStats"></div>
+      <div class="nn-play">
+        <div>
+          <p class="ln-figure-t">The network</p>
+          <svg id="pgNet" role="img" aria-label="Diagram of your network, with each neuron's output shown as a small map"></svg>
+          <p class="ln-figure-t" style="margin-top:8px">Training log-loss by epoch</p>
+          <svg id="pgLoss" role="img" aria-label="Training log-loss against epoch"></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t">What it predicts across the map</p>
+          <div class="ln-legend" id="pgLegend"></div>
+          <div id="pgMap"></div>
+        </div>
+      </div>
+      <p class="nn-note">Lines between neurons: orange = positive weight, teal = negative, thicker = larger. Each small square shows that neuron's output over the same map (orange high, teal low).</p>
+    </div>
+  </div>
+
+  <!-- ── held-out accuracy by size ───────────────── -->
+  <div class="ln-prose">
+    <h2>Is the bigger network better?</h2>
+    <p>Training accuracy can only tell us how well a network remembers. To see how it does on districts it has <em>not</em> seen, we use 5-fold cross-validation (explainer <a href="train-test-validation.html">01</a>): train on 24 districts, test on the other 6, rotate until every district has been tested once, then repeat the whole thing with three different shuffles.</p>
+    <p>That is <span data-v="nFits"></span> networks, each trained for <span data-v="epochs"></span> epochs, all in your browser. The chart fills in as they finish.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure nn-px">
+      <div class="ln-legend">
+        <span><i class="line" style="background:var(--ln-train)"></i>Accuracy on the 24 training districts</span>
+        <span><i class="line" style="background:var(--ln-val)"></i>Accuracy on the 6 held-out districts</span>
+        <span><i class="line" style="background:var(--ln-ghost)"></i>Always guessing "above average"</span>
+      </div>
+      <svg id="cvSvg" role="img" aria-label="Training and held-out accuracy against the number of hidden neurons"></svg>
+      <div class="ln-stats" id="cvStats"></div>
+      <p class="nn-note" id="cvNote"></p>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p id="cvText">Training the networks…</p>
+    <div class="ln-callout">
+      <span class="ln-callout-t">Take-aways</span>
+      A neuron is a weighted sum passed through an activation function; on its own it is logistic regression and draws a straight boundary. A hidden layer of neurons draws several lines, and the output neuron blends them into a curve. Training nudges every weight downhill on the log-loss, using backpropagation to find the direction. More neurons always fit the training districts better, but with 30 districts most of that extra flexibility fits noise. Judge a network on districts it has not seen. Neural networks earn their keep with thousands of examples, not thirty.
+    </div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p>Female literacy and urban population share are from Census 2011; the share of children under 5 who are stunted (too short for their age) is from the NFHS-5 district fact sheets (2019–21), as compiled in the portal's Health workbook. A district counts as "above average" when its stunting is at or above the NFHS-5 state figure for Odisha. Both inputs are z-scored (mean 0, standard deviation 1; for cross-validation, using the training districts only). Networks are fully connected, with a sigmoid output, trained on all training districts at once (full batch) with the Adam optimiser on log-loss, learning rate 0.03 and a fixed random seed unless you change them, so every reader sees the same first view. The story networks and the cross-validation use <span data-v="epochs"></span> epochs and tanh. Cross-validation accuracy counts each held-out prediction once per shuffle. These models are teaching devices: 30 districts are far too few to train a neural network for real use, two inputs leave out most of what drives stunting, and a pattern across districts is a correlation, not a cause.</p>
+    <details class="ln-details">
+      <summary>Show the data table</summary>
+      <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
+    </details>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="equality-of-odds.html"><small>Next · 06</small><b>Equality of Odds</b></a>
+    <a href="decision-tree.html"><small>04</small><b>Decision Trees</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var FX = 'f.female_lit', FY = 'f.urban_pct', YK = 'nfhs5.stunted';
+  var X_LO = 30, X_HI = 85, Y_LO = 0, Y_HI = 52;           // map extent (percent)
+  var EPOCHS = 3000, SEED = 7, LR = 0.03, GRID = 60, TGRID = 22, MAX_PLAY = 10000;
+  var C = { pos: SL.color('pos'), neg: SL.color('neg'), train: SL.color('train'), val: SL.color('val'), fit: SL.color('fit') };
+  var LETTERS = 'ABCDEFGH';
+  var tip = SL.tooltip();
+  var REDUCED = SL.dur(1) === 0;
+
+  /* ── small helpers ───────────────────────────── */
+  function hexRgb(h) { h = h.replace('#', ''); return [0, 2, 4].map(function (k) { return parseInt(h.slice(k, k + 2), 16); }); }
+  var NEU = [236, 234, 228], RN = hexRgb(C.neg), RP = hexRgb(C.pos);
+  /* diverging wash: teal (0) … neutral grey (0.5) … orange (1); k = strength at the ends */
+  function wash(p, k) {
+    var t = Math.max(-1, Math.min(1, (p - 0.5) * 2)), c = t < 0 ? RN : RP, a = Math.abs(t) * k;
+    return [NEU[0] + (c[0] - NEU[0]) * a, NEU[1] + (c[1] - NEU[1]) * a, NEU[2] + (c[2] - NEU[2]) * a];
+  }
+  function rgb(c) { return 'rgb(' + c.map(Math.round).join(',') + ')'; }
+  /* a probability; keeps one decimal near 0% and 100% so a confident model never reads as certain */
+  function pctP(p, words) {
+    if (p > 0.999) return (words ? 'more than ' : '>') + '99.9%';
+    if (p < 0.001) return (words ? 'less than ' : '<') + '0.1%';
+    return p > 0.99 || p < 0.01 ? SL.fmt(100 * p, 1) + '%' : SL.pct(p);
+  }
+  function signed(v, d) { return (v < 0 ? '−' : '+') + SL.fmt(Math.abs(v), d); }
+  function listNames(a) { return a.length <= 1 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+  function isNarrow() { return window.matchMedia('(max-width: 860px)').matches; }
+  /* rAF when visible, a timer when the tab is in the background (rAF stalls there) */
+  function nextFrame(fn) {
+    var done = false, a = requestAnimationFrame(go), b = setTimeout(go, 100);
+    function go() { if (done) return; done = true; cancelAnimationFrame(a); clearTimeout(b); fn(performance.now()); }
+  }
+  function sym(isPos) { return d3.symbol().type(isPos ? d3.symbolTriangle : d3.symbolCircle).size(isPos ? 150 : 125)(); }
+  function symKey(isPos, size) {
+    var s = size || 12;
+    return '<svg class="nn-sym" viewBox="' + (-s / 2) + ' ' + (-s / 2) + ' ' + s + ' ' + s + '"><path d="' +
+      d3.symbol().type(isPos ? d3.symbolTriangle : d3.symbolCircle).size(isPos ? 60 : 50)() + '" fill="' + (isPos ? C.pos : C.neg) + '"/></svg>';
+  }
+
+  SL.loadData().then(function (data) {
+    var R = SL.rows(data.districts, [FX, FY, YK]);
+    var ST = data.meta.state_nfhs5.stunted;
+    var X0 = R.map(function (d) { return [d[FX], d[FY]]; });
+    var Y = R.map(function (d) { return d[YK] >= ST ? 1 : 0; });
+    var sc = SL.scaler(X0), X = X0.map(sc.apply), N = R.length;
+    var nPos = d3.sum(Y);
+
+    function mlp(sizes, o) {
+      o = o || {};
+      return SL.models.mlp(sizes, { seed: o.seed || SEED, lr: o.lr || LR, activation: o.act || 'tanh' });
+    }
+    function trained(sizes) { return mlp(sizes).step(X, Y, EPOCHS); }
+    function nRight(net) { var c = 0; X.forEach(function (z, i) { if ((net.proba(z) >= 0.5 ? 1 : 0) === Y[i]) c++; }); return c; }
+    function wrongIdx(net) { return SL.range(N).filter(function (i) { return (net.proba(X[i]) >= 0.5 ? 1 : 0) !== Y[i]; }); }
+
+    /* grid of map cells (cell centres), in raw and z-scored units */
+    function makeGrid(n) {
+      var raw = [], z = [];
+      for (var j = 0; j < n; j++) for (var i = 0; i < n; i++) {
+        var r = [X_LO + (i + 0.5) / n * (X_HI - X_LO), Y_HI - (j + 0.5) / n * (Y_HI - Y_LO)];
+        raw.push(r); z.push(sc.apply(r));
+      }
+      return { n: n, raw: raw, z: z };
+    }
+    var G = makeGrid(GRID), TG = makeGrid(TGRID);
+
+    /* ── story networks (fixed seed, so every reader sees the same) ── */
+    var net1 = trained([2, 1]), net3 = trained([2, 3, 1]), net8 = trained([2, 8, 1]);
+    var w1 = wrongIdx(net1);
+    var sbI = R.findIndex(function (d) { return d.name === 'Sambalpur'; });
+    var sb = R[sbI], sbActs = net3.forward(X[sbI]), sbP1 = net1.proba(X[sbI]), sbP3 = sbActs[2][0];
+    var fmtW = function (v) { return SL.fmt(Math.abs(v), 2); };
+    var W1 = net1.W[0][0], B1 = net1.B[0][0];
+    var stTxt = SL.fmt(ST, ST % 1 ? 1 : 0);
+    var V = {
+      st: stTxt, nPos: nPos, nNeg: N - nPos, epochs: SL.fmt(EPOCHS),
+      eq1: 'σ(' + (W1[0] < 0 ? '−' : '') + fmtW(W1[0]) + ' × literacy ' + (W1[1] < 0 ? '−' : '+') + ' ' + fmtW(W1[1]) + ' × urban ' + (B1 < 0 ? '−' : '+') + ' ' + fmtW(B1) + ')',
+      acc1: nRight(net1), wrong1n: w1.length === 1 ? 'one' : w1.length, wrong1list: listNames(w1.map(function (i) { return R[i].name; })),
+      acc3: nRight(net3), acc8: nRight(net8),
+      loss3: SL.fmt(net3.loss(X, Y), 2), loss8: net8.loss(X, Y) < 0.001 ? 'almost zero' : SL.fmt(net8.loss(X, Y), net8.loss(X, Y) < 0.01 ? 3 : 2),
+      sbLit: SL.fmt(sb[FX], 1) + '%', sbUrb: SL.fmt(sb[FY], 1) + '%', sbSt: SL.fmt(sb[YK], 1) + '%',
+      sbRank: R.filter(function (d) { return d[FX] < sb[FX]; }).length,
+      sbZ: signed(X[sbI][0], 2) + ' for literacy and ' + signed(X[sbI][1], 2) + ' for urban share',
+      sbH: listNames(sbActs[1].map(function (v, j) { return LETTERS[j] + ' ' + signed(v, 2); })),
+      sbP3: pctP(sbP3, true),
+      nFits: 0,
+    };
+    var sbRightNow = (sbP3 >= 0.5 ? 1 : 0) === Y[sbI], sbRightBefore = (sbP1 >= 0.5 ? 1 : 0) === Y[sbI];
+    V.sbVerdict = (sbRightNow ? 'Right. ' : 'Still wrong. ') + 'The single neuron, limited to a straight line, gave Sambalpur a ' + pctP(sbP1, true) + ' chance' +
+      (sbRightBefore === sbRightNow ? '.' : sbRightNow ? ' and called it wrong. The bend in the boundary is what catches it.' : '.');
+
+    /* ── map view: probability wash (canvas) + axes, boundary, dots (SVG) ── */
+    function MapView(host, label) {
+      var M = { t: 22, r: 8, b: 36, l: 40 };
+      var wrap = d3.select(host).append('div').attr('class', 'nn-map');
+      var cv = wrap.append('canvas').attr('width', GRID).attr('height', GRID).attr('role', 'img').attr('aria-label', 'Shading: the model\'s chance of above-average stunting at every point of the map');
+      var svg = wrap.append('svg').attr('role', 'img').attr('aria-label', label);
+      var ctx = cv.node().getContext('2d'), img = ctx.createImageData(GRID, GRID);
+      var gAx = svg.append('g'), gLines = svg.append('g'), gBound = svg.append('g'), gRing = svg.append('g'), gDots = svg.append('g'), gHi = svg.append('g');
+      var W = 400, H = 400, x, y, vals = new Float64Array(GRID * GRID), st = {};
+      var P = R.map(function (d, i) { return { d: d, i: i }; });
+
+      function contour(values, level, cls) {
+        var n = GRID, cs = d3.contours().size([n, n]).thresholds([level])(Array.from(values));
+        var sx = function (g) { return x(X_LO + g / n * (X_HI - X_LO)); }, sy = function (g) { return y(Y_HI - g / n * (Y_HI - Y_LO)); };
+        var onB = function (p) { return p[0] <= 1e-6 || p[0] >= n - 1e-6 || p[1] <= 1e-6 || p[1] >= n - 1e-6; };
+        var lines = [];
+        cs[0].coordinates.forEach(function (poly) {
+          poly.forEach(function (ring) {
+            var cur = [];
+            for (var k = 1; k < ring.length; k++) {
+              var a = ring[k - 1], b = ring[k];
+              if (onB(a) && onB(b)) { if (cur.length > 1) lines.push(cur); cur = []; continue; }
+              if (!cur.length) cur.push([sx(a[0]), sy(a[1])]);
+              cur.push([sx(b[0]), sy(b[1])]);
+            }
+            if (cur.length > 1) lines.push(cur);
+          });
+        });
+        return lines;
+      }
+      function tipHtml(p) {
+        var d = p.d, s = '<b>' + d.name + '</b><br>Female literacy ' + SL.fmt(d[FX], 1) + '% · urban ' + SL.fmt(d[FY], 1) + '%<br>Stunted ' + SL.fmt(d[YK], 1) + '% (' + (Y[p.i] ? 'at or above' : 'below') + ' the ' + stTxt + '% average)';
+        if (st.model) {
+          var q = st.model.proba(X[p.i]);
+          s += '<br><span class="muted">Model: ' + pctP(q) + ' chance of above average, ' + (((q >= 0.5 ? 1 : 0) === Y[p.i]) ? 'right' : 'wrong') + '</span>';
+        }
+        return s;
+      }
+      var dots = gDots.selectAll('path').data(P).join('path').attr('class', 'ln-dot')
+        .attr('d', function (p) { return sym(Y[p.i] === 1); })
+        .attr('fill', function (p) { return Y[p.i] ? C.pos : C.neg; })
+        .on('pointerenter', function (e, p) { d3.select(this).classed('is-hover', true).raise(); tip.show(e, tipHtml(p)); })
+        .on('pointermove', function (e, p) { tip.show(e, tipHtml(p)); })
+        .on('pointerleave', function () { d3.select(this).classed('is-hover', false); tip.hide(); });
+
+      function paint() {
+        var d = img.data;
+        if (!st.model) {
+          for (var k = 0; k < GRID * GRID; k++) { d[4 * k] = 247; d[4 * k + 1] = 246; d[4 * k + 2] = 242; d[4 * k + 3] = 255; }
+        } else {
+          for (var k2 = 0; k2 < GRID * GRID; k2++) {
+            var p = st.model.proba(G.z[k2]); vals[k2] = p;
+            var c = wash(p, 0.42);
+            d[4 * k2] = c[0]; d[4 * k2 + 1] = c[1]; d[4 * k2 + 2] = c[2]; d[4 * k2 + 3] = 255;
+          }
+        }
+        ctx.putImageData(img, 0, 0);
+      }
+      function draw() {
+        paint();
+        var bl = st.model && st.boundary ? contour(vals, 0.5) : [];
+        gBound.selectAll('path').data(bl).join('path').attr('class', 'nn-bound').attr('d', d3.line());
+        /* first-layer neurons' own lines (where their weighted sum is 0) */
+        var hl = [];
+        (st.lines || []).forEach(function (L, j) {
+          var zv = new Float64Array(GRID * GRID), w = L.w, b = L.b;
+          for (var k = 0; k < GRID * GRID; k++) zv[k] = b + w[0] * G.z[k][0] + w[1] * G.z[k][1];
+          contour(zv, 0).forEach(function (pl) { hl.push({ pl: pl, j: j }); });
+        });
+        gLines.selectAll('path').data(hl).join('path').attr('class', 'nn-hline').attr('d', function (h) { return d3.line()(h.pl); });
+        /* label each neuron's line once, on its longest piece, staggered along it so letters don't meet */
+        var longest = {}, labs = [];
+        hl.forEach(function (h) { if (!longest[h.j] || h.pl.length > longest[h.j].pl.length) longest[h.j] = h; });
+        Object.keys(longest).forEach(function (j) {
+          var pl = longest[j].pl, pt = pl[Math.min(pl.length - 1, Math.floor(pl.length * (0.3 + 0.18 * j)))];
+          labs.push({ t: LETTERS[j], x: Math.max(M.l + 8, Math.min(W - M.r - 8, pt[0] + 9)), y: Math.max(M.t + 8, Math.min(H - M.b - 8, pt[1])) });
+        });
+        gLines.selectAll('text').data(labs).join('text').attr('class', 'ln-dlabel').attr('text-anchor', 'middle').attr('dy', '0.35em')
+          .style('font-weight', 700).style('font-size', '13px').attr('x', function (l) { return l.x; }).attr('y', function (l) { return l.y; }).text(function (l) { return l.t; });
+        var wr = st.model && st.wrong ? wrongIdx(st.model) : [];
+        gRing.selectAll('circle').data(wr).join('circle').attr('class', 'nn-ring').attr('r', 11)
+          .attr('cx', function (i) { return x(X0[i][0]); }).attr('cy', function (i) { return y(X0[i][1]); });
+        var hi = st.highlight != null ? [st.highlight] : [];
+        gHi.selectAll('circle').data(hi).join('circle').attr('class', 'nn-ring').attr('r', 13).style('stroke-width', '2px')
+          .attr('cx', function (i) { return x(X0[i][0]); }).attr('cy', function (i) { return y(X0[i][1]); });
+        gHi.selectAll('text').data(hi).join('text').attr('class', 'ln-dlabel').attr('text-anchor', 'end')
+          .attr('x', function (i) { return x(X0[i][0]) - 16; }).attr('y', function (i) { return y(X0[i][1]) - 10; }).text(function (i) { return R[i].name; });
+      }
+      var self = {
+        resize: function (w, h) {
+          W = Math.max(200, Math.round(w)); H = Math.max(160, Math.round(h));
+          svg.attr('viewBox', [0, 0, W, H]);
+          x = d3.scaleLinear([X_LO, X_HI], [M.l, W - M.r]); y = d3.scaleLinear([Y_LO, Y_HI], [H - M.b, M.t]);
+          cv.style('left', M.l / W * 100 + '%').style('top', M.t / H * 100 + '%')
+            .style('width', (W - M.l - M.r) / W * 100 + '%').style('height', (H - M.t - M.b) / H * 100 + '%');
+          gAx.selectAll('*').remove();
+          var nx = W < 330 ? 5 : 6;
+          gAx.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')')
+            .call(d3.axisBottom(x).ticks(nx).tickSizeOuter(0).tickFormat(function (v) { return v + '%'; }));
+          gAx.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + M.l + ',0)')
+            .call(d3.axisLeft(y).ticks(H < 260 ? 4 : 5).tickSizeOuter(0).tickFormat(function (v) { return v + '%'; }));
+          gAx.append('text').attr('class', 'ln-axis-label').attr('x', W - M.r).attr('y', H - 4).attr('text-anchor', 'end').text('Women who can read →');
+          gAx.append('text').attr('class', 'ln-axis-label').attr('x', 2).attr('y', 11).text('↑ People living in towns');
+          dots.attr('transform', function (p) { return 'translate(' + x(X0[p.i][0]) + ',' + y(X0[p.i][1]) + ')'; });
+          draw();
+        },
+        set: function (o) { st = o || {}; draw(); },
+      };
+      return self;
+    }
+
+    /* ── network diagram ─────────────────────────── */
+    function NetView(svgNode) {
+      var svg = d3.select(svgNode), tcv = document.createElement('canvas');
+      tcv.width = tcv.height = TGRID;
+      var tctx = tcv.getContext('2d'), timg = tctx.createImageData(TGRID, TGRID), cache = null;
+      var wScale = d3.scaleLinear([0, 3], [0.6, 6]).clamp(true);
+      var self = { W: 320, H: 300 };
+      self.resize = function (w, h) { self.W = Math.round(w); self.H = Math.round(h); svg.attr('viewBox', [0, 0, self.W, self.H]); };
+
+      function thumbs(net) {
+        var L = net.sizes.length - 1, n = TGRID * TGRID, store = [];
+        for (var l = 1; l <= L; l++) store.push(net.sizes[l] ? d3.range(net.sizes[l]).map(function () { return new Float64Array(n); }) : []);
+        for (var k = 0; k < n; k++) {
+          var a = net.forward(TG.z[k]);
+          for (var l2 = 1; l2 <= L; l2++) for (var j = 0; j < a[l2].length; j++) store[l2 - 1][j][k] = a[l2][j];
+        }
+        return store.map(function (layer, li) {
+          var out = li === L - 1;
+          return layer.map(function (v) {
+            var mx = 1e-9;
+            if (!out && net.activation === 'relu') for (var q = 0; q < n; q++) mx = Math.max(mx, v[q]);
+            for (var k2 = 0; k2 < n; k2++) {
+              var p = out || net.activation === 'sigmoid' ? v[k2] : net.activation === 'relu' ? 0.5 + 0.5 * v[k2] / mx : (v[k2] + 1) / 2;
+              var c = wash(p, 0.9);
+              timg.data[4 * k2] = c[0]; timg.data[4 * k2 + 1] = c[1]; timg.data[4 * k2 + 2] = c[2]; timg.data[4 * k2 + 3] = 255;
+            }
+            tctx.putImageData(timg, 0, 0);
+            return tcv.toDataURL();
+          });
+        });
+      }
+
+      /* o: {ghost, thumbs: true|'cache'|false, letters, values (net.forward output), weightLabels} */
+      self.draw = function (net, o) {
+        o = o || {};
+        svg.selectAll('*').remove();
+        var W = self.W, H = self.H, sizes = net.sizes, L = sizes.length, narrow = W < 420;
+        var padL = narrow ? 58 : 66, padR = narrow ? 70 : 84, padT = 26, padB = 8;
+        var colX = sizes.map(function (_, l) { return padL + (W - padL - padR) * (l / (L - 1)); });
+        var hidN = d3.max(sizes.slice(1, -1)) || 1;
+        var gap = Math.min(64, (H - padT - padB) / Math.max(hidN, 2));
+        var colGap = L > 1 ? colX[1] - colX[0] : 100;
+        var box = Math.max(10, Math.min(40, gap * 0.74, colGap * 0.42));
+        var nodes = sizes.map(function (n, l) {
+          var g = l === 0 ? Math.min(H * 0.42, 110) : gap, s = l === 0 ? 0 : l === L - 1 ? Math.min(box * 1.3, 46) : box;
+          var cy = padT + (H - padT - padB) / 2;
+          return d3.range(n).map(function (j) { return { l: l, j: j, x: colX[l], y: cy + (j - (n - 1) / 2) * g, s: s }; });
+        });
+        /* column captions */
+        var caps = sizes.map(function (_, l) { return l === 0 ? 'Inputs' : l === L - 1 ? 'Output' : (L > 3 ? 'Hidden ' + l : 'Hidden'); });
+        svg.append('g').selectAll('text').data(caps).join('text').attr('class', 'nn-cap').attr('text-anchor', 'middle')
+          .attr('x', function (_, l) { return colX[l]; }).attr('y', 11).text(function (t) { return t; });
+        /* edges */
+        var edges = [];
+        for (var l = 0; l < L - 1; l++) nodes[l + 1].forEach(function (b, o2) {
+          nodes[l].forEach(function (a, i) { edges.push({ a: a, b: b, w: net.W[l][o2][i] }); });
+        });
+        var right = function (a) { return a.x + (a.l === 0 ? 6 : a.s / 2); }, left = function (b) { return b.x - b.s / 2; };
+        svg.append('g').selectAll('line').data(edges).join('line')
+          .attr('x1', function (e) { return right(e.a); }).attr('y1', function (e) { return e.a.y; })
+          .attr('x2', function (e) { return left(e.b); }).attr('y2', function (e) { return e.b.y; })
+          .attr('stroke', function (e) { return o.ghost ? 'var(--ln-ghost)' : e.w >= 0 ? C.pos : C.neg; })
+          .attr('stroke-width', function (e) { return o.ghost ? 1.5 : wScale(Math.abs(e.w)); })
+          .attr('stroke-opacity', o.ghost ? 1 : 0.8).attr('stroke-linecap', 'round')
+          .append('title').text(function (e) { return 'Weight ' + signed(e.w, 2); });
+        if (o.weightLabels) {
+          svg.append('g').selectAll('text').data(edges).join('text').attr('class', 'nn-val').attr('text-anchor', 'middle')
+            .attr('x', function (e) { return right(e.a) + (left(e.b) - right(e.a)) * 0.5; })
+            .attr('y', function (e) { return e.a.y + (e.b.y - e.a.y) * 0.5 - 7; })
+            .text(function (e) { return '× ' + signed(e.w, 2); });
+        }
+        /* inputs */
+        var inLab = [['Female', 'literacy'], ['Urban', 'share']];
+        var gi = svg.append('g').selectAll('g').data(nodes[0]).join('g').attr('transform', function (a) { return 'translate(' + a.x + ',' + a.y + ')'; });
+        gi.append('circle').attr('r', 6).attr('fill', 'var(--ink-heading)');
+        gi.append('text').attr('class', 'nn-lab').attr('text-anchor', 'end').attr('x', -11).attr('y', -3)
+          .selectAll('tspan').data(function (a) { return inLab[a.j]; }).join('tspan').attr('x', -11).attr('dy', function (_, k) { return k ? '1.15em' : 0; }).text(function (t) { return t; });
+        /* neurons */
+        var tn = o.ghost ? null : o.thumbs === 'cache' && cache ? cache : o.thumbs ? thumbs(net) : null;
+        if (o.thumbs && tn) cache = tn;
+        var neur = [];
+        nodes.slice(1).forEach(function (layer) { layer.forEach(function (n) { neur.push(n); }); });
+        var gn = svg.append('g').selectAll('g').data(neur).join('g').attr('transform', function (n) { return 'translate(' + n.x + ',' + n.y + ')'; });
+        gn.append('rect').attr('class', 'nn-node').attr('x', function (n) { return -n.s / 2; }).attr('y', function (n) { return -n.s / 2; })
+          .attr('width', function (n) { return n.s; }).attr('height', function (n) { return n.s; }).attr('rx', 3);
+        if (tn) {
+          gn.append('image').attr('preserveAspectRatio', 'none')
+            .attr('x', function (n) { return -n.s / 2 + 1; }).attr('y', function (n) { return -n.s / 2 + 1; })
+            .attr('width', function (n) { return n.s - 2; }).attr('height', function (n) { return n.s - 2; })
+            .attr('href', function (n) { return tn[n.l - 1][n.j]; });
+        }
+        if (o.ghost) gn.append('text').attr('class', 'nn-lab').attr('text-anchor', 'middle').attr('dy', '0.35em').style('font-size', '16px').text('?');
+        /* letters and values */
+        var single = L === 3;
+        if (o.letters && single) {
+          gn.filter(function (n) { return n.l === 1; }).append('text').attr('class', 'nn-val').attr('text-anchor', 'middle')
+            .attr('y', function (n) { return -n.s / 2 - 5; }).text(function (n) { return LETTERS[n.j]; });
+        }
+        if (o.values) {
+          gi.append('text').attr('class', 'nn-val').attr('text-anchor', 'end').attr('x', -11).attr('y', 28).text(function (a) { return signed(o.values[0][a.j], 2); });
+          gn.filter(function (n) { return n.l < L - 1; }).append('text').attr('class', 'nn-val').attr('text-anchor', 'start')
+            .attr('x', function (n) { return n.s / 2 + 4; }).attr('y', function (n) { return -n.s / 2 + 2; })
+            .text(function (n) { return signed(o.values[n.l][n.j], 2); });
+        }
+        /* output label */
+        var out = nodes[L - 1][0];
+        var outLines = o.values ? [pctP(o.values[L - 1][0]), 'chance'] : ['Chance of', 'above-avg', 'stunting'];
+        svg.append('text').attr('class', o.values ? 'nn-val' : 'nn-lab').attr('x', out.x + out.s / 2 + 8).attr('y', out.y - (outLines.length - 1) * 0.575 * 13)
+          .selectAll('tspan').data(outLines).join('tspan').attr('x', out.x + out.s / 2 + 8).attr('dy', function (_, k) { return k ? '1.15em' : '0.35em'; })
+          .style('font-size', function (_, k) { return o.values && k === 0 ? '14px' : null; }).text(function (t) { return t; });
+      };
+
+      /* the three activation functions, small multiples */
+      self.drawActs = function () {
+        svg.selectAll('*').remove();
+        var W = self.W, H = self.H, row = W > H * 1.25, n = 3, gp = 14;
+        var pw = row ? (W - gp * (n - 1)) / n : W, ph = row ? H : (H - gp * (n - 1)) / n;
+        var fns = [
+          { t: 'Sigmoid: 0 to 1', f: SL.sigmoid, d: [-0.15, 1.15] },
+          { t: 'Tanh: −1 to 1', f: Math.tanh, d: [-1.15, 1.15] },
+          { t: 'ReLU: negatives → 0', f: function (v) { return Math.max(0, v); }, d: [-0.5, 4.3] },
+        ];
+        fns.forEach(function (F, k) {
+          var g = svg.append('g').attr('transform', 'translate(' + (row ? k * (pw + gp) : 0) + ',' + (row ? 0 : k * (ph + gp)) + ')');
+          var m = { t: 20, r: 8, b: 16, l: 26 };
+          var x = d3.scaleLinear([-4, 4], [m.l, pw - m.r]), y = d3.scaleLinear(F.d, [ph - m.b, m.t]);
+          g.append('rect').attr('x', 0).attr('y', 0).attr('width', pw).attr('height', ph).attr('rx', 6).attr('fill', 'var(--ln-soft)');
+          g.append('text').attr('class', 'nn-lab').attr('x', 8).attr('y', 14).style('font-weight', 600).text(F.t);
+          g.append('line').attr('x1', m.l).attr('x2', pw - m.r).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', 'var(--ln-axis)');
+          g.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', m.t).attr('y2', ph - m.b).attr('stroke', 'var(--ln-axis)');
+          [0, 1].concat(F.d[0] < -0.5 ? [-1] : []).forEach(function (v) {
+            g.append('text').attr('class', 'nn-lab').attr('x', m.l - 4).attr('y', y(v)).attr('dy', '0.35em').attr('text-anchor', 'end').style('font-size', '10px').style('fill', 'var(--ink-subtle)').text(v < 0 ? '−1' : v);
+          });
+          g.append('path').attr('class', 'ln-fit').attr('d', d3.line()(d3.range(-4, 4.001, 0.1).map(function (v) { return [x(v), y(Math.min(F.d[1], F.f(v)))]; })));
+          g.append('text').attr('class', 'nn-lab').attr('x', pw - m.r).attr('y', ph - 4).attr('text-anchor', 'end').style('font-size', '10px').style('fill', 'var(--ink-subtle)').text('weighted sum →');
+        });
+      };
+      return self;
+    }
+
+    /* ── scroll story ────────────────────────────── */
+    var sMap = MapView(document.getElementById('storyMap'), 'Map of the 30 districts by female literacy and urban share, shaded by the network\'s prediction');
+    var sNet = NetView(document.getElementById('storyNet'));
+    var figSub = document.getElementById('figSub');
+    function rampKey() {
+      return '<span class="nn-ramp">0%<i style="background:linear-gradient(90deg,' + rgb(wash(0, 0.42)) + ',' + rgb(wash(0.5, 0.42)) + ',' + rgb(wash(1, 0.42)) + ')"></i>100% chance</span>';
+    }
+    function legend(el, withRamp, withBound) {
+      document.getElementById(el).innerHTML = '<span>' + symKey(true) + 'Stunting at/above average</span><span>' + symKey(false) + 'Below</span>' +
+        (withRamp ? '<span>' + rampKey() + '</span>' : '') + (withBound ? '<span><i class="line" style="background:var(--ln-fit)"></i>50% boundary</span>' : '');
+    }
+    function storyLayout() {
+      var nb = document.getElementById('storyNetBox'), mb = document.getElementById('storyMap');
+      var mw = mb.clientWidth, nw = nb.clientWidth, mh, nh;
+      if (isNarrow()) { mh = Math.round(Math.min(mw * 0.62, 250)); nh = Math.round(Math.min(150, window.innerHeight * 0.18)); }
+      else { mh = Math.round(Math.min(mw, window.innerHeight - 230)); nh = mh; }
+      sMap.resize(mw, mh); sNet.resize(nw, nh);
+    }
+
+    var anim = { token: 0, net: null }, cur = -1;
+    var graphicEl = document.querySelector('#story .ln-graphic');
+    function renderTrain(net, fresh) {
+      /* hold screen-reader announcements until the animation settles */
+      graphicEl.setAttribute('aria-busy', String(net.epoch < EPOCHS && anim.token === anim.tok));
+      sMap.set({ model: net, boundary: true });
+      sNet.draw(net, { thumbs: fresh ? true : 'cache', letters: true });
+      figSub.textContent = 'Epoch ' + SL.fmt(net.epoch) + ' of ' + SL.fmt(EPOCHS) + ' · log-loss ' + SL.fmt(net.loss(X, Y), 3) + ' · ' + nRight(net) + ' of 30 right';
+    }
+    function playTraining() {
+      var tok = ++anim.token, net = mlp([2, 3, 1]);
+      anim.net = net; anim.tok = tok;
+      if (REDUCED) { net.step(X, Y, EPOCHS); renderTrain(net, true); return; }
+      var T = 4800, t0 = null, frame = 0;
+      renderTrain(net, true);
+      nextFrame(function loop(now) {
+        if (tok !== anim.token) return;
+        if (t0 == null) t0 = now;
+        var u = Math.min(1, (now - t0) / T), target = Math.round(EPOCHS * u * u);
+        if (target > net.epoch) net.step(X, Y, target - net.epoch);
+        renderTrain(net, u >= 1 || frame++ % 3 === 0);
+        if (u < 1) nextFrame(loop);
+      });
+    }
+    function setStep(i) {
+      if (i !== 7) { anim.token++; graphicEl.setAttribute('aria-busy', 'false'); }
+      cur = i;
+      var sub = 'Hover a shape for the district';
+      if (i === 0) {
+        sMap.set({}); sNet.draw(net1, { ghost: true }); legend('figLegend', false, false);
+        sub = nPos + ' districts at or above the ' + stTxt + '% state average, ' + (N - nPos) + ' below';
+      } else if (i === 1 || i === 2) {
+        sMap.set({ model: net1, boundary: i === 2, wrong: i === 2 });
+        sNet.draw(net1, { thumbs: true, weightLabels: true });
+        legend('figLegend', true, i === 2);
+        sub = i === 1 ? 'One neuron: two weights and a bias' : 'One neuron gets ' + V.acc1 + ' of 30 right · ringed = wrong';
+      } else if (i === 3) {
+        sMap.set({ model: net1, boundary: true, wrong: true }); sNet.drawActs(); legend('figLegend', true, true);
+        sub = 'Three common activation functions';
+      } else if (i === 4) {
+        sMap.set({ lines: net3.W[0].map(function (w, j) { return { w: w, b: net3.B[0][j] }; }) });
+        sNet.draw(net3, { thumbs: true, letters: true }); legend('figLegend', false, false);
+        sub = 'Each hidden neuron draws its own line (dashed)';
+      } else if (i === 5) {
+        sMap.set({ model: net3, boundary: true, wrong: true }); sNet.draw(net3, { thumbs: true, letters: true }); legend('figLegend', true, true);
+        sub = 'Three hidden neurons get ' + V.acc3 + ' of 30 right · ringed = wrong';
+      } else if (i === 6) {
+        sMap.set({ model: net3, boundary: true, highlight: sbI }); sNet.draw(net3, { thumbs: true, values: sbActs }); legend('figLegend', true, true);
+        sub = 'Sambalpur, flowing through the network';
+      } else if (i === 7) {
+        legend('figLegend', true, true);
+        playTraining(); return;
+      } else if (i >= 8) {
+        sMap.set({ model: net8, boundary: true, wrong: true }); sNet.draw(net8, { thumbs: true }); legend('figLegend', true, true);
+        sub = 'Eight hidden neurons get ' + V.acc8 + ' of 30 right';
+      }
+      figSub.textContent = sub;
+    }
+    document.getElementById('replay').addEventListener('click', playTraining);
+
+    /* ── fill computed numbers ───────────────────── */
+    function fillV() { document.querySelectorAll('[data-v]').forEach(function (el) { if (V[el.dataset.v] != null) el.textContent = V[el.dataset.v]; }); }
+
+    /* ── playground ──────────────────────────────── */
+    var pMap = MapView(document.getElementById('pgMap'), 'Map of the 30 districts shaded by your network\'s prediction');
+    var pNet = NetView(document.getElementById('pgNet'));
+    var pg = { layers: 1, n: 3, act: 'tanh', lr: 0.03, seed: SEED, playing: false, hist: [], frame: 0 };
+    var lossSvg = d3.select('#pgLoss');
+    legend('pgLegend', true, true);
+    function pgSizes() { var s = [2]; for (var l = 0; l < pg.layers; l++) s.push(pg.n); s.push(1); return s; }
+    function pgBuild() {
+      pg.net = mlp(pgSizes(), { seed: pg.seed, lr: pg.lr, act: pg.act });
+      pg.hist = [[0, pg.net.loss(X, Y)]];
+      pgRender(true);
+    }
+    function nParams(sizes) { var s = 0; for (var l = 0; l < sizes.length - 1; l++) s += sizes[l] * sizes[l + 1] + sizes[l + 1]; return s; }
+    function pgLayout() {
+      var w = document.getElementById('pgNet').parentNode.clientWidth, mw = document.getElementById('pgMap').clientWidth;
+      pNet.resize(w, isNarrow() ? 250 : 300);
+      pMap.resize(mw, isNarrow() ? Math.round(Math.min(mw * 0.85, 340)) : Math.round(Math.min(mw * 0.98, 440)));
+      lossSvg.attr('viewBox', [0, 0, w, 110]).attr('data-w', w);
+    }
+    function drawLoss() {
+      var w = +lossSvg.attr('data-w') || 400, h = 110, m = { t: 8, r: 10, b: 26, l: 40 };
+      var ex = Math.max(EPOCHS, pg.net.epoch);
+      var x = d3.scaleLinear([0, ex], [m.l, w - m.r]), y = d3.scaleLinear([0, Math.max(0.8, d3.max(pg.hist, function (d) { return d[1]; }))], [h - m.b, m.t]);
+      lossSvg.selectAll('*').remove();
+      lossSvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + m.l + ',0)').call(d3.axisLeft(y).ticks(3).tickSize(-(w - m.l - m.r)).tickFormat(''));
+      lossSvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (h - m.b) + ')').call(d3.axisBottom(x).ticks(w < 380 ? 3 : 5).tickSizeOuter(0).tickFormat(function (v) { return SL.fmt(v); }));
+      lossSvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + m.l + ',0)').call(d3.axisLeft(y).ticks(3).tickSizeOuter(0));
+      lossSvg.append('path').attr('class', 'ln-fit').attr('d', d3.line().x(function (d) { return x(d[0]); }).y(function (d) { return y(d[1]); })(pg.hist));
+      lossSvg.append('text').attr('class', 'ln-axis-label').attr('x', w - m.r).attr('y', m.t + 10).attr('text-anchor', 'end').text('epoch →');
+    }
+    function pgRender(fresh) {
+      var net = pg.net;
+      pMap.set({ model: net, boundary: true, wrong: true });
+      pNet.draw(net, { thumbs: fresh ? true : 'cache' });
+      drawLoss();
+      var sizes = pgSizes(), right = nRight(net);
+      document.getElementById('pgStats').innerHTML =
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(net.epoch) + '</div><div class="ln-stat-l">Epochs trained</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(net.loss(X, Y), 3) + '</div><div class="ln-stat-l">Training log-loss</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + right + ' of ' + N + '</div><div class="ln-stat-l">Training districts right</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + nParams(sizes) + '</div><div class="ln-stat-l">Weights and biases to learn</div></div>';
+    }
+    var playBtn = document.getElementById('pgPlay');
+    function setPlaying(on) { pg.playing = on; playBtn.textContent = on ? 'Pause' : 'Play'; }
+    function pgTrain(n) {
+      var done = 0;
+      while (done < n) { var k = Math.min(5, n - done); pg.net.step(X, Y, k); done += k; pg.hist.push([pg.net.epoch, pg.net.loss(X, Y)]); }
+    }
+    function pgLoop() {
+      if (!pg.playing) return;
+      pgTrain(10);
+      pgRender(pg.frame++ % 3 === 0);
+      if (pg.net.epoch >= MAX_PLAY) { setPlaying(false); pgRender(true); return; }
+      nextFrame(pgLoop);
+    }
+    playBtn.addEventListener('click', function () {
+      if (REDUCED) { pgTrain(1000); pgRender(true); return; }
+      if (pg.playing) { setPlaying(false); pgRender(true); return; }
+      if (pg.net.epoch >= MAX_PLAY) return;
+      setPlaying(true); nextFrame(pgLoop);
+    });
+    document.getElementById('pgStep').addEventListener('click', function () { setPlaying(false); pgTrain(10); pgRender(true); });
+    document.getElementById('pgReset').addEventListener('click', function () { setPlaying(false); pgBuild(); });
+    document.getElementById('pgSeed').addEventListener('click', function () { setPlaying(false); pg.seed += 1; pgBuild(); });
+    var nSlider = document.getElementById('pgN');
+    document.querySelectorAll('#pgLayers button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('#pgLayers button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        pg.layers = +b.dataset.l; nSlider.disabled = pg.layers === 0; setPlaying(false); pgBuild();
+      });
+    });
+    nSlider.addEventListener('input', function () { pg.n = +nSlider.value; document.getElementById('pgNOut').textContent = pg.n; setPlaying(false); pgBuild(); });
+    document.getElementById('pgAct').addEventListener('change', function (e) { pg.act = e.target.value; setPlaying(false); pgBuild(); });
+    document.getElementById('pgLr').addEventListener('change', function (e) { pg.lr = +e.target.value; setPlaying(false); pgBuild(); });
+
+    /* ── held-out accuracy by hidden-layer size (time-sliced) ── */
+    var CV_SIZES = [0, 1, 2, 3, 4, 5, 6, 7, 8], REPS = [1, 2, 3];
+    var jobs = [];
+    CV_SIZES.forEach(function (h) {
+      REPS.forEach(function (r) { SL.kfold(N, 5, SL.rng(r)).forEach(function (f) { jobs.push({ h: h, f: f }); }); });
+    });
+    V.nFits = SL.fmt(jobs.length);
+    var cvRes = CV_SIZES.map(function (h) { return { h: h, trC: 0, trN: 0, teC: 0, teN: 0, done: 0 }; });
+    var perSize = jobs.length / CV_SIZES.length, cvSvg = d3.select('#cvSvg');
+    function cvLabel(h) { return h === 0 ? 'None' : String(h); }
+    function drawCV() {
+      var w = cvSvg.node().parentNode.clientWidth - 32, h = isNarrow() ? 260 : 300, m = { t: 14, r: 14, b: 44, l: 44 };
+      w = Math.max(280, w);
+      cvSvg.attr('viewBox', [0, 0, w, h]);
+      cvSvg.selectAll('*').remove();
+      var x = d3.scalePoint(CV_SIZES, [m.l + 16, w - m.r - 10]), y = d3.scaleLinear([0.4, 1], [h - m.b, m.t]);
+      cvSvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + m.l + ',0)').call(d3.axisLeft(y).ticks(6).tickSize(-(w - m.l - m.r)).tickFormat(''));
+      cvSvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (h - m.b) + ')').call(d3.axisBottom(x).tickSizeOuter(0).tickFormat(cvLabel));
+      cvSvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + m.l + ',0)').call(d3.axisLeft(y).ticks(6).tickSizeOuter(0).tickFormat(function (v) { return SL.fmt(v * 100) + '%'; }));
+      cvSvg.append('text').attr('class', 'ln-axis-label').attr('x', w - m.r).attr('y', h - 6).attr('text-anchor', 'end').text('Hidden neurons (None = one neuron, a straight line) →');
+      var base = Math.max(nPos, N - nPos) / N;
+      cvSvg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(base)).attr('y2', y(base)).attr('stroke', 'var(--ln-ghost)').attr('stroke-width', 2).attr('stroke-dasharray', '5 4');
+      cvSvg.append('text').attr('class', 'ln-dlabel').attr('x', w - m.r).attr('y', y(base) - 6).attr('text-anchor', 'end').text('Always guessing "above average": ' + SL.pct(base));
+      var done = cvRes.filter(function (r) { return r.done === perSize; });
+      [['tr', C.train], ['te', C.val]].forEach(function (s) {
+        var acc = function (r) { return r[s[0] + 'C'] / r[s[0] + 'N']; };
+        cvSvg.append('path').style('fill', 'none').style('stroke', s[1]).style('stroke-width', '2px')
+          .attr('d', d3.line().x(function (r) { return x(r.h); }).y(function (r) { return y(acc(r)); })(done));
+        cvSvg.append('g').selectAll('circle').data(done).join('circle').attr('r', 5).attr('fill', s[1]).attr('stroke', '#fff').attr('stroke-width', 1.5)
+          .attr('cx', function (r) { return x(r.h); }).attr('cy', function (r) { return y(acc(r)); });
+      });
+      cvSvg.append('g').selectAll('rect').data(CV_SIZES).join('rect').attr('fill', 'transparent')
+        .attr('x', function (hh) { return x(hh) - x.step() / 2; }).attr('width', x.step()).attr('y', m.t).attr('height', h - m.t - m.b)
+        .on('pointermove', function (ev, hh) {
+          var r = cvRes[CV_SIZES.indexOf(hh)];
+          if (r.done < perSize) { tip.show(ev, 'Still training…'); return; }
+          tip.show(ev, '<b>' + (hh === 0 ? 'No hidden layer (one neuron)' : hh + ' hidden neuron' + (hh > 1 ? 's' : '')) + '</b><br>Training districts: ' + SL.pct(r.trC / r.trN) + ' right<br>Held-out districts: ' + SL.pct(r.teC / r.teN) + ' right');
+        })
+        .on('pointerleave', function () { tip.hide(); });
+    }
+    function cvFinish() {
+      var acc = function (r, k) { return r[k + 'C'] / r[k + 'N']; };
+      var lin = cvRes[0], big = cvRes[cvRes.length - 1];
+      var best = cvRes.reduce(function (a, b) { return acc(b, 'te') > acc(a, 'te') + 1e-9 ? b : a; });
+      var gain = (acc(best, 'te') - acc(lin, 'te')) * N;
+      document.getElementById('cvStats').innerHTML =
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.pct(acc(lin, 'te')) + '</div><div class="ln-stat-l"><i style="background:' + C.val + '"></i>Held-out, one neuron</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.pct(acc(best, 'te')) + '</div><div class="ln-stat-l"><i style="background:' + C.val + '"></i>Held-out, best (' + (best.h === 0 ? 'one neuron' : best.h + ' hidden') + ')</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.pct(acc(big, 'te')) + '</div><div class="ln-stat-l"><i style="background:' + C.val + '"></i>Held-out, 8 hidden neurons</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.pct(acc(big, 'tr')) + '</div><div class="ln-stat-l"><i style="background:' + C.train + '"></i>Training, 8 hidden neurons</div></div>';
+      document.getElementById('cvNote').textContent = 'Each point averages ' + SL.fmt(perSize) + ' networks (5 folds × 3 shuffles). Hover the chart for exact values.';
+      var t = 'Training accuracy climbs from <b>' + SL.pct(acc(lin, 'tr')) + '</b> with a single neuron to <b>' + SL.pct(acc(big, 'tr')) + '</b> with eight hidden neurons. Held-out accuracy does not follow. ';
+      if (best.h === 0) t += 'No network beats the single neuron on districts it has not seen (<b>' + SL.pct(acc(lin, 'te')) + '</b>). ';
+      else t += 'The best, with ' + best.h + ' hidden neuron' + (best.h > 1 ? 's' : '') + ', gets <b>' + SL.pct(acc(best, 'te')) + '</b> of held-out districts right against <b>' + SL.pct(acc(lin, 'te')) + '</b> for the single neuron: a gain of ' + SL.fmt(gain, 1) + ' district' + (Math.abs(gain - 1) < 0.05 ? '' : 's') + ' in 30, ' + (gain < 1.5 ? 'which is within the luck of the draw on a sample this small. ' : 'a modest gain on a sample this small. ');
+      if (acc(big, 'te') < acc(lin, 'te')) t += 'With eight neurons it drops to <b>' + SL.pct(acc(big, 'te')) + '</b>, worse than the straight line: the extra bends fit the quirks of the training districts, not a pattern that carries over. ';
+      t += 'Thirty districts cannot support much more than a straight line. A neural network needs far more examples before its flexibility becomes an advantage.';
+      document.getElementById('cvText').innerHTML = t;
+    }
+    var ji = 0, job = null;
+    function cvWork() {
+      var t0 = performance.now(), changed = false;
+      while (ji < jobs.length && performance.now() - t0 < 12) {
+        if (!job) {
+          var jb = jobs[ji], trX0 = jb.f.train.map(function (i) { return X0[i]; }), s = SL.scaler(trX0);
+          job = { jb: jb, s: s, X: trX0.map(s.apply), y: jb.f.train.map(function (i) { return Y[i]; }),
+            net: mlp(jb.h ? [2, jb.h, 1] : [2, 1]) };
+        }
+        job.net.step(job.X, job.y, 100);
+        if (job.net.epoch >= EPOCHS) {
+          var r = cvRes[CV_SIZES.indexOf(job.jb.h)], net = job.net, sc2 = job.s;
+          job.X.forEach(function (z, k) { r.trN++; if ((net.proba(z) >= 0.5 ? 1 : 0) === job.y[k]) r.trC++; });
+          job.jb.f.test.forEach(function (i) { r.teN++; if ((net.proba(sc2.apply(X0[i])) >= 0.5 ? 1 : 0) === Y[i]) r.teC++; });
+          r.done++; ji++; job = null; changed = true;
+        }
+      }
+      if (changed) {
+        drawCV();
+        document.getElementById('cvNote').textContent = 'Training networks in your browser: ' + SL.fmt(ji) + ' of ' + SL.fmt(jobs.length) + '…';
+      }
+      if (ji < jobs.length) cvPost(); else cvFinish();
+    }
+    var mc = new MessageChannel();
+    mc.port1.onmessage = cvWork;
+    function cvPost() { mc.port2.postMessage(0); }
+
+    /* ── data table ─────────────────────────────── */
+    document.getElementById('dataTable').innerHTML = '<thead><tr><th>District</th><th>Female literacy %</th><th>Urban %</th><th>Stunted %</th><th>At/above avg?</th><th>Chance: 1 neuron</th><th>Chance: 3 hidden</th></tr></thead><tbody>' +
+      R.map(function (d, i) { return { d: d, i: i }; }).sort(function (a, b) { return a.d.name.localeCompare(b.d.name); }).map(function (o) {
+        var d = o.d, i = o.i;
+        return '<tr><td>' + d.name + '</td><td>' + SL.fmt(d[FX], 1) + '</td><td>' + SL.fmt(d[FY], 1) + '</td><td>' + SL.fmt(d[YK], 1) + '</td><td>' + (Y[i] ? 'Yes' : 'No') +
+          '</td><td>' + pctP(net1.proba(X[i])) + '</td><td>' + pctP(net3.proba(X[i])) + '</td></tr>';
+      }).join('') + '</tbody>';
+
+    /* ── go ──────────────────────────────────────── */
+    fillV();
+    storyLayout(); pgLayout();
+    pgBuild();
+    drawCV();
+    SL.scrolly('#story', { onStep: setStep });
+    setTimeout(cvPost, 400);
+    var rz = null, lastW = window.innerWidth;
+    window.addEventListener('resize', function () {
+      clearTimeout(rz);
+      rz = setTimeout(function () {
+        storyLayout(); pgLayout();
+        if (cur === 7 && anim.net) renderTrain(anim.net, true); else if (cur >= 0) setStep(cur);
+        pgRender(true);
+        if (ji >= jobs.length || window.innerWidth !== lastW) drawCV();
+        lastW = window.innerWidth;
+      }, 150);
+    });
+  }).catch(function (err) {
+    console.error(err);
+    document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
+  });
+})();
+</script>
+</body>
+</html>

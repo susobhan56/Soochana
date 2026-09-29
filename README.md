@@ -6,6 +6,15 @@ Every page loads its own stylesheets and scripts with a version tag, e.g. `style
 
 GitHub Pages still lets a browser reuse a page itself for up to 10 minutes, so right after a push someone who visited recently may see the old version briefly. Ctrl + F5 loads the new one.
 
+## Soochana Learn
+
+Visual machine-learning explainers in the style of [MLU-Explain](https://mlu-explain.github.io/), built on the portal's own data for the 30 districts. Linked from every page header as **Learn**; start at `learn/index.html`.
+
+- Pages: `learn/train-test-validation.html`, `bias-variance.html`, `logistic-regression.html`, `decision-tree.html`, `neural-networks.html`, `equality-of-odds.html`, plus the hub `learn/index.html` (cards and an indicator correlation matrix).
+- Shared code: `learn/learn.js` (models, metrics, seeded splits, the scroll engine) and `learn/learn.css`. Every model runs in the browser, so no number in the prose is typed in by hand.
+- Data: `learn/data/districts.json`, one row per district with about 40 indicators. It is generated. After the source files in `datasets/` or `excel/` change, rebuild it with `python learn/tools/build_learn_data.py` (standard library only). The script prints any value it could not find.
+- Tests: `tests/learn.test.js` checks the maths against the real table.
+
 ## Soochana Storyteller
 
 **Currently switched off:** no page loads it. The code is kept here so it can be turned back on (see storyteller/README.md, "Page integration").

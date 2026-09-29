@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Bias–Variance Tradeoff · Soochana Learn</title>
+<meta name="description" content="Why a model can be wrong by being too rigid or too eager, and how to find the balance, explained with underweight children and tribal share across Odisha's 30 districts.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20260929">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · 02</div>
+    <h2 class="ln-title">The <em>Bias–Variance</em> Tradeoff</h2>
+    <p class="ln-dek">A model can be wrong in two ways: too rigid to see the pattern, or so eager that it memorises the noise. Here is how to find the balance, using underweight children across Odisha's 30 districts.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census 2011 and NFHS-5 · Every number on this page is computed live in your browser</div>
+  </section>
+
+  <div class="ln-prose">
+    <p>Suppose we want a rough estimate of how many children under five are <strong>underweight</strong> in a district, from one thing we already know about it: the share of its people who belong to a <strong>Scheduled Tribe</strong>. In Odisha the two travel together, because tribal share goes hand in hand with remoteness, forest villages and distance from health services.</p>
+    <p>Tribal share does not <em>cause</em> underweight. It is a marker for many things at once. But it makes a good test case, because the relationship is not a straight line, and the districts do not sit neatly on any curve. That is exactly the situation where a model can go wrong in two opposite directions.</p>
+  </div>
+
+  <!-- ── scroll story ─────────────────────────────── -->
+  <section class="ln-scrolly" id="story">
+    <div class="ln-steps">
+      <div class="ln-step"><div class="ln-card">
+        <h3>Thirty districts</h3>
+        <p>Each dot is one district. Across: the share of the population that is Scheduled Tribe (Census 2011). Up: the share of children under five who are underweight (NFHS-5, 2019–21).</p>
+        <p>Underweight rises steeply across the least tribal districts, then much more gently. And plenty of districts sit well above or below their neighbours.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Too simple: one number</h3>
+        <p>The simplest possible model ignores tribal share and predicts the same figure for every district: the average, <b data-v="meanY"></b>%.</p>
+        <p>Its typical miss is <b data-v="rmse0"></b> percentage points. It is not unlucky; it is <em>built</em> to miss, because it cannot see the pattern at all. That built-in wrongness is called <strong>bias</strong>.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Still too simple: a straight line</h3>
+        <p>A straight line does much better: a typical miss of <b data-v="rmse1"></b> points. But its misses are not random.</p>
+        <p>It predicts too much for <b data-v="lowOver"></b> of the <b data-v="lowN"></b> districts where fewer than 8% of people are tribal, and too little for <b data-v="midUnder"></b> of the <b data-v="midN"></b> districts between 8% and 40%. A line cannot bend, so it will miss in the same places however much data we give it. That is bias too.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Too flexible: a degree-10 curve</h3>
+        <p>So let's allow lots of bends. A degree-10 polynomial fitted to the same 30 districts has a typical miss of only <b data-v="rmse10"></b> points on them.</p>
+        <p>But look at the wiggles between districts, and the plunge at each end where there is nothing to hold it. It has learned these 30 districts, quirks and all, rather than the pattern.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>What if the data had come out differently?</h3>
+        <p>Each district's figure comes from a sample survey. Survey different households and every dot would shift a little. A good model should not care much.</p>
+        <p>We can mimic this with a <strong>bootstrap</strong>: draw 30 districts at random <em>with replacement</em>, so some come up twice and some not at all. In this draw, <b data-v="bsOut"></b> districts were left out and <b data-v="bsDup"></b> were drawn more than once. Refit the degree-10 curve and it changes shape completely.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Fifty redraws: the straight line</h3>
+        <p>Now repeat that fifty times. Here is the straight line refitted on each redraw.</p>
+        <p>The lines form a tight bundle. From one redraw to the next, a typical prediction moves by only about <b data-v="swing1"></b> points. How much a model jumps around when the data changes is called its <strong>variance</strong>. The line's is low.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Fifty redraws: the degree-10 curve</h3>
+        <p>The same fifty redraws, now with the degree-10 curve. The bundle explodes into a fan.</p>
+        <p>A typical prediction swings by about <b data-v="swing10"></b> points between redraws, for an outcome that only runs from <b data-v="yMin"></b>% to <b data-v="yMax"></b>% across the districts. This model has very high variance: what it says depends more on which districts it happened to see than on the pattern.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Bias, made visible</h3>
+        <p>Nobody knows the true pattern. As a stand-in we use a smooth local average of nearby districts (dashed).</p>
+        <p>Average the fifty straight lines and the result still misses it: too high at the left, too low in the middle, and wrong again further right. That average gap, about <b data-v="gap1"></b> points, is the line's <span class="ln-k ln-k-train"><span>bias</span></span>. Redrawing the data will not shrink it.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Just right: degree <span data-v="bestDeg"></span></h3>
+        <p>A gentle curve (degree <span data-v="bestDeg"></span>) sits in between. Its average stays within about <b data-v="gapB"></b> points of the pattern, against <b data-v="gap1"></b> for the line.</p>
+        <p>And its bundle stays fairly tight: a typical swing of <b data-v="swingB"></b> points, nowhere near the degree-10 fan. Out of all the polynomial degrees, this one makes the smallest total error. That balance is the <strong>bias–variance tradeoff</strong>.</p>
+      </div></div>
+    </div>
+    <div class="ln-graphic" aria-live="polite">
+      <figure class="ln-figure" style="margin:0">
+        <p class="ln-figure-t" id="figTitle">Tribal share and underweight children, 30 districts</p>
+        <p class="ln-figure-s" id="figSub">Hover a dot for the district</p>
+        <div class="ln-legend" id="figLegend"></div>
+        <svg id="storySvg" role="img" aria-label="Scatter plot of Scheduled Tribe share against the share of underweight children for Odisha's 30 districts, with fitted curves"></svg>
+        <div class="ln-source">Scheduled Tribe share: Census 2011 · Underweight: NFHS-5 (2019–21)</div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── the decomposition ─────────────────────────── -->
+  <div class="ln-prose">
+    <h2>Three sources of error</h2>
+    <p>The error a model makes on a new district can be split into three parts that add up exactly:</p>
+    <div class="ln-eq">expected error = <span class="ln-k ln-k-train"><span>bias²</span></span> + <span class="ln-k ln-k-val"><span>variance</span></span> + noise</div>
+    <p><span class="ln-k ln-k-train"><span>Bias²</span></span> is how far the model's average curve sits from the pattern. <span class="ln-k ln-k-val"><span>Variance</span></span> is how much it jumps around from one redraw of the data to the next. <strong>Noise</strong> is everything tribal share cannot explain: the part even a perfect curve would miss. Here it comes to about <b data-v="noise"></b> squared points, a typical miss of <b data-v="noiseRt"></b> points that no model of this one variable can remove.</p>
+    <p>All three are measured in <em>squared</em> percentage points, because squaring is what makes them add up. Take the square root of the total to get back to a typical miss in points.</p>
+  </div>
+
+  <!-- ── interactive 1: complexity, fan and decomposition ─ -->
+  <div class="ln-prose">
+    <h2>Try it: bend the model yourself</h2>
+    <p>Move the slider to make the model more flexible. On the left, forty curves, each fitted to a different redraw of the districts. On the right, the three sources of error for every setting, each averaged over 200 redraws. As flexibility grows, <span class="ln-k ln-k-train"><span>bias²</span></span> falls and <span class="ln-k ln-k-val"><span>variance</span></span> rises, so their <span class="ln-k ln-k-test"><span>total</span></span> traces a U. The best model sits at the bottom of the U.</p>
+    <p>Switch to <em>Nearest neighbours</em> for a different kind of flexibility: predict each district from the average of the <var>k</var> districts with the closest tribal share. With <var>k</var> = 30 it averages every district (the flat line again); with <var>k</var> = 1 it copies the single closest one.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <div class="ln-seg" role="group" aria-label="Kind of model" id="modeSeg">
+          <button aria-pressed="true" data-m="poly">Polynomial</button>
+          <button aria-pressed="false" data-m="knn">Nearest neighbours</button>
+        </div>
+        <label><span id="sliderName">Degree</span> <input type="range" id="cxSlider" min="0" max="10" value="1" aria-describedby="cxNote"><output id="cxOut">1</output></label>
+        <button class="ln-btn" id="resample">Redraw districts</button>
+        <span id="cxNote" style="color:var(--ink-subtle)"></span>
+      </div>
+      <div class="ln-grid2">
+        <div>
+          <p class="ln-figure-t" id="fanTitle">Forty refits of the current model</p>
+          <div class="ln-legend">
+            <span><i style="background:#64748b"></i>District</span>
+            <span><i class="line" style="background:var(--ln-ghost)"></i>One redraw's fit</span>
+            <span><i class="line" style="background:var(--ln-fit)"></i>Average of 40 fits</span>
+            <span><i class="line" style="background:repeating-linear-gradient(90deg,var(--ln-fit) 0 4px,transparent 4px 7px)"></i>Stand-in pattern</span>
+          </div>
+          <svg id="fanSvg" role="img" aria-label="Forty fitted curves from redraws of the districts, with their average and the stand-in pattern"></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t">Error by flexibility (squared points)</p>
+          <div class="ln-legend">
+            <span><i class="line" style="background:var(--ln-train)"></i>Bias²</span>
+            <span><i class="line" style="background:var(--ln-val)"></i>Variance</span>
+            <span><i class="line" style="background:repeating-linear-gradient(90deg,#64748b 0 4px,transparent 4px 7px)"></i>Noise</span>
+            <span><i class="line" style="background:var(--ln-test)"></i>Total</span>
+          </div>
+          <svg id="errSvg" role="img" aria-label="Bias squared, variance, noise and total error against model flexibility"></svg>
+        </div>
+      </div>
+      <div class="ln-stats" id="cxStats"></div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p id="cxText"></p>
+  </div>
+
+  <!-- ── interactive 2: regularisation ──────────────── -->
+  <div class="ln-prose">
+    <h2>Put a flexible model on a leash</h2>
+    <p>Choosing fewer bends is not the only way to tame a model. <strong>Ridge regression</strong> keeps all ten bends of the degree-10 curve but charges a penalty, <var>λ</var> (lambda), for steep bends. With no penalty it is the wild fan from before. As the penalty grows the fan closes. Too much and the curve is squashed flat towards the average, and bias returns.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <label>Penalty <var>λ</var> <input type="range" id="lamSlider" min="0" max="9" value="0"><output id="lamOut">0</output></label>
+        <span id="lamNote" style="color:var(--ink-subtle)"></span>
+      </div>
+      <div class="ln-grid2">
+        <div>
+          <p class="ln-figure-t">Forty refits of a degree-10 curve with penalty</p>
+          <div class="ln-legend">
+            <span><i class="line" style="background:var(--ln-ghost)"></i>One redraw's fit</span>
+            <span><i class="line" style="background:var(--ln-fit)"></i>Average of 40 fits</span>
+            <span><i class="line" style="background:repeating-linear-gradient(90deg,var(--ln-fit) 0 4px,transparent 4px 7px)"></i>Stand-in pattern</span>
+          </div>
+          <svg id="ridgeSvg" role="img" aria-label="Forty penalised degree-10 curves fitted to redraws of the districts"></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t">Error by penalty (squared points)</p>
+          <div class="ln-legend">
+            <span><i class="line" style="background:var(--ln-train)"></i>Bias²</span>
+            <span><i class="line" style="background:var(--ln-val)"></i>Variance</span>
+            <span><i class="line" style="background:repeating-linear-gradient(90deg,#64748b 0 4px,transparent 4px 7px)"></i>Noise</span>
+            <span><i class="line" style="background:var(--ln-test)"></i>Total</span>
+          </div>
+          <svg id="ridgeErrSvg" role="img" aria-label="Bias squared, variance, noise and total error against the ridge penalty"></svg>
+        </div>
+      </div>
+      <div class="ln-stats" id="lamStats"></div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p id="lamText"></p>
+    <div class="ln-callout">
+      <span class="ln-callout-t">Take-aways</span>
+      A model that is too simple is wrong in the same way every time: that is <span class="ln-k ln-k-train"><span>bias</span></span>, and more data will not fix it. A model that is too flexible is wrong in a different way every time: that is <span class="ln-k ln-k-val"><span>variance</span></span>, and it is worst when data are scarce, as with 30 districts. Some error is plain noise that no model of the chosen inputs can remove. The best model balances the first two, and you find it by measuring error on data the model did not see, as in <a href="train-test-validation.html">explainer 01</a>, never by how well it fits the data it was trained on.
+    </div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p id="srcNote"></p>
+    <p>Each <em>redraw</em> is a bootstrap resample: 30 districts drawn at random with replacement. All error figures average over the same <b data-v="B"></b> redraws (fixed seed), so every reader sees the same charts; <em>Redraw districts</em> only changes the forty curves on display. Polynomials are fitted by least squares with the tribal-share axis rescaled to −1…1; ridge adds the penalty <var>λ</var> to the squared coefficients on that scale.</p>
+    <p>Because the true pattern is unknown, bias needs a stand-in. We use a <em>local linear smoother</em>: at each point it fits a line to nearby districts, weighting the closest most. Its width (<b data-v="bw"></b> percentage points of tribal share) was chosen by leave-one-out cross-validation. Noise is the smoother's leftover scatter, corrected for its flexibility: <b data-v="noise"></b> squared points. A check that needs no model at all, comparing districts that sit next to each other on the tribal-share axis, gives <b data-v="rice"></b>. Bias² is the average, over the 30 districts, of the squared gap between the average fitted curve and the stand-in; variance is the average spread of the fits around their own average. Their sum with noise is the expected squared error on a fresh district, <em>if</em> the stand-in were the truth.</p>
+    <p id="oobNote"></p>
+    <p>Caveats. Thirty districts are far too few for a planning tool, and district figures are survey estimates with their own sampling error. Tribal share is a marker for remoteness, poverty and access to services, not a cause of underweight. The models here are teaching devices.</p>
+    <details class="ln-details">
+      <summary>Show the data table</summary>
+      <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
+    </details>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="logistic-regression.html"><small>Next · 03</small><b>Logistic Regression</b></a>
+    <a href="train-test-validation.html"><small>01</small><b>Train, Test and Validation</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* BV-MATH-START — pure helpers (tests/bias-variance.test.js evaluates this block) */
+  var BV = (function () {
+    /** Local linear regression with a Gaussian kernel of width h. */
+    function loclin(X, Y, h) {
+      return {
+        predict: function (v) {
+          var s0 = 0, s1 = 0, s2 = 0, t0 = 0, t1 = 0;
+          for (var i = 0; i < X.length; i++) {
+            var u = X[i] - v, w = Math.exp(-0.5 * u * u / (h * h));
+            s0 += w; s1 += w * u; s2 += w * u * u; t0 += w * Y[i]; t1 += w * u * Y[i];
+          }
+          var det = s0 * s2 - s1 * s1;
+          return Math.abs(det) < 1e-12 ? t0 / s0 : (s2 * t0 - s1 * t1) / det;
+        },
+      };
+    }
+    /** Width with the smallest leave-one-out error over a grid. */
+    function pickBandwidth(X, Y, grid) {
+      var best = null;
+      grid.forEach(function (h) {
+        var sq = 0;
+        for (var i = 0; i < X.length; i++) {
+          var Xi = X.filter(function (_, j) { return j !== i; }), Yi = Y.filter(function (_, j) { return j !== i; });
+          var r = Y[i] - loclin(Xi, Yi, h).predict(X[i]);
+          sq += r * r;
+        }
+        var e = Math.sqrt(sq / X.length);
+        if (!best || e < best.cv - 1e-12) best = { h: h, cv: e };
+      });
+      return best;
+    }
+    /** Effective degrees of freedom: trace of the smoother matrix. */
+    function smootherDf(X, h) {
+      var tr = 0;
+      for (var i = 0; i < X.length; i++) {
+        var e = X.map(function (_, j) { return j === i ? 1 : 0; });
+        tr += loclin(X, e, h).predict(X[i]);
+      }
+      return tr;
+    }
+    /** Model-free noise variance from neighbouring differences (Rice, 1984). */
+    function riceNoise(X, Y) {
+      var o = X.map(function (_, i) { return i; }).sort(function (a, b) { return X[a] - X[b]; }), s = 0;
+      for (var i = 1; i < o.length; i++) s += Math.pow(Y[o[i]] - Y[o[i - 1]], 2);
+      return s / (2 * (o.length - 1));
+    }
+    /**
+     * Bootstrap bias–variance decomposition at the observed x's.
+     * sets: bootstrap index arrays; fit(idx) → model; gx: stand-in pattern at xs.
+     * Returns bias², variance, total = bias² + variance + noise, and the
+     * out-of-bag squared error as a model-free cross-check.
+     */
+    function decompose(xs, ys, gx, noise, sets, fit) {
+      var n = xs.length, P = [], oobSq = new Array(n).fill(0), oobN = new Array(n).fill(0);
+      sets.forEach(function (idx) {
+        var m = fit(idx), p = xs.map(function (v) { return m.predict(v); }), inb = {};
+        idx.forEach(function (i) { inb[i] = 1; });
+        P.push(p);
+        for (var i = 0; i < n; i++) if (!inb[i]) { oobSq[i] += Math.pow(ys[i] - p[i], 2); oobN[i]++; }
+      });
+      var bias2 = 0, vari = 0, oob = 0, cnt = 0;
+      for (var i = 0; i < n; i++) {
+        var mu = 0, v = 0, b;
+        for (b = 0; b < P.length; b++) mu += P[b][i];
+        mu /= P.length;
+        for (b = 0; b < P.length; b++) v += Math.pow(P[b][i] - mu, 2);
+        bias2 += Math.pow(mu - gx[i], 2);
+        vari += v / P.length;
+        if (oobN[i]) { oob += oobSq[i] / oobN[i]; cnt++; }
+      }
+      bias2 /= n; vari /= n;
+      return { bias2: bias2, vari: vari, noise: noise, total: bias2 + vari + noise, oob: oob / cnt };
+    }
+    return { loclin: loclin, pickBandwidth: pickBandwidth, smootherDf: smootherDf, riceNoise: riceNoise, decompose: decompose };
+  })();
+  /* BV-MATH-END */
+
+  var X_KEY = 'f.tribal_pct', Y_KEY = 'nfhs5.underweight';
+  var C = { bias: SL.color('train'), vari: SL.color('val'), total: SL.color('test'), fit: SL.color('fit'), dot: '#64748b' };
+  var DASH = '6 5';
+  var tip = SL.tooltip();
+
+  SL.loadData().then(function (data) {
+    var R = SL.rows(data.districts, [X_KEY, Y_KEY]), n = R.length;
+    var xs = R.map(function (d) { return d[X_KEY]; }), ys = R.map(function (d) { return d[Y_KEY]; });
+    var X_LO = 0, X_HI = 60, Y_LO = 0, Y_HI = 55;
+    var GRID = d3.range(X_LO, X_HI + 0.001, 0.25);
+    var B = 200, DECOMP_SEED = 2026, FAN_SEED = 12, NFAN = 50, NFAN_I = 40;
+
+    function fitFactory(kind, c, lam) {
+      return function (idx) {
+        var X = idx.map(function (i) { return xs[i]; }), Y = idx.map(function (i) { return ys[i]; });
+        if (kind === 'knn') return SL.models.knn1d(X, Y, c);
+        return SL.models.polyfit(X, Y, c, { lo: X_LO, hi: X_HI, lambda: lam || 1e-8 });
+      };
+    }
+    function bootSets(count, seed) {
+      var r = SL.rng(seed), out = [];
+      for (var b = 0; b < count; b++) out.push(SL.bootstrap(n, r));
+      return out;
+    }
+    function rmseOf(model) { return SL.metrics.rmse(ys, xs.map(model.predict)); }
+
+    /* ── stand-in pattern, noise and the decompositions ── */
+    var bw = BV.pickBandwidth(xs, ys, d3.range(3, 20.01, 0.5));
+    var pattern = BV.loclin(xs, ys, bw.h);
+    var gx = xs.map(pattern.predict);
+    var df = BV.smootherDf(xs, bw.h);
+    var noise = SL.sum(ys.map(function (y, i) { return Math.pow(y - gx[i], 2); })) / (n - df);
+    var rice = BV.riceNoise(xs, ys);
+    var sets = bootSets(B, DECOMP_SEED);
+    var DEGS = d3.range(0, 11), KS = d3.range(1, 31);
+    var LAMS = [1e-8, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 0.1, 1, 10, 100];
+    var LAM_LABEL = ['0', '10⁻⁶', '10⁻⁵', '10⁻⁴', '10⁻³', '0.01', '0.1', '1', '10', '100'];
+    function decompOf(fit) { return BV.decompose(xs, ys, gx, noise, sets, fit); }
+    var polyRes = DEGS.map(function (d) { return decompOf(fitFactory('poly', d)); });
+    var knnRes = KS.map(function (k) { return decompOf(fitFactory('knn', k)); });
+    var ridgeRes = LAMS.map(function (l) { return decompOf(fitFactory('poly', 10, l)); });
+    function argmin(arr, key) { var b = 0; arr.forEach(function (r, i) { if (r[key] < arr[b][key]) b = i; }); return b; }
+    var bestDeg = DEGS[argmin(polyRes, 'total')], bestK = KS[argmin(knnRes, 'total')], bestLam = argmin(ridgeRes, 'total');
+
+    /* ── numbers for the story ─────────────────── */
+    var all = SL.range(n);
+    var full = { 0: fitFactory('poly', 0)(all), 1: fitFactory('poly', 1)(all), 10: fitFactory('poly', 10)(all) };
+    var res1 = ys.map(function (y, i) { return y - full[1].predict(xs[i]); });
+    var low = all.filter(function (i) { return xs[i] < 8; }), mid = all.filter(function (i) { return xs[i] >= 8 && xs[i] < 40; });
+    var fanSets = bootSets(NFAN, FAN_SEED);
+    var bsCount = new Array(n).fill(0);
+    fanSets[0].forEach(function (i) { bsCount[i]++; });
+    var rt = function (v) { var s = Math.sqrt(v); return SL.fmt(s, s >= 20 ? 0 : 1); };
+    var V = {
+      meanY: SL.fmt(SL.mean(ys), 1), rmse0: SL.fmt(rmseOf(full[0]), 1), rmse1: SL.fmt(rmseOf(full[1]), 1), rmse10: SL.fmt(rmseOf(full[10]), 1),
+      lowOver: low.filter(function (i) { return res1[i] < 0; }).length, lowN: low.length,
+      midUnder: mid.filter(function (i) { return res1[i] > 0; }).length, midN: mid.length,
+      bsOut: bsCount.filter(function (c) { return c === 0; }).length, bsDup: bsCount.filter(function (c) { return c > 1; }).length,
+      swing1: rt(polyRes[1].vari), swing10: rt(polyRes[10].vari),
+      yMin: SL.fmt(d3.min(ys), 0), yMax: SL.fmt(d3.max(ys), 0),
+      gap1: rt(polyRes[1].bias2), bestDeg: bestDeg, gapB: rt(polyRes[bestDeg].bias2), swingB: rt(polyRes[bestDeg].vari),
+      noise: SL.fmt(noise, 1), noiseRt: rt(noise), rice: SL.fmt(rice, 1), bw: SL.fmt(bw.h, 1), B: SL.fmt(B),
+    };
+    document.querySelectorAll('[data-v]').forEach(function (el) { el.textContent = V[el.dataset.v]; });
+
+    /* ── shared chart pieces ────────────────────── */
+    function clampY(v) { return Math.max(Y_LO - 120, Math.min(Y_HI + 120, v)); }
+    function frame(sel, W, H, M, xLabel) {
+      var svg = d3.select(sel).attr('viewBox', [0, 0, W, H]), id = sel.slice(1) + 'Clip';
+      var x = d3.scaleLinear([X_LO, X_HI], [M.l, W - M.r]), y = d3.scaleLinear([Y_LO, Y_HI], [H - M.b, M.t]);
+      svg.append('defs').append('clipPath').attr('id', id).append('rect')
+        .attr('x', M.l).attr('y', M.t).attr('width', W - M.l - M.r).attr('height', H - M.t - M.b);
+      svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + M.l + ',0)').call(d3.axisLeft(y).ticks(5).tickSize(-(W - M.l - M.r)).tickFormat(''));
+      svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')').call(d3.axisBottom(x).ticks(6).tickFormat(function (v) { return v + '%'; }));
+      svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + M.l + ',0)').call(d3.axisLeft(y).ticks(5).tickFormat(function (v) { return v + '%'; }));
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', W - M.r).attr('y', H - 6).attr('text-anchor', 'end').text(xLabel);
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', 4).attr('y', M.t - 12).text('↑ Children under 5 underweight');
+      var clip = 'url(#' + id + ')';
+      return {
+        svg: svg, x: x, y: y,
+        under: svg.append('g').attr('clip-path', clip), ghosts: svg.append('g').attr('clip-path', clip),
+        curves: svg.append('g').attr('clip-path', clip), labels: svg.append('g'), dotsG: svg.append('g'),
+      };
+    }
+    function lineFrom(fr, vals) { return d3.line()(GRID.map(function (v, j) { return [fr.x(v), fr.y(clampY(vals[j]))]; })); }
+    function gridPreds(model) { return GRID.map(function (v) { return model.predict(v); }); }
+    function bundle(fit, bsets) {
+      var models = bsets.map(fit), preds = models.map(gridPreds);
+      var avg = GRID.map(function (_, j) { return SL.mean(preds.map(function (p) { return p[j]; })); });
+      var avgX = xs.map(function (v) { return SL.mean(models.map(function (m) { return m.predict(v); })); });
+      return { preds: preds, avg: avg, avgX: avgX };
+    }
+    var patGrid = gridPreds(pattern);
+    function gapArea(fr, avg) {
+      return d3.area().x(function (v) { return fr.x(v); })
+        .y0(function (v, j) { return fr.y(clampY(patGrid[j])); }).y1(function (v, j) { return fr.y(clampY(avg[j])); })(GRID);
+    }
+    /* style.css gives every <path> a thin grey stroke, a hover glow and a CSS
+       transition; inline styles keep chart paths as drawn. */
+    function pathStyle(sel, fill, stroke, width) {
+      sel.style('fill', fill).style('stroke', stroke).style('stroke-width', width)
+        .style('transition', 'none').style('filter', 'none').style('pointer-events', 'none');
+    }
+    function setLayer(g, items) {
+      var sel = g.selectAll('path').data(items, function (d) { return d.key; });
+      sel.exit().transition().duration(SL.dur(300)).style('opacity', 0).remove();
+      sel.enter().append('path').style('opacity', 0).merge(sel)
+        .attr('class', function (d) { return d.cls == null ? 'ln-fit' : d.cls; })
+        .attr('d', function (d) { return d.d; })
+        .style('stroke-dasharray', function (d) { return d.dash || null; })
+        .call(pathStyle, function (d) { return d.fill || 'none'; },
+          function (d) { return d.stroke || (d.cls === 'ln-ghost' ? 'var(--ln-ghost)' : C.fit); },
+          function (d) { return d.cls === 'ln-ghost' ? '1.5px' : d.cls === '' ? '1.5px' : '2px'; })
+        .transition().duration(SL.dur(500)).style('opacity', function (d) { return d.op == null ? 1 : d.op; });
+    }
+    function ghostItems(fr, b, tag) { return b.preds.map(function (p, k) { return { key: tag + k, d: lineFrom(fr, p), cls: 'ln-ghost' }; }); }
+    function legendHTML(items) {
+      return items.map(function (it) {
+        var bg = it.dash ? 'repeating-linear-gradient(90deg,' + it.c + ' 0 4px,transparent 4px 7px)' : it.c;
+        return '<span><i class="' + (it.line ? 'line' : '') + '" style="background:' + bg + (it.op ? ';opacity:' + it.op : '') + '"></i>' + it.t + '</span>';
+      }).join('');
+    }
+    function dotTip(d, extra) {
+      return '<b>' + d.name + '</b><br>Scheduled Tribe ' + SL.fmt(d[X_KEY], 1) + '%<br>Underweight ' + SL.fmt(d[Y_KEY], 1) + '%' + (extra || '');
+    }
+
+    /* ── sticky scatter ─────────────────────────── */
+    var W = 560, H = 440;
+    var fr = frame('#storySvg', W, H, { t: 30, r: 14, b: 50, l: 46 }, 'Scheduled Tribe share of population (Census 2011) →');
+    var currentStep = -1;
+    var dots = fr.dotsG.selectAll('circle').data(R).join('circle')
+      .attr('class', 'ln-dot').attr('r', 6.5).attr('fill', C.dot)
+      .attr('cx', function (d) { return fr.x(d[X_KEY]); }).attr('cy', function (d) { return fr.y(d[Y_KEY]); })
+      .on('pointerenter', function (e, d) { d3.select(this).classed('is-hover', true).raise(); tip.show(e, storyTip(d)); })
+      .on('pointermove', function (e, d) { tip.show(e, storyTip(d)); })
+      .on('pointerleave', function () { d3.select(this).classed('is-hover', false); tip.hide(); });
+    function storyTip(d) {
+      var i = R.indexOf(d), extra = '';
+      if (currentStep === 4) extra = '<br><span class="muted">' + (bsCount[i] ? 'Drawn ' + bsCount[i] + '× in this redraw' : 'Not drawn in this redraw') + '</span>';
+      else if (currentStep >= 1 && currentStep <= 3) {
+        var m = full[currentStep === 1 ? 0 : currentStep === 2 ? 1 : 10];
+        extra = '<br><span class="muted">Model predicts ' + SL.fmt(m.predict(xs[i]), 1) + '%</span>';
+      }
+      return dotTip(d, extra);
+    }
+    var B1 = bundle(fitFactory('poly', 1), fanSets), B10 = bundle(fitFactory('poly', 10), fanSets), BB = bundle(fitFactory('poly', bestDeg), fanSets);
+    var one10 = gridPreds(fitFactory('poly', 10)(fanSets[0]));
+    var resPath = xs.map(function (v, i) { return 'M' + fr.x(v) + ',' + fr.y(ys[i]) + 'V' + fr.y(full[1].predict(v)); }).join('');
+
+    var LG = {
+      dot: { c: C.dot, t: 'District' },
+      fit: function (t) { return { c: C.fit, t: t, line: true }; },
+      ghost: function (t) { return { c: 'rgba(15,23,42,.35)', t: t, line: true }; },
+      pat: { c: C.fit, t: 'Stand-in pattern', line: true, dash: true },
+      gap: { c: C.bias, t: 'Gap = bias', op: 0.45 },
+    };
+    function setStep(i) {
+      currentStep = i;
+      dots.transition().duration(SL.dur(500)).style('opacity', function (d, k) { return i === 4 && !bsCount[k] ? 0.15 : 1; });
+      var rings = [];
+      if (i === 4) all.forEach(function (k) { for (var j = 1; j < bsCount[k]; j++) rings.push({ k: k, j: j }); });
+      fr.labels.selectAll('circle').data(rings, function (r) { return r.k + '-' + r.j; })
+        .join(function (en) { return en.append('circle').style('opacity', 0).call(function (s) { s.transition().duration(SL.dur(400)).style('opacity', 1); }); })
+        .attr('cx', function (r) { return fr.x(xs[r.k]); }).attr('cy', function (r) { return fr.y(ys[r.k]); })
+        .attr('r', function (r) { return 6.5 + 3.5 * r.j; }).attr('fill', 'none').attr('stroke', C.fit).attr('stroke-width', 1.2);
+      var G = [], Cv = [], U = [], lg = [LG.dot], sub = 'Hover a dot for the district';
+      if (i === 1) { Cv = [{ key: 'm0', d: lineFrom(fr, gridPreds(full[0])) }]; lg.push(LG.fit('Average of all districts')); sub = 'Same prediction everywhere: typical miss ' + V.rmse0 + ' points'; }
+      if (i === 2) {
+        Cv = [{ key: 'm1', d: lineFrom(fr, gridPreds(full[1])) }];
+        U = [{ key: 'res', d: resPath, cls: '', stroke: C.dot, op: 0.55 }];
+        lg.push(LG.fit('Straight line'), { c: C.dot, t: 'Miss', line: true });
+        sub = 'Typical miss ' + V.rmse1 + ' points, but too high on the left, too low in the middle';
+      }
+      if (i === 3) { Cv = [{ key: 'm10', d: lineFrom(fr, gridPreds(full[10])) }]; lg.push(LG.fit('Degree-10 curve')); sub = 'Typical miss ' + V.rmse10 + ' points on the districts it was fitted to'; }
+      if (i === 4) {
+        Cv = [{ key: 'm10', d: lineFrom(fr, gridPreds(full[10])), op: 0.3, dash: DASH }, { key: 'one10', d: lineFrom(fr, one10) }];
+        lg = [LG.dot, { c: C.fit, t: 'Degree 10, all 30 districts', line: true, dash: true, op: 0.4 }, LG.fit('Degree 10, this redraw')];
+        sub = 'Faded: not drawn this time · each extra ring: drawn once more';
+      }
+      if (i === 5) { G = ghostItems(fr, B1, 'l'); lg.push(LG.ghost('Straight line, one per redraw')); sub = NFAN + ' redraws, ' + NFAN + ' lines: a tight bundle'; }
+      if (i === 6) { G = ghostItems(fr, B10, 'p'); lg.push(LG.ghost('Degree-10 curve, one per redraw')); sub = 'The same ' + NFAN + ' redraws: a wild fan'; }
+      if (i === 7) {
+        G = ghostItems(fr, B1, 'l').map(function (g) { g.op = 0.5; return g; });
+        U = [{ key: 'gap1', d: gapArea(fr, B1.avg), cls: '', fill: C.bias, stroke: 'none', op: 0.22 }];
+        Cv = [{ key: 'pat', d: lineFrom(fr, patGrid), dash: DASH }, { key: 'avg1', d: lineFrom(fr, B1.avg) }];
+        lg.push(LG.fit('Average of the ' + NFAN + ' lines'), LG.pat, LG.gap);
+        sub = 'Average straight line against the stand-in pattern';
+      }
+      if (i === 8) {
+        G = ghostItems(fr, BB, 'b').map(function (g) { g.op = 0.6; return g; });
+        U = [{ key: 'gapB', d: gapArea(fr, BB.avg), cls: '', fill: C.bias, stroke: 'none', op: 0.22 }];
+        Cv = [{ key: 'pat', d: lineFrom(fr, patGrid), dash: DASH }, { key: 'avgB', d: lineFrom(fr, BB.avg) }];
+        lg.push(LG.ghost('Degree ' + bestDeg + ', one per redraw'), LG.fit('Their average'), LG.pat, LG.gap);
+        sub = 'Small gap, tight bundle: the best balance among polynomials';
+      }
+      setLayer(fr.ghosts, G); setLayer(fr.curves, Cv); setLayer(fr.under, U);
+      document.getElementById('figLegend').innerHTML = legendHTML(lg);
+      document.getElementById('figSub').textContent = sub;
+    }
+    SL.scrolly('#story', { onStep: setStep });
+
+    /* ── decomposition chart (shared by both interactives) ── */
+    function decompChart(sel, cfg) {
+      var cW = 460, cH = 340, M = { t: 14, r: 44, b: 50, l: 40 }, YMAX = 110;
+      var svg = d3.select(sel).attr('viewBox', [0, 0, cW, cH]), id = sel.slice(1) + 'Clip';
+      var x = d3.scaleLinear(cfg.domain, [M.l, cW - M.r]), y = d3.scaleLinear([0, YMAX], [cH - M.b, M.t]);
+      svg.append('defs').append('clipPath').attr('id', id).append('rect').attr('x', M.l - 6).attr('y', M.t).attr('width', cW - M.l - M.r + 12).attr('height', cH - M.t - M.b + 6);
+      svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + M.l + ',0)').call(d3.axisLeft(y).ticks(5).tickSize(-(cW - M.l - M.r)).tickFormat(''));
+      var ax = d3.axisBottom(x).tickValues(cfg.ticks).tickFormat(cfg.fmt || null);
+      svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (cH - M.b) + ')').call(ax);
+      svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + M.l + ',0)').call(d3.axisLeft(y).ticks(5));
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', cW - M.r).attr('y', cH - 6).attr('text-anchor', 'end').text(cfg.xLabel);
+      var g = svg.append('g').attr('clip-path', 'url(#' + id + ')');
+      var noiseL = g.append('line').attr('stroke', C.dot).attr('stroke-width', 1.5).attr('stroke-dasharray', '4 4');
+      var noiseT = svg.append('text').attr('class', 'ln-dlabel').attr('text-anchor', 'start');
+      var paths = {}, KEYS = [['bias2', C.bias], ['vari', C.vari], ['total', C.total]];
+      KEYS.forEach(function (k) { paths[k[0]] = g.append('path').call(pathStyle, 'none', k[1], '2px').style('stroke-linejoin', 'round'); });
+      var cur = svg.append('line').attr('stroke', 'var(--ink-heading)').attr('stroke-dasharray', '3 4').attr('y1', M.t).attr('y2', cH - M.b);
+      var marks = svg.append('g'), off = svg.append('g');
+      var hit = svg.append('rect').attr('x', M.l).attr('y', M.t).attr('width', cW - M.l - M.r).attr('height', cH - M.t - M.b).attr('fill', 'transparent').style('cursor', 'pointer');
+      var state = { res: null, vals: null };
+      function yc(v) { return y(Math.min(v, YMAX * 4)); }
+      function nearest(ev) {
+        var px = x.invert(d3.pointer(ev)[0]), b = 0;
+        state.vals.forEach(function (v, i) { if (Math.abs(v - px) < Math.abs(state.vals[b] - px)) b = i; });
+        return b;
+      }
+      hit.on('pointermove', function (ev) {
+        var i = nearest(ev), r = state.res[i];
+        tip.show(ev, '<b>' + cfg.name(state.vals[i]) + '</b><br>Bias² ' + fv(r.bias2) + '<br>Variance ' + fv(r.vari) + '<br>Noise ' + fv(r.noise) + '<br>Total ' + fv(r.total) + ' <span class="muted">(typical miss ' + rt(r.total) + ' points)</span>');
+      }).on('pointerleave', function () { tip.hide(); })
+        .on('click', function (ev) { cfg.onPick(nearest(ev)); });
+      return {
+        update: function (res, vals, ci) {
+          state.res = res; state.vals = vals;
+          var nz = res[0].noise;
+          noiseL.attr('x1', M.l).attr('x2', cW - M.r).attr('y1', y(nz)).attr('y2', y(nz));
+          noiseT.attr('x', cW - M.r + 4).attr('y', y(nz)).attr('dy', '0.35em').text('noise');
+          KEYS.forEach(function (k) {
+            paths[k[0]].attr('d', d3.line().x(function (_, i) { return x(vals[i]); }).y(function (r) { return yc(r[k[0]]); })(res));
+          });
+          cur.attr('x1', x(vals[ci])).attr('x2', x(vals[ci]));
+          var r = res[ci], pts = KEYS.filter(function (k) { return r[k[0]] <= YMAX; });
+          marks.selectAll('circle').data(pts, function (k) { return k[0]; }).join('circle').attr('r', 5)
+            .attr('cx', x(vals[ci])).attr('cy', function (k) { return y(r[k[0]]); })
+            .attr('fill', function (k) { return k[1]; }).attr('stroke', '#fff').attr('stroke-width', 1.5);
+          var firstOff = res.findIndex(function (q) { return q.total > YMAX; });
+          off.selectAll('*').remove();
+          if (firstOff !== -1) {
+            var fx = x(vals[firstOff]), leftSide = fx > (M.l + cW - M.r) / 2;
+            off.append('text').attr('class', 'ln-dlabel').attr('x', fx + (leftSide ? -8 : 8)).attr('y', M.t + 12)
+              .attr('text-anchor', leftSide ? 'end' : 'start').style('fill', C.total).text('off the chart ↑');
+          }
+        },
+      };
+    }
+    function fv(v) { return SL.fmt(v, v >= 100 ? 0 : 1); }
+    function statTiles(r, name) {
+      return [
+        [C.bias, 'Bias²', r.bias2], [C.vari, 'Variance', r.vari], [C.dot, 'Noise', r.noise], [C.total, 'Total (squared points)', r.total],
+      ].map(function (s) {
+        return '<div class="ln-stat"><div class="ln-stat-v">' + fv(s[2]) + '</div><div class="ln-stat-l"><i style="background:' + s[0] + '"></i>' + s[1] + '</div></div>';
+      }).join('') + '<div class="ln-stat"><div class="ln-stat-v">' + rt(r.total) + '</div><div class="ln-stat-l">Typical miss (points) for ' + name + '</div></div>';
+    }
+
+    /* ── interactive 1: complexity ──────────────── */
+    var fW = 460, fH = 346, fM = { t: 30, r: 12, b: 48, l: 44 };
+    var ffr = frame('#fanSvg', fW, fH, fM, 'Scheduled Tribe share →');
+    var mode = 'poly', fanSeed = FAN_SEED, iSets = bootSets(NFAN_I, fanSeed), fanB = null;
+    var slider = document.getElementById('cxSlider');
+    function cxIndex() { return mode === 'poly' ? +slider.value : KS.length - +slider.value; }
+    function cxName(v) { return mode === 'poly' ? 'Degree ' + v : 'k = ' + v + (v === 1 ? ' neighbour' : ' neighbours'); }
+    var errChart = null;
+    function setMode(m) {
+      mode = m;
+      document.querySelectorAll('#modeSeg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.m === m)); });
+      document.getElementById('sliderName').textContent = m === 'poly' ? 'Degree' : 'Neighbours k';
+      if (m === 'poly') { slider.min = 0; slider.max = 10; slider.value = 1; }
+      else { slider.min = 1; slider.max = 30; slider.value = 1; }
+      d3.select('#errSvg').selectAll('*').remove();
+      errChart = m === 'poly' ? decompChart('#errSvg', {
+        domain: [0, 10], ticks: DEGS, xLabel: 'Polynomial degree (more flexible →)', name: cxName,
+        onPick: function (i) { slider.value = i; drawCx(); },
+      }) : decompChart('#errSvg', {
+        domain: [30, 1], ticks: [30, 25, 20, 15, 10, 5, 1], xLabel: 'Neighbours averaged, k (fewer = more flexible →)', name: cxName,
+        onPick: function (i) { slider.value = KS.length - i; drawCx(); },
+      });
+      drawCx();
+    }
+    function drawCx() {
+      var i = cxIndex(), c = mode === 'poly' ? DEGS[i] : KS[i], res = mode === 'poly' ? polyRes : knnRes, vals = mode === 'poly' ? DEGS : KS;
+      document.getElementById('cxOut').textContent = c;
+      fanB = bundle(fitFactory(mode, c), iSets);
+      setLayer(ffr.ghosts, ghostItems(ffr, fanB, mode + c + 's' + fanSeed + '_').map(function (g) { g.op = 0.8; return g; }));
+      setLayer(ffr.curves, [{ key: 'pat', d: lineFrom(ffr, patGrid), dash: DASH }, { key: 'avg', d: lineFrom(ffr, fanB.avg) }]);
+      ffr.dotsG.selectAll('circle').data(R).join('circle').attr('class', 'ln-dot').attr('r', 5.5).attr('fill', C.dot)
+        .attr('cx', function (d) { return ffr.x(d[X_KEY]); }).attr('cy', function (d) { return ffr.y(d[Y_KEY]); })
+        .on('pointerenter', function (ev, d) { tip.show(ev, dotTip(d, '<br><span class="muted">Average of 40 fits: ' + SL.fmt(fanB.avgX[R.indexOf(d)], 1) + '%</span>')); })
+        .on('pointerleave', function () { tip.hide(); });
+      document.getElementById('fanTitle').textContent = 'Forty refits: ' + (mode === 'poly' ? (c === 0 ? 'flat average (degree 0)' : 'degree-' + c + ' polynomial') : 'nearest neighbours, ' + cxName(c).replace(' neighbours', '').replace(' neighbour', ''));
+      errChart.update(res, vals, i);
+      var r = res[i], best = mode === 'poly' ? bestDeg : bestK;
+      document.getElementById('cxStats').innerHTML = statTiles(r, mode === 'poly' ? 'degree ' + c : 'k = ' + c);
+      document.getElementById('cxNote').textContent = 'Lowest total error: ' + cxName(best).toLowerCase() + '.';
+      var bi = mode === 'poly' ? best : best - 1, flex = mode === 'poly' ? i - bi : bi - i;
+      var verdict = flex === 0 ? 'This is the sweet spot: the lowest total error of any setting, ' + fv(r.total) + ' squared points.'
+        : (flex < 0 ? 'Too rigid: the model misses the shape, and bias² (' + fv(r.bias2) + ') is what holds it back.'
+          : 'Too flexible: the model chases the particular districts it saw, and variance (' + fv(r.vari) + ') is what holds it back.') +
+          ' Expected error ' + fv(r.total) + ' squared points, against ' + fv(res[bi].total) + ' at the best setting (' + cxName(best).toLowerCase() + ').';
+      document.getElementById('cxText').innerHTML = '<b>' + cxName(c) + '.</b> ' + verdict +
+        (mode === 'poly' && c >= 8 && polyRes[10].bias2 > 5 * polyRes[bestDeg].bias2 ? ' At the far right even bias climbs again: the curves are so wild that their average is dragged off the pattern too. With 30 districts, that much flexibility is more than the data can support.' : '');
+    }
+    slider.addEventListener('input', function () { drawCx(); });
+    document.querySelectorAll('#modeSeg button').forEach(function (b) { b.addEventListener('click', function () { if (b.dataset.m !== mode) setMode(b.dataset.m); }); });
+    document.getElementById('resample').addEventListener('click', function () { fanSeed += 1; iSets = bootSets(NFAN_I, fanSeed); drawCx(); });
+    setMode('poly');
+
+    /* ── interactive 2: ridge ───────────────────── */
+    var rfr = frame('#ridgeSvg', fW, fH, fM, 'Scheduled Tribe share →');
+    var rSets = bootSets(NFAN_I, FAN_SEED), lamSlider = document.getElementById('lamSlider');
+    var ridgeChart = decompChart('#ridgeErrSvg', {
+      domain: [0, 9], ticks: d3.range(10), fmt: function (i) { return LAM_LABEL[i]; }, xLabel: 'Penalty λ (stronger → less flexible)',
+      name: function (i) { return 'λ = ' + LAM_LABEL[i]; },
+      onPick: function (i) { lamSlider.value = i; drawRidge(); },
+    });
+    rfr.dotsG.selectAll('circle').data(R).join('circle').attr('class', 'ln-dot').attr('r', 5.5).attr('fill', C.dot)
+      .attr('cx', function (d) { return rfr.x(d[X_KEY]); }).attr('cy', function (d) { return rfr.y(d[Y_KEY]); })
+      .on('pointerenter', function (ev, d) { tip.show(ev, dotTip(d)); }).on('pointerleave', function () { tip.hide(); });
+    function drawRidge() {
+      var i = +lamSlider.value, rb = bundle(fitFactory('poly', 10, LAMS[i]), rSets);
+      document.getElementById('lamOut').textContent = LAM_LABEL[i];
+      setLayer(rfr.ghosts, ghostItems(rfr, rb, 'r' + i + '_').map(function (g) { g.op = 0.8; return g; }));
+      setLayer(rfr.curves, [{ key: 'pat', d: lineFrom(rfr, patGrid), dash: DASH }, { key: 'avg', d: lineFrom(rfr, rb.avg) }]);
+      ridgeChart.update(ridgeRes, d3.range(10), i);
+      document.getElementById('lamStats').innerHTML = statTiles(ridgeRes[i], 'λ = ' + LAM_LABEL[i]);
+      document.getElementById('lamNote').textContent = 'Lowest total error: λ = ' + LAM_LABEL[bestLam] + '.';
+    }
+    lamSlider.addEventListener('input', drawRidge);
+    drawRidge();
+    var rBest = ridgeRes[bestLam].total, pBest = polyRes[bestDeg].total;
+    document.getElementById('lamText').innerHTML = 'With the best penalty (<var>λ</var> = ' + LAM_LABEL[bestLam] + '), the degree-10 curve reaches an expected error of <b>' + fv(rBest) + '</b> squared points, ' +
+      (rBest < pBest - 1 ? 'better than' : rBest > pBest + 1 ? 'a little worse than' : 'about the same as') + ' the best plain polynomial (degree ' + bestDeg + ', <b>' + fv(pBest) + '</b>). ' +
+      'Without a penalty it was <b>' + fv(ridgeRes[0].total) + '</b>. Penalties like this are one of the main ways large models with thousands of settings avoid the degree-10 trap: flexibility is allowed, but it has to earn its keep.';
+
+    /* ── notes ──────────────────────────────────── */
+    var fm = data.meta.features;
+    document.getElementById('srcNote').innerHTML = fm.tribal_pct.label + ' (' + fm.tribal_pct.unit + ') is from ' + fm.tribal_pct.source + '; ' + fm.underweight.label.toLowerCase() + ' (' + fm.underweight.unit + ', weight-for-age) is from the NFHS-5 (2019–21) district fact sheets as compiled in the portal\'s Health workbook. Errors are in squared percentage points; a typical miss is the square root.';
+    var oobBestDeg = DEGS[argmin(polyRes, 'oob')], oobBestK = KS[argmin(knnRes, 'oob')];
+    var uniq = SL.mean(sets.map(function (s) { var u = {}; s.forEach(function (i) { u[i] = 1; }); return Object.keys(u).length; }));
+    document.getElementById('oobNote').innerHTML = 'A check that does not rely on the stand-in: score each redraw\'s fit on the districts it left out (the <em>out-of-bag</em> error). That error is lowest at degree <b>' + oobBestDeg + '</b> and at <var>k</var> = <b>' + oobBestK + '</b>, against degree <b>' + bestDeg + '</b> and <var>k</var> = <b>' + bestK + '</b> from the decomposition. It runs higher overall (<b>' + fv(polyRes[oobBestDeg].oob) + '</b> at its best) because each redraw holds only about <b>' + SL.fmt(uniq, 0) + '</b> distinct districts.';
+
+    /* ── data table ─────────────────────────────── */
+    document.getElementById('dataTable').innerHTML = '<thead><tr><th>District</th><th>Scheduled Tribe %</th><th>Underweight %</th><th>Stand-in pattern %</th></tr></thead><tbody>' +
+      R.map(function (d, i) { return [d, gx[i]]; }).sort(function (a, b) { return a[0].name.localeCompare(b[0].name); }).map(function (p) {
+        return '<tr><td>' + p[0].name + '</td><td>' + SL.fmt(p[0][X_KEY], 1) + '</td><td>' + SL.fmt(p[0][Y_KEY], 1) + '</td><td>' + SL.fmt(p[1], 1) + '</td></tr>';
+      }).join('') + '</tbody>';
+  }).catch(function (err) {
+    console.error(err);
+    document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision Trees · Soochana Learn</title>
+<meta name="description" content="How a decision tree learns a flowchart of yes-or-no questions, and why growing it too far is a trap, explained with child mortality, female literacy and tribal share across Odisha's 30 districts.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20260929">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  /* page-only: the story stage keeps the scatter and the panel below it the same width,
+     so a threshold line on the scatter lines up with the impurity chart underneath */
+  .dt-stage { width: min(100%, calc(42vh * 560 / 330)); margin: 0 auto; }
+  .dt-lower { position: relative; aspect-ratio: 560 / 215; margin-top: 4px; }
+  .dt-lower > svg { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity .35s; }
+  .dt-lower > svg.is-off { opacity: 0; pointer-events: none; }
+  .dt-treewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .dt-treewrap > svg { max-width: none; }
+  .dt-swipe { display: none; }
+  @media (max-width: 600px) { .dt-swipe { display: inline; } }
+  .dt-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  @media (max-width: 860px) { .dt-grid { grid-template-columns: minmax(0, 1fr); } }
+  .dt-node { cursor: default; }
+  .dt-node text { font-weight: 500; fill: var(--ink-heading); font-family: var(--font-sans); }
+  .dt-edge { fill: none; stroke: var(--ln-axis); stroke-width: 1.2px; }
+  .dt-yn { font-size: 10.5px; fill: var(--ink-subtle); paint-order: stroke; stroke: var(--ln-card); stroke-width: 3px; font-family: var(--font-sans); }
+  .dt-halo { paint-order: stroke; stroke: var(--ln-card); stroke-width: 3px; }
+  .dt-bound { stroke: var(--ink-heading); stroke-width: 1.3px; stroke-opacity: .55; }
+  .dt-ghostb { stroke: var(--ink-heading); stroke-width: 1.2px; stroke-dasharray: 3 4; stroke-opacity: .45; }
+  .dt-guide { stroke: var(--ink-heading); stroke-width: 1.6px; stroke-dasharray: 5 4; }
+  .dt-click .ln-dot { cursor: pointer; }
+  /* style.css styles every <path> for its maps (grey stroke, hover glow, transition); undo that here */
+  .ln-figure svg path { transition: none; cursor: inherit; }
+  .ln-figure svg path:hover { filter: none; }
+  .ln-k-pos::before { border-radius: 2px; }
+  .ln-legend i.sq { border-radius: 2px; }
+  .ln-legend i.hollow { background: #fff !important; border: 1.5px solid var(--ink-subtle); width: 9px; height: 9px; }
+  @media (max-width: 860px) {
+    .dt-stage { width: 100%; }
+    .dt-lower { aspect-ratio: 560 / 270; }
+  }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · 04</div>
+    <h2 class="ln-title">Decision <em>Trees</em></h2>
+    <p class="ln-dek">A decision tree is a flowchart of yes-or-no questions learned from data. Here is how one grows, question by question, to sort Odisha's 30 districts by child mortality, and why letting it grow too far is a trap.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census 2011 and NFHS-5 · Every number on this page is computed live in your browser</div>
+  </section>
+
+  <div class="ln-prose">
+    <p><strong>Under-five mortality</strong> counts the children who die before their fifth birthday for every 1,000 born alive. In NFHS-5 (2019–21) it varies widely across Odisha's districts. Half of them sit above <b data-v="med"></b> per 1,000 and half at or below it.</p>
+    <p>Suppose we want a simple rule that sorts districts into the <span class="ln-k ln-k-pos"><span>high</span></span> half and the <span class="ln-k ln-k-neg"><span>low</span></span> half, using two things already known about each one: the share of women who could read in 2011, and the share of people from Scheduled Tribes. A <em>decision tree</em> finds such a rule by asking one yes-or-no question at a time.</p>
+  </div>
+
+  <!-- ── scroll story ─────────────────────────────── -->
+  <section class="ln-scrolly" id="story">
+    <div class="ln-steps">
+      <div class="ln-step"><div class="ln-card">
+        <h3>Thirty districts</h3>
+        <p>Each mark is a district. Across: female literacy. Up: the share of people from Scheduled Tribes. <span class="ln-k ln-k-pos"><span>Orange squares</span></span> have under-five mortality above the median of <b data-v="med"></b> per 1,000; <span class="ln-k ln-k-neg"><span>teal circles</span></span> are at or below it.</p>
+        <p>High-mortality districts gather at the top left, where literacy is low and tribal share is high. But the two groups overlap.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>A game of twenty questions</h3>
+        <p>In the game <em>Twenty Questions</em>, a good question splits the possibilities as cleanly as possible. A decision tree plays the same game with data. It asks something like “Is female literacy at or below 60%?”, sends each district left (yes) or right (no), and then asks again inside each group.</p>
+        <p>It starts with all <b data-v="n"></b> districts in one box: <b data-v="nPos"></b> high and <b data-v="nNeg"></b> low. Guessing “high” for every district would be right only <b data-v="base"></b> of the time.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Scoring a question</h3>
+        <p>Which question is best? Slide a dividing line across female literacy, and at each position measure how mixed the two sides are.</p>
+        <p>The yardstick is <strong>Gini impurity</strong>: the chance that two districts drawn at random from a group (with replacement) carry different labels. A pure group scores 0; a 50–50 group scores 0.5. The two sides are averaged, weighted by size. Lower is better.</p>
+        <p>On this axis the best line sits at <b data-v="litThr"></b>, which brings the impurity down from <b data-v="rootImp"></b> to <b data-v="litImp"></b>.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Try the other axis</h3>
+        <p>Now slide a line up the tribal-share axis. Its best position, <b data-v="triThr"></b>, only gets the impurity down to <b data-v="triImp"></b>.</p>
+        <p>Female literacy wins, so it becomes the tree's first question. <span data-v="entNote"></span></p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>The first split</h3>
+        <p>The tree asks: <b data-v="q1"></b> Each side then predicts whichever label is more common in it.</p>
+        <p><span data-v="s1"></span></p>
+        <p>This one question sorts <b data-v="acc1"></b> of the districts correctly.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Ask again inside each box</h3>
+        <p>Now the tree repeats the same search separately inside each box. Each new question only applies to the districts that reached it, so the plot is cut into smaller rectangles.</p>
+        <p><span data-v="d2note"></span></p>
+        <p>Districts sorted correctly: <b data-v="acc2"></b>.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Deeper still</h3>
+        <p>At depth 3 the tree has <b data-v="leaves3"></b> leaves (the boxes at the bottom, which make the predictions) and sorts <b data-v="acc3"></b> of the districts correctly.</p>
+        <p>An extra level can never lower the score on the districts the tree learned from. It can only keep it or raise it.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Grow until every box is pure</h3>
+        <p>Keep splitting until no box mixes high and low. That takes <b data-v="fullDepth"></b> levels and <b data-v="fullLeaves"></b> leaves, and the tree now sorts <b data-v="fullAcc"></b> of these districts correctly.</p>
+        <p>But look at the rules it needed. <span data-v="rule"></span> <b data-v="singles"></b> of its leaves hold a single district. The tree has not found a pattern. It has memorised a list.</p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Is it any good?</h3>
+        <p>Scoring a tree on the districts it grew from proves nothing (see <a href="train-test-validation.html">Train, Test and Validation</a>). So we use <strong>5-fold cross-validation</strong>: grow the tree on four-fifths of the districts, test it on the fifth it never saw, rotate, and repeat for <b data-v="reps"></b> different shuffles.</p>
+        <p><span data-v="cvNote"></span></p>
+      </div></div>
+      <div class="ln-step"><div class="ln-card">
+        <h3>Small change, different tree</h3>
+        <p>Trees are also jumpy. Leave out just one district, <b data-v="looName"></b> (the hollow mark), and grow the depth-3 tree again. <span data-v="looNote"></span></p>
+        <p>Try this for each district in turn: <b data-v="looChanged"></b> of the 30 removals give a different depth-3 tree.</p>
+      </div></div>
+    </div>
+    <div class="ln-graphic" aria-live="polite">
+      <figure class="ln-figure" style="margin:0">
+        <p class="ln-figure-t" id="figTitle">Female literacy, tribal share and child mortality, 30 districts</p>
+        <p class="ln-figure-s" id="figSub">Hover a mark for the district</p>
+        <div class="ln-legend" id="figLegend"></div>
+        <div class="dt-stage">
+          <svg id="storySvg" role="img" aria-label="Scatter plot of female literacy against Scheduled Tribe share for Odisha's 30 districts, marked by high or low under-five mortality"></svg>
+          <div class="dt-lower" id="storyLower">
+            <svg id="storyTree" role="img" aria-label="Diagram of the decision tree at this step"></svg>
+            <svg id="storySweep" class="is-off" role="img" aria-label="Weighted Gini impurity of the two sides as the dividing line moves"></svg>
+            <svg id="storyAcc" class="is-off" role="img" aria-label="Training and cross-validated accuracy against tree depth"></svg>
+          </div>
+        </div>
+        <div class="ln-source">Female literacy and Scheduled Tribe share: Census 2011 · Under-five mortality: NFHS-5 (2019–21)</div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── interactive 1: grow your own ─────────────── -->
+  <div class="ln-prose">
+    <h2>Try it: grow your own tree</h2>
+    <p>Pick the two features the tree may ask about, cap its depth, and set the fewest districts a leaf is allowed to hold. Hover a box in the tree to see which districts reach it; hover a district to see the path it takes.</p>
+    <p>Watch the chart on the right. The <span class="ln-k" style="color:var(--ln-fit)"><span>training</span></span> accuracy only climbs as the tree deepens. The <span class="ln-k ln-k-val"><span>cross-validated</span></span> accuracy, measured on districts each tree never saw, usually does not.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <label>Across <select id="selX" aria-label="Feature on the horizontal axis"></select></label>
+        <label>Up <select id="selY" aria-label="Feature on the vertical axis"></select></label>
+      </div>
+      <div class="ln-controls">
+        <label>Max depth <input type="range" id="depthSl" min="1" max="6" value="3"><output id="depthOut">3</output></label>
+        <label>Min districts per leaf <input type="range" id="leafSl" min="1" max="8" value="1"><output id="leafOut">1</output></label>
+        <div class="ln-seg" id="critSeg" role="group" aria-label="Impurity measure">
+          <button aria-pressed="true" data-c="gini">Gini</button>
+          <button aria-pressed="false" data-c="entropy">Entropy</button>
+        </div>
+      </div>
+      <div class="ln-grid2 dt-grid">
+        <div>
+          <p class="ln-figure-t">The tree's boxes</p>
+          <div class="ln-legend" id="growLegend"></div>
+          <svg id="growSvg" role="img" aria-label="The two chosen features for 30 districts, with the rectangles the tree carves out"></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t">Accuracy by maximum depth</p>
+          <div class="ln-legend">
+            <span><i class="line" style="background:var(--ln-fit)"></i>Training (districts it grew from)</span>
+            <span><i class="line" style="background:var(--ln-val)"></i>Cross-validated (unseen districts)</span>
+          </div>
+          <svg id="growAcc" role="img" aria-label="Training and cross-validated accuracy for trees of depth 1 to 6"></svg>
+        </div>
+      </div>
+      <p class="ln-figure-t" style="margin-top:16px">The tree</p>
+      <p class="ln-figure-s">Left branch = yes, right = no. Each leaf shows its prediction and how many of its districts agree; the thin bar is the mix of high and low.<span class="dt-swipe"> Swipe sideways to see all of it.</span></p>
+      <div class="dt-treewrap"><svg id="growTree" role="img" aria-label="Diagram of the tree grown with the current settings"></svg></div>
+      <div class="ln-stats" id="growStats"></div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p>Two simple brakes stop a tree from memorising. A <strong>maximum depth</strong> limits how many questions it may ask in a row. A <strong>minimum leaf size</strong> forbids answers based on one or two districts. Setting either is called <em>pruning</em> (strictly, pre-pruning), and the right setting is chosen the honest way: by cross-validation, not by training accuracy.</p>
+    <p><span data-v="growNote"></span></p>
+  </div>
+
+  <!-- ── interactive 2: instability ───────────────── -->
+  <div class="ln-prose">
+    <h2>One tree is a shaky witness</h2>
+    <p>A tree's first question decides everything beneath it, so a small change at the top can rearrange the whole tree. Below is the depth-3 tree grown on all 30 districts. <strong>Click any district</strong> to leave it out and regrow the tree, or press <em>Resample</em> to grow it on a <strong>bootstrap sample</strong>: 30 districts drawn at random with replacement, so some appear twice and others not at all.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <button class="ln-btn" id="bootBtn">Resample</button>
+        <button class="ln-btn ghost" id="resetBtn">Use all 30</button>
+        <span id="instNote" style="color:var(--ink-subtle)"></span>
+      </div>
+      <div class="ln-grid2 dt-grid">
+        <div>
+          <div class="ln-legend" id="instLegend"></div>
+          <svg id="instSvg" class="dt-click" role="img" aria-label="Scatter of the 30 districts with the rectangles of the regrown depth-3 tree; dashed lines show the tree grown on all 30"></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t" id="instTitle">Tree grown on all 30 districts</p>
+          <p class="ln-figure-s dt-swipe">Swipe the tree sideways to see all of it.</p>
+          <div class="dt-treewrap"><svg id="instTree" role="img" aria-label="Diagram of the regrown depth-3 tree"></svg></div>
+        </div>
+      </div>
+      <div class="ln-stats" id="instStats"></div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p id="instText"></p>
+    <p>This jumpiness is the reason <strong>random forests</strong> exist. Grow hundreds of trees, each on its own bootstrap sample and each allowed to consider only a random subset of features at every split, then let them vote. The quirks of individual trees tend to cancel out, and the vote is far steadier than any single tree.</p>
+    <div class="ln-callout">
+      <span class="ln-callout-t">Take-aways</span>
+      A decision tree learns a flowchart: at each step it picks the yes-or-no question that leaves the two groups least mixed. Its rules are easy to read and to explain, which is its great strength. Left alone it keeps splitting until it has memorised the data, so its training accuracy means nothing. Cap its depth or its leaf size, and choose the cap by cross-validation. And because one tree changes shape when a single district moves, treat any one tree's rules as a sketch, not a finding.
+    </div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p>Under-five mortality (deaths before age five per 1,000 live births) is from the NFHS-5 district fact sheets (2019–21); a district counts as <em>high</em> if its rate is above the median of the 30 districts, computed live. Female literacy, Scheduled Tribe share, urban share and population density are from Census 2011; hover a column heading in the data table for each feature's source. Trees are grown with CART: every split is a single “feature ≤ threshold” question, thresholds sit halfway between neighbouring district values, and the split chosen is the one with the lowest size-weighted Gini impurity (or entropy, where selected). A leaf predicts its majority label; an even split is broken towards “high”. Cross-validated accuracy is the average of <span data-v="reps"></span> runs of 5-fold cross-validation with fixed seeds, so every reader sees the same numbers; bootstrap samples also use a fixed seed. District-level NFHS estimates of child deaths rest on relatively few births and carry wide margins of error. With 30 districts, these trees are teaching devices, not planning tools, and a split describes an association in the data, not a cause: literacy and tribal share stand in for many things that differ between districts.</p>
+    <details class="ln-details">
+      <summary>Show the data table</summary>
+      <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
+    </details>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="neural-networks.html"><small>Next · 05</small><b>Neural Networks</b></a>
+    <a href="logistic-regression.html"><small>03</small><b>Logistic Regression</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var TARGET = 'nfhs5.u5mr', KX = 'f.female_lit', KY = 'f.tribal_pct';
+  var FEATS = ['f.female_lit', 'f.tribal_pct', 'f.urban_pct', 'f.beds_per_100k', 'f.forest_pct', 'f.density', 'nfhs5.inst_births', 'nfhs5.full_vax', 'f.sec_dropout'];
+  /* name variants for tree boxes: full, short, tiny; plus a lower-case form for prose */
+  var NAMES = {
+    'f.female_lit': ['Female literacy', 'Female lit.', 'Lit', 'female literacy'],
+    'f.tribal_pct': ['Tribal share', 'Tribal', 'ST', 'tribal share'],
+    'f.urban_pct': ['Urban share', 'Urban', 'Urb', 'urban share'],
+    'f.beds_per_100k': ['Hospital beds', 'Beds', 'Beds', 'hospital beds per lakh'],
+    'f.forest_pct': ['Forest cover', 'Forest', 'For', 'forest cover'],
+    'f.density': ['Density', 'Density', 'Den', 'population density'],
+    'nfhs5.inst_births': ['Institutional births', 'Inst. births', 'IB', 'institutional births'],
+    'nfhs5.full_vax': ['Fully vaccinated', 'Vaccinated', 'Vax', 'full vaccination'],
+    'f.sec_dropout': ['Secondary dropout', 'Dropout', 'Drop', 'secondary dropout'],
+  };
+  var C = { pos: SL.color('pos'), neg: SL.color('neg'), val: SL.color('val'), fit: SL.color('fit') };
+  var CLS = ['Low', 'High'], GLYPH = [d3.symbol(d3.symbolCircle, 42)(), d3.symbol(d3.symbolSquare, 38)()];
+  var SYM = [d3.symbol(d3.symbolCircle, 150)(), d3.symbol(d3.symbolSquare, 125)()];
+  var CV_SEED = 404, CV_REPS = 10, MAXD = 6, BOOT_SEED = 11, BOOTS = 200;
+  var tip = SL.tooltip(), uid = 0;
+  var mctx = document.createElement('canvas').getContext('2d');
+  var FONT = getComputedStyle(document.body).fontFamily || 'sans-serif';
+  function measure(s, fs) { mctx.font = '500 ' + fs + 'px ' + FONT; return mctx.measureText(s).width; }
+
+  SL.loadData().then(function (data) {
+    var meta = data.meta;
+    var R = SL.rows(data.districts, FEATS.concat([TARGET]));
+    R.forEach(function (d, i) { d._i = i; });
+    var N = R.length, ALL = SL.range(N);
+    var MED = SL.median(R.map(function (d) { return d[TARGET]; }));
+    var Y = R.map(function (d) { return d[TARGET] > MED ? 1 : 0; });
+    var NPOS = SL.sum(Y);
+
+    /* ── helpers ───────────────────────────────── */
+    function fm(k) { return meta.features[k.split('.').pop()]; }
+    function isPct(k) { return /^%/.test(fm(k).unit); }
+    function axisLabel(k) { return fm(k).label + ' (' + fm(k).unit + ')'; }
+    function trim(v) { return (+(+v).toFixed(2)).toLocaleString('en-IN', { maximumFractionDigits: 2 }); }
+    function fmtT(k, v) { return trim(v) + (isPct(k) ? '%' : ''); }
+    function fmtV(k, v) { return SL.fmt(v, Math.abs(v) >= 100 ? 0 : 1) + (isPct(k) ? '%' : ' ' + fm(k).unit); }
+    function question(k, t) { return NAMES[k][0] + ' ≤ ' + fmtT(k, t) + '?'; }
+    function matrix(keys, idx) { return (idx || ALL).map(function (i) { return keys.map(function (k) { return R[i][k]; }); }); }
+    function accOf(tree, X, y) { return SL.metrics.accuracy(y, X.map(tree.predict)); }
+    function accText(a, n) { return Math.round(a * n) + ' of ' + n + ' (' + SL.pct(a) + ')'; }
+    function names(list, max) {
+      var u = list.filter(function (v, i) { return list.indexOf(v) === i; }).map(function (i) { return R[i].name; }).sort();
+      max = max || 14;
+      return u.length > max ? u.slice(0, max).join(', ') + ' and ' + (u.length - max) + ' more' : u.join(', ');
+    }
+    function agree(n) { return n.prediction ? n.pos : n.n - n.pos; }
+
+    /** Grow a tree on rows `idx` (indices into R, repeats allowed) and annotate it. */
+    function grow(keys, idx, opts) {
+      var X = matrix(keys, idx), y = idx.map(function (i) { return Y[i]; });
+      var t = SL.models.buildTree(X, y, opts);
+      t.keys = keys; t.rows = idx;
+      (function ann(n, key, box, par) {
+        n.key = key; n.box = box; n.parent = par;
+        n.ridx = n.idx.map(function (j) { return idx[j]; });
+        if (n.left) {
+          var lb = Object.assign({}, box), rb = Object.assign({}, box);
+          if (n.feature === 0) { lb.x1 = n.threshold; rb.x0 = n.threshold; } else { lb.y1 = n.threshold; rb.y0 = n.threshold; }
+          ann(n.left, key + 'L', lb, n); ann(n.right, key + 'R', rb, n);
+        }
+      })(t.root, 'r', { x0: -Infinity, x1: Infinity, y0: -Infinity, y1: Infinity }, null);
+      t.all = t.nodes();
+      t.leaves = t.all.filter(function (n) { return !n.left; });
+      t.depth = d3.max(t.all, function (n) { return n.depth; });
+      t.rowOf = function (i) { return keys.map(function (k) { return R[i][k]; }); };
+      t.pathKeys = function (i) {
+        var r = t.rowOf(i), n = t.root, out = [n.key];
+        while (n.left) { n = r[n.feature] <= n.threshold ? n.left : n.right; out.push(n.key); }
+        return out;
+      };
+      t.sig = (function s(n) { return n.left ? '(' + n.feature + ':' + n.threshold.toFixed(3) + s(n.left) + s(n.right) + ')' : 'L' + n.prediction; })(t.root);
+      return t;
+    }
+
+    function cvAccuracy(keys, opts) {
+      var X = matrix(keys), tot = 0;
+      for (var r = 0; r < CV_REPS; r++) {
+        var folds = SL.kfold(N, 5, SL.rng(CV_SEED + r)), c = 0;
+        folds.forEach(function (f) {
+          var t = SL.models.buildTree(f.train.map(function (i) { return X[i]; }), f.train.map(function (i) { return Y[i]; }), opts);
+          f.test.forEach(function (i) { if (t.predict(X[i]) === Y[i]) c++; });
+        });
+        tot += c / N;
+      }
+      return tot / CV_REPS;
+    }
+    function depthCurve(keys, minLeaf, crit) {
+      var X = matrix(keys);
+      return d3.range(1, MAXD + 1).map(function (dep) {
+        var o = { maxDepth: dep, minLeaf: minLeaf, criterion: crit };
+        return { depth: dep, tr: accOf(SL.models.buildTree(X, Y, o), X, Y), cv: cvAccuracy(keys, o) };
+      });
+    }
+
+    /** Candidate thresholds along one feature, with the weighted impurity of each split. */
+    function sweep(k, crit) {
+      var imp = crit === 'entropy' ? SL.entropy : SL.gini;
+      var s = ALL.slice().sort(function (a, b) { return R[a][k] - R[b][k]; }), pts = [], posL = 0;
+      for (var j = 0; j < N - 1; j++) {
+        posL += Y[s[j]];
+        var v0 = R[s[j]][k], v1 = R[s[j + 1]][k];
+        if (v0 === v1) continue;
+        var nL = j + 1, nR = N - nL, posR = NPOS - posL;
+        pts.push({ v0: v0, v1: v1, t: (v0 + v1) / 2, nL: nL, posL: posL, nR: nR, posR: posR, imp: (nL * imp(posL, nL) + nR * imp(posR, nR)) / N });
+      }
+      pts.best = pts.reduce(function (a, b) { return b.imp < a.imp - 1e-12 ? b : a; });
+      pts.min = R[s[0]][k]; pts.max = R[s[N - 1]][k]; pts.parent = imp(NPOS, N);
+      return pts;
+    }
+
+    /* ── scatter factory ───────────────────────── */
+    function Scatter(sel, o) {
+      var W = o.W, H = o.H, M = o.M || { t: 12, r: 14, b: 42, l: 46 }, id = 'dtclip' + (uid++);
+      var svg = d3.select(sel).attr('viewBox', [0, 0, W, H]);
+      svg.append('defs').append('clipPath').attr('id', id).append('rect')
+        .attr('x', M.l).attr('y', M.t).attr('width', W - M.l - M.r).attr('height', H - M.t - M.b);
+      var gGrid = svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + M.l + ',0)');
+      var gReg = svg.append('g').attr('clip-path', 'url(#' + id + ')');
+      var gGhost = svg.append('g').attr('clip-path', 'url(#' + id + ')');
+      var gBnd = svg.append('g').attr('clip-path', 'url(#' + id + ')');
+      var gX = svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')');
+      var gY = svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + M.l + ',0)');
+      var xLab = svg.append('text').attr('class', 'ln-axis-label').attr('x', W - M.r).attr('y', H - 6).attr('text-anchor', 'end');
+      var yLab = svg.append('text').attr('class', 'ln-axis-label dt-halo').attr('x', M.l + 6).attr('y', M.t + 2).attr('dy', '0.8em');
+      var gGuide = svg.append('g').attr('clip-path', 'url(#' + id + ')');
+      var gDots = svg.append('g'), gAnn = svg.append('g');
+      var S = { svg: svg, W: W, H: H, M: M, x: d3.scaleLinear().range([M.l, W - M.r]), y: d3.scaleLinear().range([H - M.b, M.t]), gGuide: gGuide, gAnn: gAnn, fill: null, hollow: null };
+      function dom(k) {
+        var e = d3.extent(R, function (d) { return d[k]; }), p = (e[1] - e[0]) * 0.05;
+        return [e[0] >= 0 ? Math.max(0, e[0] - p) : e[0] - p, e[1] + p];
+      }
+      S.setKeys = function (kx, ky) {
+        S.kx = kx; S.ky = ky;
+        S.x.domain(dom(kx)).nice(6); S.y.domain(dom(ky)).nice(5);
+        var fx = function (v) { return SL.fmt(v) + (isPct(kx) ? '%' : ''); }, fy = function (v) { return SL.fmt(v) + (isPct(ky) ? '%' : ''); };
+        gX.call(d3.axisBottom(S.x).ticks(6).tickFormat(fx));
+        gY.call(d3.axisLeft(S.y).ticks(5).tickFormat(fy));
+        gGrid.call(d3.axisLeft(S.y).ticks(5).tickSize(-(W - M.l - M.r)).tickFormat(''));
+        xLab.text(axisLabel(kx) + ' →');
+        yLab.text('↑ ' + axisLabel(ky));
+        S.dots();
+      };
+      S.px = function (i) { return S.x(R[i][S.kx]); };
+      S.py = function (i) { return S.y(R[i][S.ky]); };
+      S.dots = function (dur) {
+        var sel = gDots.selectAll('path.ln-dot').data(R, function (d) { return d.name; }).join('path')
+          .attr('class', 'ln-dot').attr('d', function (d) { return SYM[Y[d._i]]; })
+          .on('pointerenter', function (e, d) { d3.select(this).classed('is-hover', true).raise(); if (S.onDot) S.onDot(d._i, e); })
+          .on('pointermove', function (e, d) { if (S.onDot) S.onDot(d._i, e); })
+          .on('pointerleave', function () { d3.select(this).classed('is-hover', false); if (S.onDot) S.onDot(null); })
+          .on('click', function (e, d) { if (S.onClick) S.onClick(d._i); });
+        (dur ? sel.transition().duration(SL.dur(dur)) : sel)
+          .attr('transform', function (d) { return 'translate(' + S.px(d._i) + ',' + S.py(d._i) + ')'; })
+          .attr('fill', function (d) { return S.hollow && S.hollow(d._i) ? '#fff' : C[Y[d._i] ? 'pos' : 'neg']; })
+          .style('stroke', function (d) { return S.hollow && S.hollow(d._i) ? 'var(--ink-subtle)' : null; });
+      };
+      S.focus = function (set) {
+        gDots.selectAll('path.ln-dot').style('opacity', function (d) { return !set || set.has(d._i) ? 1 : 0.16; });
+      };
+      function clampBox(b) {
+        var xd = S.x.domain(), yd = S.y.domain();
+        return { x0: S.x(Math.max(b.x0, xd[0])), x1: S.x(Math.min(b.x1, xd[1])), y0: S.y(Math.min(b.y1, yd[1])), y1: S.y(Math.max(b.y0, yd[0])) };
+      }
+      S.regions = function (tree) {
+        var leaves = tree ? tree.leaves : [];
+        gReg.selectAll('rect').data(leaves, function (n) { return n.key; }).join(
+          function (en) { return en.append('rect').style('opacity', 0); }
+        ).each(function (n) { n._r = clampBox(n.box); })
+          .attr('x', function (n) { return n._r.x0; }).attr('y', function (n) { return n._r.y0; })
+          .attr('width', function (n) { return Math.max(0, n._r.x1 - n._r.x0); }).attr('height', function (n) { return Math.max(0, n._r.y1 - n._r.y0); })
+          .attr('fill', function (n) { return C[n.prediction ? 'pos' : 'neg']; })
+          .on('pointerenter', function (e, n) { if (S.onRegion) S.onRegion(n, e); })
+          .on('pointermove', function (e, n) { if (S.onRegion) S.onRegion(n, e); })
+          .on('pointerleave', function () { if (S.onRegion) S.onRegion(null); })
+          .transition().duration(SL.dur(450)).style('opacity', 1).attr('fill-opacity', 0.13);
+        S.bounds(gBnd, tree, 'dt-bound');
+      };
+      S.bounds = function (g, tree, cls) {
+        var inner = tree ? tree.all.filter(function (n) { return n.left; }) : [];
+        g.selectAll('line').data(inner, function (n) { return n.key + n.threshold; }).join('line').attr('class', cls)
+          .each(function (n) {
+            var b = clampBox(n.box), el = d3.select(this);
+            if (n.feature === 0) el.attr('x1', S.x(n.threshold)).attr('x2', S.x(n.threshold)).attr('y1', b.y0).attr('y2', b.y1);
+            else el.attr('y1', S.y(n.threshold)).attr('y2', S.y(n.threshold)).attr('x1', b.x0).attr('x2', b.x1);
+          });
+      };
+      S.ghost = function (tree) { S.bounds(gGhost, tree, 'dt-ghostb'); };
+      return S;
+    }
+
+    /* ── tree diagram factory ──────────────────── */
+    function TreeDiagram(el) {
+      var svg = d3.select(el), gE = svg.append('g'), gY = svg.append('g'), gN = svg.append('g');
+      var api = {}, prev = {};
+      api.draw = function (tree, cfg) {
+        var nodes = tree.all, leaves = tree.leaves, W = cfg.width;
+        var levels = Math.max(cfg.levels || 0, tree.depth + 1);
+        var lvlH = cfg.height ? Math.min(cfg.maxLvl || 62, cfg.height / levels) : (cfg.lvlH || 60);
+        var H = cfg.height || levels * lvlH;
+        var bh = Math.max(20, Math.min(30, lvlH - 11)), fs = bh < 24 ? 10.5 : 11.5, barH = bh < 24 ? 2.5 : 3;
+        var pad = 3, leafW = (W - 2 * pad) / leaves.length;
+        leaves.forEach(function (l, i) { l.cx = pad + (i + 0.5) * leafW; l.rl = pad + i * leafW; l.rr = l.rl + leafW; });
+        (function pos(n) {
+          if (!n.left) return;
+          pos(n.left); pos(n.right);
+          n.cx = (n.left.cx + n.right.cx) / 2; n.rl = n.left.rl; n.rr = n.right.rr;
+        })(tree.root);
+        nodes.forEach(function (n) {
+          n.cy = n.depth * lvlH + bh / 2 + 2;
+          var avail = Math.min(n.left ? 240 : 150, 2 * Math.min(n.cx - n.rl, n.rr - n.cx) - 4), vars;
+          if (cfg.plainRoot && !n.parent && !n.left) vars = [[0, 'All ' + n.n + ' districts · ' + n.pos + ' high, ' + (n.n - n.pos) + ' low'], [0, n.n + ' districts · ' + n.pos + ' high']];
+          else if (n.left) {
+            var k = tree.keys[n.feature], th = fmtT(k, n.threshold);
+            vars = [[0, NAMES[k][0] + ' ≤ ' + th + '?'], [0, NAMES[k][1] + ' ≤ ' + th], [0, NAMES[k][2] + ' ≤ ' + th]];
+          } else {
+            var a = agree(n);
+            vars = [[1, CLS[n.prediction] + ' · ' + a + ' of ' + n.n], [1, CLS[n.prediction] + ' ' + a + '/' + n.n], [1, a + '/' + n.n], [0, a + '/' + n.n]];
+          }
+          var pick = vars[vars.length - 1];
+          var wOf = function (vv) { return measure(vv[1], fs) + (vv[0] ? 10 : 0); };
+          for (var v = 0; v < vars.length; v++) { if (wOf(vars[v]) + 12 <= avail) { pick = vars[v]; break; } }
+          n.lab = pick; n.tw = wOf(pick); n.bw = Math.max(24, Math.min(Math.max(avail, 24), n.tw + 12));
+        });
+        svg.attr('viewBox', [0, 0, W, H]).attr('height', H).style('width', W + 'px');
+        var t = svg.transition().duration(SL.dur(cfg.instant ? 0 : 550)).ease(d3.easeCubicInOut);
+        function start(n) { var p = n.parent && prev[n.parent.key]; return p || [n.cx, n.cy]; }
+        var link = function (s, d) { return 'M' + s[0] + ',' + s[1] + 'C' + s[0] + ',' + (s[1] + d[1]) / 2 + ' ' + d[0] + ',' + (s[1] + d[1]) / 2 + ' ' + d[0] + ',' + d[1]; };
+        var kids = nodes.filter(function (n) { return n.parent; });
+        gE.selectAll('path').data(kids, function (n) { return n.key; }).join(
+          function (en) { return en.append('path').attr('class', 'dt-edge').attr('d', function (n) { var s = start(n); return link(s, s); }); }
+        ).transition(t).attr('d', function (n) { return link([n.parent.cx, n.parent.cy + bh / 2], [n.cx, n.cy - bh / 2]); });
+        var yn = kids.filter(function (n) { return cfg.yesno !== false && Math.abs(n.cx - n.parent.cx) > 30 && lvlH - bh > 12; });
+        gY.selectAll('text').data(yn, function (n) { return n.key; }).join('text').attr('class', 'dt-yn')
+          .attr('text-anchor', function (n) { return n === n.parent.left ? 'end' : 'start'; })
+          .text(function (n) { return n === n.parent.left ? 'yes' : 'no'; })
+          .transition(t)
+          .attr('x', function (n) { return (n.parent.cx + n.cx) / 2 + (n === n.parent.left ? -4 : 4); })
+          .attr('y', function (n) { return (n.parent.cy + bh / 2 + n.cy - bh / 2) / 2 + 3; });
+        var g = gN.selectAll('g.dt-node').data(nodes, function (n) { return n.key; }).join(function (en) {
+          var e = en.append('g').attr('class', 'dt-node').style('opacity', 0)
+            .attr('transform', function (n) { var s = start(n); return 'translate(' + s[0] + ',' + s[1] + ')'; });
+          e.append('rect').attr('class', 'bx');
+          e.append('rect').attr('class', 'bp');
+          e.append('rect').attr('class', 'bn');
+          e.append('path').attr('class', 'gl');
+          e.append('text').attr('dy', '0.35em');
+          return e;
+        });
+        g.on('pointerenter', function (e, n) { if (api.onNode) api.onNode(n, e); })
+          .on('pointermove', function (e, n) { if (api.onNode) api.onNode(n, e); })
+          .on('pointerleave', function () { if (api.onNode) api.onNode(null); });
+        g.select('rect.bx').attr('x', function (n) { return -n.bw / 2; }).attr('y', -bh / 2).attr('width', function (n) { return n.bw; }).attr('height', bh).attr('rx', 5)
+          .attr('fill', function (n) { return n.left || (cfg.plainRoot && !n.parent) ? '#fff' : C[n.prediction ? 'pos' : 'neg']; })
+          .attr('fill-opacity', function (n) { return n.left || (cfg.plainRoot && !n.parent) ? 1 : 0.14; })
+          .attr('stroke', function (n) { return n.left || (cfg.plainRoot && !n.parent) ? 'var(--ln-axis)' : C[n.prediction ? 'pos' : 'neg']; });
+        var bw = function (n) { return Math.max(0, n.bw - 10); };
+        g.select('rect.bp').attr('x', function (n) { return -n.bw / 2 + 5; }).attr('y', bh / 2 - barH - 2.5).attr('height', barH)
+          .attr('width', function (n) { return bw(n) * n.pos / n.n; }).attr('fill', C.pos);
+        g.select('rect.bn').attr('x', function (n) { return -n.bw / 2 + 5 + bw(n) * n.pos / n.n; }).attr('y', bh / 2 - barH - 2.5).attr('height', barH)
+          .attr('width', function (n) { return bw(n) * (1 - n.pos / n.n); }).attr('fill', C.neg);
+        var ty = -(barH + 2.5) / 2 - 0.5;
+        g.select('text').attr('y', ty).style('font-size', fs + 'px')
+          .attr('text-anchor', function (n) { return n.lab[0] ? 'start' : 'middle'; })
+          .attr('x', function (n) { return n.lab[0] ? -n.tw / 2 + 10 : 0; })
+          .text(function (n) { return n.lab[1]; });
+        g.select('path.gl').attr('d', function (n) { return n.lab[0] ? GLYPH[n.prediction] : null; })
+          .attr('transform', function (n) { return 'translate(' + (-n.tw / 2 + 3.5) + ',' + ty + ')'; })
+          .style('fill', function (n) { return C[n.prediction ? 'pos' : 'neg']; }).style('stroke', 'none');
+        g.transition(t).style('opacity', 1).attr('transform', function (n) { return 'translate(' + n.cx + ',' + n.cy + ')'; });
+        prev = {}; nodes.forEach(function (n) { prev[n.key] = [n.cx, n.cy]; });
+        api.mark(null);
+      };
+      api.mark = function (keys) {
+        var s = keys ? new Set(keys) : null;
+        gN.selectAll('g.dt-node').style('opacity', function (n) { return !s || s.has(n.key) ? 1 : 0.3; });
+        gE.selectAll('path').style('stroke', function (n) { return s && s.has(n.key) ? 'var(--ink-heading)' : null; }).style('stroke-width', function (n) { return s && s.has(n.key) ? 2 : null; });
+      };
+      return api;
+    }
+
+    /* ── accuracy-by-depth chart factory ───────── */
+    function AccChart(sel, W, H) {
+      var M = { t: 28, r: 16, b: 40, l: 46 };
+      var svg = d3.select(sel).attr('viewBox', [0, 0, W, H]);
+      var x = d3.scaleLinear([1, MAXD], [M.l + 8, W - M.r - 8]), y = d3.scaleLinear([0.4, 1], [H - M.b, M.t]);
+      svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + M.l + ',0)').call(d3.axisLeft(y).ticks(6).tickSize(-(W - M.l - M.r)).tickFormat(''));
+      svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')').call(d3.axisBottom(x).ticks(MAXD).tickFormat(d3.format('d')));
+      svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + M.l + ',0)').call(d3.axisLeft(y).ticks(6).tickFormat(function (v) { return Math.round(v * 100) + '%'; }));
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', W - M.r).attr('y', H - 6).attr('text-anchor', 'end').text('Maximum depth of the tree →');
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', 4).attr('y', 12).text('↑ Districts sorted correctly');
+      var sel2 = svg.append('line').attr('stroke', 'var(--ink-heading)').attr('stroke-dasharray', '3 4').attr('y1', M.t).attr('y2', H - M.b);
+      var pTr = svg.append('path').style('fill', 'none').style('stroke', C.fit).style('stroke-width', '2px');
+      var pCv = svg.append('path').style('fill', 'none').style('stroke', C.val).style('stroke-width', '2px');
+      var gM = svg.append('g'), gL = svg.append('g');
+      var hit = svg.append('rect').attr('x', M.l).attr('y', M.t).attr('width', W - M.l - M.r).attr('height', H - M.t - M.b).attr('fill', 'transparent');
+      var api = { data: [] };
+      api.draw = function (curve, cur) {
+        api.data = curve;
+        var line = function (k) { return d3.line().x(function (d) { return x(d.depth); }).y(function (d) { return y(Math.max(0.4, d[k])); })(curve); };
+        pTr.transition().duration(SL.dur(400)).attr('d', line('tr'));
+        pCv.transition().duration(SL.dur(400)).attr('d', line('cv'));
+        var pts = [];
+        curve.forEach(function (d) { pts.push({ d: d, k: 'tr' }, { d: d, k: 'cv' }); });
+        gM.selectAll('circle').data(pts).join('circle').attr('r', 4.5).attr('stroke', '#fff').attr('stroke-width', 1.5)
+          .attr('fill', function (p) { return p.k === 'tr' ? C.fit : C.val; })
+          .transition().duration(SL.dur(400))
+          .attr('cx', function (p) { return x(p.d.depth); }).attr('cy', function (p) { return y(Math.max(0.4, p.d[p.k])); });
+        sel2.style('display', cur ? null : 'none').attr('x1', x(cur || 1)).attr('x2', x(cur || 1));
+        var best = curve.reduce(function (a, b) { return b.cv > a.cv + 1e-9 ? b : a; });
+        var right = x(best.depth) > W * 0.6;
+        gL.selectAll('text').data([best]).join('text').attr('class', 'ln-dlabel').attr('text-anchor', right ? 'end' : 'start')
+          .attr('x', function (d) { return x(d.depth) + (right ? -8 : 8); }).attr('y', function (d) { return y(Math.max(0.4, d.cv)) + 18; })
+          .text(function (d) { return 'best on unseen: ' + SL.pct(d.cv); });
+      };
+      hit.on('pointermove', function (ev) {
+        if (!api.data.length) return;
+        var dp = Math.max(1, Math.min(MAXD, Math.round(x.invert(d3.pointer(ev)[0])))), d = api.data[dp - 1];
+        tip.show(ev, '<b>Depth ' + dp + '</b><br>Training ' + SL.pct(d.tr, 1) + '<br>Cross-validated ' + SL.pct(d.cv, 1));
+      }).on('pointerleave', function () { tip.hide(); })
+        .on('click', function (ev) { if (api.onPick) api.onPick(Math.max(1, Math.min(MAXD, Math.round(x.invert(d3.pointer(ev)[0]))))); });
+      return api;
+    }
+
+    function nodeTip(n, tree, rowsWord) {
+      var w = rowsWord || 'districts', h;
+      if (n.left) {
+        h = '<b>' + question(tree.keys[n.feature], n.threshold) + '</b><br>' + n.n + ' ' + w + ' reach this question: ' + n.pos + ' high, ' + (n.n - n.pos) + ' low' +
+          '<br><span class="muted">Yes → left (' + n.left.n + '), no → right (' + n.right.n + ')</span>';
+      } else {
+        h = '<b>Leaf: predicts ' + CLS[n.prediction].toLowerCase() + '</b><br>' + agree(n) + ' of its ' + n.n + ' ' + w + ' are ' + CLS[n.prediction].toLowerCase() +
+          (n.pos * 2 === n.n ? ' (a tie, broken towards high)' : '') + '<br><span class="muted">' + names(n.ridx) + '</span>';
+      }
+      return h;
+    }
+    function dotTip(i, keys, tree) {
+      var d = R[i], h = '<b>' + d.name + '</b><br>' + NAMES[keys[0]][0] + ' ' + fmtV(keys[0], d[keys[0]]) + '<br>' + NAMES[keys[1]][0] + ' ' + fmtV(keys[1], d[keys[1]]) +
+        '<br>Under-five mortality ' + SL.fmt(d[TARGET], 1) + ' per 1,000 (' + CLS[Y[i]].toLowerCase() + ')';
+      if (tree && tree.depth > 0) {
+        var p = tree.leaf(tree.rowOf(i)).prediction;
+        h += '<br><span class="muted">Tree predicts ' + CLS[p].toLowerCase() + (p === Y[i] ? ' ✓' : ' ✗') + '</span>';
+      }
+      return h;
+    }
+    function legendHtml(extra) {
+      return '<span><i class="sq" style="background:' + C.pos + '"></i>High (above ' + SL.fmt(MED, 1) + ')</span>' +
+        '<span><i style="background:' + C.neg + '"></i>Low</span>' + (extra || '');
+    }
+
+    /* ── numbers for the story ─────────────────── */
+    var K2 = [KX, KY], X2 = matrix(K2);
+    var swX = sweep(KX, 'gini'), swY = sweep(KY, 'gini');
+    var gAll = SL.models.bestSplit(X2, Y, ALL, [0, 1], 'gini'), eAll = SL.models.bestSplit(X2, Y, ALL, [0, 1], 'entropy');
+    var T0 = grow(K2, ALL, { maxDepth: 0 }), T1 = grow(K2, ALL, { maxDepth: 1 }), T2 = grow(K2, ALL, { maxDepth: 2 }), T3 = grow(K2, ALL, { maxDepth: 3 });
+    var TF = grow(K2, ALL, { maxDepth: 50 });
+    var acc = function (t) { return accText(accOf(t, X2, Y), N); };
+    var storyCurve = depthCurve(K2, 1, 'gini');
+    var bestC = storyCurve.reduce(function (a, b) { return b.cv > a.cv + 1e-9 ? b : a; });
+    var deepC = storyCurve[Math.min(MAXD, Math.max(1, TF.depth)) - 1];
+
+    function leafDesc(n) { return (n.parent && n === n.parent.left ? 'Yes' : 'No') + ' side: ' + n.n + ' districts, ' + n.pos + ' high → predicts <b>' + CLS[n.prediction].toLowerCase() + '</b>.'; }
+    function ruleOf(n, keys) {
+      var parts = [], b = n.box;
+      [[b.x0, b.x1, keys[0]], [b.y0, b.y1, keys[1]]].forEach(function (q) {
+        var nm = NAMES[q[2]][3];
+        if (q[0] > -Infinity && q[1] < Infinity) parts.push(nm + ' above ' + fmtT(q[2], q[0]) + ' but at most ' + fmtT(q[2], q[1]));
+        else if (q[1] < Infinity) parts.push(nm + ' at most ' + fmtT(q[2], q[1]));
+        else if (q[0] > -Infinity) parts.push(nm + ' above ' + fmtT(q[2], q[0]));
+      });
+      return parts.join(', and ');
+    }
+    /* depth-2 note: describe each new question */
+    var d2 = [];
+    [T2.root.left, T2.root.right].forEach(function (c) {
+      if (!c || !c.left) return;
+      var q = '“' + question(K2[c.feature], c.threshold) + '”', small = c.left.n <= c.right.n ? c.left : c.right;
+      var side = c === T2.root.left ? 'On the yes side' : 'On the no side';
+      if (c.left.prediction === c.right.prediction) d2.push(side + ', ' + q + ' lowers the impurity, yet both new boxes still predict ' + CLS[c.left.prediction].toLowerCase() + ': a split can tidy the data without changing any answer.');
+      else if (small.n === 1) d2.push(side + ', ' + q + ' peels off a single district, ' + R[small.ridx[0]].name + ', into a box of its own.');
+      else d2.push(side + ', ' + q + ' separates ' + small.n + ' districts (' + names(small.ridx) + ') from the rest.');
+    });
+    /* the narrowest one-district leaf of the full tree */
+    var xd0 = [swX.min, swX.max], yd0 = [swY.min, swY.max];
+    var singles = TF.leaves.filter(function (n) { return n.n === 1; });
+    var narrow = singles.slice().sort(function (a, b) {
+      function area(n) {
+        var w = (Math.min(n.box.x1, xd0[1]) - Math.max(n.box.x0, xd0[0])) / (xd0[1] - xd0[0]);
+        var h = (Math.min(n.box.y1, yd0[1]) - Math.max(n.box.y0, yd0[0])) / (yd0[1] - yd0[0]);
+        return Math.max(0, w) * Math.max(0, h);
+      }
+      return area(a) - area(b);
+    })[0];
+    /* leave-one-out instability */
+    var T3sig = T3.sig, looTrees = ALL.map(function (k) { return grow(K2, ALL.filter(function (i) { return i !== k; }), { maxDepth: 3 }); });
+    var looChanged = looTrees.filter(function (t) { return t.sig !== T3sig; }).length;
+    var looPick = -1, looShift = 0;
+    looTrees.forEach(function (t, k) {
+      var sh = t.root.feature !== T3.root.feature ? Infinity : Math.abs(t.root.threshold - T3.root.threshold);
+      if (sh > looShift + 1e-9) { looShift = sh; looPick = k; }
+    });
+    if (looPick < 0) looPick = looTrees.findIndex(function (t) { return t.sig !== T3sig; });
+    if (looPick < 0) looPick = 0;
+    var TL = looTrees[looPick];
+
+    var cvNote = 'Training accuracy climbs from ' + SL.pct(storyCurve[0].tr) + ' at depth 1 to ' + SL.pct(deepC.tr) + ' for the fully grown tree. Accuracy on unseen districts is highest at depth ' + bestC.depth + ' (' + SL.pct(bestC.cv) + ') and falls to ' + SL.pct(deepC.cv) + ' for the fully grown tree.';
+    cvNote += bestC.depth === 1 ? ' With only 30 districts, the single question on ' + NAMES[K2[T1.root.feature]][3] + ' predicts unseen districts better than any deeper tree.' : ' Beyond that depth, each extra question fits quirks of the training districts rather than a pattern.';
+
+    var V = {
+      med: SL.fmt(MED, 1), n: N, nPos: NPOS, nNeg: N - NPOS, base: SL.pct(Math.max(NPOS, N - NPOS) / N), reps: CV_REPS,
+      rootImp: SL.fmt(swX.parent, 2),
+      litThr: fmtT(KX, swX.best.t), litImp: SL.fmt(swX.best.imp, 2), triThr: fmtT(KY, swY.best.t), triImp: SL.fmt(swY.best.imp, 2),
+      entNote: (eAll.feature === gAll.feature && Math.abs(eAll.threshold - gAll.threshold) < 1e-9)
+        ? '(Entropy, another common yardstick of mixedness, picks exactly the same line.)'
+        : '(Entropy, another common yardstick of mixedness, would pick “' + question(K2[eAll.feature], eAll.threshold) + '” instead.)',
+      q1: '“' + question(K2[T1.root.feature], T1.root.threshold) + '”',
+      s1: leafDesc(T1.root.left) + ' ' + leafDesc(T1.root.right),
+      acc1: acc(T1), acc2: acc(T2), acc3: acc(T3), d2note: d2.join(' '),
+      leaves3: T3.leaves.length, fullDepth: TF.depth, fullLeaves: TF.leaves.length, fullAcc: acc(TF),
+      rule: narrow ? 'One leaf exists only for <b>' + R[narrow.ridx[0]].name + '</b>: ' + ruleOf(narrow, K2) + '.' : '',
+      singles: singles.length + ' of ' + TF.leaves.length,
+      cvNote: cvNote,
+      looName: R[looPick].name, looChanged: looChanged,
+      looNote: TL.sig === T3sig ? 'The tree stays the same this time.'
+        : (TL.root.feature === T3.root.feature && TL.root.threshold !== T3.root.threshold
+          ? 'The first question moves from “' + question(K2[T3.root.feature], T3.root.threshold) + '” to “' + question(K2[TL.root.feature], TL.root.threshold) + '”, and the boxes beneath it rearrange.'
+          : 'The first question changes to “' + question(K2[TL.root.feature], TL.root.threshold) + '”.'),
+    };
+    document.querySelectorAll('[data-v]').forEach(function (el) { if (V[el.dataset.v] != null) el.innerHTML = V[el.dataset.v]; });
+
+    /* ── sticky story graphic ──────────────────── */
+    var sc = Scatter('#storySvg', { W: 560, H: 330, M: { t: 12, r: 14, b: 42, l: 46 } });
+    sc.setKeys(KX, KY);
+    var sTree = TreeDiagram(document.getElementById('storyTree'));
+    var sAcc = AccChart('#storyAcc', 560, 215);
+    sAcc.draw(storyCurve, 0);
+    var lowerEl = document.getElementById('storyLower');
+
+    /* impurity sweep chart, x-aligned with the scatter for the literacy sweep */
+    var swW = 560, swH = 215, swM = { t: 28, r: 14, b: 40, l: 46 };
+    var swSvg = d3.select('#storySweep').attr('viewBox', [0, 0, swW, swH]);
+    var swx = d3.scaleLinear().range([swM.l, swW - swM.r]), swy = d3.scaleLinear([0, 0.5], [swH - swM.b, swM.t]);
+    swSvg.append('defs').append('clipPath').attr('id', 'swClip').append('rect').attr('x', 0).attr('y', 0).attr('height', swH).attr('width', 0);
+    swSvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + swM.l + ',0)').call(d3.axisLeft(swy).ticks(5).tickSize(-(swW - swM.l - swM.r)).tickFormat(''));
+    var swGX = swSvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (swH - swM.b) + ')');
+    swSvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + swM.l + ',0)').call(d3.axisLeft(swy).ticks(5));
+    var swXL = swSvg.append('text').attr('class', 'ln-axis-label').attr('x', swW - swM.r).attr('y', swH - 6).attr('text-anchor', 'end');
+    swSvg.append('text').attr('class', 'ln-axis-label').attr('x', 4).attr('y', 12).text('↑ Mix left after the split (weighted Gini)');
+    var swRef = swSvg.append('g');
+    var swPath = swSvg.append('path').style('fill', 'none').style('stroke', C.fit).style('stroke-width', '2px').attr('clip-path', 'url(#swClip)');
+    var swGuide = swSvg.append('line').attr('class', 'dt-guide').attr('y1', swM.t).attr('y2', swH - swM.b);
+    var swBest = swSvg.append('g');
+    var swHit = swSvg.append('rect').attr('x', swM.l).attr('y', swM.t).attr('width', swW - swM.l - swM.r).attr('height', swH - swM.t - swM.b).attr('fill', 'transparent');
+    var swCur = null;
+    function swSetup(which) {
+      var pts = which ? swY : swX, k = which ? KY : KX, dm = (which ? sc.y : sc.x).domain();
+      swCur = { pts: pts, k: k, which: which };
+      swx.domain(dm);
+      swGX.call(d3.axisBottom(swx).ticks(6).tickFormat(function (v) { return v + '%'; }));
+      swXL.text('Where the line sits: ' + NAMES[k][3] + ' (%) →');
+      var arr = [[dm[0], pts.parent], [pts.min, pts.parent]];
+      pts.forEach(function (p) { arr.push([p.v0, p.imp]); });
+      arr.push([pts.max, pts.parent], [dm[1], pts.parent]);
+      swPath.attr('d', d3.line().curve(d3.curveStepAfter).x(function (d) { return swx(d[0]); }).y(function (d) { return swy(d[1]); })(arr));
+      swRef.selectAll('*').remove();
+      if (which) {
+        swRef.append('line').attr('x1', swM.l).attr('x2', swW - swM.r).attr('y1', swy(swX.best.imp)).attr('y2', swy(swX.best.imp)).attr('class', 'dt-ghostb');
+        swRef.append('text').attr('class', 'ln-dlabel').attr('x', swW - swM.r - 4).attr('y', swy(swX.best.imp) - 6).attr('text-anchor', 'end').text('best on female literacy: ' + SL.fmt(swX.best.imp, 2));
+      }
+      swBest.selectAll('*').remove();
+    }
+    function sideText(k, t) {
+      var nL = 0, pL = 0;
+      ALL.forEach(function (i) { if (R[i][k] <= t) { nL++; pL += Y[i]; } });
+      return '≤ ' + fmtT(k, t) + ': ' + nL + ' districts, ' + pL + ' high · above: ' + (N - nL) + ', ' + (NPOS - pL) + ' high';
+    }
+    function impAt(pts, t) {
+      var v = pts.parent;
+      pts.forEach(function (p) { if (t >= p.v0) v = p.imp; });
+      return t >= pts.max ? pts.parent : v;
+    }
+    function setGuide(t) {
+      var which = swCur.which, k = swCur.k;
+      var line = sc.gGuide.selectAll('line').data([0]).join('line').attr('class', 'dt-guide');
+      if (!which) line.attr('x1', sc.x(t)).attr('x2', sc.x(t)).attr('y1', sc.M.t).attr('y2', sc.H - sc.M.b);
+      else line.attr('y1', sc.y(t)).attr('y2', sc.y(t)).attr('x1', sc.M.l).attr('x2', sc.W - sc.M.r);
+      swGuide.attr('x1', swx(t)).attr('x2', swx(t)).style('display', null);
+      d3.select('#swClip rect').attr('width', swx(t));
+      document.getElementById('figSub').textContent = sideText(k, t) + ' · mix ' + SL.fmt(impAt(swCur.pts, t), 2);
+    }
+    function runSweep(which) {
+      swSetup(which);
+      var dm = swx.domain(), best = swCur.pts.best;
+      var t0 = dm[0], t1 = dm[1];
+      sc.svg.interrupt('sweep');
+      sc.svg.transition('sweep').duration(SL.dur(2600)).ease(d3.easeSinInOut)
+        .tween('sweep', function () { return function (p) { setGuide(t0 + (t1 - t0) * p); }; })
+        .transition().duration(SL.dur(700)).ease(d3.easeCubicInOut)
+        .tween('settle', function () { return function (p) { setGuide(t1 + (best.t - t1) * p); }; })
+        .on('end', function () {
+          d3.select('#swClip rect').attr('width', swW);
+          swBest.append('circle').attr('cx', swx(best.t)).attr('cy', swy(best.imp)).attr('r', 5).attr('fill', C.fit).attr('stroke', '#fff').attr('stroke-width', 1.5);
+          swBest.append('text').attr('class', 'ln-dlabel').attr('x', swx(best.t) + (swx(best.t) > swW * 0.6 ? -8 : 8)).attr('y', swy(best.imp) + 16)
+            .attr('text-anchor', swx(best.t) > swW * 0.6 ? 'end' : 'start').text('best: ' + fmtT(swCur.k, best.t) + ' → ' + SL.fmt(best.imp, 2));
+        });
+    }
+    swHit.on('pointermove', function (ev) {
+      if (!swCur) return;
+      var t = swx.invert(d3.pointer(ev)[0]);
+      tip.show(ev, 'Line at ' + fmtT(swCur.k, t) + '<br>' + sideText(swCur.k, t).replace(' · ', '<br>') + '<br><b>Weighted Gini ' + SL.fmt(impAt(swCur.pts, t), 3) + '</b>');
+    }).on('pointerleave', function () { tip.hide(); });
+
+    var STEPS = [
+      { tree: T0, lower: 'tree' }, { tree: T0, lower: 'tree' },
+      { lower: 'sweep', sweep: 0 }, { lower: 'sweep', sweep: 1 },
+      { tree: T1, lower: 'tree', regions: true }, { tree: T2, lower: 'tree', regions: true },
+      { tree: T3, lower: 'tree', regions: true }, { tree: TF, lower: 'tree', regions: true, focus: narrow },
+      { tree: TF, lower: 'acc', regions: true }, { tree: TL, lower: 'tree', regions: true, drop: looPick, ghost: T3 },
+    ];
+    var cur = -1, curTree = null;
+    function drawStoryTree(instant) {
+      var st = STEPS[cur];
+      if (!st || !st.tree) return;
+      sTree.draw(st.tree, { width: lowerEl.clientWidth || 560, height: lowerEl.clientHeight || 215, levels: TF.depth + 1, plainRoot: st.tree === T0, instant: instant });
+    }
+    function setStep(i) {
+      cur = i;
+      var st = STEPS[i];
+      sc.svg.interrupt('sweep');
+      sc.gGuide.selectAll('*').remove();
+      swGuide.style('display', 'none');
+      curTree = st.tree && st.tree.depth > 0 ? st.tree : null;
+      sc.hollow = st.drop != null ? function (k) { return k === st.drop; } : null;
+      sc.dots(400);
+      sc.regions(st.regions ? st.tree : null);
+      sc.ghost(st.ghost || null);
+      sc.focus(st.focus ? new Set(st.focus.ridx) : null);
+      ['tree', 'sweep', 'acc'].forEach(function (k) {
+        document.getElementById('story' + k.charAt(0).toUpperCase() + k.slice(1)).classList.toggle('is-off', st.lower !== k);
+      });
+      if (st.tree) drawStoryTree(false);
+      if (st.focus) sTree.mark(TF.pathKeys(st.focus.ridx[0]));
+      var sub = 'Hover a mark for the district, or a box in the tree';
+      var leg = legendHtml();
+      if (st.lower === 'sweep') { runSweep(st.sweep); leg = legendHtml('<span><i class="line" style="background:' + C.fit + '"></i>Weighted Gini of the two sides</span>'); sub = ''; }
+      if (st.lower === 'acc') {
+        leg = legendHtml('<span><i class="line" style="background:' + C.fit + '"></i>Training</span><span><i class="line" style="background:' + C.val + '"></i>Cross-validated</span>');
+        sub = 'Fully grown tree: ' + SL.pct(deepC.tr) + ' on its own districts, ' + SL.pct(deepC.cv) + ' on unseen ones';
+      }
+      if (st.drop != null) { leg = legendHtml('<span><i class="hollow"></i>Left out</span><span><i class="line" style="background:none;border-top:1.5px dashed var(--ink-subtle);height:0"></i>Tree on all 30</span>'); sub = 'Depth-3 tree regrown without ' + R[st.drop].name; }
+      if (st.focus) sub = 'Highlighted: the one-district leaf for ' + R[st.focus.ridx[0]].name;
+      if (i >= 4 && i <= 6) sub = 'Depth ' + st.tree.depth + ' · ' + st.tree.leaves.length + ' leaves · sorts ' + acc(st.tree) + ' correctly';
+      document.getElementById('figLegend').innerHTML = leg;
+      if (sub) document.getElementById('figSub').textContent = sub;
+    }
+    sc.onDot = function (i, e) {
+      if (i == null) { tip.hide(); sTree.mark(null); return; }
+      var st = STEPS[cur] || {};
+      tip.show(e, dotTip(i, K2, curTree) + (st.drop === i ? '<br><span class="muted">Left out of this tree</span>' : ''));
+      if (st.tree && st.lower === 'tree') sTree.mark(st.tree.pathKeys(i));
+    };
+    sc.onRegion = function (n, e) {
+      if (!n) { tip.hide(); sc.focus(null); sTree.mark(null); return; }
+      tip.show(e, nodeTip(n, STEPS[cur].tree));
+      sc.focus(new Set(n.ridx));
+      var ks = []; for (var p = n; p; p = p.parent) ks.push(p.key);
+      sTree.mark(ks);
+    };
+    sTree.onNode = function (n, e) {
+      if (!n) { tip.hide(); sc.focus(null); sTree.mark(null); return; }
+      var t = STEPS[cur].tree;
+      tip.show(e, n === t.root && t === T0 ? '<b>All ' + n.n + ' districts</b><br>' + n.pos + ' high, ' + (n.n - n.pos) + ' low. No question asked yet.' : nodeTip(n, t));
+      sc.focus(new Set(n.ridx));
+      var ks = []; for (var p = n; p; p = p.parent) ks.push(p.key);
+      sTree.mark(ks);
+    };
+    SL.scrolly('#story', { onStep: setStep });
+
+    /* ── interactive 1: grow your own ─────────── */
+    var gs = { kx: KX, ky: KY, depth: 3, leaf: 1, crit: 'gini' };
+    var gsc = Scatter('#growSvg', { W: 480, H: 380, M: { t: 12, r: 12, b: 42, l: 50 } });
+    var gAcc = AccChart('#growAcc', 480, 380);
+    var gTree = TreeDiagram(document.getElementById('growTree'));
+    var gCur = null, gCurve = null;
+    document.getElementById('growLegend').innerHTML = legendHtml('<span><i class="sq" style="background:' + C.pos + ';opacity:.3"></i><i style="background:' + C.neg + ';opacity:.3;margin-left:-4px"></i>Box predicts high / low</span>');
+    var selX = document.getElementById('selX'), selY = document.getElementById('selY');
+    [selX, selY].forEach(function (s) {
+      s.innerHTML = FEATS.map(function (k) { return '<option value="' + k + '">' + NAMES[k][0] + '</option>'; }).join('');
+    });
+    selX.value = gs.kx; selY.value = gs.ky;
+    function syncSel() {
+      Array.prototype.forEach.call(selX.options, function (o) { o.disabled = o.value === selY.value; });
+      Array.prototype.forEach.call(selY.options, function (o) { o.disabled = o.value === selX.value; });
+    }
+    function growDraw(recurve) {
+      var keys = [gs.kx, gs.ky];
+      if (recurve) gCurve = depthCurve(keys, gs.leaf, gs.crit);
+      gCur = grow(keys, ALL, { maxDepth: gs.depth, minLeaf: gs.leaf, criterion: gs.crit });
+      gsc.regions(gCur);
+      gsc.dots(0);
+      gAcc.draw(gCurve, gs.depth);
+      var ww = document.querySelector('#growTree').parentNode.clientWidth || 900;
+      gTree.draw(gCur, { width: Math.max(Math.min(560, 90 * gCur.leaves.length), ww), lvlH: 58 });
+      var X = matrix(keys), smallest = d3.min(gCur.leaves, function (n) { return n.n; }), c = gCurve[gs.depth - 1];
+      document.getElementById('growStats').innerHTML = [
+        [SL.pct(accOf(gCur, X, Y)), 'Training accuracy', C.fit],
+        [SL.pct(c.cv), 'Cross-validated accuracy', C.val],
+        [gCur.leaves.length + (gCur.depth < gs.depth ? ' <small style="font-size:13px;font-weight:500">(depth ' + gCur.depth + ')</small>' : ''), 'Leaves' + (gCur.depth < gs.depth ? ': the tree stopped early' : '')],
+        [smallest, 'Districts in the smallest leaf'],
+      ].map(function (s) {
+        return '<div class="ln-stat"><div class="ln-stat-v">' + s[0] + '</div><div class="ln-stat-l">' + (s[2] ? '<i style="background:' + s[2] + '"></i>' : '') + s[1] + '</div></div>';
+      }).join('');
+    }
+    function growKeys() {
+      gs.kx = selX.value; gs.ky = selY.value; syncSel();
+      gsc.setKeys(gs.kx, gs.ky);
+      growDraw(true);
+    }
+    gsc.onDot = function (i, e) {
+      if (i == null) { tip.hide(); gTree.mark(null); return; }
+      tip.show(e, dotTip(i, [gs.kx, gs.ky], gCur)); gTree.mark(gCur.pathKeys(i));
+    };
+    gsc.onRegion = function (n, e) {
+      if (!n) { tip.hide(); gsc.focus(null); gTree.mark(null); return; }
+      tip.show(e, nodeTip(n, gCur)); gsc.focus(new Set(n.ridx));
+      var ks = []; for (var p = n; p; p = p.parent) ks.push(p.key); gTree.mark(ks);
+    };
+    gTree.onNode = function (n, e) {
+      if (!n) { tip.hide(); gsc.focus(null); gTree.mark(null); return; }
+      tip.show(e, nodeTip(n, gCur)); gsc.focus(new Set(n.ridx));
+      var ks = []; for (var p = n; p; p = p.parent) ks.push(p.key); gTree.mark(ks);
+    };
+    gAcc.onPick = function (dp) { document.getElementById('depthSl').value = dp; gs.depth = dp; document.getElementById('depthOut').textContent = dp; growDraw(false); };
+    selX.addEventListener('change', growKeys);
+    selY.addEventListener('change', growKeys);
+    document.getElementById('depthSl').addEventListener('input', function (e) { gs.depth = +e.target.value; document.getElementById('depthOut').textContent = gs.depth; growDraw(false); });
+    document.getElementById('leafSl').addEventListener('input', function (e) { gs.leaf = +e.target.value; document.getElementById('leafOut').textContent = gs.leaf; growDraw(true); });
+    document.querySelectorAll('#critSeg button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('#critSeg button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        gs.crit = b.dataset.c; growDraw(true);
+      });
+    });
+    growKeys();
+    /* a note comparing brakes, from the default features */
+    var leaf3 = depthCurve(K2, 3, 'gini');
+    var bestU = depthCurve([KX, 'f.urban_pct'], 1, 'gini').reduce(function (a, b) { return b.cv > a.cv + 1e-9 ? b : a; });
+    document.querySelector('[data-v="growNote"]').innerHTML = 'For female literacy and tribal share, a fully grown tree with no brakes scores ' + SL.pct(deepC.cv) +
+      ' on unseen districts. Requiring at least 3 districts per leaf lifts the depth-6 tree to ' + SL.pct(leaf3[MAXD - 1].cv) +
+      ', and stopping at depth ' + bestC.depth + ' gives ' + SL.pct(bestC.cv) + '. Other pairs behave differently. With female literacy and urban share, the best depth is ' + bestU.depth + ', where the tree sorts ' + SL.pct(bestU.cv) + ' of unseen districts correctly, still short of the ' + SL.pct(bestU.tr) + ' it scores on its own districts.';
+
+    /* ── interactive 2: instability ───────────── */
+    var isc = Scatter('#instSvg', { W: 480, H: 380, M: { t: 12, r: 12, b: 42, l: 50 } });
+    isc.setKeys(KX, KY);
+    var iTree = TreeDiagram(document.getElementById('instTree'));
+    var inst = { mode: 'all', drop: new Set(), sample: null }, iCur = null, bootRand = SL.rng(BOOT_SEED + 1000);
+    document.getElementById('instLegend').innerHTML = legendHtml('<span><i class="hollow"></i>Not in this tree</span><span><i class="line" style="background:none;border-top:1.5px dashed var(--ink-subtle);height:0"></i>Tree on all 30</span>');
+    function instRows() {
+      if (inst.mode === 'boot') return inst.sample;
+      return ALL.filter(function (i) { return !inst.drop.has(i); });
+    }
+    function instDraw() {
+      var rows = instRows(), counts = {};
+      rows.forEach(function (i) { counts[i] = (counts[i] || 0) + 1; });
+      iCur = grow(K2, rows, { maxDepth: 3 });
+      isc.hollow = function (i) { return !counts[i]; };
+      isc.regions(iCur); isc.ghost(inst.mode === 'all' && !inst.drop.size ? null : T3); isc.dots(300);
+      isc.gAnn.selectAll('text').data(inst.mode === 'boot' ? ALL.filter(function (i) { return counts[i] > 1; }) : [], function (i) { return i; })
+        .join('text').attr('class', 'ln-dlabel').attr('x', function (i) { return isc.px(i) + 7; }).attr('y', function (i) { return isc.py(i) - 6; })
+        .text(function (i) { return '×' + counts[i]; });
+      var ww = document.querySelector('#instTree').parentNode.clientWidth || 460;
+      iTree.draw(iCur, { width: Math.max(Math.min(460, 64 * iCur.leaves.length), ww), lvlH: 58 });
+      var same = iCur.sig === T3sig;
+      var title = inst.mode === 'boot' ? 'Tree grown on a bootstrap sample' : inst.drop.size ? 'Tree grown without ' + names(Array.from(inst.drop), 4) : 'Tree grown on all 30 districts';
+      document.getElementById('instTitle').textContent = title;
+      var note = inst.mode === 'all' && !inst.drop.size ? 'Click a district to leave it out.'
+        : (same ? 'Same tree as with all 30.' : 'Different tree. First question: ' + question(K2[iCur.root.feature], iCur.root.threshold));
+      if (inst.mode === 'boot') note += ' · ' + (N - Object.keys(counts).length) + ' districts left out, ' + ALL.filter(function (i) { return counts[i] > 1; }).length + ' drawn more than once';
+      document.getElementById('instNote').textContent = note;
+    }
+    isc.onClick = function (i) {
+      if (inst.mode === 'boot') { inst.mode = 'all'; inst.drop = new Set(); }
+      if (inst.drop.has(i)) inst.drop.delete(i); else if (inst.drop.size < N - 4) inst.drop.add(i);
+      tip.hide(); instDraw();
+    };
+    isc.onDot = function (i, e) {
+      if (i == null) { tip.hide(); iTree.mark(null); return; }
+      var rows = instRows(), c = rows.filter(function (r) { return r === i; }).length;
+      tip.show(e, dotTip(i, K2, iCur) + '<br><span class="muted">' + (c ? (c > 1 ? 'Drawn ' + c + ' times' : 'In this tree') : 'Not in this tree') + ' · click to ' + (inst.mode !== 'boot' && inst.drop.has(i) ? 'put back' : 'leave out') + '</span>');
+      iTree.mark(iCur.pathKeys(i));
+    };
+    isc.onRegion = function (n, e) {
+      if (!n) { tip.hide(); isc.focus(null); iTree.mark(null); return; }
+      tip.show(e, nodeTip(n, iCur, inst.mode === 'boot' ? 'rows' : 'districts')); isc.focus(new Set(n.ridx));
+      var ks = []; for (var p = n; p; p = p.parent) ks.push(p.key); iTree.mark(ks);
+    };
+    iTree.onNode = function (n, e) {
+      if (!n) { tip.hide(); isc.focus(null); iTree.mark(null); return; }
+      tip.show(e, nodeTip(n, iCur, inst.mode === 'boot' ? 'rows' : 'districts')); isc.focus(new Set(n.ridx));
+      var ks = []; for (var p = n; p; p = p.parent) ks.push(p.key); iTree.mark(ks);
+    };
+    document.getElementById('bootBtn').addEventListener('click', function () { inst.mode = 'boot'; inst.sample = SL.bootstrap(N, bootRand); instDraw(); });
+    document.getElementById('resetBtn').addEventListener('click', function () { inst.mode = 'all'; inst.drop = new Set(); instDraw(); });
+    instDraw();
+
+    /* bootstrap experiment for the stats */
+    var br = SL.rng(BOOT_SEED), sigs = {}, rootSame = 0, ths = [];
+    for (var b = 0; b < BOOTS; b++) {
+      var bt = grow(K2, SL.bootstrap(N, br), { maxDepth: 3 });
+      sigs[bt.sig] = 1;
+      if (bt.root.feature === T3.root.feature) { rootSame++; ths.push(bt.root.threshold); }
+    }
+    var nSig = Object.keys(sigs).length;
+    document.getElementById('instStats').innerHTML =
+      '<div class="ln-stat"><div class="ln-stat-v">' + looChanged + ' of ' + N + '</div><div class="ln-stat-l">Single-district removals that change the depth-3 tree</div></div>' +
+      '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(nSig) + ' of ' + BOOTS + '</div><div class="ln-stat-l">Different depth-3 trees among ' + BOOTS + ' bootstrap samples</div></div>' +
+      '<div class="ln-stat"><div class="ln-stat-v">' + fmtT(K2[T3.root.feature], d3.min(ths)) + ' – ' + fmtT(K2[T3.root.feature], d3.max(ths)) + '</div><div class="ln-stat-l">Range of the first ' + NAMES[K2[T3.root.feature]][3] + ' threshold across samples</div></div>';
+    document.getElementById('instText').innerHTML = 'Across ' + BOOTS + ' bootstrap samples, the first question was about ' + NAMES[K2[T3.root.feature]][3] + ' in ' + SL.pct(rootSame / BOOTS) +
+      ' of them' + (rootSame / BOOTS >= 0.8 ? ', so the top of the tree is fairly stable. But its' : '. Its') + ' threshold wandered between ' + fmtT(K2[T3.root.feature], d3.min(ths)) + ' and ' + fmtT(K2[T3.root.feature], d3.max(ths)) +
+      ', and the samples produced ' + SL.fmt(nSig) + ' different trees in all. A rule read off one tree, such as “districts below this literacy level are high-mortality”, owes a lot to exactly which districts happened to be in the data.';
+
+    /* keep pixel-sized tree diagrams in step with their containers */
+    var rT = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(rT);
+      rT = setTimeout(function () { drawStoryTree(true); growDraw(false); instDraw(); }, 150);
+    });
+
+    /* ── data table ─────────────────────────────── */
+    var cols = [KX, KY].concat(FEATS.filter(function (k) { return k !== KX && k !== KY; }));
+    document.getElementById('dataTable').innerHTML = '<thead><tr><th>District</th><th>Under-five mortality</th><th>Class</th>' +
+      cols.map(function (k) { return '<th title="' + fm(k).source + '">' + NAMES[k][0] + ' (' + fm(k).unit + ')</th>'; }).join('') + '</tr></thead><tbody>' +
+      R.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).map(function (d) {
+        return '<tr><td>' + d.name + '</td><td>' + SL.fmt(d[TARGET], 1) + '</td><td>' + CLS[Y[d._i]] + '</td>' +
+          cols.map(function (k) { return '<td>' + SL.fmt(d[k], Number.isInteger(d[k]) || Math.abs(d[k]) >= 100 ? 0 : 1) + '</td>'; }).join('') + '</tr>';
+      }).join('') + '</tbody>';
+  }).catch(function (err) {
+    console.error(err);
+    document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
+  });
+})();
+</script>
+</body>
+</html>
