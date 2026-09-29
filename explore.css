@@ -1849,3 +1849,15 @@
   .berg-bubbles { display: none; }
   .ex-dive svg { animation: none; }
 }
+
+/* ── assistant ──────────────────────────────────────── */
+/* The chapter bar owns the bottom edge here, so the assistant's
+   button and window sit above it instead of covering the arrows. */
+.ex-body #chatbot-trigger { bottom: 84px; }
+.ex-body .cb-peek { bottom: 98px; }
+.ex-body #chatbot-drawer:not(.wide) { bottom: 160px; max-height: calc(100vh - 180px); }
+@media (max-width: 520px) {
+  .ex-body #chatbot-trigger { bottom: 80px; }
+  .ex-body .cb-peek { bottom: 92px; }
+  .ex-body #chatbot-drawer:not(.wide) { bottom: 0; max-height: none; }
+}
