@@ -256,6 +256,12 @@
 .pm-home .lander-readout { font-family: var(--pm-ui); color: var(--pm-faint); transition: opacity 1.6s ease 1.4s; }
 .pm-home .lander-readout .readout-title { color: #fff !important; font-family: var(--pm-display); font-weight: 400 !important; font-size: calc(16px * var(--type-scale)); letter-spacing: 0.04em !important; }
 .pm-home .lander-readout b { color: var(--pm-yellow); }
+/* keep the readout clear of the chapter rail */
+@media (min-width: 1101px) {
+  .pm-home .lander-readout { right: 150px; bottom: 28px; }
+  /* a narrower text column leaves the hero chart (dotfield3d.js) room to grow */
+  .pm-home .lander-inner { max-width: min(620px, 44vw); }
+}
 
 /* ── Odisha in numbers ────────────────────────────────── */
 .pm-home .stat-hub-title {

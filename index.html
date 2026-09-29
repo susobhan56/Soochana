@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <!-- Outfit for the site; Anton, Merriweather and Hind for the welcome screen -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=20260928-6">
+<link rel="stylesheet" href="style.css?v=20260930-1">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <!-- live population estimate + district map, used by the welcome screen -->
 <script src="soochana_live.js?v=20260925-2"></script>
@@ -20,7 +20,8 @@
 <script src="data/key_stats.js?v=20260925-2"></script>
 <!-- Three.js 3D WebGL Engine for Interactive Background Particle System -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="dotfield3d.js?v=20260928-1"></script>
+<script src="hero_data.js?v=20260930-1"></script>
+<script src="dotfield3d.js?v=20260930-3"></script>
 <!-- in <head> and not deferred, so the saved text size applies before first paint -->
 <script src="ui.js?v=20260925-2"></script>
 <noscript><style>
@@ -357,7 +358,7 @@
     }
 </style>
 <!-- the Population Matters look, home page only; after the block above so it wins -->
-<link rel="stylesheet" href="home_pm.css?v=20260928-5">
+<link rel="stylesheet" href="home_pm.css?v=20260929-4">
 </head>
 <body class="pm-home">
 
@@ -452,14 +453,11 @@
   </div>
 
   <div class="lander-readout" aria-hidden="true">
-    <div class="readout-title" style="letter-spacing: 0.005em; font-weight:700; color:var(--teal); margin-bottom:6px;">ODISHA AGE PYRAMID</div>
-    <div class="readout-legend" style="display:flex; gap:12px; justify-content:flex-end; margin-bottom:8px; font-size:11px;">
-      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#9fd3f0; margin-right:4px;"></span>Youth (0–19)</span>
-      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#d7ecf7; margin-right:4px;"></span>Workforce</span>
-      <span><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#f08a4b; margin-right:4px;"></span>60+ Senior</span>
-    </div>
-    <div>CENSUS METRIC <b id="dfYear">2021</b></div>
-    <div>SHARE AGED 60+ <b id="dfShare">11.1%</b></div>
+    <div class="readout-title" id="dfTitle" style="letter-spacing: 0.005em; font-weight:700; color:var(--teal); margin-bottom:6px;">ODISHA AGE PYRAMID</div>
+    <div class="df-hint" id="dfHint"></div>
+    <div class="readout-legend df-legend" id="dfLegend"></div>
+    <div><span id="dfStat1">YEAR</span> <b id="dfYear">2021</b></div>
+    <div><span id="dfStat2">SHARE AGED 60+</span> <b id="dfShare">11.0%</b></div>
   </div>
 </section>
 
@@ -908,15 +906,67 @@ function startField() {
   if (fieldStarted) return;
   fieldStarted = true;
   var canvas = document.getElementById('dotfield');
+  var dark = document.body.classList.contains('pm-home');
   var opts = {
     yearEl:  document.getElementById('dfYear'),
     shareEl: document.getElementById('dfShare'),
-    loop:    true,
-    /* light dots for the dark hero (home_pm.css) */
-    palette: document.body.classList.contains('pm-home') ? {
+    /* light dots for the dark hero (home_pm.css); ramp is the map's
+       60+ scale, low to high */
+    palette: dark ? {
       youth: '#9fd3f0', work: '#d7ecf7', senior: '#f08a4b', eldest: '#f4c534',
-      hover: '#f4c534', ripple: '255, 255, 255', label: '#ffffff'
-    } : null
+      hover: '#f4c534', ripple: '255, 255, 255', label: '#ffffff',
+      ramp: ['#3d7fb8', '#6fb3e0', '#b9e0f5', '#f4e3a1', '#f4c534', '#f08a4b']
+    } : null,
+    glow: dark,
+    /* the story, in order; each scene carries its own caption */
+    scenes: ['map', 'growth', 'ageing', 'cohort', 'waffle', 'fertility']
+  };
+  /* the readout names the scene on screen and tells its one fact */
+  var titleEl  = document.getElementById('dfTitle');
+  var hintEl   = document.getElementById('dfHint');
+  var legendEl = document.getElementById('dfLegend');
+  var stat1El  = document.getElementById('dfStat1');
+  var stat2El  = document.getElementById('dfStat2');
+  opts.onScene = function (sc) {
+    if (titleEl) titleEl.textContent = sc.title.toUpperCase();
+    if (hintEl) hintEl.textContent = sc.caption;
+    if (legendEl) {
+      legendEl.textContent = '';
+      (sc.legend || []).forEach(function (l) {
+        var item = document.createElement('span');
+        var dot = document.createElement('i');
+        dot.style.background = l[0];
+        item.appendChild(dot);
+        item.appendChild(document.createTextNode(l[1]));
+        legendEl.appendChild(item);
+      });
+    }
+  };
+  opts.onStep = function (stats) {
+    if (stat1El && stats[0]) stat1El.textContent = stats[0][0];
+    if (stat2El && stats[1]) stat2El.textContent = stats[1][0];
+  };
+  /* keep the shapes in the space the words leave free: right of the hero
+     text, above the readout, left of the chapter rail */
+  var inner   = document.querySelector('.lander-inner');
+  var readout = document.querySelector('.lander-readout');
+  var rail    = document.querySelector('.chapter-index');
+  opts.fitBox = function () {
+    var c = canvas.getBoundingClientRect();
+    if (!inner || c.width < 1101) return null;
+    var right = c.right - 24;
+    if (rail) {
+      var rr = rail.getBoundingClientRect();
+      if (rr.width && getComputedStyle(rail).position === 'fixed') right = Math.min(right, rr.left - 16);
+    }
+    var bottom = c.bottom - 16;
+    if (readout && readout.offsetParent) bottom = Math.min(bottom, readout.getBoundingClientRect().top - 12);
+    return {
+      left:   inner.getBoundingClientRect().right + 20 - c.left,
+      right:  right - c.left,
+      top:    16,
+      bottom: bottom - c.top
+    };
   };
   if (window.dotfield3d) {
     window.dotfield3d(canvas, opts);
