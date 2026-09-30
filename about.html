@@ -343,7 +343,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: left;
+    text-align: center;
     max-width: 780px;
     margin: 0 auto;
     min-height: 350px;
@@ -484,17 +484,39 @@
     box-shadow: 0 4px 12px rgba(187, 69, 0, 0.12);
   }
 
+  /* Flex rather than grid so rows always balance: with ten members it lays
+     out 5 + 5 on desktop and 2 per row on tablet, and any uneven final row
+     is centred instead of leaving one card stranded on the left. */
   .all-team-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
+    --team-cols: 5;
+    --team-gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--team-gap);
+  }
+  .all-team-grid > .team-card-unit {
+    flex: 0 0 calc((100% - (var(--team-cols) - 1) * var(--team-gap)) / var(--team-cols));
+    box-sizing: border-box;
+    min-width: 0;
   }
 
-  @media (max-width: 900px) {
-    .all-team-grid { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 1001px) {
+    .all-team-grid .team-card-unit { padding: 26px 16px; }
+    .all-team-grid .unit-avatar-ring { width: 104px; height: 104px; }
+    .pm-about .all-team-grid .unit-name { font-size: 19px; }
+    /* Reserve the same height for each text block so names, roles, orgs
+       and tags line up across every card in a row. */
+    .all-team-grid .unit-name { min-height: 2.4em; display: flex; align-items: center; justify-content: center; }
+    .all-team-grid .unit-role { min-height: 4em; line-height: 1.3; }
+    .all-team-grid .unit-org  { min-height: 4.35em; }
+    .all-team-grid .unit-tags { margin-top: 0; }
+  }
+  @media (max-width: 1000px) {
+    .all-team-grid { --team-cols: 2; --team-gap: 24px; }
   }
   @media (max-width: 560px) {
-    .all-team-grid { grid-template-columns: 1fr; }
+    .all-team-grid { --team-cols: 1; }
   }
 
   .team-card-unit {
@@ -502,7 +524,7 @@
     border: 1px solid var(--border, rgba(0, 0, 0, 0.09));
     border-radius: 20px;
     padding: 32px 24px;
-    text-align: left;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1387,7 +1409,7 @@
         </div>
       </div>
 
-      <!-- MODE 2: REVEAL ALL 6 MEMBERS AT ONCE (WHEN ALL 6 ARE DONE) -->
+      <!-- MODE 2: REVEAL ALL MEMBERS AT ONCE (WHEN THE INTRO IS DONE) -->
       <div class="all-team-grid-wrapper" id="allTeamGridWrapper">
         <div class="all-team-header">
           <div>
