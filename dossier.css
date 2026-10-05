@@ -1,0 +1,656 @@
+/* ═══════════════════════════════════════════════════════════════════
+   dossier.css — the state dashboard as a scroll story
+   (index.html, #dashboard; the engine is dossier.js)
+
+   Wide screens: the module cards scroll in a left column, the picture
+   panel sticks on the right, and the index bar sticks above both.
+   Narrow screens: index bar, then the picture stuck under it, and the
+   cards scroll up beneath. The panel is a white card, so the Flourish
+   charts keep the colours they were drawn in.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.dz {
+  --dz-nav: 64px;                       /* set from the bar's real height */
+  --dz-ink: #0f172a;
+  --dz-body: #334155;
+  --dz-muted: #64748b;
+  --dz-line: rgba(15, 23, 42, 0.1);
+  --dz-blue: #2a78d6;
+  --dz-orange: #eb6834;
+  --dz-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dz-g: #0e4c6e;                      /* ground, before the first chapter */
+  --dz-accent: #f4c534;
+}
+
+/* ── one ground and one accent per chapter ──
+   Muted, dark and close in brightness, so moving from one chapter to the
+   next is a gentle shift rather than a flash. White text sits at 9.6–12.3:1
+   on every ground, each accent at 6.3:1 or better. The section, a card, a
+   chip or a picture each take the colours of their own chapter. */
+.dz [data-ch="land"],   .dz[data-ch="land"]   { --dz-g: #1d4a3c; --dz-accent: #a8dcbf; }
+.dz [data-ch="gov"],    .dz[data-ch="gov"]    { --dz-g: #283d5e; --dz-accent: #bccbf2; }
+.dz [data-ch="people"], .dz[data-ch="people"] { --dz-g: #0f4a63; --dz-accent: #a6d8f0; }
+.dz [data-ch="tribal"], .dz[data-ch="tribal"] { --dz-g: #4d3626; --dz-accent: #f0c9a4; }
+.dz [data-ch="health"], .dz[data-ch="health"] { --dz-g: #4a2c3c; --dz-accent: #f2b8cb; }
+.dz [data-ch="edu"],    .dz[data-ch="edu"]    { --dz-g: #352f5c; --dz-accent: #cfc3f6; }
+.dz [data-ch="infra"],  .dz[data-ch="infra"]  { --dz-g: #2d3b45; --dz-accent: #c3d4de; }
+.pm-home .pm-dash.dz {
+  background-color: var(--dz-g) !important;
+  transition: background-color 1.2s ease;
+}
+
+/* icons */
+.dz-ic { width: 20px; height: 20px; flex: none; display: block; }
+/* style.css gives every <path> a faint map outline; icons draw their own */
+.dz-ic :is(path, circle, rect, ellipse) { fill: none; stroke: currentColor; stroke-width: 1.7px; }
+.dz-ic-sm { width: 15px; height: 15px; }
+.dz-head { margin-bottom: 20px; max-width: 54em; }
+.dz-head p { margin-top: 8px; line-height: 1.6; }
+
+/* ── the index bar ── */
+.dz-index {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  margin: 0 calc(-1 * max(20px, 4vw)) 0;
+  padding: 10px max(20px, 4vw) 0;
+  background: rgba(14, 76, 110, 0.94);
+  background: color-mix(in srgb, var(--dz-g) 94%, transparent);
+  transition: background-color 1.2s ease;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+.dz-index-row { display: flex; align-items: center; gap: 14px; min-height: 44px; }
+.dz-index-k {
+  flex: none;
+  font: 600 calc(11px * var(--type-scale)) / 1.2 var(--pm-ui);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dz-accent);
+}
+.dz-chapters {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.dz-chapters::-webkit-scrollbar { display: none; }
+.dz-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 6px 10px 7px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font: 600 calc(13px * var(--type-scale)) / 1 var(--pm-ui);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.dz-chip:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.dz-chip.is-on { background: rgba(255, 255, 255, 0.14); color: #fff; }
+.dz-chip:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.dz-ticks { display: flex; gap: 3px; }
+.dz-ticks i {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  transition: background 0.4s ease;
+}
+.dz-ticks i.is-done { background: rgba(255, 255, 255, 0.6); }
+.dz-ticks i.is-on { background: var(--dz-accent); }
+.dz-chip-n { display: inline-flex; align-items: center; gap: 6px; }
+.dz-chip .dz-ic { opacity: 0.8; }
+.dz-chip.is-on .dz-ic { color: var(--dz-accent); opacity: 1; }
+.dz-chip.is-on {
+  background: rgba(255, 255, 255, 0.14);
+  background: color-mix(in srgb, var(--dz-accent) 20%, transparent);
+}
+.dz-now {
+  flex: 0 1 220px;
+  min-width: 0;
+  font: 500 calc(13px * var(--type-scale)) / 1.3 var(--pm-ui);
+  color: rgba(255, 255, 255, 0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dz-now b { color: #fff; font-weight: 700; }
+.dz-now span { color: #fff; }
+.dz-jump { position: relative; flex: none; }
+.dz-jump summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 8px 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  font: 600 calc(13px * var(--type-scale)) / 1 var(--pm-ui);
+  color: #fff;
+  white-space: nowrap;
+}
+.dz-jump summary::-webkit-details-marker { display: none; }
+.dz-jump summary::after { content: ' ▾'; }
+.dz-jump[open] summary { background: rgba(255, 255, 255, 0.14); }
+.dz-jump summary:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.dz-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 300px;
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+  padding: 8px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3);
+}
+.dz-menu-h {
+  padding: 10px 10px 4px;
+  font: 600 11px / 1.2 var(--pm-ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dz-muted);
+}
+.dz-menu-i {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+  font: 500 calc(14px * var(--type-scale)) / 1.3 var(--pm-ui);
+  color: var(--dz-ink);
+  cursor: pointer;
+}
+.dz-menu-i:hover, .dz-menu-i:focus-visible { background: #eef4fb; outline: none; }
+.dz-menu-n { color: var(--dz-muted); font-variant-numeric: tabular-nums; }
+.dz-menu-i { align-items: center; }
+.dz-menu-i .dz-ic { width: 17px; height: 17px; color: var(--dz-g); }
+.dz-menu-h { display: flex; align-items: center; gap: 6px; }
+.dz-progress { height: 3px; margin: 8px calc(-1 * max(20px, 4vw)) 0; background: rgba(255, 255, 255, 0.1); }
+.dz-progress i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--dz-accent);
+  transition: width 0.6s var(--dz-ease), background-color 1.2s ease;
+}
+
+/* ── cards and panel ── */
+.dz-scroller {
+  display: grid;
+  grid-template-columns: minmax(300px, 400px) minmax(0, 1fr);
+  gap: clamp(24px, 3vw, 48px);
+  align-items: start;
+}
+.dz-stage {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  top: calc(var(--dz-nav) + 16px);
+  height: calc(100vh - var(--dz-nav) - 32px);
+  height: calc(100svh - var(--dz-nav) - 32px);
+  min-height: 420px;
+  margin-top: 16px;
+}
+.dz-steps { grid-column: 1; grid-row: 1; padding: 6vh 0 30vh; }
+.dz-step { min-height: 78vh; display: flex; align-items: center; }
+.dz-card {
+  width: 100%;
+  padding: 22px 24px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  opacity: 0.4;
+  transition: opacity 0.5s ease, background 0.5s ease, border-color 0.5s ease;
+}
+.dz-step.is-active .dz-card {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: inset 3px 0 0 var(--dz-accent);
+}
+.dz-kicker {
+  font: 600 calc(12px * var(--type-scale)) / 1.4 var(--pm-ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dz-accent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dz-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.dz-badge {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  color: var(--dz-accent);
+  background: rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--dz-accent) 16%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-color: color-mix(in srgb, var(--dz-accent) 38%, transparent);
+  transition: transform 0.6s var(--dz-ease);
+}
+.dz-badge .dz-ic { width: 22px; height: 22px; }
+.dz-step.is-active .dz-badge { transform: scale(1.06); }
+.pm-home .dz .dz-title {
+  font-family: var(--pm-display);
+  font-weight: 400;
+  font-size: calc(clamp(22px, 1.9vw, 28px) * var(--type-scale));
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 12px;
+}
+.dz-card p {
+  font-family: var(--pm-read);
+  font-weight: 300;
+  font-size: calc(15px * var(--type-scale));
+  line-height: 1.72;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 12px;
+}
+.dz-card p b { font-family: var(--pm-ui); font-weight: 600; font-size: 1.06em; color: #fff; }
+.dz-card p.dz-src {
+  margin: 14px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  font: 500 calc(12px * var(--type-scale)) / 1.5 var(--pm-ui);
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.dz-panel {
+  position: relative;
+  height: 100%;
+  border-radius: 20px;
+  background: #fff;
+  color: var(--dz-body);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+.dz-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px 22px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.6s var(--dz-ease), visibility 0s linear 0.5s;
+}
+.dz-scene.is-on { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.dz-scene-k {
+  flex: none;
+  font: 600 calc(12px * var(--type-scale)) / 1.4 var(--pm-ui);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dz-muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dz-scene-k .dz-ic {
+  box-sizing: content-box;
+  width: 18px;
+  height: 18px;
+  padding: 6px;
+  border-radius: 9px;
+  color: var(--dz-g);
+  background: #eef2f6;
+  background: color-mix(in srgb, var(--dz-g) 10%, #fff);
+}
+.dz-scene-b {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+}
+/* centred when it fits, scrollable from the top when it does not
+   (justify-content: center would push the overflow out of reach above) */
+.dz-scene-b > :first-child { margin-top: auto; }
+.dz-scene-b > :last-child { margin-bottom: auto; }
+.dz-scene.is-chart { padding: 14px 14px 10px; }
+.dz-scene.is-chart .dz-scene-k { padding: 2px 6px 0; margin-bottom: 6px; }
+.dz-scene.is-chart .dz-scene-b { overflow: hidden; position: relative; }
+.dz-scene.is-chart .dz-scene-b > * { margin: 0; }
+.dz-scene.is-chart iframe { display: block; width: 100%; height: 100%; border: 0; }
+.dz-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: 600 12px var(--pm-ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dz-muted);
+}
+.dz-quote { font-family: var(--pm-display); font-size: 40px; text-transform: uppercase; color: var(--dz-ink); text-align: center; }
+.dz-hint { margin: 0; font: 500 calc(12.5px * var(--type-scale)) / 1.5 var(--pm-ui); color: var(--dz-muted); }
+
+/* tiles */
+.dz-tiles { display: flex; flex-wrap: wrap; gap: 10px; }
+.dz-tile {
+  flex: 1 1 140px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f4f6f9;
+}
+.dz-tile-v { font-family: var(--pm-display); font-size: calc(30px * var(--type-scale)); line-height: 1; color: var(--dz-ink); }
+.dz-tile-l { margin-top: 6px; font: 500 calc(12.5px * var(--type-scale)) / 1.35 var(--pm-ui); color: var(--dz-muted); }
+
+/* bar rows */
+.dz-group { display: flex; flex-direction: column; gap: 12px; }
+.dz-group-t { font: 600 calc(13px * var(--type-scale)) / 1.3 var(--pm-ui); color: var(--dz-ink); }
+.dz-row-top { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.dz-row-l { font: 500 calc(14px * var(--type-scale)) / 1.3 var(--pm-ui); color: var(--dz-body); }
+.dz-row-v { font: 700 calc(15px * var(--type-scale)) / 1.3 var(--pm-ui); color: var(--dz-ink); font-variant-numeric: tabular-nums; }
+.dz-bar { height: 12px; border-radius: 0 4px 4px 0; background: #eef0f3; overflow: hidden; }
+.dz-bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 0 4px 4px 0;
+  transition: width 1s var(--dz-ease) 0.15s;
+}
+.dz-scene.is-on .dz-bar i { width: var(--w); }
+
+/* map */
+.dz-map { width: 100%; max-height: 62%; }
+.dz-draw {
+  fill: #dbe8f6;
+  stroke: var(--dz-blue);
+  stroke-width: 1.2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  fill-opacity: 0;
+  transition: stroke-dashoffset 1.6s ease var(--d), fill-opacity 0.8s ease calc(var(--d) + 0.8s);
+}
+.dz-scene.is-on .dz-draw { stroke-dashoffset: 0; fill-opacity: 1; }
+.dz-nb  { font: 600 14px var(--pm-ui); fill: var(--dz-muted); letter-spacing: 0.04em; }
+.dz-sea { font: italic 500 15px var(--pm-read); fill: var(--dz-blue); }
+
+/* waffle */
+.dz-waffle-wrap { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.dz-waffle {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  width: min(100%, 280px, 36vh);
+  aspect-ratio: 1;
+}
+.dz-cell {
+  border-radius: 3px;
+  transform: scale(0);
+  transition: transform 0.35s var(--dz-ease) var(--d);
+}
+.dz-scene.is-on .dz-cell { transform: scale(1); }
+.dz-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; flex: 1 1 200px; }
+.dz-legend li { display: flex; align-items: baseline; gap: 8px; font: 500 calc(13.5px * var(--type-scale)) / 1.35 var(--pm-ui); color: var(--dz-body); }
+.dz-legend i { flex: none; width: 12px; height: 12px; border-radius: 3px; transform: translateY(1px); }
+.dz-legend b { min-width: 1.6em; font-weight: 700; color: var(--dz-ink); font-variant-numeric: tabular-nums; }
+
+/* circles to scale */
+.dz-circles, .dz-hemi { width: 100%; max-height: 60%; }
+.dz-circle { transform-box: fill-box; transform-origin: 50% 100%; transform: scale(0); transition: transform 0.9s var(--dz-ease) var(--d); }
+.dz-scene.is-on .dz-circle { transform: scale(1); }
+.dz-cv { font-family: var(--pm-display); font-size: 32px; fill: var(--dz-ink); }
+.dz-cl { font: 500 18px var(--pm-ui); fill: var(--dz-muted); }
+
+/* the assembly */
+.dz-seat { fill: var(--dz-blue); opacity: 0; transition: opacity 0.3s ease var(--d); }
+.dz-scene.is-on .dz-seat { opacity: 1; }
+.dz-hemi-n { font-family: var(--pm-display); font-size: 64px; fill: var(--dz-ink); }
+
+/* tribal communities */
+.dz-tribe-head { display: flex; flex-wrap: wrap; gap: 8px 20px; font: 500 calc(14px * var(--type-scale)) / 1.4 var(--pm-ui); color: var(--dz-body); }
+.dz-tribe-head b { color: var(--dz-ink); font-size: 1.15em; }
+.dz-key { display: inline-flex; align-items: center; gap: 6px; }
+.dz-key i { width: 12px; height: 12px; border-radius: 50%; }
+.dz-tribes { display: grid; grid-template-columns: repeat(auto-fill, minmax(26px, 1fr)); gap: 8px; max-width: 420px; }
+.dz-tribe {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--dz-blue);
+  opacity: 0.85;
+  transform: scale(0);
+  transition: transform 0.35s var(--dz-ease) var(--d);
+  cursor: default;
+}
+.dz-tribe.is-pvtg { background: var(--dz-orange); opacity: 1; }
+.dz-tribe:hover { box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--dz-ink); }
+.dz-scene.is-on .dz-tribe { transform: scale(1); }
+
+/* health directions */
+.dz-trends { display: flex; flex-direction: column; gap: 12px; }
+.dz-trend {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #f4f6f9;
+  opacity: 0;
+  transform: translateX(-14px);
+  transition: opacity 0.5s ease var(--d), transform 0.6s var(--dz-ease) var(--d);
+}
+.dz-scene.is-on .dz-trend { opacity: 1; transform: none; }
+.dz-trend div { display: flex; flex-direction: column; gap: 2px; }
+.dz-trend b { font: 700 calc(16px * var(--type-scale)) / 1.2 var(--pm-ui); color: var(--dz-ink); }
+.dz-trend div span { font: 500 calc(13px * var(--type-scale)) / 1.3 var(--pm-ui); color: var(--dz-muted); }
+.dz-arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font: 700 24px / 1 var(--pm-ui);
+  color: #fff;
+}
+.is-good .dz-arrow { background: #0ca30c; }
+.is-bad .dz-arrow { background: #d03b3b; }
+.dz-verdict { font: 600 calc(13px * var(--type-scale)) / 1.2 var(--pm-ui); color: var(--dz-ink); white-space: nowrap; }
+
+/* pyramid of care */
+.dz-pyr { display: flex; flex-direction: column; gap: 10px; }
+.dz-pyr-row { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.dz-pyr-bar {
+  height: 34px;
+  width: 0;
+  border-radius: 6px;
+  transition: width 1s var(--dz-ease) var(--d);
+}
+.dz-scene.is-on .dz-pyr-bar { width: max(var(--w), 3%); }
+.dz-pyr-l { font: 500 calc(14px * var(--type-scale)) / 1.3 var(--pm-ui); color: var(--dz-body); }
+.dz-pyr-l b { font-family: var(--pm-display); font-weight: 400; font-size: 1.5em; color: var(--dz-ink); }
+
+/* tooltip */
+.dz-tip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  max-width: 260px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: var(--dz-ink);
+  color: #fff;
+  font: 500 13px / 1.35 var(--pm-ui);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.dz-tip.on { opacity: 1; }
+.dz-fail { color: #fff; font-family: var(--pm-read); }
+
+/* below this the chapters need the room; the bar still shows which is on */
+@media (max-width: 1279px) { .dz-now { display: none; } }
+
+/* the site's chapter rail sits over the right edge on wide screens */
+@media (min-width: 1101px) {
+  .pm-home .pm-dash.dz { padding-right: 150px !important; }
+  .dz-index { margin-right: -150px; padding-right: 150px; }
+  .dz-progress { margin-right: -150px; }
+}
+
+/* ── narrow screens: picture on top, cards scroll beneath it ── */
+@media (max-width: 899px) {
+  .dz-scroller { display: block; }
+  .dz-stage {
+    z-index: 4;
+    height: 50vh;
+    height: 50svh;
+    min-height: 300px;
+    margin: 0 calc(-1 * max(20px, 4vw));
+    padding: 12px max(20px, 4vw) 14px;
+    top: var(--dz-nav);
+    background: var(--dz-g);
+    transition: background-color 1.2s ease;
+  }
+  .dz-steps { padding: 4vh 0 40vh; }
+  .dz-step { min-height: 70vh; align-items: flex-start; padding-top: 6vh; }
+  .dz-scene { padding: 14px 16px 16px; }
+  .dz-scene-b { gap: 12px; }
+  .dz-tile { flex-basis: 110px; padding: 10px 12px; }
+  .dz-tile-v { font-size: 24px; }
+  .dz-now { display: none; }
+  .dz-index-k { display: none; }
+  .dz-menu { width: min(300px, calc(100vw - 32px)); }
+  .dz-waffle { width: min(100%, 200px); }
+  .dz-tribes { grid-template-columns: repeat(auto-fill, minmax(18px, 1fr)); gap: 6px; }
+  .dz-trend { grid-template-columns: 36px 1fr; padding: 10px 12px; }
+  .dz-arrow { width: 36px; height: 36px; font-size: 20px; }
+  .dz-verdict { grid-column: 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-home .pm-dash.dz, .dz-index, .dz-badge,
+  .dz-scene, .dz-card, .dz-bar i, .dz-draw, .dz-cell, .dz-circle, .dz-seat, .dz-tribe, .dz-trend, .dz-pyr-bar, .dz-progress i { transition: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   THE PAPER LOOK — the same rough off-white paper as the story above
+   (story.css). The page stays paper; each chapter's colour moves into
+   the cards, the active index chip and the progress line. Ink colours
+   on the paper: #14202e 14.3:1, #3f4a58 7.8:1, #5f6875 4.9:1.
+   ═══════════════════════════════════════════════════════════════════ */
+.dz {
+  --dz-paper: #f3efe6;
+  --dz-pink: #14202e;
+  --dz-psoft: #3f4a58;
+  --dz-pfaint: #5f6875;
+  --dz-pline: rgba(20, 32, 46, 0.14);
+  position: relative;
+  isolation: isolate;
+}
+.pm-home .pm-dash.dz {
+  background-color: #f7f3eb !important;
+  background-image: var(--pm-wash) !important;
+  background-size: cover !important;
+  background-blend-mode: soft-light !important;
+  border-color: var(--dz-pline) !important;
+  color: var(--dz-pink);
+  transition: none;
+}
+/* the rough grain, over the paper and under everything else */
+.dz::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--pm-paper);
+  background-size: 220px 220px;
+  mix-blend-mode: multiply;
+  opacity: 0.22;
+}
+
+/* heading: home_pm.css writes it white for a dark ground */
+.pm-home .pm-dash.dz > .dz-head h2 { color: var(--dz-pink) !important; }
+.pm-home .pm-dash.dz > .dz-head p { color: var(--dz-psoft) !important; }
+.pm-home .pm-dash.dz > .dz-head .label { color: #9a3412 !important; }
+
+/* the index bar: paper, ink, and the current chapter's colour on its chip */
+.dz-index {
+  background: rgba(247, 243, 235, 0.94);
+  border-bottom-color: var(--dz-pline);
+  box-shadow: 0 6px 18px rgba(20, 32, 46, 0.06);
+  transition: none;
+}
+.dz-index-k { color: #9a3412; }
+.dz-chip { color: var(--dz-psoft); }
+.dz-chip:hover { background: rgba(20, 32, 46, 0.06); color: var(--dz-pink); }
+.dz-chip:focus-visible { outline-color: var(--dz-pink); }
+.dz-chip .dz-ic { opacity: 0.85; }
+.dz-chip.is-on { background: var(--dz-g); color: #fff; }
+.dz-chip.is-on .dz-ic { color: var(--dz-accent); }
+.dz-ticks i { background: rgba(20, 32, 46, 0.16); }
+.dz-ticks i.is-done { background: rgba(20, 32, 46, 0.5); }
+.dz-ticks i.is-on { background: var(--dz-g); }
+.dz-chip.is-on .dz-ticks i { background: rgba(255, 255, 255, 0.28); }
+.dz-chip.is-on .dz-ticks i.is-done { background: rgba(255, 255, 255, 0.7); }
+.dz-chip.is-on .dz-ticks i.is-on { background: var(--dz-accent); }
+.dz-now { color: var(--dz-pfaint); }
+.dz-now b, .dz-now span { color: var(--dz-pink); }
+.dz-jump summary { border-color: rgba(20, 32, 46, 0.45); color: var(--dz-pink); }
+.dz-jump[open] summary { background: rgba(20, 32, 46, 0.06); }
+.dz-jump summary:focus-visible { outline-color: var(--dz-pink); }
+.dz-progress { background: rgba(20, 32, 46, 0.08); }
+.dz-progress i { background: var(--dz-g); }
+
+/* the cards take their chapter's colour, with the paper's grain */
+.dz-card {
+  background-color: var(--dz-g);
+  background-image: var(--pm-paper);
+  background-size: 220px 220px;
+  background-blend-mode: soft-light;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px rgba(20, 32, 46, 0.18), 0 2px 6px rgba(20, 32, 46, 0.1);
+  opacity: 0.55;
+  transition: opacity 0.5s ease, box-shadow 0.5s ease;
+}
+.dz-step.is-active .dz-card {
+  opacity: 1;
+  background-color: var(--dz-g);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 3px 0 0 var(--dz-accent), 0 22px 50px rgba(20, 32, 46, 0.24), 0 2px 6px rgba(20, 32, 46, 0.1);
+}
+
+/* the picture panel: still white, lifted off the paper */
+.dz-panel {
+  border: 1px solid var(--dz-pline);
+  box-shadow: 0 20px 50px rgba(20, 32, 46, 0.14), 0 2px 6px rgba(20, 32, 46, 0.06);
+}
+.dz-fail { color: var(--dz-pink); }
+
+@media (max-width: 899px) {
+  /* the stuck picture hides the cards scrolling under it, so it is solid paper */
+  .dz-stage {
+    background-color: var(--dz-paper);
+    background-image: var(--pm-paper);
+    background-size: 220px 220px;
+    background-blend-mode: soft-light;
+    transition: none;
+  }
+}

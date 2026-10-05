@@ -58,29 +58,8 @@
 /* White type is the default on these grounds, so every light surface
    sets its ink back explicitly. Without this, text that relies on the
    inherited colour (the dashboard's figures, tooltips) turns white on white. */
-.pm-home :is(.report-section-card, .report-index-container, .district-card,
-             .editorial-frame, #map-container, .tooltip, #soochana-chatbot) {
+.pm-home :is(.district-card, .editorial-frame, .tooltip, #soochana-chatbot) {
   color: var(--ink-body);
-}
-
-.pm-home .report-section-card .stat-value { color: var(--ink-heading); }
-
-/* In the dashboard tiles the value reads as part of one line with its
-   label ("Area sq km: 155,707"), so it takes the label's size; weight
-   alone marks it out. */
-.pm-home .dossier-stat .stat-value {
-  font-size: inherit !important;
-  font-weight: 600 !important;
-  line-height: inherit;
-  color: var(--pm-blue) !important;   /* one colour for every value; 5.2:1 on white */
-}
-
-/* Every tile in a grid the same height: each row as tall as the tallest
-   tile anywhere in it. Only grids of figure tiles; the tribal-names grid
-   holds an expanding list and keeps its natural height. */
-.pm-home .dossier-stat-grid:has(> .stat-tile) {
-  align-items: stretch;
-  grid-auto-rows: 1fr;
 }
 
 /* every section: its own ground, a soft top-left light, hairline rules */
@@ -159,6 +138,7 @@
 
 /* ── buttons ──────────────────────────────────────────── */
 .pm-home .lander .btn-pill,
+.pm-home .story .btn-pill,
 .pm-home .pm-btn {
   font-family: var(--pm-display) !important;
   font-weight: 400 !important;
@@ -173,14 +153,21 @@
 }
 
 .pm-home .lander .btn-pill::before,
-.pm-home .lander .btn-pill::after { display: none; }
+.pm-home .lander .btn-pill::after,
+.pm-home .story .btn-pill::before,
+.pm-home .story .btn-pill::after { display: none; }
 
-.pm-home .lander .btn-pill.solid { background: var(--pm-sky); border: 2px solid var(--pm-sky); color: #fff; }
-.pm-home .lander .btn-pill.solid:hover { background: var(--pm-sky-hi); border-color: var(--pm-sky-hi); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25); }
+.pm-home .lander .btn-pill.solid,
+.pm-home .story .btn-pill.solid { background: var(--pm-sky); border: 2px solid var(--pm-sky); color: #fff; }
+.pm-home .lander .btn-pill.solid:hover,
+.pm-home .story .btn-pill.solid:hover { background: var(--pm-sky-hi); border-color: var(--pm-sky-hi); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25); }
 
-.pm-home .lander .btn-pill.ghost { background: transparent !important; border: 2px solid rgba(255, 255, 255, 0.7) !important; color: #fff !important; }
-.pm-home .lander .btn-pill.ghost:hover { background: rgba(255, 255, 255, 0.1) !important; border-color: #fff !important; transform: translateY(-2px); }
-.pm-home .lander .btn-pill:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.pm-home .lander .btn-pill.ghost,
+.pm-home .story .btn-pill.ghost { background: transparent !important; border: 2px solid rgba(255, 255, 255, 0.7) !important; color: #fff !important; }
+.pm-home .lander .btn-pill.ghost:hover,
+.pm-home .story .btn-pill.ghost:hover { background: rgba(255, 255, 255, 0.1) !important; border-color: #fff !important; transform: translateY(-2px); }
+.pm-home .lander .btn-pill:focus-visible,
+.pm-home .story .btn-pill:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 
 /* ── hero ─────────────────────────────────────────────── */
 .pm-home .lander { --pm-hero: var(--pm-t-hero); padding-top: 32px; padding-bottom: 40px; }
@@ -492,35 +479,7 @@
 }
 
 .pm-home .pm-dash > div:first-child p { color: var(--pm-soft) !important; font-family: var(--pm-read) !important; font-weight: 300; font-size: calc(15px * var(--type-scale)) !important; }
-.pm-home .report-index-container { border: 0; border-radius: 18px; }
-.pm-home .report-index-header { font-family: var(--pm-ui); letter-spacing: 0.12em; text-transform: uppercase; }
-.pm-home .slide-tab-btn {
-  font-family: var(--pm-display);
-  font-weight: 400;
-  font-size: calc(14px * var(--type-scale));
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-/* white on the tour's #0f9dde is 3.0:1, short of AA at this size; this is 4.8:1 */
-.pm-home .slide-tab-btn.active { background: #0879ad; border-color: #0879ad; box-shadow: none; }
-
-/* the section cards stay light: charts and tables are drawn for a white page */
 .pm-home .pm-dash { padding-top: 32px !important; padding-bottom: 32px !important; }
-.pm-home #all-sections-container { gap: 18px !important; }
-.pm-home .report-index-container { padding: 16px 20px; margin-bottom: 18px; }
-.pm-home .report-section-card { border: 0 !important; background: #fff !important; padding: 22px 24px !important; border-radius: 16px !important; }
-.pm-home .report-section-card .narrative-block { font-size: calc(14.5px * var(--type-scale)) !important; line-height: 1.65 !important; padding: 16px 18px !important; margin-bottom: 14px !important; }
-.pm-home .report-section-card h3 {
-  font-family: var(--pm-display) !important;
-  font-weight: 400;
-  font-size: var(--pm-t-h3) !important;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  margin: 2px 0 12px !important;
-  color: var(--pm-navy) !important;
-}
-.pm-home .report-section-card .narrative-block { font-family: var(--pm-read); font-weight: 300; }
-.pm-home .report-section-card.anim-ready { transition-duration: 1.3s, 1.3s, 1.3s; }
 
 /* ── district leaderboard ─────────────────────────────── */
 .pm-home .full-section { padding-top: 34px; padding-bottom: 34px; }

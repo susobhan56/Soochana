@@ -31,112 +31,6 @@
   .lander-kicker, .lander-sub, .lander-cta, .lander-readout { opacity: 1 !important; transform: none !important; }
 </style></noscript>
 <style>
-    @keyframes pulseGlow {
-        0% { transform: scale(0.9); opacity: 0.4; }
-        50% { transform: scale(1.3); opacity: 1; }
-        100% { transform: scale(0.9); opacity: 0.4; }
-    }
-    @keyframes countPop {
-        0%   { transform: scale(1); }
-        50%  { transform: scale(1.12); }
-        100% { transform: scale(1); }
-    }
-    .report-section-card.anim-ready {
-        opacity: 0;
-        transform: translateY(50px) scale(0.97);
-        filter: blur(4px);
-        transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s ease;
-    }
-    .report-section-card.anim-in {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-    .report-section-card {
-        transition: box-shadow 0.4s ease, border-color 0.4s ease;
-    }
-    .report-section-card:hover {
-        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
-        border-color: rgba(26, 83, 92, 0.15);
-    }
-    .stat-tile.anim-ready {
-        opacity: 0;
-        transform: translateY(16px) scale(0.95);
-        transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .stat-tile.anim-in {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-    .stat-tile {
-        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .stat-tile:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
-        border-color: rgba(26, 83, 92, 0.2);
-    }
-    .stat-tile .stat-value.counted {
-        animation: countPop 0.35s ease;
-    }
-    .narrative-block.anim-ready {
-        opacity: 0;
-        transform: translateY(24px);
-        transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .narrative-block.anim-in {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    .narrative-block {
-        transition: border-color 0.3s ease;
-    }
-    .narrative-block:hover {
-        border-color: rgba(26, 83, 92, 0.2);
-    }
-    .kicker-anim.anim-ready {
-        opacity: 0;
-        transition: opacity 0.4s ease;
-    }
-    .kicker-anim.anim-in {
-        opacity: 1;
-    }
-    /* Page specific overrides to support layout-scrolly map */
-    .scrolly { display: grid; grid-template-columns: 1fr 340px; position: relative; background: var(--surface); }
-    .sticky-map { 
-      position: sticky; 
-      top: 0; 
-      height: 100vh; 
-      height: 100dvh; 
-      display: flex; 
-      flex-direction: column; 
-      border-right: 1px solid var(--border); 
-      padding: 16px 20px; 
-      background: var(--bg);
-      overflow: hidden;
-    }
-    #map-container {
-      flex: 1;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 8px;
-      overflow: hidden;
-    }
-    #map-container svg {
-      width: 100%;
-      height: 100%;
-      max-width: 100%;
-      max-height: 100%;
-    }
-    .steps { padding: 0; background: var(--surface); }
-    .step { min-height: 75vh; padding: 60px 24px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border); opacity: 0.25; transition: opacity 0.5s ease; }
-    .step.active { opacity: 1; }
     .stat-cell { padding: 24px 20px; }
     .stat-hub { border-bottom: 1px solid var(--border); background: var(--surface); }
     .stat-hub .stat-strip { border-bottom: 1px solid var(--border); }
@@ -168,40 +62,6 @@
     @media (max-width: 480px) { .stat-hub .stat-cell { flex-basis: 100%; } }
     body { overflow-y: scroll; height: auto; }
 
-    /* Compact, refined text styling so the map stays huge */
-    .map-title {
-      font-size: 1.45rem !important;
-      font-weight: 700 !important;
-      line-height: 1.25 !important;
-      color: var(--blue);
-      margin-top: 2px !important;
-    }
-    .map-kicker {
-      font-size: 0.75rem !important;
-      letter-spacing: 0.005em !important;
-      font-weight: 700 !important;
-      text-transform: none;
-    }
-    .step-idx {
-      font-family: var(--mono);
-      font-size: 0.8rem !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.1em;
-      margin-bottom: 6px;
-    }
-    .step h2 {
-      font-size: 1.35rem !important;
-      font-weight: 700 !important;
-      line-height: 1.3 !important;
-      color: var(--blue);
-      margin-bottom: 10px;
-    }
-    .step p {
-      font-size: 0.98rem !important;
-      line-height: 1.65 !important;
-      color: var(--text) !important;
-      font-weight: 400 !important;
-    }
     .stat-value {
       font-size: 1.65rem !important;
       font-weight: 700 !important;
@@ -211,154 +71,13 @@
       line-height: 1.4 !important;
       font-weight: 500 !important;
     }
-    .tooltip {
-      font-size: 0.95rem !important;
-      padding: 9px 14px !important;
-      border-radius: 8px !important;
-    }
-
-    @media (max-width: 900px) {
-        .scrolly { grid-template-columns: 1fr; }
-        .sticky-map {
-            position: relative;
-            top: 0;
-            height: 70vh;
-            border-right: none;
-            border-bottom: 1px solid var(--border);
-            padding: 12px;
-        }
-        .step {
-            min-height: auto;
-            padding: 40px 16px;
-        }
-    }
-
-    /* Executive Presentation Index Navigation */
-    .report-index-container {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    }
-    .report-index-header {
-      font-family: var(--mono);
-      font-size: var(--fs-micro);
-      text-transform: none;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-    .report-index-nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .slide-tab-btn {
-      background: transparent;
-      border: 1px solid rgba(26, 83, 92, 0.25);
-      color: var(--teal);
-      border-radius: 20px;
-      padding: 7px 16px;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      font-weight: 600;
-      white-space: nowrap;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .slide-tab-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(26, 83, 92, 0.08), rgba(26, 83, 92, 0.02));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .slide-tab-btn:hover::before { opacity: 1; }
-    .slide-tab-btn:hover {
-      border-color: var(--teal);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 14px rgba(26, 83, 92, 0.1);
-    }
-    .slide-tab-btn:active {
-      transform: translateY(0) scale(0.96);
-      transition-duration: 0.1s;
-    }
-    .slide-tab-btn.active {
-      background: var(--teal);
-      border-color: var(--teal);
-      color: #ffffff;
-      box-shadow: 0 6px 18px rgba(26, 83, 92, 0.3);
-      transform: translateY(-1px);
-    }
-
-    /* On wide screens the module index becomes a sidebar that stays in view
-       for the whole dashboard (over 9,000px long). It scrolls on its own if
-       the twenty modules outrun a short screen. */
-    @media (min-width: 1101px) {
-      .pm-dash .dash-body {
-        display: grid;
-        grid-template-columns: 250px minmax(0, 1fr);
-        gap: 28px;
-        align-items: start;
-      }
-      .pm-dash .dash-body .report-index-container {
-        position: sticky;
-        top: 20px;
-        max-height: calc(100vh - 40px);
-        overflow-y: auto;
-        overscroll-behavior: contain;
-        margin-bottom: 0;
-        padding: 16px 12px 14px;
-      }
-      .pm-dash .dash-body .report-index-header { padding: 0 8px; }
-      .pm-dash .dash-body .report-index-nav {
-        flex-direction: column;
-        flex-wrap: nowrap;
-        align-items: stretch;
-        gap: 2px;
-      }
-      .pm-dash .dash-body .slide-tab-btn {
-        justify-content: flex-start;
-        text-align: left;
-        white-space: normal;
-        line-height: 1.25;
-        padding: 6px 10px 5px;
-        border: 0;
-        border-radius: 10px;
-      }
-      .pm-dash .dash-body .slide-tab-btn:hover,
-      .pm-dash .dash-body .slide-tab-btn.active { transform: none; }
-      .pm-dash .dash-body .slide-tab-btn:hover { box-shadow: none; }
-    }
-
-    /* Executive Presentation 2-Column Dashboard Grid */
-    .report-grid-layout {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
-    }
-    @media (max-width: 900px) {
-      .report-grid-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-    .grid-span-full {
-      grid-column: 1 / -1;
-    }
 </style>
 <!-- the Population Matters look, home page only; after the block above so it wins -->
-<link rel="stylesheet" href="home_pm.css?v=20260929-4">
+<link rel="stylesheet" href="home_pm.css?v=20261005">
+<!-- the scroll story under the hero -->
+<link rel="stylesheet" href="story.css?v=20261005-2">
+<!-- the state dossier as a scroll story -->
+<link rel="stylesheet" href="dossier.css?v=20261005-3">
 </head>
 <body class="pm-home">
 
@@ -445,7 +164,8 @@
     </p>
 
     <div class="lander-cta">
-      <a href="#state-stats" class="btn-pill solid">Odisha at a glance</a>
+      <a href="#story" class="btn-pill solid">Read the story</a>
+      <a href="#state-stats" class="btn-pill ghost">Odisha at a glance</a>
       <a href="explore.html" class="btn-pill ghost">Take the guided tour</a>
       <a href="district-health.html" class="btn-pill ghost">How healthy is your district?</a>
       <a href="odisha_compare.html" class="btn-pill ghost">District Battle</a>
@@ -458,6 +178,194 @@
     <div class="readout-legend df-legend" id="dfLegend"></div>
     <div><span id="dfStat1">YEAR</span> <b id="dfYear">2021</b></div>
     <div><span id="dfStat2">SHARE AGED 60+</span> <b id="dfShare">11.0%</b></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     THE STORY — "Odisha, told in 100 people"
+     One sticky picture; the cards scroll over it and each one re-forms
+     the same 100 dots (story.js, story.css). Every figure inside a
+     data-f="…" is recomputed from the data when the page loads, so the
+     numbers typed here are only what shows before that. Each card's
+     data-step names its scene in story.js; data-index puts a chapter
+     on the right-hand rail.
+═══════════════════════════════════════════════ -->
+<section class="story" id="story" aria-labelledby="storyTitle">
+  <div class="story-head">
+    <div class="story-kicker">A visual story · six chapters · about five minutes</div>
+    <h2 class="story-title" id="storyTitle">Odisha, told in <em>100</em> people</h2>
+    <p class="story-deck">
+      How a state of one crore became five, why its families grew smaller, and what an older,
+      uneven Odisha will ask of its schools, its jobs and its hospitals. Scroll, and watch the dots.
+    </p>
+    <p class="story-byline">Demographic Intelligence Unit, CYSD · Data: Census of India, DIU population projections, NFHS</p>
+    <a class="story-cue" href="#st-people">Scroll to begin</a>
+  </div>
+
+  <div class="story-scroller">
+    <div class="story-stage" aria-hidden="true">
+      <svg role="presentation"></svg>
+      <div class="story-tip"></div>
+    </div>
+
+    <div class="story-steps">
+
+      <!-- CHAPTER 1 · WHO -->
+      <div class="story-step" id="st-people" data-step="people" data-ch="who" data-index="100 people">
+        <div class="story-card">
+          <div class="sc-kicker">Chapter 1 · Who</div>
+          <h3 class="sc-title">If Odisha were 100 people</h3>
+          <p>About <b data-f="pop21">4.63 crore</b> people live in Odisha. Shrink the state to 100 and each dot stands for roughly <b data-f="dotLakh">4.6 lakh</b> of them.</p>
+          <p>Keep your eye on the dots. They are the same 100 all the way down.</p>
+          <p class="sc-src">2021 figure, projected: Census of India and DIU population projection (Bayesian approach)</p>
+        </div>
+      </div>
+
+      <div class="story-step" data-step="rural" data-ch="who">
+        <div class="story-card">
+          <img class="sc-art" data-art="migration-journey" alt="" decoding="async">
+          <p><b data-f="rural">83</b> of the 100 live in <span class="sw sw-child">a village</span>. Only <b data-f="urban">17</b> live in <span class="sw sw-work">a town or city</span>.</p>
+          <p>The most urban district is <b data-f="urbMax">Khordha (48%)</b>, home to Bhubaneswar. The least is <b data-f="urbMin">Boudh (5%)</b>.</p>
+          <p class="sc-src">Census of India 2011, district urban shares weighted by population</p>
+        </div>
+      </div>
+
+      <div class="story-step" data-step="tribal" data-ch="who">
+        <div class="story-card">
+          <p><b data-f="st">23</b> of the 100 belong to <span class="sw sw-elder">a Scheduled Tribe</span>, from <b data-f="stComm">62</b> communities. <b data-f="pvtg">13</b> of them are particularly vulnerable tribal groups.</p>
+          <p>Across India the share is about <b data-f="stIndia">9</b> in 100. Odisha, with about <span data-f="odOfIndia">3%</span> of India's people, is home to <b data-f="stOfIndia">9.2%</b> of its tribal population.</p>
+          <p class="sc-src">Census of India 2011; Government of Odisha</p>
+        </div>
+      </div>
+
+      <!-- CHAPTER 2 · GROWTH -->
+      <div class="story-step" data-step="line1" data-ch="growth" data-index="125 years of growth">
+        <div class="story-card">
+          <div class="sc-kicker">Chapter 2 · How we got here</div>
+          <h3 class="sc-title">125 years in one line</h3>
+          <p>In 1901, the land that is Odisha today held <b data-f="pop1901">1.03 crore</b> people. For half a century it barely grew. Between 1911 and 1921 it even shrank.</p>
+          <p>By 1951 it had added just <b data-f="add0151">43 lakh</b> people, reaching <b data-f="pop1951">1.46 crore</b>.</p>
+          <p class="sc-src">Census of India, 1901–1951</p>
+        </div>
+      </div>
+
+      <div class="story-step" data-step="line2" data-ch="growth">
+        <div class="story-card">
+          <p>Then came the boom. As fewer people died young, the population grew <b data-f="mult5111">2.9</b> times in sixty years, to <b data-f="pop2011">4.20 crore</b> by the 2011 Census.</p>
+          <p class="sc-src">Census of India, 1951–2011</p>
+        </div>
+      </div>
+
+      <div class="story-step" data-step="line3" data-ch="growth">
+        <div class="story-card">
+          <p>The projections keep the line rising, to <b data-f="pop2036">5.15 crore</b> by <span data-f="lastYear">2036</span>, another <b data-f="add1136">95 lakh</b> people.</p>
+          <p>But look at the dashed end. The line is starting to bend.</p>
+          <p class="sc-src">DIU population projection (Bayesian approach), 2021–2036</p>
+        </div>
+      </div>
+
+      <div class="story-step" data-step="growth" data-ch="growth">
+        <div class="story-card">
+          <p>The bend is clearer as speed. Growth peaked at <b data-f="peakRate">2.5%</b> a year in <span data-f="peakPeriod">1961–71</span>. By <span data-f="tailPeriod">2031–36</span> it is projected at <b data-f="tailRate">0.55%</b>.</p>
+          <p>Odisha is already slower than the country. Between 2011 and 2021 it grew <b data-f="decOd">8.9%</b>, against <b data-f="decIn">12.6%</b> for India.</p>
+          <p class="sc-src">Census of India; DIU and ORGI population projections</p>
+        </div>
+      </div>
+
+      <!-- CHAPTER 3 · FERTILITY -->
+      <div class="story-step" data-step="tfrA" data-ch="fert" data-index="Fewer children">
+        <div class="story-card">
+          <img class="sc-art" data-art="fertility-motherland" alt="" decoding="async">
+          <div class="sc-kicker">Chapter 3 · Why it is slowing</div>
+          <h3 class="sc-title">Smaller families, everywhere</h3>
+          <p>Each dot is now a district. At <b>2.1</b> children per woman, each generation just replaces itself. In <span data-f="tfrYearA">2020</span>, only <b data-f="tfrAboveA">5</b> of the <span data-f="tfrN">30</span> districts were <span class="sw sw-elder">above</span> that line.</p>
+          <p>The highest was <b data-f="tfrHiA">Nabarangpur (2.61)</b>, the lowest <b data-f="tfrLoA">Jharsuguda (1.32)</b>. For the state as a whole the rate is <b data-f="tfrState">1.8</b>.</p>
+          <p class="sc-src">District fertility projection (Bayesian approach), DIU; state rate NFHS-5 (2019–21)</p>
+        </div>
+      </div>
+
+      <div class="story-step" data-step="tfrB" data-ch="fert">
+        <div class="story-card">
+          <p>By <span data-f="tfrYearB">2036</span>, the projections put <b data-f="tfrBelowB">28</b> districts <span class="sw sw-work">below</span> replacement, some close to <b data-f="tfrLoB">1.0</b>.</p>
+          <p>The exceptions are <b data-f="tfrAboveB">Nabarangpur (2.39) and Rayagada (2.13)</b>. The change is reaching every district, but at a different pace in each.</p>
+          <p class="sc-src">District fertility projection (Bayesian approach), DIU</p>
+        </div>
+      </div>
+
+      <!-- CHAPTER 4 · AGE -->
+      <div class="story-step" data-step="ageA" data-ch="age" data-index="Young and old">
+        <div class="story-card">
+          <img class="sc-art" data-art="ageing-cohort" alt="" decoding="async">
+          <div class="sc-kicker">Chapter 4 · What it does</div>
+          <h3 class="sc-title">The same 100, older</h3>
+          <p>Back to our 100 people. In 2021, <b data-f="ch21">23</b> were <span class="sw sw-child">children</span> under 15, <b data-f="wk21">66</b> were of <span class="sw sw-work">working age</span> and <b data-f="el21">11</b> were <span class="sw sw-elder">60 or older</span>.</p>
+          <p>With so many adults of working age, Odisha is inside its demographic window, a stretch of years when there are more earners than dependents.</p>
+          <p class="sc-src">DIU population projection (Bayesian approach)</p>
+        </div>
+      </div>
+
+      <div class="story-step" data-step="ageB" data-ch="age">
+        <div class="story-card">
+          <p>By <span data-f="ageYear">2036</span>, the children fall to <b data-f="ch36">21</b> and working age to <b data-f="wk36">63</b>, while the elders rise to <b data-f="el36">16</b>.</p>
+          <p>In real numbers, people aged 60 and over go from <b data-f="el21abs">51 lakh</b> to <b data-f="el36abs">82 lakh</b>, an increase of <b data-f="elGrow">60%</b> in fifteen years.</p>
+          <p class="sc-src">DIU population projection (Bayesian approach), 2021–2036</p>
+        </div>
+      </div>
+
+      <!-- CHAPTER 5 · WHERE -->
+      <div class="story-step" data-step="mapST" data-ch="where" data-index="Thirty Odishas">
+        <div class="story-card">
+          <div class="sc-kicker">Chapter 5 · Where</div>
+          <h3 class="sc-title">One state, thirty starting lines</h3>
+          <p>The averages hide very different places. Scheduled Tribes make up most of the population in <b data-f="stTop">Mayurbhanj (59%), Malkangiri (58%) and Rayagada (56%)</b>, and almost none of it in <b data-f="stLow">Puri (0.4%)</b>.</p>
+          <p class="sc-src">Census of India 2011 · hover a district, or click to open it</p>
+        </div>
+      </div>
+
+      <div class="story-step" data-step="mapLit" data-ch="where">
+        <div class="story-card">
+          <p>Literacy follows the same fault line: <b data-f="litMax">Khordha (86.9%)</b> at the top, <b data-f="litMin">Nabarangpur (46.4%)</b> at the bottom. That is a gap of <b data-f="litGap">41</b> points inside one state.</p>
+          <p class="sc-src">Census of India 2011</p>
+        </div>
+      </div>
+
+      <div class="story-step" data-step="mapOld" data-ch="where">
+        <div class="story-card">
+          <p>So does ageing. By 2036 the oldest district is projected to be <b data-f="oldMax">Jagatsinghapur (17.9%)</b>, measured by the share aged 60 and over. The youngest is <b data-f="oldMin">Malkangiri (12.9%)</b>.</p>
+          <p>The coast grows old first. The tribal south stays young for longer, with higher fertility and further to go on schooling and health.</p>
+          <p class="sc-src">DIU population projection (Bayesian approach), 2036</p>
+        </div>
+      </div>
+
+      <!-- CHAPTER 6 · SO WHAT -->
+      <div class="story-step" data-step="close" data-ch="asks" data-index="What it asks">
+        <div class="story-card">
+          <div class="sc-kicker">Chapter 6 · What it asks</div>
+          <h3 class="sc-title">Three things the numbers ask for</h3>
+          <p><span class="sw sw-child">Fewer children</span> means schools can now compete on quality, not on seats.</p>
+          <p><span class="sw sw-work">A working-age peak</span> means jobs and skills, while the window is still open.</p>
+          <p><span class="sw sw-elder">More elders</span> means pensions, health and care, planned from now on.</p>
+          <p>And because every district runs on its own clock, the plans have to start district by district.</p>
+          <div class="sc-cta">
+            <a href="district-health.html" class="btn-pill solid">Find your district</a>
+            <a href="explore.html" class="btn-pill ghost">Take the guided tour</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="story-data">
+    <details>
+      <summary>The figures behind this story</summary>
+      <div class="tbl-wrap">
+        <table id="storyFigures">
+          <thead><tr><th scope="col">Figure</th><th scope="col">Value</th><th scope="col">Source</th></tr></thead>
+          <tbody><tr><td colspan="3">Loading from the portal's data…</td></tr></tbody>
+        </table>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -608,105 +516,6 @@
 </script>
 
 <!-- ═══════════════════════════════════════════════
-     SCROLLYTELLING MAP SECTION
-═══════════════════════════════════════════════ -->
-<div class="scrolly" id="scrollySection" data-index="30 districts">
-  <!-- LEFT: Sticky Map -->
-  <div class="sticky-map">
-    <div class="map-kicker" style="color: var(--purple);">Regional Explorer</div>
-    <h2 class="map-title" id="mapSectionTitle">The State Overview</h2>
-    <p style="font-size: calc(16px * var(--type-scale)); color: var(--muted); margin: 4px 0 12px 0; font-family: var(--mono);">Click on any district to explore deep-dive metrics</p>
-    <div id="map-container" data-download data-download-title="#mapSectionTitle" style="flex:1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.01);"></div>
-  </div>
-
-  <!-- RIGHT: Scroll steps -->
-  <div class="steps">
-    <div class="step active" data-highlight="all" data-title="A Tapestry of 30 Districts">
-      <div class="step-idx">The State Overview</div>
-      <h2>30 Districts, One State</h2>
-      <p>Odisha is India's 11th most populous state. Its demographic profile is a complex matrix of rapid coastal urbanization and agricultural inland plains.</p>
-    </div>
-    
-    <div class="step" data-highlight="Ganjam,Cuttack,Mayurbhanj" data-title="The Demographic Giants">
-      <div class="step-idx" style="color: var(--orange);">Population Giants</div>
-      <h2>Where the millions reside</h2>
-      <p>Together, <span style="color:var(--yellow)">Ganjam</span>, <span style="color:var(--teal)">Cuttack</span>, and <span style="color:var(--purple)">Mayurbhanj</span> account for nearly 20% of the state's population. Ganjam alone has over 3.5 million residents.</p>
-    </div>
-    
-    <div class="step" data-highlight="Khordha" data-title="The Capital & Knowledge Hub">
-      <div class="step-idx" style="color: var(--teal);">Knowledge Hub</div>
-      <h2>Education and the Capital Belt</h2>
-      <p><span style="color:var(--teal)">Khordha</span> leads the state in literacy (86.9%) and has reached a very low fertility rate of 1.4, driven by urban development around Bhubaneswar.</p>
-    </div>
-    
-    <div class="step" data-highlight="Malkangiri,Nabarangapur,Koraput" data-title="The Southern Frontier Challenges">
-      <div class="step-idx" style="color: var(--red);">Challenges</div>
-      <h2>The Southern Frontier</h2>
-      <p>Southern districts like <span style="color:var(--red)">Malkangiri</span>, <span style="color:var(--red)">Nabarangapur</span>, and <span style="color:var(--red)">Koraput</span> still face higher infant mortality rates and lower literacy levels, representing the state's focused development priorities.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════
-     EDITORIAL BAND — MOVEMENT
-═══════════════════════════════════════════════ -->
-<section class="editorial-band" id="movement" aria-labelledby="eb-move" data-index="Movement">
-  <figure class="editorial-figure editorial-band-figure" style="margin:0;">
-    <img data-art="migration-journey" alt="Silhouetted figures walking in a line carrying bags and bundles" loading="lazy" decoding="async">
-  </figure>
-  <div class="editorial-band-copy">
-    <div class="kicker" style="color: var(--purple);">Movement</div>
-    <p class="editorial-band-quote" id="eb-move">Four in five people in Odisha still live in a village, and the share falls every decade.</p>
-    <p class="editorial-band-note">
-      Urbanisation here is not one wave. It is Bhubaneswar and Cuttack drawing from the coastal belt,
-      mining towns pulling from the west, and a seasonal outflow from the southern districts that no
-      single census month fully captures.
-    </p>
-    <div class="editorial-band-source">Census of India · 81.5% rural · 18.5% urban</div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
-     EDITORIAL BAND — BELOW REPLACEMENT
-     Followed directly by the ageing band: falling fertility, then what it
-     does to the other end of the age structure.
-═══════════════════════════════════════════════ -->
-<section class="editorial-band alt flip" id="fertility" aria-labelledby="eb-fert" data-index="Below replacement">
-  <figure class="editorial-figure editorial-band-figure" style="margin:0;">
-    <img data-art="fertility-motherland" alt="Profile of an expectant mother rendered as a printed road map" loading="lazy" decoding="async">
-  </figure>
-  <div class="editorial-band-copy">
-    <div class="kicker">Below replacement</div>
-    <p class="editorial-band-quote" id="eb-fert">Odisha fell below replacement fertility <em>ahead of</em> the national average.</p>
-    <p class="editorial-band-note">
-      A total fertility rate of 1.7 against a replacement level of 2.1 means each generation is now
-      smaller than the one before it. Momentum in the existing age
-      structure keeps the headcount climbing for another decade, and then it does not.
-    </p>
-    <div class="editorial-band-source">NFHS-6 · TFR 1.7 · replacement level 2.1</div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
-     EDITORIAL BAND — THE OTHER END OF THE CURVE
-═══════════════════════════════════════════════ -->
-<section class="editorial-band" id="ageing" aria-labelledby="eb-age" data-index="Ageing">
-  <figure class="editorial-figure editorial-band-figure" style="margin:0;">
-    <img data-art="ageing-cohort" alt="Silhouettes of older adults with walking frames, wheelchairs and mobility aids" loading="lazy" decoding="async">
-  </figure>
-  <div class="editorial-band-copy">
-    <div class="kicker" style="color: var(--orange);">The other end of the curve</div>
-    <p class="editorial-band-quote" id="eb-age">By 2036, nearly one in six people in Odisha will be over sixty.</p>
-    <p class="editorial-band-note">
-      The same fall in fertility that eased pressure on schools and clinics is now reshaping the
-      opposite end of the age structure. The cohort that entered the workforce in the 1980s reaches
-      sixty within this decade, and the support ratio that funded their working lives inverts behind them.
-    </p>
-    <div class="editorial-band-source">Population projections using the Bayesian Approach, 2011–2036, ORGI · 15.9% aged 60+</div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
      THEMATIC GALLERY — the forces behind the numbers
 ═══════════════════════════════════════════════ -->
 <section class="editorial-gallery" id="thematicGallery" aria-labelledby="eg-head" data-index="Nine frames">
@@ -836,30 +645,26 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     ODISHA DEMOGRAPHIC & DEVELOPMENT LANDSCAPE (11-SECTION SUITE)
+     STATE DOSSIER — the twenty modules of state_details.json as a
+     scroll story (dossier.js, dossier.css). Cards and the index bar are
+     built from the data; every module's picture sits in the sticky
+     panel and appears as its card reaches the middle of the screen.
 ═══════════════════════════════════════════════ -->
-<section class="pm-dash" id="dashboard" data-index="State dashboard" style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 40px max(20px, 4vw); box-sizing: border-box;">
-  <div style="margin-bottom: 18px;">
-    <div class="label" style="color: var(--teal); margin-bottom: 12px;">Strategic Demographic Dashboard</div>
-    <h2 style="font-family: var(--serif); font-size: var(--fs-h2); color: var(--blue); margin: 4px 0 0;">
-      Odisha State Development &amp; Demographic Analytics
-    </h2>
+<section class="pm-dash dz" id="dashboard" data-index="State dashboard" style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 40px max(20px, 4vw); box-sizing: border-box;">
+  <div class="dz-head">
+    <div class="label" style="color: var(--teal); margin-bottom: 12px;">The state dossier</div>
+    <h2 style="font-family: var(--serif); font-size: var(--fs-h2); color: var(--blue); margin: 4px 0 0;">Odisha, module by module</h2>
     <p style="font-size: var(--fs-caption); color: var(--muted); font-family: var(--mono); margin-top: 6px; max-width: 54em; line-height: 1.5;">
-      Multi-Decadal Strategic Analysis of Population Trajectories, Gender Parity, Fertility Transitions, and Indigenous Heritage (1901–2036)
+      Twenty modules on the state's land, governance, people, health, schools and infrastructure, read in seven chapters.
+      Scroll through them, or use the index to jump to one.
     </p>
   </div>
 
-  <!-- Index and modules side by side on wide screens: the index sticks on
-       the left for the whole length of the dashboard -->
-  <div class="dash-body">
-    <!-- Section Index Navigation Box (populated dynamically) -->
-    <nav class="report-index-container" aria-label="Analytics index">
-      <div class="report-index-header">Analytics Index &amp; Quick Module Jump</div>
-      <div id="slide-tabs-bar" class="report-index-nav"></div>
-    </nav>
+  <nav class="dz-index" aria-label="Analytics index and quick module jump"></nav>
 
-    <!-- All Sections Rendered Dynamically from state_details.json -->
-    <div id="all-sections-container" style="display: flex; flex-direction: column; gap: 26px; width: 100%; min-width: 0;"></div>
+  <div class="dz-scroller">
+    <div class="dz-stage"><div class="dz-panel"></div></div>
+    <div class="dz-steps"></div>
   </div>
 </section>
 
@@ -1066,127 +871,6 @@ function startField() {
 </script>
 
 <script>
-    const colors = {
-        'Ganjam': 'var(--yellow)',
-        'Cuttack': 'var(--teal)',
-        'Mayurbhanj': 'var(--purple)',
-        'Khordha': 'var(--teal)',
-        'Malkangiri': 'var(--red)',
-        'Nabarangapur': 'var(--red)',
-        'Koraput': 'var(--red)'
-    };
-
-    const container = d3.select("#map-container");
-    container.html("");
-
-    const svg = container.append("svg")
-        .attr("width", "100%")
-        .attr("height", "100%")
-        .attr("preserveAspectRatio", "xMidYMid meet");
-
-    const g = svg.append("g");
-    const MAP_BASE = "#9fc2dc";   /* resting fill: reads on the white card */
-    const MAP_DIM  = "#dce7f0";   /* districts a step is not about */
-    let labels = null;
-    /* d3 can only blend real colours, and a "var(--teal)" string makes the
-       fill snap instead of fading, so the story colours are resolved first */
-    const cssColor = v => {
-        const m = /^var\((--[^)]+)\)$/.exec(v);
-        return m ? (getComputedStyle(document.body).getPropertyValue(m[1]).trim() || v) : v;
-    };
-    const tip = d3.select("body").selectAll(".map-tooltip").data([null]).join("div")
-        .attr("class", "tooltip map-tooltip")
-        .style("opacity", 0);
-
-    DataLoader.loadJSON('./Orissa.geojson').then(geoData => {
-        // Project onto standard 1000x800 coordinate grid
-        const projTemp = d3.geoMercator().fitSize([1000, 800], geoData);
-        const path = d3.geoPath().projection(projTemp);
-        
-        // Calculate tight geographic bounding box of Odisha map features
-        const b = path.bounds(geoData);
-        const pad = 3;
-        const vx = b[0][0] - pad;
-        const vy = b[0][1] - pad;
-        const vw = (b[1][0] - b[0][0]) + pad * 2;
-        const vh = (b[1][1] - b[0][1]) + pad * 2;
-
-        // Set tight viewBox directly around Odisha bounds
-        svg.attr("viewBox", `${vx} ${vy} ${vw} ${vh}`);
-
-        g.selectAll("path")
-            .data(geoData.features).enter().append("path")
-            .attr("d", path)
-            .attr("fill", MAP_BASE)
-            .attr("class", d => `district dist-${d.properties.Dist_Name.replace(/\s+/g, '')}`)
-            .on("mouseover", function(event, d) {
-                /* One outline drawn over the map follows the pointer. Outlining
-                   the district itself meant raising it, and moving a node from
-                   under the pointer can swallow its mouseout: outlines were
-                   left behind on every district the pointer crossed. */
-                hoverRing.attr("d", path(d)).classed("is-on", true);
-                tip.transition().duration(200).style("opacity", 1);
-                tip.html(`<strong>${d.properties.Dist_Name}</strong><br><span style="font-size:var(--fs-caption);color:var(--muted)">Click to enter deep dive</span>`)
-                   .style("left", (event.pageX + 15) + "px").style("top", (event.pageY - 10) + "px");
-            })
-            .on("mouseout", function() {
-                hoverRing.classed("is-on", false);
-                tip.transition().duration(400).style("opacity", 0);
-            })
-            .on("click", (e, d) => window.location.href = `district.html?id=${encodeURIComponent(d.properties.Dist_Name)}`);
-
-        const hoverRing = g.append("path").attr("class", "map-hover").attr("aria-hidden", "true");
-        /* and never leave it behind if the pointer exits the map in one move */
-        svg.on("mouseleave", () => {
-            hoverRing.classed("is-on", false);
-            tip.transition().duration(400).style("opacity", 0);
-        });
-
-        labels = g.append("g").attr("class", "map-labels").attr("aria-hidden", "true");
-        labels.selectAll("text")
-            .data(geoData.features).enter().append("text")
-            .attr("class", d => `lbl-${d.properties.Dist_Name.replace(/\s+/g, '')}`)
-            .attr("x", d => path.centroid(d)[0])
-            .attr("y", d => path.centroid(d)[1])
-            .text(d => d.properties.Dist_Name);
-
-        // Observe Narrative Steps Scroll
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-                    entry.target.classList.add('active');
-                    highlightDistricts(entry.target.dataset.highlight);
-                    
-                    const title = entry.target.dataset.title;
-                    if (title) {
-                      const titleEl = document.getElementById('mapSectionTitle');
-                      if (titleEl) titleEl.innerText = title;
-                    }
-                }
-            });
-        }, { threshold: 0.4 });
-        
-        document.querySelectorAll('.step').forEach(s => observer.observe(s));
-    });
-
-    /* Resting state: every district a clear mid-tone with white borders.
-       A step recolours the districts it is about and softens the rest to a
-       lighter tint (still readable, never faded out) and names them. */
-    function highlightDistricts(names) {
-        if (!names) return;
-        const focus = names === 'all' ? [] : names.split(',').map(n => n.replace(/\s+/g, ''));
-        const key = d => d.properties.Dist_Name.replace(/\s+/g, '');
-        /* districts only: the hover outline is a <path> too, with no data */
-        g.selectAll("path.district").interrupt().transition().duration(700).ease(d3.easeCubicInOut)
-            .attr("fill", d => {
-                if (!focus.length) return MAP_BASE;
-                const i = focus.indexOf(key(d));
-                return i === -1 ? MAP_DIM : cssColor(colors[d.properties.Dist_Name] || "var(--teal)");
-            });
-        if (labels) labels.selectAll("text").classed("is-on", d => focus.indexOf(key(d)) !== -1);
-    }
-
     // STATE STAT STRIP & LEADERBOARD DYNAMIC LOADING
     Promise.all([
       DataLoader.getDistrictPopulationTrends(),
@@ -1264,308 +948,10 @@ function startField() {
     
     document.querySelectorAll('.policy-item').forEach(item => policyObs.observe(item));
 
-    // ── shared helpers for the dossier's name lists ──
-    function escHtml(s) {
-      return String(s).replace(/[&<>"']/g, function(c) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-      });
-    }
-
-    /* Title-casing a snake_case key turns acronyms into "Pvtg", "Sc", "Imr".
-       These keep their real form; everything else falls through. */
-    var LABEL_OVERRIDES = {
-      pvtg_names: 'PVTG names',
-      pvtg_count: 'Number of PVTGs',
-      tribal_groups_count: 'Number of tribal groups',
-      tribal_share_pct: 'Tribal share of population',
-      tribal_population: 'Tribal population'
-    };
-    var ACRONYMS = { pvtg: 'PVTG', sc: 'SC', st: 'ST', imr: 'IMR', mmr: 'MMR',
-                     nmr: 'NMR', tfr: 'TFR', u5mr: 'U5MR', gsdp: 'GSDP', pct: '%' };
-
-    function prettyLabel(key) {
-      if (LABEL_OVERRIDES[key]) return LABEL_OVERRIDES[key];
-      return key.split('_').map(function(w, i) {
-        var a = ACRONYMS[w.toLowerCase()];
-        if (a) return a;
-        return i === 0 ? w.charAt(0).toUpperCase() + w.slice(1) : w;
-      }).join(' ');
-    }
-
-    /* A disclosure rather than a <select>: this is a list to read, not a
-       choice to make, so a control that reports a selected value would be
-       the wrong thing for a screen reader to announce. The flex row is a
-       span inside the summary — giving <summary> a display other than
-       list-item stops some engines treating it as the disclosure control. */
-    function renderNameList(label, names) {
-      var clean = names.map(function(n) { return String(n).trim(); }).filter(Boolean);
-      if (!clean.length) {
-        return '<div class="dossier-stat"><strong>' + label + ':</strong> None recorded</div>';
-      }
-      var items = clean.map(function(n) { return '<li>' + escHtml(n) + '</li>'; }).join('');
-      /* 62 communities in a single column runs to ~2500px. Past a dozen the
-         list breaks into columns so it stays scannable in one screen. */
-      var listCls = 'pvtg-list' + (clean.length > 12 ? ' is-long' : '');
-      return '<details class="pvtg-dropdown">' +
-        '<summary><span class="pvtg-summary-row">' +
-          '<span class="pvtg-summary-label">' + label + '</span>' +
-          '<span class="pvtg-count">' + clean.length + '</span>' +
-          '<svg class="pvtg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
-            'stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-            '<polyline points="6 9 12 15 18 9"></polyline></svg>' +
-        '</span></summary>' +
-        '<ul class="' + listCls + '">' + items + '</ul></details>';
-    }
-
-    // "1. Bagata, 2. Baiga, 3. Banjara / Banjari, ..." run on as one paragraph
-    function isNumberedRun(p) {
-      return /^\s*1\.\s/.test(p) && (p.match(/,\s*\d+\.\s/g) || []).length >= 4;
-    }
-
-    function renderNumberedRun(p) {
-      var items = p.trim().split(/,\s*(?=\d+\.\s)/)
-        .map(function(s) { return s.replace(/^\s*\d+\.\s*/, '').trim(); })
-        .filter(Boolean);
-      return '<div class="dossier-stat-grid" style="margin-bottom:16px;">' +
-        renderNameList('Tribal communities', items) + '</div>';
-    }
-
-    // STATE DOSSIER ENGINE — dynamic rendering from state_details.json
-    DataLoader.getStateDetails().then(function(stateData) {
-      var d = stateData && stateData["Odisha"];
-      if (!d || !d.slides_detail || !d.slides_detail.length) return;
-
-      var slides = d.slides_detail;
-      var accentColors = ['var(--teal)', 'var(--orange)', 'var(--purple)', 'var(--blue)', 'var(--red)'];
-      var container = document.getElementById('all-sections-container');
-      var tabsBar = document.getElementById('slide-tabs-bar');
-
-      function markModule(id) {
-        var active = null;
-        document.querySelectorAll('.slide-tab-btn').forEach(function(btn) {
-          var on = btn.getAttribute('data-slide') === id;
-          btn.classList.toggle('active', on);
-          if (on) { btn.setAttribute('aria-current', 'true'); active = btn; }
-          else btn.removeAttribute('aria-current');
-        });
-        var box = tabsBar.closest('.report-index-container');
-        if (!active || !box || box.scrollHeight <= box.clientHeight) return;
-        var a = active.getBoundingClientRect(), b = box.getBoundingClientRect();
-        if (a.top < b.top + 40) box.scrollTop -= (b.top + 40) - a.top;
-        else if (a.bottom > b.bottom - 16) box.scrollTop += a.bottom - (b.bottom - 16);
-      }
-
-      // Build Quick Module Jump buttons
-      slides.forEach(function(slide, idx) {
-        var sNum = String(slide.slide_num).padStart(2, '0');
-        var btn = document.createElement('button');
-        btn.className = 'slide-tab-btn' + (idx === 0 ? ' active' : '');
-        btn.setAttribute('data-slide', String(slide.slide_num));
-        btn.textContent = sNum + ' ' + slide.title.split(':')[0].split('–')[0].trim();
-        btn.addEventListener('click', function() {
-          var target = document.getElementById('section-' + slide.slide_num);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            /* Charts above the target load as the page passes them and can
-               push it down after the jump lands; settle it once more. */
-            setTimeout(function () {
-              var top = target.getBoundingClientRect().top;
-              if (Math.abs(top - 24) > 40) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 1200);
-          }
-          markModule(String(slide.slide_num));
-        });
-        tabsBar.appendChild(btn);
-      });
-
-      // Render each slide card
-      slides.forEach(function(slide, idx) {
-        var color = accentColors[idx % accentColors.length];
-        var sNum = String(slide.slide_num).padStart(2, '0');
-
-        var card = document.createElement('div');
-        card.id = 'section-' + slide.slide_num;
-        card.className = 'report-section-card';
-        card.style.cssText = 'scroll-margin-top:24px; background:var(--panel);border:1px solid var(--border); border-radius:20px; padding:32px; width:100%; box-sizing:border-box;';
-
-        var html = '';
-        html += '<div class="kicker kicker-anim" style="color:' + color + ';">' + sNum + ' &middot; ' + slide.title + '</div>';
-        html += '<h3 style="font-family:var(--serif); font-size:1.6rem; color:var(--blue); margin:4px 0 14px;">' + slide.title + '</h3>';
-
-        // Narrative text
-        if (slide.text_content) {
-          var parts = slide.text_content.split('\n\n');
-          var hasTable = slide.table_data && Object.keys(slide.table_data).length > 0;
-          var listBlocks = '';
-          var narrativeParts = parts.filter(function(p) {
-            if (hasTable && p.indexOf(' | ') !== -1) return false;
-            if (p.trim().length <= 60) return false;
-            /* The 62 tribal communities arrive as one run-on numbered string.
-               As prose it is an unreadable wall; pulled into a disclosure it
-               is a list you can actually scan. */
-            if (isNumberedRun(p)) { listBlocks += renderNumberedRun(p); return false; }
-            return true;
-          });
-          if (narrativeParts.length > 0) {
-            html += '<div class="narrative-block" style="font-size:0.95rem; line-height:1.7; color:var(--text); margin-bottom:16px; background:var(--surface); padding:20px; border-radius:12px; border:1px solid var(--border);">';
-            html += narrativeParts.join('<br><br>');
-            html += '</div>';
-          }
-          html += listBlocks;
-        }
-
-        // Table data as stat grid
-        if (slide.table_data && Object.keys(slide.table_data).length > 0) {
-          html += '<div class="dossier-stat-grid">';
-          Object.keys(slide.table_data).forEach(function(key, tileIdx) {
-            var label = prettyLabel(key);
-            var rawVal = String(slide.table_data[key]);
-            if (key === 'pvtg_names') {
-              html += renderNameList(label, rawVal.split(','));
-              return;
-            }
-            html += '<div class="stat-tile dossier-stat" data-delay="' + (tileIdx * 80) + '">';
-            html += '<strong>' + label + ':</strong> <span class="stat-value" data-target="' + rawVal.replace(/"/g, '&quot;') + '">' + rawVal + '</span></div>';
-          });
-          html += '</div>';
-        }
-
-        // Flourish iframe (lazy-loaded)
-        if (slide.chart_url) {
-          var embedUrl = slide.chart_url.indexOf('?') !== -1 ? slide.chart_url : slide.chart_url + '?auto=1';
-          var match = slide.chart_url.match(/visualisation\/(\d+)/);
-          var visId = match ? match[1] : '';
-          html += '<div class="lazy-chart-wrapper" data-embed-url="' + embedUrl + '" data-vis-id="' + visId + '" style="width:80%; margin-left:auto; margin-right:auto; border-radius:16px; overflow:hidden; border:1px solid var(--border); margin-top:24px; background:var(--surface); box-shadow:0 6px 24px rgba(0,0,0,0.04); opacity:0; transform:translateY(15px); transition:opacity 0.3s ease-out, transform 0.3s ease-out;">';
-          html += '<div class="chart-loading-placeholder" style="display:flex; align-items:center; justify-content:center; height:380px; color:var(--muted); font-family:var(--mono); font-size:12px; letter-spacing:0.1em;">';
-          html += '<div style="display:flex; flex-direction:column; align-items:center; gap:10px;">';
-          html += '<div style="width:12px; height:12px; background:var(--teal); border-radius:50%; animation:pulseGlow 1.2s infinite ease-in-out;"></div>';
-          html += '<span>PREPARING CHART...</span></div></div></div>';
-        }
-
-        card.innerHTML = html;
-        container.appendChild(card);
-      });
-
-      // Lazy-load iframes on scroll (same as district.html)
-      var chartObserver = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            var wrapper = entry.target;
-            var embedUrl = wrapper.dataset.embedUrl;
-            if (embedUrl && !wrapper.querySelector('iframe')) {
-              var iframe = document.createElement('iframe');
-              iframe.src = embedUrl;
-              iframe.title = 'Interactive Visualization';
-              iframe.frameBorder = '0';
-              iframe.scrolling = 'no';
-              iframe.style.width = '100%';
-              iframe.style.height = '380px';
-              iframe.style.border = 'none';
-              iframe.allow = 'autoplay; fullscreen';
-              iframe.sandbox = 'allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation';
-              var placeholder = wrapper.querySelector('.chart-loading-placeholder');
-              if (placeholder) placeholder.style.display = 'none';
-              wrapper.appendChild(iframe);
-            }
-            wrapper.style.opacity = '1';
-            wrapper.style.transform = 'translateY(0)';
-            observer.unobserve(wrapper);
-          }
-        });
-      }, { threshold: 0.05, rootMargin: '200px 0px 100px 0px' });
-
-      document.querySelectorAll('.lazy-chart-wrapper').forEach(function(el) { chartObserver.observe(el); });
-
-      // Section scroll observer for Quick Module Jump highlight.
-      // It watches a thin band 20% down the screen rather than a share of
-      // each module: at "25% visible" a module taller than four screens
-      // could never become current.
-      var sectionObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) markModule(entry.target.id.replace('section-', ''));
-        });
-      }, { rootMargin: '-20% 0px -79% 0px', threshold: 0 });
-
-      document.querySelectorAll('.report-section-card').forEach(function(card) { sectionObserver.observe(card); });
-
-      // Count-up helper: animates a number from 0 to target
-      function animateCountUp(el, targetText) {
-        if (!targetText) return;
-        var numMatch = targetText.match(/([\d,]+(\.\d+)?)/);
-        if (!numMatch) { el.textContent = targetText; return; }
-        var numStr = numMatch[1];
-        var prefix = targetText.slice(0, targetText.indexOf(numStr));
-        var suffix = targetText.slice(targetText.indexOf(numStr) + numStr.length);
-        var target = parseFloat(numStr.replace(/,/g, ''));
-        if (isNaN(target)) { el.textContent = targetText; return; }
-        var hasComma = numStr.indexOf(',') !== -1;
-        var decimals = numStr.indexOf('.') !== -1 ? numStr.split('.')[1].length : 0;
-        var duration = 1200;
-        var startTime = null;
-        function step(ts) {
-          if (!startTime) startTime = ts;
-          var progress = Math.min((ts - startTime) / duration, 1);
-          var eased = 1 - Math.pow(1 - progress, 3);
-          var current = eased * target;
-          var formatted = decimals > 0 ? current.toFixed(decimals) : Math.round(current).toString();
-          if (hasComma) formatted = formatted.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          el.textContent = prefix + formatted + suffix;
-          if (progress < 1) requestAnimationFrame(step);
-          else el.classList.add('counted');
-        }
-        el.textContent = prefix + (decimals > 0 ? '0.' + '0'.repeat(decimals) : '0') + suffix;
-        requestAnimationFrame(step);
-      }
-
-      function revealCard(card) {
-        if (card.classList.contains('anim-in')) return;
-        card.classList.add('anim-in');
-        var kicker = card.querySelector('.kicker-anim');
-        if (kicker) setTimeout(function() { kicker.classList.add('anim-in'); }, 150);
-        var narratives = card.querySelectorAll('.narrative-block');
-        narratives.forEach(function(n, i) {
-          setTimeout(function() { n.classList.add('anim-in'); }, 300 + i * 150);
-        });
-        var tiles = card.querySelectorAll('.stat-tile');
-        tiles.forEach(function(tile) {
-          var delay = parseInt(tile.getAttribute('data-delay') || '0', 10);
-          setTimeout(function() {
-            tile.classList.add('anim-in');
-            var valEl = tile.querySelector('.stat-value');
-            if (valEl) animateCountUp(valEl, valEl.getAttribute('data-target'));
-          }, 400 + delay);
-        });
-      }
-
-      // Mark all animatable elements as ready (hidden)
-      document.querySelectorAll('.report-section-card').forEach(function(card) {
-        card.classList.add('anim-ready');
-        card.querySelectorAll('.kicker-anim').forEach(function(el) { el.classList.add('anim-ready'); });
-        card.querySelectorAll('.narrative-block').forEach(function(el) { el.classList.add('anim-ready'); });
-        card.querySelectorAll('.stat-tile').forEach(function(el) { el.classList.add('anim-ready'); });
-      });
-
-      // Card entrance observer
-      var cardAnimObserver = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            revealCard(entry.target);
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-
-      document.querySelectorAll('.report-section-card').forEach(function(card) { cardAnimObserver.observe(card); });
-
-      // Fallback: reveal cards already in viewport on load
-      setTimeout(function() {
-        document.querySelectorAll('.report-section-card.anim-ready:not(.anim-in)').forEach(function(card) {
-          var rect = card.getBoundingClientRect();
-          if (rect.top < window.innerHeight && rect.bottom > 0) revealCard(card);
-        });
-      }, 300);
-    });
 </script>
+<script src="icons.js?v=20261005"></script>
+<script src="story.js?v=20261005-2"></script>
+<script src="dossier.js?v=20261005-3"></script>
 <script src="chatbot.js?v=20260930-2"></script>
 <script src="chart-download.js?v=20260928-2" defer></script>
 </body>
