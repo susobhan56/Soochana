@@ -131,6 +131,17 @@ body {
 .rp-chart .pt { fill: #2a78d6; stroke: #fff; stroke-width: 1.5; }
 .rp-chart .pt.proj { fill: #fff; stroke: #2a78d6; }
 .rp-fig figcaption { font-size: 12.5px; color: var(--faint); margin-top: 6px; }
+.rp-chart .h     { font: 700 13.5px var(--ui); fill: var(--ink); }
+.rp-chart .lbl   { font: 500 13px var(--ui); fill: var(--soft); }
+.rp-chart .big   { font: 400 22px var(--display); fill: var(--ink); }
+.rp-chart .track { fill: #f1eee7; }
+.rp-chart .dist  { fill: #dbe8f6; stroke: #2a78d6; stroke-width: 0.8; }
+.rp-chart .dn    { font: 600 9.5px var(--ui); fill: var(--ink); paint-order: stroke; stroke: #fff; stroke-width: 2.5px; stroke-linejoin: round; }
+.rp-chart .nb    { font: 600 13px var(--ui); fill: var(--faint); letter-spacing: 0.04em; }
+.rp-chart .sea   { font: italic 500 14px var(--read); fill: #2a78d6; }
+.rp-chart .arrow { font: 700 20px var(--ui); fill: #fff; }
+.rp-fig + .rp-fig { margin-top: 4px; }
+.rp-thumb img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
 
 /* ── print: A4 pages, the bar gone, each part on its own page ── */
 @page { size: A4; margin: 16mm 14mm 18mm; }
@@ -146,12 +157,14 @@ body {
   .rp-wide { font-size: 8.5pt; }
   .rp a { color: var(--ink); text-decoration: none; }
   .rp-toc { background: none; }
+  .rp-thumb img { max-height: 120mm; width: auto; max-width: 100%; }
 }
 
 /* on a phone the bar scrolls away with the page, so it doesn't cover the report */
 @media (max-width: 640px) {
   .rp-bar { position: static; }
   .rp-btn { padding: 8px 13px; font-size: 13px; }
-  .rp-chart .t { font-size: 15px; }
-  .rp-chart .v { font-size: 16px; }
+  .rp-chart .t, .rp-chart .lbl { font-size: 16px; }
+  .rp-chart .v, .rp-chart .h { font-size: 17px; }
+  .rp-chart .dn { font-size: 11px; }
 }
