@@ -544,3 +544,26 @@
   .pm-home .scrolly .step { padding-right: 88px; }
   .pm-home .pm-dash { padding-right: max(84px, 4vw) !important; }
 }
+
+/* ── "click any district" tip, and the report button in the header ── */
+.pm-home .click-tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 22px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font: 600 calc(14px * var(--type-scale)) / 1.4 var(--pm-ui);
+  color: #fff;
+}
+.pm-home .click-tip-ic { width: 20px; height: 20px; flex: none; }
+.pm-home .click-tip-ic :is(path, circle, rect) { fill: none; stroke: currentColor; stroke-width: 1.7px; }
+.pm-home .click-tip .click-tip-ic { color: var(--pm-yellow); }
+.pm-home header .btn-report { display: inline-flex; align-items: center; gap: 7px; }
+.pm-home header .btn-report .click-tip-ic { width: 17px; height: 17px; }
+.pm-home header .btn-elegant.btn-report { background: var(--pm-sky); border-color: var(--pm-sky); }
+.pm-home header .btn-elegant.btn-report:hover { background: var(--pm-sky-hi); border-color: var(--pm-sky-hi); }
+/* on a phone the header buttons scroll sideways; the report comes first so it is seen */
+@media (max-width: 760px) { .pm-home header .btn-report { order: -1; } }

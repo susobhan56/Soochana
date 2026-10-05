@@ -235,6 +235,18 @@
 .sw-child::before { background: var(--st-child); }
 .sw-work::before  { background: var(--st-work); }
 .sw-elder::before { background: var(--st-elder); }
+.story-card p.sc-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font: 600 calc(14px * var(--type-scale)) / 1.45 var(--pm-ui);
+  color: #fff;
+}
+.story-card p.sc-tip .sz-ic { width: 18px; height: 18px; flex: none; margin-top: 1px; color: var(--st-a); }
 .story-card p.sc-src {
   font: 500 calc(12px * var(--type-scale)) / 1.45 var(--pm-ui);
   color: rgba(255, 255, 255, 0.68);
@@ -271,6 +283,9 @@
 .story .s-dist:hover { filter: brightness(0.88); }
 .story .s-bar   { stroke: none; }
 .story .s-pin   { fill: var(--st-ink); stroke: var(--st-paper); stroke-width: 2; }
+.story .s-click rect { fill: var(--st-ink); }
+.story .s-click text { font: 600 13px var(--pm-ui); fill: #fff; }
+.story .s-click .sz-ic { color: #f0c9a4; }
 .story .s-dots circle { stroke: transparent; stroke-width: 8; }   /* a bigger hover target than the dot */
 
 .story-tip {

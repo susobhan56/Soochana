@@ -257,6 +257,8 @@
   /* ═════════════════════════════════════════════════════════════════
      2. STAGE — sizes, persistent layers, dots
      ═════════════════════════════════════════════════════════════════ */
+  /* the figures, for the printable report (report.js) */
+  if (typeof window !== 'undefined') window.SoochanaStoryFigures = { compute: compute };
   /* Under Node (tests/story.test.js) only the figures are wanted. */
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = { compute: compute, to100: to100 };
@@ -278,6 +280,7 @@
   (function decorate() {
     var I = window.SoochanaIcons;
     if (!I) return;
+    root.querySelectorAll('.sc-tip').forEach(function (t) { t.insertBefore(I.svg('pointer', 'sc-ic-sm'), t.firstChild); });
     steps.forEach(function (st) {
       var ch = CHAPTERS[st.getAttribute('data-ch')], card = st.querySelector('.story-card');
       if (!ch || !card) return;
@@ -657,7 +660,24 @@
       return c ? D(c[0], c[1], 2, C.dot, 0) : gone(null, null);
     });
   }
+  /* a dark tip over the map: every district opens its own profile */
+  function clickTip(a) {
+    var label = wide ? 'Click any district to see its full profile' : 'Tap a district for its full profile';
+    var w = label.length * 6.9 + 46, h = 32;
+    var x = wide ? B.x : B.x + (B.w - w) / 2, y = Math.max(8, B.y - h - 12);
+    var g = a.append('g').attr('class', 's-click').attr('transform', 'translate(' + x + ',' + y + ')');
+    g.append('rect').attr('width', w).attr('height', h).attr('rx', h / 2);
+    var I = window.SoochanaIcons;
+    if (I) {
+      var ic = I.svg('pointer');
+      ic.setAttribute('x', 12); ic.setAttribute('y', 7); ic.setAttribute('width', 18); ic.setAttribute('height', 18);
+      g.node().appendChild(ic);
+    }
+    g.append('text').attr('x', I ? 36 : 16).attr('y', 21).text(label);
+  }
+
   function mapAnn(a, key, picks) {
+    clickTip(a);
     var s = mapScale(key), dom = s.domain(), info = MAPS[key];
     var lw = Math.min(220, B.w * 0.5), lx = B.x + (wide ? 0 : (B.w - lw) / 2), ly = B.y + B.h * 0.94;
     var gid = 'storyRamp';

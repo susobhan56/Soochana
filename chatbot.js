@@ -121,7 +121,8 @@
       padding: 0;
       border-radius: 50%;
       border: 3px solid #ffffff;
-      background: var(--cb-navy) url("${AVATAR_LARGE}") center / cover no-repeat;
+      /* the small avatar sits under the large one, so the button is never blank */
+      background: url("${AVATAR_LARGE}") center / cover no-repeat, url("${AVATAR}") center / cover no-repeat, var(--cb-navy);
       box-shadow: 0 8px 24px rgba(7, 37, 63, 0.35), 0 0 0 1px rgba(7, 37, 63, 0.08);
       cursor: pointer;
       z-index: 10000;
@@ -355,7 +356,7 @@
 
     /* welcome */
     .cb-hello { text-align: center; padding: 8px 8px 2px; animation: cbIn 0.4s var(--cb-ease) both; }
-    .cb-hello .cb-avatar { width: 72px; height: 72px; margin: 0 auto 12px; background-image: url("${AVATAR_LARGE}"); box-shadow: 0 0 0 4px #ffffff, 0 8px 22px rgba(7, 37, 63, 0.25); }
+    .cb-hello .cb-avatar { width: 72px; height: 72px; margin: 0 auto 12px; background-image: url("${AVATAR_LARGE}"), url("${AVATAR}"); box-shadow: 0 0 0 4px #ffffff, 0 8px 22px rgba(7, 37, 63, 0.25); }
     .cb-hello h4 { margin: 0 0 6px; font-family: var(--serif, Georgia, serif); font-size: calc(19px * var(--cb-scale)); color: var(--cb-navy); }
     .cb-hello p { margin: 0 auto; max-width: 320px; font-size: calc(13.5px * var(--cb-scale)); color: var(--cb-muted); line-height: 1.5; }
     .cb-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; animation: cbIn 0.4s var(--cb-ease) 0.08s both; }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odisha demographic report · Soochana</title>
+<meta name="description" content="A printable report of the Soochana home page: Odisha at a glance, the population story in six chapters, the 20-module state dossier and all 30 districts.">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap">
+<link rel="stylesheet" href="report.css?v=20261005">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="data_loader.js?v=20260925-2"></script>
+<script src="data/key_stats.js?v=20260925-2"></script>
+<!-- the story's and the dossier's figures; on this page they only compute -->
+<script src="story.js?v=20261005-3"></script>
+<script src="dossier.js?v=20261005-4"></script>
+</head>
+<body>
+
+<!-- the bar: on screen only, never printed -->
+<div class="rp-bar">
+  <a class="rp-brand" href="index.html"><span class="rp-dot" aria-hidden="true"></span>Soochana</a>
+  <div class="rp-actions">
+    <button type="button" class="rp-btn solid" id="rpPrint">Save as PDF / Print</button>
+    <button type="button" class="rp-btn" id="rpCsv">Download district table (CSV)</button>
+    <a class="rp-btn" href="index.html">Back to the home page</a>
+  </div>
+</div>
+<p class="rp-help">To keep a copy, press <b>Save as PDF / Print</b> and choose “Save as PDF” as the printer.</p>
+
+<main class="rp" id="report">
+  <p class="rp-loading">Building the report from the portal’s data…</p>
+</main>
+
+<script src="report.js?v=20261005"></script>
+</body>
+</html>

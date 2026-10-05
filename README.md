@@ -26,6 +26,12 @@ The 20 modules of `datasets/state_details.json`, read as a scroll story in seven
 - The look matches the story: rough off-white paper, with each chapter's colour on its cards, its index chip and the progress line (in `dossier.css`: the chapter colours under "one ground and one accent per chapter", the paper under "THE PAPER LOOK"). Icons are line drawings in `icons.js` (shared with the story): `CHAPTERS` picks each chapter's icon and `MODULE_ICONS` each module's.
 - Tests: `tests/dossier.test.js`.
 
+## Printable report (`report.html`)
+
+One document of the whole home page: Odisha at a glance, the six-chapter story (with two charts), all 20 dossier modules, a table of the 30 districts, and the sources. It is linked from the home page header ("Download report"), the story's last card and the dossier heading. **Save as PDF / Print** prints it (choose "Save as PDF" as the printer); the district table can also be downloaded as a CSV file. `report.html?print` opens the print dialog on its own.
+
+- `report.js` builds it from the same data files, reusing the figures from `story.js` and `dossier.js`, so nothing in it is typed in by hand. `report.css` holds the screen and A4 print styles.
+
 ## Soochana Learn
 
 Visual machine-learning explainers in the style of [MLU-Explain](https://mlu-explain.github.io/), built on the portal's own data for the 30 districts. Linked from every page header as **Learn**; start at `learn/index.html`.

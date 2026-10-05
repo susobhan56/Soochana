@@ -1,0 +1,157 @@
+/* ═══════════════════════════════════════════════════════════════════
+   report.css — the printable report (report.html, built by report.js)
+   On screen: an off-white sheet on a paper ground. In print: plain A4
+   pages, each part starting on a new page, the on-screen bar hidden.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --ink: #14202e;          /* 14.3:1 on the paper */
+  --soft: #3f4a58;
+  --faint: #5f6875;
+  --line: rgba(20, 32, 46, 0.14);
+  --paper: #f3efe6;
+  --accent: #9a3412;
+  --display: 'Anton', 'Arial Narrow', Impact, sans-serif;
+  --read: 'Merriweather', Georgia, serif;
+  --ui: 'Hind', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ui);
+}
+
+/* ── the bar ── */
+.rp-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 12px max(16px, 4vw);
+  background: rgba(20, 32, 46, 0.96);
+  color: #fff;
+}
+.rp-brand { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-family: var(--display); font-size: 22px; letter-spacing: 0.02em; }
+.rp-dot { width: 10px; height: 10px; border-radius: 50%; background: #f08a4b; }
+.rp-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.rp-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 16px;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font: 600 14px / 1 var(--ui);
+  text-decoration: none;
+  cursor: pointer;
+}
+.rp-btn:hover { background: rgba(255, 255, 255, 0.12); }
+.rp-btn.solid { background: #0f9dde; border-color: #0f9dde; }
+.rp-btn.solid:hover { background: #36b4ee; border-color: #36b4ee; }
+.rp-btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.rp-help { max-width: 900px; margin: 14px auto 0; padding: 0 16px; font-size: 14px; color: var(--soft); text-align: center; }
+
+/* ── the sheet ── */
+.rp {
+  max-width: 900px;
+  margin: 18px auto 60px;
+  padding: clamp(24px, 5vw, 56px);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 20px 50px rgba(20, 32, 46, 0.12);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.rp-loading { color: var(--soft); font-family: var(--read); }
+.rp p { margin: 0 0 12px; font-family: var(--read); font-size: 14.5px; line-height: 1.7; color: var(--soft); }
+.rp p b { font-family: var(--ui); font-weight: 700; color: var(--ink); }
+.rp h1, .rp h2 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em; color: var(--ink); line-height: 1.05; }
+.rp h1 { font-size: clamp(36px, 6vw, 60px); margin: 10px 0 18px; }
+.rp h2 { font-size: 32px; margin: 4px 0 14px; }
+.rp h3 { font: 700 18px / 1.3 var(--ui); color: var(--ink); margin: 26px 0 10px; }
+.rp h4 { font: 700 16px / 1.35 var(--ui); color: var(--ink); margin: 0 0 8px; }
+.rp a { color: #1c5cab; }
+
+.rp-cover { padding-bottom: 10px; }
+.rp-kicker, .rp-num {
+  font: 600 12px / 1.4 var(--ui);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.rp .rp-deck { font-size: 17px; color: var(--soft); }
+.rp-heads { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 22px 0; }
+.rp-head { padding: 14px 16px; border-radius: 10px; background: #f6f3ec; border: 1px solid var(--line); }
+.rp-head b { display: block; font-family: var(--display); font-weight: 400; font-size: 28px; color: var(--ink); line-height: 1.1; }
+.rp-head span { font-size: 13px; color: var(--faint); }
+.rp .rp-meta { font-family: var(--ui); font-size: 13px; color: var(--faint); }
+.rp-toc { margin: 18px 0 0; padding: 16px 20px 16px 38px; border-left: 3px solid var(--accent); background: #faf8f3; }
+.rp-toc li { margin: 4px 0; font-weight: 600; }
+
+.rp-section { margin-top: 42px; padding-top: 30px; border-top: 2px solid var(--ink); }
+.rp .rp-intro { font-size: 15px; }
+.rp-chapter { margin-bottom: 8px; }
+.rp-chap { padding-top: 6px; border-top: 1px solid var(--line); color: var(--accent) !important; text-transform: uppercase; letter-spacing: 0.06em; font-size: 14px !important; }
+.rp-module { padding: 14px 0 12px; border-bottom: 1px dashed var(--line); break-inside: avoid; }
+.rp-module:last-child { border-bottom: 0; }
+.rp .rp-src, .rp .rp-link { font-family: var(--ui); font-size: 12.5px; color: var(--faint); margin-top: 8px; }
+.rp .rp-link a { word-break: break-all; }
+
+/* tables */
+.rp-table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 13.5px; }
+.rp-table th, .rp-table td { text-align: left; vertical-align: top; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); }
+.rp-table thead th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--faint); font-weight: 600; border-bottom: 1.5px solid var(--ink); }
+.rp-table tbody th { font-weight: 600; color: var(--ink); }
+.rp-table td { color: var(--soft); }
+.rp-table td:nth-child(2) { color: var(--ink); font-weight: 600; }
+.rp-pairs { max-width: 620px; }
+.rp-wide { font-size: 12.5px; }
+.rp-wide td, .rp-wide thead th { text-align: right; padding-right: 0; padding-left: 8px; white-space: nowrap; }
+.rp-wide td:nth-child(2) { font-weight: 400; color: var(--soft); }
+.rp-section:has(.rp-wide) { overflow-x: auto; }
+
+/* charts */
+.rp-fig { margin: 16px 0 20px; break-inside: avoid; }
+.rp-chart { width: 100%; height: auto; display: block; }
+.rp-chart .g { stroke: rgba(20, 32, 46, 0.08); }
+.rp-chart .b { stroke: rgba(20, 32, 46, 0.45); }
+.rp-chart .t { font: 500 12px var(--ui); fill: var(--faint); }
+.rp-chart .v { font: 700 12.5px var(--ui); fill: var(--ink); }
+.rp-chart .ln { fill: none; stroke: #2a78d6; stroke-width: 2.5; }
+.rp-chart .ln.proj { stroke-dasharray: 6 5; }
+.rp-chart .pt { fill: #2a78d6; stroke: #fff; stroke-width: 1.5; }
+.rp-chart .pt.proj { fill: #fff; stroke: #2a78d6; }
+.rp-fig figcaption { font-size: 12.5px; color: var(--faint); margin-top: 6px; }
+
+/* ── print: A4 pages, the bar gone, each part on its own page ── */
+@page { size: A4; margin: 16mm 14mm 18mm; }
+@media print {
+  html, body { background: #fff; }
+  .rp-bar, .rp-help { display: none !important; }
+  .rp { max-width: none; margin: 0; padding: 0; border: 0; box-shadow: none; font-size: 11pt; }
+  .rp p { font-size: 10.5pt; line-height: 1.55; }
+  .rp-section { break-before: page; margin-top: 0; padding-top: 0; border-top: 0; }
+  .rp h2, .rp h3, .rp h4 { break-after: avoid; }
+  .rp-table thead { display: table-header-group; }
+  .rp-table tr { break-inside: avoid; }
+  .rp-wide { font-size: 8.5pt; }
+  .rp a { color: var(--ink); text-decoration: none; }
+  .rp-toc { background: none; }
+}
+
+/* on a phone the bar scrolls away with the page, so it doesn't cover the report */
+@media (max-width: 640px) {
+  .rp-bar { position: static; }
+  .rp-btn { padding: 8px 13px; font-size: 13px; }
+  .rp-chart .t { font-size: 15px; }
+  .rp-chart .v { font-size: 16px; }
+}

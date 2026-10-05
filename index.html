@@ -73,11 +73,11 @@
     }
 </style>
 <!-- the Population Matters look, home page only; after the block above so it wins -->
-<link rel="stylesheet" href="home_pm.css?v=20261005">
+<link rel="stylesheet" href="home_pm.css?v=20261005-3">
 <!-- the scroll story under the hero -->
-<link rel="stylesheet" href="story.css?v=20261005-2">
+<link rel="stylesheet" href="story.css?v=20261005-3">
 <!-- the state dossier as a scroll story -->
-<link rel="stylesheet" href="dossier.css?v=20261005-3">
+<link rel="stylesheet" href="dossier.css?v=20261005-4">
 </head>
 <body class="pm-home">
 
@@ -142,6 +142,7 @@
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant">Repository</a>
     <a href="learn/index.html" class="btn-elegant">Learn</a>
+    <a href="report.html" class="btn-elegant btn-report"><svg class="click-tip-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5H7.2a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2V8.3z"/><path d="M14 3.5v4.8h4.8"/><path d="M8.6 12.6h6.8M8.6 16h4.6"/></svg>Download report</a>
   </div>
 </header>
 
@@ -318,7 +319,8 @@
           <div class="sc-kicker">Chapter 5 · Where</div>
           <h3 class="sc-title">One state, thirty starting lines</h3>
           <p>The averages hide very different places. Scheduled Tribes make up most of the population in <b data-f="stTop">Mayurbhanj (59%), Malkangiri (58%) and Rayagada (56%)</b>, and almost none of it in <b data-f="stLow">Puri (0.4%)</b>.</p>
-          <p class="sc-src">Census of India 2011 · hover a district, or click to open it</p>
+          <p class="sc-tip">Click any district on the map to open its full profile: population, health, schools and more.</p>
+          <p class="sc-src">Census of India 2011</p>
         </div>
       </div>
 
@@ -349,6 +351,7 @@
           <div class="sc-cta">
             <a href="district-health.html" class="btn-pill solid">Find your district</a>
             <a href="explore.html" class="btn-pill ghost">Take the guided tour</a>
+            <a href="report.html" class="btn-pill ghost">Download the full report</a>
           </div>
         </div>
       </div>
@@ -658,6 +661,7 @@
       Twenty modules on the state's land, governance, people, health, schools and infrastructure, read in seven chapters.
       Scroll through them, or use the index to jump to one.
     </p>
+    <p class="dz-report"><a href="report.html"><svg class="click-tip-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5H7.2a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2V8.3z"/><path d="M14 3.5v4.8h4.8"/><path d="M8.6 12.6h6.8M8.6 16h4.6"/></svg>Get all twenty modules, the story and every district in one printable report</a></p>
   </div>
 
   <nav class="dz-index" aria-label="Analytics index and quick module jump"></nav>
@@ -678,6 +682,7 @@
     Sort and inspect demographic scales across all 30 districts of Odisha. 
     Cards show decadal growth categories computed between Census 2011 and 2021.
   </p>
+  <p class="click-tip"><svg class="click-tip-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.5V5.2a1.6 1.6 0 0 1 3.2 0v5.3"/><path d="M12.2 9.7a1.6 1.6 0 0 1 3.2 0v1.6"/><path d="M15.4 10.6a1.6 1.6 0 0 1 3.2 0v3.6a6.3 6.3 0 0 1-6.3 6.3h-.7a5.8 5.8 0 0 1-4.5-2.2l-2.7-3.4a1.6 1.6 0 0 1 2.5-2L9 15"/></svg>Click any district card to open its full profile: population, health, schools and more.</p>
 
   <div class="districts-grid" id="leaderboardGrid">
     <!-- Clickable cards loaded dynamically -->
@@ -949,10 +954,10 @@ function startField() {
     document.querySelectorAll('.policy-item').forEach(item => policyObs.observe(item));
 
 </script>
-<script src="icons.js?v=20261005"></script>
-<script src="story.js?v=20261005-2"></script>
-<script src="dossier.js?v=20261005-3"></script>
-<script src="chatbot.js?v=20260930-2"></script>
+<script src="icons.js?v=20261005-2"></script>
+<script src="story.js?v=20261005-3"></script>
+<script src="dossier.js?v=20261005-4"></script>
+<script src="chatbot.js?v=20261005"></script>
 <script src="chart-download.js?v=20260928-2" defer></script>
 </body>
 </html>

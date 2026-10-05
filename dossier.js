@@ -297,8 +297,12 @@
       var proj = d3.geoMercator().fitExtent([[60, 40], [540, 420]], x.geo);
       var path = d3.geoPath(proj);
       x.geo.features.forEach(function (f, i) {
-        var p = svgEl('path', { d: path(f), pathLength: 1, class: 'dz-draw' });
+        var name = f.properties.Dist_Name;
+        var p = svgEl('path', { d: path(f), pathLength: 1, class: 'dz-draw', 'data-tip': name + ' · click to open its profile' });
         p.style.setProperty('--d', (i * 35) + 'ms');
+        p.addEventListener('click', function () {
+          window.location.href = 'district.html?id=' + encodeURIComponent(name);
+        });
         svg.appendChild(p);
       });
       [['Jharkhand', 250, 26, 'middle'], ['West Bengal', 520, 40, 'end'], ['Chhattisgarh', 18, 200, 'start'],
@@ -307,6 +311,9 @@
         t.textContent = l[0];
         svg.appendChild(t);
       });
+      var hint = box.appendChild(el('p', 'dz-hint dz-click'));
+      hint.appendChild(icon('pointer'));
+      hint.appendChild(document.createTextNode('Click any district to open its full profile.'));
       var ts = tiles(box), s3 = x.byNum[3] && x.byNum[3].table_data || {};
       if (s3.area_sq_km) tile(ts, s3.area_sq_km, 'square kilometres');
       var coast = String(x.slide.text_content || '').match(/~?\s*([\d,]+)\s*km coastline/);
@@ -517,9 +524,10 @@
      BUILD
      ═════════════════════════════════════════════════════════════════ */
   var sec = typeof document !== 'undefined' && document.getElementById('dashboard');
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { splitText: splitText, popFacts: popFacts, landCats: landCats, LEADS: LEADS, CHAPTERS: CHAPTERS, num: num };
-  }
+  var API = { splitText: splitText, popFacts: popFacts, landCats: landCats, LEADS: LEADS, CHAPTERS: CHAPTERS, num: num };
+  if (typeof module !== 'undefined' && module.exports) module.exports = API;
+  /* the same, for the printable report (report.js) */
+  if (typeof window !== 'undefined') window.SoochanaDossier = API;
   if (!sec || !window.d3 || typeof DataLoader === 'undefined') return;
 
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
