@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Total Fertility Rate · Soochana Learn</title>
+<meta name="description" content="What Odisha's Total Fertility Rate of 1.8 means, how it is built from age-specific birth rates, why 2.1 is replacement level, and where each district's fertility is heading to 2036.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20261005">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  .fr-narr { min-height: 3.2em; margin: 8px 0 4px; padding: 10px 14px; border-radius: 10px; background: var(--ln-soft); font-size: 15px; line-height: 1.5; color: var(--ink-heading); }
+  .fr-card { background: var(--ln-card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .fr-card h3 { margin: 0 0 4px; font-size: 17px; color: var(--ink-heading); }
+  .fr-card p { margin: 0 0 8px; font-size: 14.5px; line-height: 1.5; color: var(--ink-body); }
+  .fr-card .ln-waffle { max-width: 230px; margin: 10px 0; }
+  .fr-big { font-size: 26px; font-weight: 600; color: var(--ink-heading); font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .fr-big small { font-size: 13px; font-weight: 500; color: var(--ink-subtle); }
+  .fr-vs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+  .fr-vs .fr-card { background: var(--ln-soft); border: 0; }
+  .fr-vs .fr-card p:last-child { margin-bottom: 0; }
+  @media (max-width: 860px) { .fr-vs { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M3</div>
+    <h2 class="ln-title">Total Fertility Rate <em>(TFR)</em></h2>
+    <p class="ln-dek">Odisha's TFR of 1.8 means a woman would have about 1.8 children in her life if today's birth rates held.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: NFHS-5 (2019–21), DIU fertility projections (Bayesian approach), SRS</div>
+  </section>
+
+  <section class="ln-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gist1" viewBox="0 0 240 180" role="img" aria-label="Seven bars, one for each age group of women from 15 to 49. The bars are tallest for women in their twenties."></svg></div>
+          <figcaption><b><span class="ln-gist-n">1</span>Count babies by mother's age</b>For each age group, count babies born last year per 1,000 women of that age.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gist2" viewBox="0 0 240 180" role="img" aria-label="The seven age bars stacked into one column, as if one woman lived through every age."></svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Give them all to one woman</b>Imagine one woman living through every age, 15 to 49. Add up her babies at each age.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gist3" viewBox="0 0 240 180" role="img" aria-label="The total is 1.8 children per woman, shown as one full child and most of a second."></svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>The total is the TFR</b>Her total is the average number of children per woman. For Odisha it is 1.8.</figcaption>
+        </figure>
+      </div>
+      <p class="ln-gist-sum">TFR adds up this year's birth rates at every age, as if one woman lived through them all.</p>
+      <dl class="ln-words">
+        <div><dt>TFR</dt><dd>Average children a woman would have at today's birth rates.</dd></div>
+        <div><dt>Age-specific fertility rate</dt><dd>Babies born in a year per 1,000 women of one age group.</dd></div>
+        <div><dt>Replacement level (2.1)</dt><dd>The TFR at which each generation just replaces the one before.</dd></div>
+        <div><dt>Projection</dt><dd>A careful estimate of future years, if recent trends continue.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <div class="ln-prose">
+    <p>You will often read that "Odisha's TFR is 1.8". It sounds like a count of children. It is really a summary of <strong>this year's</strong> birth rates. This page shows how that one number is built, and what it can and cannot tell you.</p>
+    <div class="ln-seeit">Where you see this on Soochana: <a href="../odisha.html">Odisha dashboard</a><a href="../district.html">District pages</a><a href="../district-health.html">District health</a></div>
+
+    <h2>One imaginary woman</h2>
+    <p>Women of different ages have babies at different rates. Women aged 20–24 have the most. Very few women over 40 have a baby in any year.</p>
+    <p>Each bar below is one age group. Its height is the <strong>age-specific fertility rate</strong>: babies born in one year for every 1,000 women of that age.</p>
+    <p>Now imagine one woman who lives from 15 to 49 and has babies at exactly these rates. Press the button and follow her.</p>
+  </div>
+
+  <div class="ln-wide">
+    <figure class="ln-figure">
+      <p class="ln-figure-t">Following one imaginary woman from age 15 to 49</p>
+      <p class="ln-figure-s">Bar height: babies born in a year per 1,000 women of that age. The bar fills as she lives through it.</p>
+      <div class="ln-controls">
+        <button class="ln-btn" id="walkBtn" type="button">Walk through her life</button>
+        <label>Her age <input type="range" id="ageSlider" min="15" max="50" step="1" value="15" aria-label="Her age, 15 to 50"><output id="ageOut">15</output></label>
+      </div>
+      <svg id="womanSvg" role="img" aria-label="Bar chart of births per 1,000 women in seven age groups, with a marker for the imaginary woman's age and a running total of her children"></svg>
+      <p class="fr-narr" id="womanNarr" aria-live="polite"></p>
+      <div class="ln-stats" id="womanStats"></div>
+      <div class="ln-source">Illustrative age pattern, scaled to Odisha's TFR of 1.8 (NFHS-5). The shape is typical of Indian states. It is not Odisha's measured age pattern.</div>
+    </figure>
+  </div>
+
+  <div class="ln-prose">
+    <h3>Why multiply by 5?</h3>
+    <p>Each rate is for <em>one year</em> of life. But each age group covers <em>five</em> years. Our woman spends five years aged 20–24, so she collects that rate five times.</p>
+    <p>So we add up the seven rates and multiply by 5:</p>
+    <div class="ln-recipe" aria-label="TFR recipe">
+      <span class="ln-recipe-box"><b data-v="sumRates"></b><small>babies per 1,000 women,<br>seven groups added</small></span>
+      <span class="ln-recipe-op">×</span>
+      <span class="ln-recipe-box"><b>5</b><small>years in each group</small></span>
+      <span class="ln-recipe-op">÷</span>
+      <span class="ln-recipe-box"><b>1,000</b><small>to get "per woman"</small></span>
+      <span class="ln-recipe-op">=</span>
+      <span class="ln-recipe-box is-result"><b data-v="tfrCalc"></b><small>TFR, children per woman</small></span>
+    </div>
+    <p>No real woman is followed for 35 years. All the rates come from <strong>one year</strong> of births. That is why TFR responds quickly when birth patterns change.</p>
+
+    <h2>Why 2.1?</h2>
+    <p>Every child has two parents. If, on average, each woman has two children who grow up, the next generation is the same size as this one. The population then neither grows nor shrinks in the long run.</p>
+    <p>The extra 0.1 does two jobs. Some children die before they grow up. And slightly more boys than girls are born, so a few more births are needed to replace each mother. That gives the <strong>replacement level of 2.1</strong>.</p>
+  </div>
+
+  <div class="ln-wide">
+    <figure class="ln-figure">
+      <p class="ln-figure-t">Two parents, replaced by about 2.1 births</p>
+      <p class="ln-figure-s">Illustration, not real data.</p>
+      <svg id="replSvg" role="img" aria-label="Two parents on the left, an arrow, and two children plus a small extra one tenth on the right"></svg>
+    </figure>
+  </div>
+
+  <div class="ln-prose">
+    <p>Odisha's TFR of 1.8 is <strong>below</strong> replacement. Most districts are below it too. But not all. The chart shows each district's TFR in 2020.</p>
+  </div>
+
+  <div class="ln-wide">
+    <figure class="ln-figure">
+      <p class="ln-figure-t">TFR in Odisha's 30 districts, 2020</p>
+      <p class="ln-figure-s">Each dot is one district, highest at the top. Dots to the right of the dashed line are above replacement level. Hover for the value.</p>
+      <div class="ln-legend">
+        <span><i style="background:var(--ln-test)"></i>Above 2.1</span>
+        <span><i style="background:var(--ln-train)"></i>At or below 2.1</span>
+        <span><i class="line" style="background:var(--ln-test)"></i>Replacement level 2.1</span>
+      </div>
+      <svg id="distSvg" role="img" aria-label="Dot chart of the Total Fertility Rate in each of Odisha's 30 districts in 2020, with a line at the replacement level of 2.1"></svg>
+      <div class="ln-source">District TFR for 2020, computed from NFHS-5 (2019–21) district data by DIU · Odisha state TFR 1.8: NFHS-5</div>
+    </figure>
+  </div>
+
+  <div class="ln-prose">
+    <p id="distText"></p>
+
+    <h2>Where fertility is heading</h2>
+    <p>DIU has projected every district's TFR up to 2036. A <strong>projection</strong> is not a promise. It asks: if recent trends continue, where will this number be?</p>
+    <p>The projections use a Bayesian approach. In plain words, each district's own trend is combined with what happened in places that went through the same change earlier. This keeps the lines sensible even where data are thin.</p>
+    <p>Pick a district. Its line is in colour. The other 29 districts are the faint grey lines.</p>
+  </div>
+
+  <div class="ln-wide">
+    <figure class="ln-figure">
+      <div class="ln-controls">
+        <label>District <select id="distPick" aria-label="Choose a district"></select></label>
+      </div>
+      <p class="ln-figure-t" id="trendTitle">TFR, 2020 to 2036</p>
+      <p class="ln-figure-s">The 2020 dot is computed from NFHS-5. The dashed part, 2021 to 2036, is projected. Click a grey line to pick that district.</p>
+      <div class="ln-legend">
+        <span><i class="line" style="background:var(--ln-train)"></i>Chosen district</span>
+        <span><i class="line" style="background:rgba(15,23,42,.25)"></i>Other districts</span>
+        <span><i class="line" style="background:var(--ln-test)"></i>Replacement level 2.1</span>
+      </div>
+      <svg id="trendSvg" role="img" aria-label="Line chart of the chosen district's TFR from 2020 to 2036 against the replacement level"></svg>
+      <div class="ln-stats" id="trendStats"></div>
+      <div class="ln-source">2020: computed from NFHS-5 · 2021–2036: DIU projection (Bayesian approach)</div>
+    </figure>
+  </div>
+
+  <div class="ln-prose">
+    <p id="trendText"></p>
+
+    <h2>TFR is not the birth rate</h2>
+    <p>Odisha's <strong>birth rate</strong> is 15.8. Its TFR is 1.8. They measure different things.</p>
+    <div class="fr-vs">
+      <div class="fr-card">
+        <h3>Birth rate</h3>
+        <p>Babies born in a year for every 1,000 people. Everyone counts: children, men, old people.</p>
+        <p>So it depends on <strong>how many young women</strong> live in the place.</p>
+      </div>
+      <div class="fr-card">
+        <h3>TFR</h3>
+        <p>Children per woman, built from the rates at each age.</p>
+        <p>It does <strong>not</strong> depend on how many young women there are. That makes it fair for comparing places.</p>
+      </div>
+    </div>
+    <p>Here are two towns with 100 people each. In both, women have children at exactly the same rates, so both have a TFR of 1.8. Only the age mix differs.</p>
+  </div>
+
+  <div class="ln-wide">
+    <figure class="ln-figure">
+      <p class="ln-figure-t">Same TFR, different birth rate</p>
+      <p class="ln-figure-s">Each square is one person. Violet squares are women aged 15–49. Illustration, not real data.</p>
+      <div class="ln-grid2" id="towns"></div>
+    </figure>
+  </div>
+
+  <div class="ln-prose">
+    <p>Town A has twice as many young women, so twice as many babies, and twice the birth rate. Yet a woman in either town has the same number of children on average. When you compare districts, TFR tells you about women's choices and chances. The birth rate mixes that up with the age structure.</p>
+
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>TFR is the average number of children per woman, if this year's birth rates at each age stayed the same for her whole life.</li>
+      <li>It is built by adding the seven age-group rates and multiplying by 5, because each group covers five years.</li>
+      <li>2.1 is replacement level. Odisha (1.8) and most districts are below it. A few southern districts are still above.</li>
+      <li>TFR is per woman. The birth rate is per 1,000 people, so it also depends on how many young women there are.</li>
+    </ol></div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p><b>Definition.</b> TFR = 5 × Σ ASFR<sub>a</sub>, summed over the seven five-year groups 15–19 … 45–49, where ASFR<sub>a</sub> is births in a year to women in group <i>a</i> divided by the number of women in that group. It is a period measure: it describes one year (or survey window), not the completed family size of any real group of women.</p>
+    <p><b>The age pattern.</b> The portal does not hold Odisha's own age-specific rates, so the "imaginary woman" chart uses a typical Indian age shape (peak at 20–24) rescaled so that 5 × the sum equals Odisha's TFR of 1.8 (NFHS-5, 2019–21). Treat the bar heights as an illustration.</p>
+    <p><b>Districts.</b> District TFR for 2020 is computed from NFHS-5 district data; 2021–2036 values are DIU projections using a Bayesian approach (datasets/district_fertility_trends.json). The file's NFHS-4 column is not used, because it is known to be wrong. Projections assume recent trends continue and carry uncertainty that grows with time; the lines show central values only.</p>
+    <p><b>Birth rate.</b> Odisha's crude birth rate of 15.8 per 1,000 is from the SRS 2024 report. The two-town picture assumes each woman aged 15–49 has the same chance of a birth in every year, which is a simplification used only to show why the age mix matters.</p>
+    <details class="ln-details">
+      <summary>Show the district table</summary>
+      <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
+    </details>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="rates-and-ratios.html"><small>Previous · M2</small><b>Rates and ratios</b></a>
+    <a href="life-expectancy.html"><small>Next · M4</small><b>Life Expectancy</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, SRS, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var C = { train: SL.color('train') || '#00899e', val: SL.color('val') || '#7b52c7', test: SL.color('test') || '#d4460f', ink: '#0f172a', ghost: 'rgba(15,23,42,.14)', soft: 'rgba(15,23,42,.06)' };
+  var tip = SL.tooltip();
+  var TFR = 1.8, REPL = 2.1;
+  var NARROW = document.querySelector('.ln-wide').clientWidth < 600;
+  var uid = 0;
+
+  /* Illustrative age pattern: a typical Indian shape (peak at 20–24),
+     rescaled so that 5 × the sum of the rates equals Odisha's TFR of 1.8. */
+  var GROUPS = ['15–19', '20–24', '25–29', '30–34', '35–39', '40–44', '45–49'];
+  var SHAPE = [43, 136, 113, 60, 22, 6, 2];
+  var K = TFR / (5 * SL.sum(SHAPE) / 1000);
+  var PER1000 = SHAPE.map(function (v) { return Math.round(v * K); });   // shown on the bars
+  var RATES = SHAPE.map(function (v) { return v * K / 1000; });          // babies per woman per year
+  var sum1000 = SL.sum(PER1000);
+
+  function cum(age) {
+    var s = 0;
+    RATES.forEach(function (r, g) { s += r * Math.max(0, Math.min(5, age - (15 + 5 * g))); });
+    return s;
+  }
+
+  /* ── small drawing helpers ─────────────────────── */
+  /* A child icon standing on (x, y), about s tall. */
+  function child(g, x, y, s, fill, stroke) {
+    var c = g.append('g');
+    c.append('circle').attr('cx', x).attr('cy', y - s * 0.8).attr('r', s * 0.18)
+      .style('fill', fill || 'none').style('stroke', stroke || 'none').style('stroke-width', stroke ? 1.5 : 0);
+    c.append('rect').attr('x', x - s * 0.24).attr('y', y - s * 0.56).attr('width', s * 0.48).attr('height', s * 0.56).attr('rx', s * 0.16)
+      .style('fill', fill || 'none').style('stroke', stroke || 'none').style('stroke-width', stroke ? 1.5 : 0);
+    return c;
+  }
+  /* A child icon filled from the bottom by fraction fr (0–1); returns the clip rect. */
+  function childFill(g, x, y, s, color) {
+    var id = 'frClip' + (++uid);
+    var clip = g.append('clipPath').attr('id', id).append('rect')
+      .attr('x', x - s / 2).attr('width', s).attr('y', y).attr('height', 0);
+    child(g, x, y, s, '#ffffff', 'rgba(15,23,42,.35)');
+    child(g, x, y, s, color).attr('clip-path', 'url(#' + id + ')');
+    return { set: function (fr, t) {
+      fr = Math.max(0, Math.min(1, fr));
+      var r = t ? clip.transition(t) : clip;
+      r.attr('y', y - s * fr).attr('height', s * fr);
+    } };
+  }
+  /* A woman icon standing on (x, y), about s tall. */
+  function woman(g, x, y, s, color) {
+    var w = g.append('g');
+    w.append('circle').attr('cx', x).attr('cy', y - s * 0.84).attr('r', s * 0.14).style('fill', color);
+    w.append('polygon').attr('points', [[x, y - s * 0.68], [x - s * 0.28, y], [x + s * 0.28, y]].map(function (p) { return p.join(','); }).join(' ')).style('fill', color);
+    return w;
+  }
+
+  /* ── the idea in one picture ───────────────────── */
+  (function gist() {
+    var g1 = d3.select('#gist1'), base = 140, top = 34;
+    var gy = d3.scaleLinear([0, d3.max(PER1000)], [base, top]);
+    var bw = 26, x0 = 22;
+    g1.append('text').attr('x', 120).attr('y', 20).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('Babies per 1,000 women');
+    PER1000.forEach(function (v, i) {
+      var x = x0 + i * (bw + 3);
+      g1.append('rect').attr('x', x).attr('y', gy(v)).attr('width', bw).attr('height', base - gy(v)).attr('rx', 3).style('fill', C.train);
+      g1.append('text').attr('x', x + bw / 2).attr('y', base + 15).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text(15 + 5 * i);
+    });
+    g1.append('line').attr('x1', 18).attr('x2', 226).attr('y1', base).attr('y2', base).style('stroke', '#94a3b8');
+    g1.append('text').attr('x', 120).attr('y', 172).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('Age of mother');
+
+    var g2 = d3.select('#gist2'), h = 118, b2 = 156, colX = 132, colW = 38;
+    var segH = RATES.map(function (r) { return r * 5 / TFR * h; });
+    PER1000.forEach(function (v, i) {
+      var x = 14 + i * 13, hh = (v / d3.max(PER1000)) * 50;
+      g2.append('rect').attr('x', x).attr('y', b2 - hh).attr('width', 10).attr('height', hh).attr('rx', 2).style('fill', C.train).style('opacity', 0.35);
+    });
+    g2.append('text').attr('x', 60).attr('y', b2 + 15).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('7 age groups');
+    g2.append('text').attr('x', 112).attr('y', 104).attr('text-anchor', 'middle').style('font-size', '18px').style('fill', '#475569').text('→');
+    g2.append('text').attr('x', 112).attr('y', 124).attr('text-anchor', 'middle').style('font-size', '12px').style('font-weight', 600).style('fill', C.ink).text('×5');
+    var yy = b2;
+    segH.forEach(function (sh, i) {
+      yy -= sh;
+      g2.append('rect').attr('x', colX).attr('y', yy).attr('width', colW).attr('height', Math.max(0.5, sh - 1)).style('fill', C.train).style('opacity', i % 2 ? 0.6 : 1);
+    });
+    g2.append('text').attr('x', colX + colW / 2).attr('y', b2 - h - 8).attr('text-anchor', 'middle').style('font-size', '12px').style('font-weight', 600).style('fill', C.ink).text('added up');
+    woman(g2, 204, b2, 56, C.val);
+    g2.append('text').attr('x', 204).attr('y', b2 + 15).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('one woman');
+
+    var g3 = d3.select('#gist3');
+    g3.append('text').attr('x', 120).attr('y', 70).attr('text-anchor', 'middle').style('font-size', '46px').style('font-weight', 600).style('fill', C.ink).text('1.8');
+    g3.append('text').attr('x', 120).attr('y', 92).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('children per woman');
+    childFill(g3, 96, 166, 60, C.train).set(1);
+    childFill(g3, 144, 166, 60, C.train).set(0.8);
+  })();
+
+  /* ── one imaginary woman ───────────────────────── */
+  var mW = NARROW ? 440 : 760, mH = NARROW ? 470 : 350;
+  var B = NARROW ? { l: 12, r: 428, t: 62, b: 270 } : { l: 16, r: 500, t: 62, b: 300 };
+  var ax = d3.scaleLinear([15, 50], [B.l, B.r]);
+  var ay = d3.scaleLinear([0, 140], [B.b, B.t + 18]);
+  var msvg = d3.select('#womanSvg').attr('viewBox', [0, 0, mW, mH]);
+  var bandW = ax(20) - ax(15), pad = NARROW ? 3 : 5;
+  var bars = PER1000.map(function (v, g) {
+    var x = ax(15 + 5 * g) + pad, w = bandW - 2 * pad, y = ay(v);
+    msvg.append('rect').attr('x', x).attr('y', y).attr('width', w).attr('height', B.b - y).attr('rx', 4).style('fill', C.soft);
+    var fill = msvg.append('rect').attr('x', x).attr('y', y).attr('width', 0).attr('height', B.b - y).attr('rx', 4).style('fill', C.train);
+    msvg.append('text').attr('class', 'ln-dlabel').attr('x', x + w / 2).attr('y', y - 6).attr('text-anchor', 'middle').text(v);
+    msvg.append('text').attr('class', 'ln-axis-label').attr('x', x + w / 2).attr('y', B.b + 18).attr('text-anchor', 'middle').text(GROUPS[g]);
+    return { fill: fill, w: w };
+  });
+  msvg.append('line').attr('x1', B.l).attr('x2', B.r).attr('y1', B.b).attr('y2', B.b).style('stroke', 'var(--ln-axis)');
+  msvg.append('text').attr('class', 'ln-axis-label').attr('x', B.r).attr('y', B.b + 40).attr('text-anchor', 'end').text('Age of mother (years) →');
+  var marker = msvg.append('g');
+  marker.append('line').attr('x1', 0).attr('x2', 0).attr('y1', B.t + 2).attr('y2', B.b).style('stroke', C.ink).style('stroke-dasharray', '3 4');
+  woman(marker, 0, B.t, 34, C.val);
+  var ageLab = marker.append('text').attr('class', 'ln-dlabel').attr('x', 0).attr('y', B.t - 38).attr('text-anchor', 'middle');
+
+  /* running total */
+  var T = NARROW ? { x: 110, y: 380, icons: [[290, 448], [360, 448]], s: 74 } : { x: 630, y: 120, icons: [[592, 290], [668, 290]], s: 84 };
+  msvg.append('text').attr('class', 'ln-axis-label').attr('x', T.x).attr('y', T.y - 50).attr('text-anchor', 'middle').text('Her children so far');
+  var totalTxt = msvg.append('text').attr('x', T.x).attr('y', T.y).attr('text-anchor', 'middle').style('font-size', '44px').style('font-weight', 600).style('fill', C.ink).style('font-variant-numeric', 'tabular-nums');
+  msvg.append('text').attr('class', 'ln-axis-label').attr('x', T.x).attr('y', T.y + 22).attr('text-anchor', 'middle').text('babies, on average');
+  var icons = T.icons.map(function (p) { return childFill(msvg, p[0], p[1], T.s, C.train); });
+
+  var slider = document.getElementById('ageSlider');
+  function drawWoman(age) {
+    var c = cum(age);
+    bars.forEach(function (b, g) {
+      var fr = Math.max(0, Math.min(1, (age - (15 + 5 * g)) / 5));
+      b.fill.attr('width', b.w * fr);
+    });
+    marker.attr('transform', 'translate(' + ax(Math.min(age, 49.999)) + ',0)');
+    ageLab.text('age ' + Math.floor(Math.min(age, 50)));
+    totalTxt.text(SL.fmt(c, 2));
+    icons.forEach(function (ic, i) { ic.set(c - i); });
+    document.getElementById('ageOut').textContent = Math.floor(age);
+    var g = Math.min(6, Math.floor((age - 15) / 5)), narr;
+    if (age <= 15) narr = 'She starts at 15 with no children. Press the button or drag the slider.';
+    else if (age >= 50) narr = 'She has reached 50. Her total is ' + SL.fmt(c, 1) + ' children. That is Odisha\'s TFR.';
+    else narr = 'Ages ' + GROUPS[g] + ': each year about ' + PER1000[g] + ' in every 1,000 women this age have a baby. Over these five years she adds ' + SL.fmt(PER1000[g] * 5 / 1000, 2) + '.';
+    document.getElementById('womanNarr').textContent = narr;
+    var gg = age >= 50 ? 6 : g;
+    document.getElementById('womanStats').innerHTML =
+      '<div class="ln-stat"><div class="ln-stat-v">' + Math.floor(age) + '</div><div class="ln-stat-l">Her age</div></div>' +
+      '<div class="ln-stat"><div class="ln-stat-v">+' + SL.fmt(PER1000[gg] * 5 / 1000, 2) + '</div><div class="ln-stat-l">Added by ages ' + GROUPS[gg] + ' (rate × 5 years)</div></div>' +
+      '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(c, 2) + '</div><div class="ln-stat-l">Running total</div></div>';
+  }
+  var timer = null, btn = document.getElementById('walkBtn');
+  function stop() { if (timer) { timer.stop(); timer = null; } btn.textContent = 'Walk through her life'; }
+  btn.addEventListener('click', function () {
+    if (timer) { stop(); return; }
+    var start = +slider.value >= 50 ? 15 : +slider.value, total = SL.dur(8000) * (50 - start) / 35;
+    if (!total) { slider.value = 50; drawWoman(50); return; }
+    btn.textContent = 'Pause';
+    timer = d3.timer(function (el) {
+      var a = Math.min(50, start + (el / total) * (50 - start));
+      slider.value = Math.floor(a);
+      drawWoman(a);
+      if (a >= 50) stop();
+    });
+  });
+  slider.addEventListener('input', function () { stop(); drawWoman(+slider.value); });
+  drawWoman(15);
+
+  /* recipe slots */
+  var V = { sumRates: SL.fmt(sum1000), tfrCalc: SL.fmt(sum1000 * 5 / 1000, 1) };
+  document.querySelectorAll('[data-v]').forEach(function (el) { el.textContent = V[el.dataset.v]; });
+
+  /* ── why 2.1: two parents → 2.1 births ─────────── */
+  (function repl() {
+    var w = NARROW ? 440 : 760, h = NARROW ? 230 : 190;
+    var s = d3.select('#replSvg').attr('viewBox', [0, 0, w, h]);
+    var cx1 = NARROW ? 100 : 190, cx2 = NARROW ? 320 : 520, base = NARROW ? 150 : 130;
+    woman(s, cx1 - 28, base, 90, C.val);
+    var man = s.append('g');
+    man.append('circle').attr('cx', cx1 + 28).attr('cy', base - 78).attr('r', 13).style('fill', C.ink);
+    man.append('rect').attr('x', cx1 + 12).attr('y', base - 62).attr('width', 32).attr('height', 62).attr('rx', 9).style('fill', C.ink);
+    s.append('text').attr('class', 'ln-axis-label').attr('x', cx1).attr('y', base + 22).attr('text-anchor', 'middle').text('2 parents');
+    s.append('text').attr('x', (cx1 + cx2) / 2).attr('y', base - 34).attr('text-anchor', 'middle').style('font-size', '30px').style('fill', '#64748b').text('→');
+    child(s, cx2 - 50, base, 66, C.train);
+    child(s, cx2, base, 66, C.train);
+    var part = childFill(s, cx2 + 46, base, 66, C.test); part.set(0.12);
+    s.append('text').attr('class', 'ln-axis-label').attr('x', cx2 - 25).attr('y', base + 22).attr('text-anchor', 'middle').text('2 children replace them');
+    s.append('text').attr('class', 'ln-dlabel').attr('x', cx2 + 46).attr('y', base - 74).attr('text-anchor', 'middle').style('fill', C.test).text('+0.1');
+    var note = NARROW ? ['extra 0.1: for children who die young', 'and because slightly more boys are born'] : ['extra 0.1: for children who die young and', 'because slightly more boys than girls are born'];
+    note.forEach(function (t, i) {
+      s.append('text').attr('class', 'ln-axis-label').attr('x', NARROW ? w / 2 : cx2 + 20).attr('y', base + 44 + i * 18).attr('text-anchor', 'middle').text(t);
+    });
+  })();
+
+  /* ── district data ─────────────────────────────── */
+  fetch('../datasets/district_fertility_trends.json').then(function (r) {
+    if (!r.ok) throw new Error('district_fertility_trends.json: ' + r.status);
+    return r.json();
+  }).then(function (raw) {
+    var YEARS = d3.range(2020, 2037);
+    var D = Object.keys(raw).map(function (name) {
+      var v = raw[name];
+      return { name: name, tfr: YEARS.map(function (y) { return +v[String(y)]; }) };
+    }).filter(function (d) { return d.tfr.every(function (x) { return !isNaN(x); }); });
+
+    /* dot chart, 2020 */
+    var sorted = D.slice().sort(function (a, b) { return b.tfr[0] - a.tfr[0]; });
+    var rowH = NARROW ? 23 : 20, dM = NARROW ? { t: 34, r: 20, b: 44, l: 124 } : { t: 34, r: 150, b: 44, l: 130 };
+    var dW = NARROW ? 440 : 760, dH = dM.t + rowH * sorted.length + dM.b;
+    var ds = d3.select('#distSvg').attr('viewBox', [0, 0, dW, dH]);
+    var dx = d3.scaleLinear([1.0, 2.8], [dM.l, dW - dM.r]);
+    var dy = function (i) { return dM.t + rowH * (i + 0.5); };
+    ds.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(0,' + (dH - dM.b) + ')')
+      .call(d3.axisBottom(dx).ticks(NARROW ? 5 : 9).tickSize(-(dH - dM.b - dM.t + 6)).tickFormat(''));
+    ds.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (dH - dM.b) + ')').call(d3.axisBottom(dx).ticks(NARROW ? 5 : 9).tickFormat(d3.format('.1f')));
+    ds.append('text').attr('class', 'ln-axis-label').attr('x', dW - dM.r).attr('y', dH - 8).attr('text-anchor', 'end').text('Children per woman (TFR) →');
+    [[REPL, C.test, 'Replacement 2.1', '6 4', 'start', 4], [TFR, '#64748b', 'Odisha 1.8', '2 4', 'end', -4]].forEach(function (L) {
+      ds.append('line').attr('x1', dx(L[0])).attr('x2', dx(L[0])).attr('y1', dM.t - 8).attr('y2', dH - dM.b).style('stroke', L[1]).style('stroke-width', 1.5).style('stroke-dasharray', L[3]);
+      ds.append('text').attr('class', 'ln-dlabel').attr('x', dx(L[0]) + L[5]).attr('y', dM.t - 14).attr('text-anchor', L[4]).style('fill', L[1]).text(L[2]);
+    });
+    var hi = sorted[0], lo = sorted[sorted.length - 1];
+    var rows = ds.append('g').selectAll('g').data(sorted).join('g').attr('transform', function (d, i) { return 'translate(0,' + dy(i) + ')'; });
+    rows.append('text').attr('class', 'ln-axis-label').attr('x', dM.l - 10).attr('dy', '0.35em').attr('text-anchor', 'end')
+      .style('font-weight', function (d) { return d === hi || d === lo ? 700 : null; })
+      .style('fill', function (d) { return d === hi || d === lo ? C.ink : null; })
+      .text(function (d) { return d.name; });
+    rows.append('line').attr('x1', dM.l).attr('x2', function (d) { return dx(d.tfr[0]); }).style('stroke', 'rgba(15,23,42,.08)').style('stroke-width', 1);
+    rows.append('circle').attr('class', 'ln-dot').attr('r', NARROW ? 7 : 6).attr('cx', function (d) { return dx(d.tfr[0]); })
+      .attr('fill', function (d) { return d.tfr[0] > REPL ? C.test : C.train; })
+      .on('pointerenter', function (e, d) { d3.select(this).classed('is-hover', true); tip.show(e, '<b>' + d.name + '</b><br>TFR ' + SL.fmt(d.tfr[0], 2) + ' (2020)<br><span class="muted">' + (d.tfr[0] > REPL ? 'Above' : 'Below') + ' replacement level</span>'); })
+      .on('pointermove', function (e, d) { tip.show(e, '<b>' + d.name + '</b><br>TFR ' + SL.fmt(d.tfr[0], 2) + ' (2020)'); })
+      .on('pointerleave', function () { d3.select(this).classed('is-hover', false); tip.hide(); });
+    rows.filter(function (d) { return d === hi || d === lo; }).append('text').attr('class', 'ln-dlabel')
+      .attr('x', function (d) { return dx(d.tfr[0]) + (d === hi && NARROW ? -12 : 12); }).attr('dy', '0.35em')
+      .attr('text-anchor', function (d) { return d === hi && NARROW ? 'end' : 'start'; })
+      .text(function (d) { return SL.fmt(d.tfr[0], 2) + (d === hi ? ' highest' : ' lowest'); });
+
+    var above = sorted.filter(function (d) { return d.tfr[0] > REPL; });
+    document.getElementById('distText').innerHTML = '<b>' + above.length + ' of ' + D.length + '</b> districts were above replacement level in 2020: ' +
+      above.map(function (d) { return d.name; }).join(', ').replace(/, ([^,]*)$/, ' and $1') + '. All are in southern Odisha, and all have large tribal populations. ' +
+      '<b>' + hi.name + '</b> had the highest TFR (' + SL.fmt(hi.tfr[0], 2) + '). <b>' + lo.name + '</b> had the lowest (' + SL.fmt(lo.tfr[0], 2) + '), so a woman there would have about one child fewer than in ' + hi.name + '.';
+
+    /* trend chart */
+    var tW = NARROW ? 440 : 900, tH = NARROW ? 360 : 380, tM = { t: 20, r: NARROW ? 46 : 70, b: 40, l: 40 };
+    var ts = d3.select('#trendSvg').attr('viewBox', [0, 0, tW, tH]);
+    var tx = d3.scaleLinear([2020, 2036], [tM.l, tW - tM.r]), ty = d3.scaleLinear([0.8, 2.8], [tH - tM.b, tM.t]);
+    ts.append('rect').attr('x', tx(2020.5)).attr('y', tM.t).attr('width', tx(2036) - tx(2020.5)).attr('height', tH - tM.b - tM.t).style('fill', 'rgba(15,23,42,.035)');
+    ts.append('text').attr('class', 'ln-axis-label').attr('x', tx(2036) - 6).attr('y', tM.t + 16).attr('text-anchor', 'end').text('Projected →');
+    ts.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + tM.l + ',0)').call(d3.axisLeft(ty).ticks(5).tickSize(-(tW - tM.l - tM.r)).tickFormat(''));
+    ts.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (tH - tM.b) + ')').call(d3.axisBottom(tx).ticks(NARROW ? 4 : 8).tickFormat(d3.format('d')));
+    ts.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + tM.l + ',0)').call(d3.axisLeft(ty).ticks(5).tickFormat(d3.format('.1f')));
+    ts.append('line').attr('x1', tM.l).attr('x2', tW - tM.r).attr('y1', ty(REPL)).attr('y2', ty(REPL)).style('stroke', C.test).style('stroke-width', 1.5).style('stroke-dasharray', '6 4');
+    ts.append('text').attr('class', 'ln-dlabel').attr('x', tW - tM.r + 4).attr('y', ty(REPL)).attr('dy', '0.35em').style('fill', C.test).text('2.1');
+    var line = d3.line().x(function (v, i) { return tx(YEARS[i]); }).y(function (v) { return ty(v); });
+    var greys = ts.append('g').selectAll('path').data(D).join('path').attr('d', function (d) { return line(d.tfr); })
+      .style('fill', 'none').style('stroke', 'rgba(15,23,42,.13)').style('stroke-width', 1.2);
+    ts.append('g').selectAll('path').data(D).join('path').attr('d', function (d) { return line(d.tfr); })
+      .style('fill', 'none').style('stroke', 'transparent').style('stroke-width', 10).style('cursor', 'pointer')
+      .on('pointerenter', function (e, d) { greys.filter(function (g) { return g === d; }).style('stroke', 'rgba(15,23,42,.45)'); tip.show(e, '<b>' + d.name + '</b><br>' + SL.fmt(d.tfr[0], 2) + ' in 2020 → ' + SL.fmt(d.tfr[16], 2) + ' in 2036<br><span class="muted">Click to pick</span>'); })
+      .on('pointermove', function (e, d) { tip.show(e, '<b>' + d.name + '</b><br>' + SL.fmt(d.tfr[0], 2) + ' in 2020 → ' + SL.fmt(d.tfr[16], 2) + ' in 2036<br><span class="muted">Click to pick</span>'); })
+      .on('pointerleave', function () { greys.style('stroke', 'rgba(15,23,42,.13)'); tip.hide(); })
+      .on('click', function (e, d) { pick.value = d.name; drawTrend(); });
+    var selLine = ts.append('path').style('fill', 'none').style('stroke', C.train).style('stroke-width', 3).style('stroke-dasharray', '7 5').style('stroke-linecap', 'round');
+    var selDot = ts.append('circle').attr('r', 6.5).attr('fill', C.train).style('stroke', '#fff').style('stroke-width', 2);
+    var endDot = ts.append('circle').attr('r', 5).attr('fill', '#fff').style('stroke', C.train).style('stroke-width', 2.5);
+    var lab20 = ts.append('text').attr('class', 'ln-dlabel'), labEnd = ts.append('text').attr('class', 'ln-dlabel').attr('dy', '0.35em');
+    var lab20b = ts.append('text').attr('class', 'ln-dlabel').style('font-weight', 400);
+
+    var pick = document.getElementById('distPick');
+    D.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (d) {
+      var o = document.createElement('option'); o.value = d.name; o.textContent = d.name; pick.appendChild(o);
+    });
+    pick.value = 'Koraput';
+    var below2036 = D.filter(function (d) { return d.tfr[16] <= REPL; }).length;
+
+    var firstDraw = true;
+    function drawTrend() {
+      var d = D.filter(function (x) { return x.name === pick.value; })[0];
+      var t = d3.transition().duration(firstDraw ? 0 : SL.dur(400));
+      firstDraw = false;
+      selLine.transition(t).attr('d', line(d.tfr));
+      selDot.transition(t).attr('cx', tx(2020)).attr('cy', ty(d.tfr[0]));
+      endDot.transition(t).attr('cx', tx(2036)).attr('cy', ty(d.tfr[16]));
+      var up = d.tfr[0] < 2.45;
+      lab20.attr('x', tx(2020) + 10).attr('y', ty(d.tfr[0]) + (up ? -22 : 26)).text('2020: ' + SL.fmt(d.tfr[0], 2));
+      lab20b.attr('x', tx(2020) + 10).attr('y', ty(d.tfr[0]) + (up ? -8 : 40)).text('computed from NFHS-5');
+      labEnd.attr('x', tx(2036) + 8).attr('y', ty(d.tfr[16])).text(SL.fmt(d.tfr[16], 2));
+      document.getElementById('trendTitle').textContent = d.name + ': TFR, 2020 to 2036';
+      var cross = null;
+      if (d.tfr[0] > REPL) for (var i = 1; i < YEARS.length; i++) if (d.tfr[i] <= REPL) { cross = YEARS[i]; break; }
+      var crossTxt = d.tfr[0] <= REPL ? 'Already below in 2020' : cross ? 'Projected in ' + cross : 'Stays above to 2036';
+      document.getElementById('trendStats').innerHTML =
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(d.tfr[0], 2) + '</div><div class="ln-stat-l">TFR in 2020 (from NFHS-5)</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(d.tfr[16], 2) + '</div><div class="ln-stat-l">Projected TFR in 2036</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v" style="font-size:18px">' + crossTxt + '</div><div class="ln-stat-l">Falls below replacement (2.1)</div></div>';
+    }
+    pick.addEventListener('change', drawTrend);
+    drawTrend();
+    var drop = D.slice().sort(function (a, b) { return (b.tfr[0] - b.tfr[16]) - (a.tfr[0] - a.tfr[16]); })[0];
+    var stay = D.filter(function (d) { return d.tfr[16] > REPL; }).map(function (d) { return d.name + ' (' + SL.fmt(d.tfr[16], 2) + ')'; });
+    var falling = D.filter(function (d) { return d.tfr[16] < d.tfr[0]; }).length;
+    document.getElementById('trendText').innerHTML = 'TFR is projected to fall in <b>' + falling + ' of ' + D.length + '</b> districts. By 2036, <b>' + below2036 + ' of ' + D.length + '</b> are projected to be at or below replacement level. ' +
+      'The biggest fall is in <b>' + drop.name + '</b>, from ' + SL.fmt(drop.tfr[0], 2) + ' to ' + SL.fmt(drop.tfr[16], 2) + '. ' +
+      (stay.length ? 'Only ' + stay.join(' and ') + (stay.length > 1 ? ' are' : ' is') + ' projected to stay above 2.1 in 2036. ' : '') +
+      'Projections become less certain the further ahead they go. Read the 2036 values as a likely direction, not an exact figure.';
+
+    /* table */
+    document.getElementById('dataTable').innerHTML = '<thead><tr><th>District</th><th>2020</th><th>2026</th><th>2031</th><th>2036</th></tr></thead><tbody>' +
+      D.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).map(function (d) {
+        return '<tr><td>' + d.name + '</td><td>' + SL.fmt(d.tfr[0], 2) + '</td><td>' + SL.fmt(d.tfr[6], 2) + '</td><td>' + SL.fmt(d.tfr[11], 2) + '</td><td>' + SL.fmt(d.tfr[16], 2) + '</td></tr>';
+      }).join('') + '</tbody>';
+  }).catch(function (err) {
+    console.error(err);
+    document.getElementById('distText').innerHTML = '<span class="ln-callout warn" style="display:block">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</span>';
+  });
+
+  /* ── two towns ─────────────────────────────────── */
+  (function towns() {
+    var perWomanYear = TFR / 35;   /* 35 years of childbearing, 15 to 49 */
+    var T2 = [{ name: 'Town A: many young people', women: 30 }, { name: 'Town B: an older town', women: 15 }];
+    document.getElementById('towns').innerHTML = T2.map(function (t) {
+      var cells = '';
+      for (var i = 0; i < 100; i++) cells += '<i style="background:' + (i < t.women ? C.val : '') + '"></i>';
+      var br = t.women * perWomanYear * 10;
+      return '<div class="fr-card"><h3>' + t.name + '</h3>' +
+        '<div class="ln-waffle" style="grid-template-columns:repeat(10,1fr)" role="img" aria-label="' + t.women + ' of 100 people are women aged 15 to 49">' + cells + '</div>' +
+        '<p>' + t.women + ' of 100 people are women aged 15–49.</p>' +
+        '<div class="ln-stats"><div class="ln-stat"><div class="ln-stat-v">1.8</div><div class="ln-stat-l">TFR (same)</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(br, 1) + '</div><div class="ln-stat-l">Birth rate per 1,000 people</div></div></div></div>';
+    }).join('');
+  })();
+})();
+</script>
+<script src="../chatbot.js?v=20261005"></script>
+</body>
+</html>

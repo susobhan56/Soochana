@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20260928-6">
-<link rel="stylesheet" href="learn.css?v=20260929">
+<link rel="stylesheet" href="learn.css?v=20261005">
 <script src="../ui.js?v=20260925-2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="learn.js?v=20260929"></script>
@@ -39,6 +39,10 @@
   .ln-card .ln-btn { margin-top: 4px; }
   .ln-btn[disabled], .ln-controls input[disabled] { opacity: .45; cursor: default; }
   .nn-play { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  /* "the idea in one picture" panel text */
+  .ln-gist svg text { font-family: var(--font-sans); font-size: 12px; font-weight: 500; fill: #0f172a; }
+  .ln-gist svg .g-b, .ln-gist svg .g-b text { font-weight: 600; }
+  .ln-gist svg .g-s, .ln-gist svg .g-s text { fill: #475569; }
   @media (max-width: 860px) {
     .nn-panels { grid-template-columns: 1fr; gap: 2px; }
     .nn-play { grid-template-columns: 1fr; }
@@ -78,15 +82,95 @@
 
 <main>
   <section class="ln-hero">
-    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · 05</div>
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-ml">Machine learning</span> · 05</div>
     <h2 class="ln-title">Neural <em>Networks</em></h2>
-    <p class="ln-dek">A neural network is a set of small logistic regressions wired together. Here is how the wiring lets it draw curved boundaries, how it learns, and why, with only 30 districts, a bigger network is not a better one.</p>
+    <p class="ln-dek">A neural network links many small number-crunchers, called neurons, so that together they can draw curved lines between groups.</p>
     <div class="ln-byline">By <b>DIU Team</b> · Data: Census 2011 and NFHS-5 · Every number on this page is computed live in your browser</div>
   </section>
 
+  <section class="ln-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="A district card with two facts, women who read and people living in towns, each sent into the network as a number.">
+            <rect x="8" y="30" width="122" height="120" rx="10" style="fill:#fff;stroke:rgba(15,23,42,.14)"/>
+            <text x="20" y="52" class="g-b">A district</text>
+            <text x="20" y="78">Women who read</text>
+            <rect x="20" y="85" width="98" height="9" rx="3" style="fill:rgba(15,23,42,.10)"/>
+            <rect x="20" y="85" width="66" height="9" rx="3" style="fill:#0f172a"/>
+            <text x="20" y="118">Live in towns</text>
+            <rect x="20" y="125" width="98" height="9" rx="3" style="fill:rgba(15,23,42,.10)"/>
+            <rect x="20" y="125" width="22" height="9" rx="3" style="fill:#0f172a"/>
+            <g style="stroke:#64748b;stroke-width:1.5">
+              <line x1="134" y1="90" x2="180" y2="70"/><line x1="134" y1="130" x2="180" y2="118"/>
+            </g>
+            <circle cx="194" cy="68" r="14" style="fill:#0f172a"/>
+            <circle cx="194" cy="118" r="14" style="fill:#0f172a"/>
+            <text x="194" y="72" text-anchor="middle" class="g-b" style="fill:#fff">1</text>
+            <text x="194" y="122" text-anchor="middle" class="g-b" style="fill:#fff">2</text>
+            <text x="194" y="44" text-anchor="middle" class="g-s">inputs</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">1</span>Two facts go in as numbers</b>For each district, the network gets two numbers: the share of women who can read, and the share of people living in towns. <em>Illustration, not real data.</em></figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="One neuron: two inputs are multiplied by weights, added up, and bent into a chance between 0 and 1.">
+            <line x1="30" y1="50" x2="94" y2="80" style="stroke:var(--ln-neg);stroke-width:5;stroke-linecap:round"/>
+            <line x1="30" y1="130" x2="94" y2="102" style="stroke:var(--ln-pos);stroke-width:2.5;stroke-linecap:round"/>
+            <circle cx="24" cy="48" r="10" style="fill:#0f172a"/>
+            <circle cx="24" cy="132" r="10" style="fill:#0f172a"/>
+            <text x="66" y="52" text-anchor="middle" class="g-s">× weight</text>
+            <text x="66" y="142" text-anchor="middle" class="g-s">× weight</text>
+            <circle cx="120" cy="90" r="30" style="fill:#fff;stroke:#0f172a;stroke-width:1.6"/>
+            <text x="106" y="97" text-anchor="middle" style="font-size:20px;font-weight:600">Σ</text>
+            <path d="M120,104 C132,104 128,76 140,76" style="fill:none;stroke:#0f172a;stroke-width:2.2"/>
+            <line x1="150" y1="90" x2="184" y2="90" style="stroke:#64748b;stroke-width:1.5"/>
+            <polygon points="190,90 181,85 181,95" style="fill:#64748b"/>
+            <rect x="191" y="74" width="46" height="32" rx="7" style="fill:#f2f1ec"/>
+            <text x="214" y="94" text-anchor="middle" class="g-b">chance</text>
+            <text x="214" y="122" text-anchor="middle" class="g-s">0 to 1</text>
+            <text x="120" y="172" text-anchor="middle" class="g-s">weigh → add up → bend</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Each neuron weighs, adds and bends</b>A neuron multiplies each number by a weight (how much it counts), adds them up, and bends the total into a chance between 0 and 1.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="Dots of two kinds. A dashed straight line from one neuron misses a small pocket; a curved line from several neurons wraps around it.">
+            <rect x="12" y="8" width="216" height="142" rx="6" style="fill:#fff;stroke:rgba(15,23,42,.14)"/>
+            <g style="fill:var(--ln-pos)">
+              <polygon points="48,34 53.5,44 42.5,44"/><polygon points="40,56 45.5,66 34.5,66"/><polygon points="70,76 75.5,86 64.5,86"/>
+              <polygon points="52,96 57.5,106 46.5,106"/><polygon points="34,122 39.5,132 28.5,132"/><polygon points="68,124 73.5,134 62.5,134"/>
+              <polygon points="150,116 155.5,126 144.5,126"/><polygon points="164,128 169.5,138 158.5,138"/>
+            </g>
+            <g style="fill:var(--ln-neg)">
+              <circle cx="122" cy="36" r="5"/><circle cx="152" cy="28" r="5"/><circle cx="192" cy="46" r="5"/><circle cx="206" cy="86" r="5"/>
+              <circle cx="132" cy="68" r="5"/><circle cx="112" cy="88" r="5"/><circle cx="170" cy="78" r="5"/><circle cx="204" cy="128" r="5"/>
+            </g>
+            <line x1="84" y1="8" x2="122" y2="150" style="stroke:#0f172a;stroke-width:1.6;stroke-dasharray:5 4"/>
+            <path d="M80,8 C95,60 95,100 110,112 C125,124 140,98 165,106 C181,111 184,134 180,150" style="fill:none;stroke:#0f172a;stroke-width:2.4"/>
+            <line x1="22" y1="168" x2="42" y2="168" style="stroke:#0f172a;stroke-width:1.6;stroke-dasharray:5 4"/>
+            <text x="47" y="172">1 neuron</text>
+            <line x1="122" y1="168" x2="142" y2="168" style="stroke:#0f172a;stroke-width:2.4"/>
+            <text x="147" y="172">3 neurons</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>Together they draw a curve</b>One neuron can only draw a straight line. Several neurons together can draw a bent one. But with only 30 districts, a big network can simply memorise them. <em>Illustration, not real data.</em></figcaption>
+        </figure>
+      </div>
+      <p class="ln-gist-sum">A neural network adds up weighted inputs in many small steps; together the steps can draw curved boundaries, but with few examples it memorises instead of learning.</p>
+      <dl class="ln-words">
+        <div><dt>Neuron</dt><dd>A small unit that weighs its inputs, adds them up and bends the result.</dd></div>
+        <div><dt>Weight</dt><dd>How much one input counts. The network learns weights from the data.</dd></div>
+        <div><dt>Layer</dt><dd>A column of neurons. Hidden layers sit between the inputs and the answer.</dd></div>
+        <div><dt>Activation</dt><dd>The bending step that turns a weighted sum into a curved response.</dd></div>
+        <div><dt>Overfitting</dt><dd>Fitting the training districts so closely that the model fails on new ones.</dd></div>
+      </dl>
+    </div>
+  </section>
+
   <div class="ln-prose">
-    <p>In the first explainer we predicted <em>how many</em> young children are stunted in a district. Here we ask a yes-or-no question instead: is a district's child stunting <strong>above the state average</strong> of <span data-v="st"></span>%? In NFHS-5, <span data-v="nPos"></span> of the 30 districts were at or above it.</p>
-    <p>We give the model two facts about each district, both from Census 2011: the share of <strong>women who can read</strong>, and the share of people who live in <strong>towns</strong>. Two inputs means we can draw everything the model does on one flat map.</p>
+    <p>In the first explainer we predicted <em>how many</em> young children are stunted (too short for their age) in a district. Here we ask a yes/no question instead: is a district's child stunting <strong>at or above the state average</strong> of <span data-v="st"></span>%? In NFHS-5, <span data-v="nPos"></span> of the 30 districts were.</p>
+    <p>We give the network two facts about each district, both from Census 2011: the share of <strong>women who can read</strong>, and the share of people who live in <strong>towns</strong>. With only two facts, we can draw everything the network does on one flat map.</p>
+    <h2>How does a network build a curve?</h2>
+    <p>Scroll on. The map and the network diagram change with each step.</p>
   </div>
 
   <!-- ── scroll story ─────────────────────────────── -->
@@ -94,53 +178,53 @@
     <div class="ln-steps">
       <div class="ln-step"><div class="ln-card">
         <h3>Thirty districts, two facts</h3>
-        <p>Each shape is a district. Across: women who can read. Up: people living in towns.</p>
+        <p>Each shape is a district. Left to right: women who can read. Bottom to top: people living in towns.</p>
         <p><span class="ln-k ln-k-pos"><span>Orange triangles</span></span> are the <span data-v="nPos"></span> districts where stunting is at or above the state average. <span class="ln-k ln-k-neg"><span>Teal circles</span></span> are the <span data-v="nNeg"></span> below it.</p>
-        <p>High stunting crowds the low-literacy side, but not neatly. A few orange triangles sit among the more literate districts.</p>
+        <p>High stunting is more common where fewer women read. But not neatly: a few orange triangles sit among the more literate districts.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>One neuron</h3>
-        <p>The smallest network is a single <b>neuron</b>. It multiplies each input by a <b>weight</b>, adds a constant (the <b>bias</b>), and squashes the total into a chance between 0 and 1:</p>
+        <p>The smallest network is a single <b>neuron</b>. It multiplies each input by a <b>weight</b> (how much it counts) and adds a fixed number (the <b>bias</b>). Then it squashes the total into a chance between 0 and 1:</p>
         <span class="ln-eq" data-v="eq1"></span>
-        <p>Both inputs are first rescaled so that 0 means "an average district" and 1 means "one standard deviation above it". The weights are learned from the data.</p>
-        <p>The background shows its answer everywhere on the map: orange where it says "above average", teal where it says "below", grey where it is unsure. One neuron is exactly <a href="logistic-regression.html">logistic regression</a> (explainer 03).</p>
+        <p>First, both inputs are rescaled so that 0 means “an average district”. The weights are learned from the data.</p>
+        <p>The background shows its answer across the map. Orange means “above average”, teal means “below”, grey means unsure. One neuron is the same as <a href="logistic-regression.html">logistic regression</a> (explainer 03).</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>A straight boundary</h3>
-        <p>The line where the chance crosses 50% is the model's <b>decision boundary</b>. For a single neuron it is always a straight line, whatever the data look like.</p>
+        <p>The line where the chance crosses 50% is the <b>decision boundary</b>. On one side the model says yes; on the other, no. For a single neuron it is always a straight line.</p>
         <p>This one gets <b data-v="acc1"></b> of 30 districts right. The <span data-v="wrong1n"></span> it gets wrong are ringed: <span data-v="wrong1list"></span>.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
-        <h3>Why the squash matters</h3>
-        <p>The squashing step is called an <b>activation function</b>. Networks use a few kinds: the S-shaped <b>sigmoid</b> (0 to 1), its cousin <b>tanh</b> (−1 to 1), and <b>ReLU</b>, which turns negatives into zero.</p>
-        <p>The bend is the point. Without it, neurons stacked on neurons add up to one big weighted sum, and a weighted sum can only ever draw a straight line.</p>
+        <h3>Why the bend matters</h3>
+        <p>The squashing step is called the <b>activation function</b>. Three kinds are common: the S-shaped <b>sigmoid</b> (0 to 1), <b>tanh</b> (−1 to 1), and <b>ReLU</b>, which turns negatives into zero.</p>
+        <p>The bend is the point. Without it, stacking neurons just gives one big weighted sum. And a weighted sum can only draw a straight line.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>A hidden layer</h3>
-        <p>Now put three neurons between the inputs and the output. Each is its own small logistic regression with its own weights (using tanh), so each draws its own straight line across the map: the dashed lines <b>A</b>, <b>B</b> and <b>C</b>.</p>
-        <p>The small squares in the diagram show each neuron's output across the whole map. They are called <b>hidden</b> neurons because nobody checks their outputs against the data. Only the final answer is graded.</p>
+        <p>Now put three neurons between the inputs and the output. Each one has its own weights, so each draws its own straight line across the map: the dashed lines <b>A</b>, <b>B</b> and <b>C</b>.</p>
+        <p>The small squares in the diagram show each neuron's output across the map. They are called <b>hidden</b> neurons because nobody checks their outputs directly. Only the final answer is checked.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Lines combine into a curve</h3>
-        <p>The output neuron takes a weighted sum of the three hidden outputs and squashes it once more. Three steps, facing different ways, add up to a boundary that can bend.</p>
-        <p>This network gets <b data-v="acc3"></b> of 30 right, against <b data-v="acc1"></b> for the single neuron.</p>
+        <p>The output neuron adds up the three hidden outputs, with weights, and squashes once more. Three straight steps, facing different ways, add up to a boundary that can bend.</p>
+        <p>This network gets <b data-v="acc3"></b> of 30 right. The single neuron got <b data-v="acc1"></b>.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Follow one district</h3>
-        <p>Take <b>Sambalpur</b>. <b data-v="sbLit"></b> of its women can read, more than in <span data-v="sbRank"></span> of the other 29 districts, and <b data-v="sbUrb"></b> of its people live in towns. Yet <b data-v="sbSt"></b> of its young children are stunted.</p>
-        <p>Rescaled, its inputs are <b data-v="sbZ"></b>. The three hidden neurons turn them into <b data-v="sbH"></b>. The output neuron weighs those and squashes: a <b data-v="sbP3"></b> chance of above-average stunting.</p>
+        <p>Take <b>Sambalpur</b>. <b data-v="sbLit"></b> of its women can read, more than in <span data-v="sbRank"></span> of the other 29 districts. <b data-v="sbUrb"></b> of its people live in towns. Yet <b data-v="sbSt"></b> of its young children are stunted.</p>
+        <p>Rescaled, its inputs are <b data-v="sbZ"></b>. The three hidden neurons turn them into <b data-v="sbH"></b>. The output neuron weighs those and squashes them. The result: a <b data-v="sbP3"></b> chance of above-average stunting.</p>
         <p data-v="sbVerdict"></p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>How it learns</h3>
-        <p>Nobody sets the weights by hand. Training starts from small random weights, then nudges every weight a little in the direction that lowers the <b>log-loss</b>, a score that punishes confident wrong answers hardest.</p>
-        <p>Working out that direction, layer by layer from the output back to the inputs, is called <b>backpropagation</b>. Here every district is used in every nudge, so each nudge is one <b>epoch</b>. Watch <span data-v="epochs"></span> of them.</p>
+        <p>Nobody sets the weights by hand. Training starts from small random weights. Then it nudges every weight a little, in the direction that makes the errors smaller.</p>
+        <p>The error score is called <b>log-loss</b>. It punishes confident wrong answers the most. The method that works out which way to nudge each weight is called <b>backpropagation</b>. One nudge using all the districts is one <b>epoch</b>. Watch <span data-v="epochs"></span> of them.</p>
         <button class="ln-btn ghost" id="replay" type="button">Replay training</button>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>More neurons, more wiggle</h3>
-        <p>Give the hidden layer eight neurons and train again. It now gets <b data-v="acc8"></b> of 30 right, and its log-loss falls from <b data-v="loss3"></b> to <b data-v="loss8"></b>. The boundary bends around single districts.</p>
-        <p>But it is marking its own homework. Whether that bending is real pattern or memorised noise, only districts it has not seen can tell (see <a href="bias-variance.html">The Bias–Variance Tradeoff</a>).</p>
+        <p>Give the hidden layer eight neurons and train again. It now gets <b data-v="acc8"></b> of 30 right. Its log-loss falls from <b data-v="loss3"></b> to <b data-v="loss8"></b>. The boundary bends around single districts.</p>
+        <p>But it is marking its own homework. Only districts it has not seen can tell us whether those bends are real patterns or memorised noise (see <a href="bias-variance.html">The Bias–Variance Tradeoff</a>).</p>
       </div></div>
     </div>
     <div class="ln-graphic" aria-live="polite">
@@ -161,8 +245,8 @@
   <!-- ── interactive: playground ─────────────────── -->
   <div class="ln-prose">
     <h2>Try it: build and train your own</h2>
-    <p>Choose how many hidden layers and neurons the network has, which activation it uses and how big each nudge is (the <b>learning rate</b>). Then press <em>Play</em> and watch it learn. The ringed districts are the ones it currently gets wrong.</p>
-    <p>Things to try: <em>No hidden layer</em> can only draw a straight line. Eight neurons will eventually get almost every district right. A learning rate of 0.3 lurches about; 0.003 crawls. <em>New random start</em> trains the same network from different starting weights, and often finds a different boundary.</p>
+    <p>Choose how many hidden layers and neurons the network has, and which activation (bending step) it uses. Choose the <b>learning rate</b>: how big each nudge is. Then press <em>Play</em> and watch it learn. Ringed districts are the ones it currently gets wrong.</p>
+    <p>Things to try. <em>No hidden layer</em> can only draw a straight line. Eight neurons will, in the end, get almost every district right. A learning rate of 0.3 jumps about; 0.003 crawls. <em>New random start</em> trains the same network from different starting weights, and often finds a different boundary.</p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure nn-px">
@@ -186,12 +270,15 @@
       <div class="nn-play">
         <div>
           <p class="ln-figure-t">The network</p>
+          <p class="ln-figure-s">Each small square shows what that neuron does across the map.</p>
           <svg id="pgNet" role="img" aria-label="Diagram of your network, with each neuron's output shown as a small map"></svg>
           <p class="ln-figure-t" style="margin-top:8px">Training log-loss by epoch</p>
+          <p class="ln-figure-s">The error score on the training districts. Lower is better; it should fall as training goes on.</p>
           <svg id="pgLoss" role="img" aria-label="Training log-loss against epoch"></svg>
         </div>
         <div>
           <p class="ln-figure-t">What it predicts across the map</p>
+          <p class="ln-figure-s">Orange: predicts above average. Teal: below. The dark line is where the chance is 50%.</p>
           <div class="ln-legend" id="pgLegend"></div>
           <div id="pgMap"></div>
         </div>
@@ -203,11 +290,13 @@
   <!-- ── held-out accuracy by size ───────────────── -->
   <div class="ln-prose">
     <h2>Is the bigger network better?</h2>
-    <p>Training accuracy can only tell us how well a network remembers. To see how it does on districts it has <em>not</em> seen, we use 5-fold cross-validation (explainer <a href="train-test-validation.html">01</a>): train on 24 districts, test on the other 6, rotate until every district has been tested once, then repeat the whole thing with three different shuffles.</p>
+    <p>Training accuracy only tells us how well a network remembers. To see how it does on districts it has <em>not</em> seen, we use 5-fold cross-validation (explainer <a href="train-test-validation.html">01</a>). We train on 24 districts and test on the other 6. We rotate until every district has been tested once. Then we repeat it all with three different shuffles.</p>
     <p>That is <span data-v="nFits"></span> networks, each trained for <span data-v="epochs"></span> epochs, all in your browser. The chart fills in as they finish.</p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure nn-px">
+      <p class="ln-figure-t">Accuracy by number of hidden neurons</p>
+      <p class="ln-figure-s">Teal: districts the networks trained on. Violet: districts they never saw. A widening gap means memorising.</p>
       <div class="ln-legend">
         <span><i class="line" style="background:var(--ln-train)"></i>Accuracy on the 24 training districts</span>
         <span><i class="line" style="background:var(--ln-val)"></i>Accuracy on the 6 held-out districts</span>
@@ -216,19 +305,21 @@
       <svg id="cvSvg" role="img" aria-label="Training and held-out accuracy against the number of hidden neurons"></svg>
       <div class="ln-stats" id="cvStats"></div>
       <p class="nn-note" id="cvNote"></p>
+      <div class="ln-source">Female literacy and urban share: Census 2011 · Stunting: NFHS-5 (2019–21)</div>
     </div>
   </div>
   <div class="ln-prose">
     <p id="cvText">Training the networks…</p>
-    <div class="ln-callout">
-      <span class="ln-callout-t">Take-aways</span>
-      A neuron is a weighted sum passed through an activation function; on its own it is logistic regression and draws a straight boundary. A hidden layer of neurons draws several lines, and the output neuron blends them into a curve. Training nudges every weight downhill on the log-loss, using backpropagation to find the direction. More neurons always fit the training districts better, but with 30 districts most of that extra flexibility fits noise. Judge a network on districts it has not seen. Neural networks earn their keep with thousands of examples, not thirty.
-    </div>
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>A neuron weighs its inputs, adds them up and bends the result. On its own it is logistic regression, and it draws a straight line.</li>
+      <li>A hidden layer of neurons draws several lines, and the output neuron blends them into a curve. Training nudges every weight, step by step, to make the errors smaller.</li>
+      <li>More neurons always fit the training districts better. With only 30 districts, most of that extra fit is memorised noise. Judge a network on districts it has not seen.</li>
+    </ol></div>
   </div>
 
   <section class="ln-notes">
     <h2>Data and method</h2>
-    <p>Female literacy and urban population share are from Census 2011; the share of children under 5 who are stunted (too short for their age) is from the NFHS-5 district fact sheets (2019–21), as compiled in the portal's Health workbook. A district counts as "above average" when its stunting is at or above the NFHS-5 state figure for Odisha. Both inputs are z-scored (mean 0, standard deviation 1; for cross-validation, using the training districts only). Networks are fully connected, with a sigmoid output, trained on all training districts at once (full batch) with the Adam optimiser on log-loss, learning rate 0.03 and a fixed random seed unless you change them, so every reader sees the same first view. The story networks and the cross-validation use <span data-v="epochs"></span> epochs and tanh. Cross-validation accuracy counts each held-out prediction once per shuffle. These models are teaching devices: 30 districts are far too few to train a neural network for real use, two inputs leave out most of what drives stunting, and a pattern across districts is a correlation, not a cause.</p>
+    <p>Female literacy and urban population share are from Census 2011; the share of children under 5 who are stunted (too short for their age) is from the NFHS-5 district fact sheets (2019–21), as compiled in the portal's Health workbook. A district counts as "above average" when its stunting is at or above the NFHS-5 state figure for Odisha. Both inputs are z-scored: 0 is the average district and 1 is one standard deviation above it (for cross-validation, using the training districts only). Networks are fully connected, with a sigmoid output, trained on all training districts at once (full batch) with the Adam optimiser on log-loss, learning rate 0.03 and a fixed random seed unless you change them, so every reader sees the same first view. Backpropagation computes the gradient of the log-loss layer by layer, from the output back to the inputs. The story networks and the cross-validation use <span data-v="epochs"></span> epochs and tanh. Cross-validation accuracy counts each held-out prediction once per shuffle. These models are teaching devices: 30 districts are far too few to train a neural network for real use, two inputs leave out most of what drives stunting, and a pattern across districts is a correlation, not a cause. Neural networks earn their keep with thousands of examples, not thirty.</p>
     <details class="ln-details">
       <summary>Show the data table</summary>
       <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>

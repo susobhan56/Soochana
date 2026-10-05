@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Where the Numbers Come From · Soochana Learn</title>
+<meta name="description" content="How Soochana's numbers are collected: the Census counts everyone, NFHS asks a sample, SRS records births and deaths all year. And why survey numbers have a margin of error.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20261005">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  /* The three gist panels are three different methods, not steps: say "or" between them. */
+  .wn-gist .ln-gist-p + .ln-gist-p::before {
+    content: 'or'; font-size: 14px; font-weight: 600; letter-spacing: .04em; color: var(--ink-subtle);
+  }
+  @media (max-width: 860px) {
+    .wn-gist .ln-gist-p + .ln-gist-p::before { content: 'or'; top: -24px; }
+  }
+
+  /* source cards */
+  .src-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+  .src-card {
+    --c: var(--ln-train);
+    background: var(--ln-card); border: 1px solid var(--border); border-top: 4px solid var(--c);
+    border-radius: 14px; padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 10px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.03), 0 14px 30px -24px rgba(0,0,0,.25);
+  }
+  .src-card.is-nfhs { --c: var(--ln-val); }
+  .src-card.is-srs { --c: var(--ln-test); }
+  .src-card.is-udise { --c: #475569; }
+  .src-head { display: flex; align-items: center; gap: 10px; }
+  .src-ico {
+    flex: none; width: 42px; height: 42px; border-radius: 10px; color: var(--c);
+    background: color-mix(in srgb, var(--c) 12%, #fff);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .src-ico svg { width: 26px; height: 26px; }
+  .src-card h3 { margin: 0; font-size: 19px; line-height: 1.2; color: var(--ink-heading); }
+  .src-full { display: block; font-size: 12.5px; color: var(--ink-subtle); font-weight: 400; }
+  .src-card dl { margin: 0; display: grid; gap: 7px; font-size: 14px; line-height: 1.45; color: var(--ink-body); }
+  .src-card dt { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-subtle); }
+  .src-card dd { margin: 0; }
+  .src-eg { margin-top: auto; background: var(--ln-soft); border-radius: 10px; padding: 10px 12px; }
+  .src-eg b { display: block; font-size: 26px; line-height: 1.1; color: var(--c); font-variant-numeric: tabular-nums; }
+  .src-eg small { display: block; font-size: 12.5px; color: var(--ink-body); line-height: 1.4; }
+
+  /* sampling waffle */
+  .samp-waffle { gap: 2px; max-width: 600px; margin: 6px auto 10px; }
+  .samp-waffle i.st { background: color-mix(in srgb, var(--ln-test) 24%, transparent); }
+  .samp-waffle i.asked { background: var(--ln-train); }
+  .samp-waffle i.st.asked { background: var(--ln-test); }
+  .samp-note { font-size: 15px; line-height: 1.5; color: var(--ink-heading); margin: 6px 0 10px; min-height: 2.6em; }
+  .ln-legend i.sq { border-radius: 2px; }
+  .ln-legend i.band { width: 18px; height: 10px; border-radius: 2px; }
+  @media (max-width: 600px) { .samp-waffle { gap: 1px; } }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M1</div>
+    <h2 class="ln-title">Where the numbers <em>come from</em></h2>
+    <p class="ln-dek">Every number on Soochana was counted, asked or written down by someone, and here is how.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census of India, NFHS-4, NFHS-5, SRS, UDISE+ · Charts are computed live in your browser</div>
+  </section>
+
+  <section class="ln-gist wn-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gistCensus" viewBox="0 0 240 180" role="img" aria-label="A grid of 60 dots, every one filled in: the Census counts every person"></svg></div>
+          <figcaption><b><span class="ln-gist-n">1</span>Count everyone</b>The Census visits every home and counts every person. It happens once every 10 years.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gistSurvey" viewBox="0 0 240 180" role="img" aria-label="A grid of 60 pale dots with a few filled in and a magnifying glass: a survey asks a sample"></svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Ask a sample</b>A survey like NFHS asks a few chosen households. Their answers are scaled up to the whole district.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gistSRS" viewBox="0 0 240 180" role="img" aria-label="A timeline of 12 months with births and deaths marked all through the year: registration records events as they happen"></svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>Keep a record</b>SRS writes down every birth and death in sample villages and towns, all through the year.</figcaption>
+        </figure>
+      </div>
+      <p class="ln-gist-sum">Soochana's numbers are either counted (Census), estimated from a sample (NFHS) or recorded as they happen (SRS).</p>
+      <dl class="ln-words">
+        <div><dt>Census</dt><dd>A count of every person in the country, every 10 years.</dd></div>
+        <div><dt>Sample</dt><dd>A small group picked to stand in for everyone.</dd></div>
+        <div><dt>Survey</dt><dd>Asking questions to a sample of people or households.</dd></div>
+        <div><dt>Estimate</dt><dd>A careful best guess worked out from a sample.</dd></div>
+        <div><dt>Margin of error</dt><dd>How far an estimate may sit from the true value, by chance.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ── section 1: four sources ─────────────────── -->
+  <div class="ln-prose">
+    <h2>Who collects what?</h2>
+    <p>Soochana brings together numbers from four main sources. Each one collects data in a different way. Each one is good at different things.</p>
+    <p>The Census is complete but comes rarely. NFHS goes deep into health but asks only a sample. SRS is the best source for births and deaths, but only for the state as a whole. UDISE+ comes from school records.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="src-cards">
+      <article class="src-card is-census">
+        <div class="src-head">
+          <span class="src-ico" aria-hidden="true"><svg viewBox="0 0 26 26"><polyline points="3,12 13,4 23,12" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round"/><rect x="6" y="11" width="14" height="11" style="fill:none;stroke:currentColor;stroke-width:2"/><circle cx="11" cy="16" r="1.8" style="fill:currentColor"/><circle cx="15.5" cy="16" r="1.8" style="fill:currentColor"/></svg></span>
+          <h3>Census<span class="src-full">Census of India</span></h3>
+        </div>
+        <dl>
+          <div><dt>Who is asked</dt><dd>Every household and every person.</dd></div>
+          <div><dt>How often</dt><dd>Once every 10 years.</dd></div>
+          <div><dt>Latest round</dt><dd>2011 is the latest published count. Population numbers after 2011 are projections.</dd></div>
+          <div><dt>Soochana uses it for</dt><dd>Population, literacy, sex ratio, age, towns and villages.</dd></div>
+        </dl>
+        <div class="src-eg"><b>72.9%</b><small>Literacy rate, Odisha (Census 2011)</small></div>
+      </article>
+      <article class="src-card is-nfhs">
+        <div class="src-head">
+          <span class="src-ico" aria-hidden="true"><svg viewBox="0 0 26 26"><rect x="5" y="4" width="16" height="19" rx="2" style="fill:none;stroke:currentColor;stroke-width:2"/><line x1="9" y1="10" x2="17" y2="10" style="stroke:currentColor;stroke-width:2"/><line x1="9" y1="14" x2="17" y2="14" style="stroke:currentColor;stroke-width:2"/><line x1="9" y1="18" x2="14" y2="18" style="stroke:currentColor;stroke-width:2"/></svg></span>
+          <h3>NFHS<span class="src-full">National Family Health Survey</span></h3>
+        </div>
+        <dl>
+          <div><dt>Who is asked</dt><dd>A sample of households in every district. Women and men answer questions; young children are weighed and measured.</dd></div>
+          <div><dt>How often</dt><dd>Every few years: NFHS-4 (2015–16), NFHS-5 (2019–21), NFHS-6 (2023–24).</dd></div>
+          <div><dt>Latest round</dt><dd>NFHS-6. This page uses NFHS-4 and NFHS-5.</dd></div>
+          <div><dt>Soochana uses it for</dt><dd>Child nutrition, fertility, vaccination, mothers' health.</dd></div>
+        </dl>
+        <div class="src-eg"><b>1.8</b><small>Children per woman (TFR), Odisha (NFHS-5, 2019–21)</small></div>
+      </article>
+      <article class="src-card is-srs">
+        <div class="src-head">
+          <span class="src-ico" aria-hidden="true"><svg viewBox="0 0 26 26"><rect x="4" y="6" width="18" height="16" rx="2" style="fill:none;stroke:currentColor;stroke-width:2"/><line x1="4" y1="11" x2="22" y2="11" style="stroke:currentColor;stroke-width:2"/><line x1="9" y1="3" x2="9" y2="8" style="stroke:currentColor;stroke-width:2"/><line x1="17" y1="3" x2="17" y2="8" style="stroke:currentColor;stroke-width:2"/><circle cx="10" cy="16" r="1.6" style="fill:currentColor"/><circle cx="16" cy="16" r="1.6" style="fill:currentColor"/></svg></span>
+          <h3>SRS<span class="src-full">Sample Registration System</span></h3>
+        </div>
+        <dl>
+          <div><dt>Who is asked</dt><dd>All households in a fixed sample of villages and town blocks. Every birth and death there is written down.</dd></div>
+          <div><dt>How often</dt><dd>All year, every year. A report comes out each year.</dd></div>
+          <div><dt>Latest round</dt><dd>SRS Statistical Report 2024. Figures are for the state, not for districts.</dd></div>
+          <div><dt>Soochana uses it for</dt><dd>Birth rate, death rate, infant and maternal deaths, life expectancy.</dd></div>
+        </dl>
+        <div class="src-eg"><b>28</b><small>Babies who die before age 1, per 1,000 born alive (IMR), Odisha (SRS)</small></div>
+      </article>
+      <article class="src-card is-udise">
+        <div class="src-head">
+          <span class="src-ico" aria-hidden="true"><svg viewBox="0 0 26 26"><polyline points="3,10 13,4 23,10" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round"/><line x1="6" y1="11" x2="6" y2="21" style="stroke:currentColor;stroke-width:2"/><line x1="13" y1="11" x2="13" y2="21" style="stroke:currentColor;stroke-width:2"/><line x1="20" y1="11" x2="20" y2="21" style="stroke:currentColor;stroke-width:2"/><line x1="3" y1="22" x2="23" y2="22" style="stroke:currentColor;stroke-width:2"/></svg></span>
+          <h3>UDISE+<span class="src-full">Unified District Information System for Education Plus</span></h3>
+        </div>
+        <dl>
+          <div><dt>Who is asked</dt><dd>Every school fills in its own records: pupils, teachers, rooms and equipment.</dd></div>
+          <div><dt>How often</dt><dd>Every school year.</dd></div>
+          <div><dt>Latest round</dt><dd>2024–25.</dd></div>
+          <div><dt>Soochana uses it for</dt><dd>Dropout, pupils per teacher, schools with computers.</dd></div>
+        </dl>
+        <div class="src-eg"><b data-v="udiseVal"></b><small>Secondary school dropout, <span data-v="udiseDist"></span> district (UDISE+ 2024–25)</small></div>
+      </article>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <div class="ln-callout">
+      <span class="ln-callout-t">What about 2021 and later?</span>
+      There has been no Census count since 2011. So population numbers for 2021 onwards on Soochana are <b>projections</b>: careful estimates worked out from past Censuses and recent birth and death rates. The lesson <a href="projections.html">Projecting the future</a> shows how they are made.
+    </div>
+    <div class="ln-seeit">See these sources on Soochana: <a href="../odisha.html">Odisha dashboard</a> <a href="../district.html">District insight</a> <a href="../district-health.html">District health</a></div>
+  </div>
+
+  <!-- ── section 2: sampling demo ─────────────────── -->
+  <div class="ln-prose">
+    <h2>Why a sample works (and where it wobbles)</h2>
+    <p>NFHS does not measure every child in a district. It measures a sample. Can a few hundred children tell us about all of them? Mostly yes, but each sample gives a slightly different answer.</p>
+    <p>Below is a pretend district of <b>1,000 children</b>. The share who are <strong>stunted</strong> (too short for their age) is set to the real NFHS-5 value for the district you pick. A faint orange square is a stunted child. A real survey cannot see these colours. It has to ask.</p>
+    <p>Press a button to ask a random group of children. Each estimate lands as a dot on the strip below the grid. Press each button a few times.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <p class="ln-figure-t">Asking a sample of children in a district of 1,000</p>
+      <p class="ln-figure-s">Each square is one child. Bright squares are the children you asked.</p>
+      <div class="ln-controls">
+        <label>District <select id="sampDistrict" aria-label="Choose a district"></select></label>
+        <button class="ln-btn" data-n="50">Ask 50 children</button>
+        <button class="ln-btn" data-n="200">Ask 200</button>
+        <button class="ln-btn" data-n="800">Ask 800</button>
+        <button class="ln-btn ghost" id="sampMany">Do it 20 times</button>
+        <button class="ln-btn ghost" id="sampReset">Clear</button>
+      </div>
+      <div class="ln-legend">
+        <span><i class="sq" style="background:var(--ln-test)"></i>Asked, stunted</span>
+        <span><i class="sq" style="background:var(--ln-train)"></i>Asked, not stunted</span>
+        <span><i class="sq" style="background:color-mix(in srgb, var(--ln-test) 24%, transparent)"></i>Not asked, stunted (hidden from the survey)</span>
+        <span><i class="sq" style="background:var(--ln-ghost)"></i>Not asked, not stunted</span>
+      </div>
+      <div class="ln-waffle samp-waffle" id="sampWaffle" style="grid-template-columns:repeat(40,1fr)" role="img" aria-label="1,000 squares, one per child, showing which children were asked"></div>
+      <p class="samp-note" id="sampNote" aria-live="polite"></p>
+      <p class="ln-figure-t">Every estimate so far</p>
+      <p class="ln-figure-s">One dot per sample. The dark line is the true share. The shaded band is the margin of error: about 95 in 100 estimates land inside it.</p>
+      <div class="ln-legend">
+        <span><i style="background:var(--ln-val)"></i>One sample's estimate</span>
+        <span><i class="line" style="background:var(--ln-fit)"></i>True share</span>
+        <span><i class="band" style="background:color-mix(in srgb, var(--ln-val) 16%, transparent)"></i>Margin of error</span>
+      </div>
+      <svg id="sampSvg" role="img" aria-label="Strip chart of sample estimates for samples of 50, 200 and 800 children, with the true value and the margin of error"></svg>
+      <div class="ln-stats" id="sampStats"></div>
+      <div class="ln-source">True shares: NFHS-5 (2019–21) district stunting, children under 5. The 1,000 children and the samples are a simulation.</div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p>Look at the three rows. With 50 children, the dots scatter widely. With 800, they huddle close to the true line. <b>Bigger samples wobble less.</b></p>
+    <p>The band shows the <strong>margin of error</strong>. Statisticians work it out with a short formula: <span style="white-space:nowrap">1.96 × √( p × (1 − p) ÷ n )</span>, where <i>p</i> is the share and <i>n</i> is the number asked. You do not need to remember it. Just remember the idea: four times the sample halves the wobble.</p>
+  </div>
+
+  <!-- ── section 3: is a change real? ─────────────── -->
+  <div class="ln-prose">
+    <h2>Is a change real?</h2>
+    <p>Every survey round has its own wobble. So when a district's number moves between two rounds, part of the move may be chance. Before saying "stunting rose in this district", we should ask: is the change bigger than the wobble?</p>
+    <p>The chart compares stunting in NFHS-4 (2015–16) and NFHS-5 (2019–21) for all 30 districts. The grey band around each NFHS-4 dot is the wobble zone. If the NFHS-5 dot lands inside it, the change could be just chance.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <p class="ln-figure-t">Children under 5 who are stunted, NFHS-4 and NFHS-5</p>
+      <p class="ln-figure-s">Districts sorted from the biggest fall (top) to the biggest rise (bottom). Hover a row for details.</p>
+      <div class="ln-controls">
+        <span>Children measured per district in each round (our guess):</span>
+        <div class="ln-seg" role="group" aria-label="Assumed number of children measured per district">
+          <button aria-pressed="false" data-n="250">250</button>
+          <button aria-pressed="true" data-n="500">500</button>
+          <button aria-pressed="false" data-n="1000">1,000</button>
+        </div>
+      </div>
+      <div class="ln-legend">
+        <span><i style="background:var(--ln-train)"></i>NFHS-4 (2015–16)</span>
+        <span><i style="background:var(--ln-test)"></i>NFHS-5 (2019–21)</span>
+        <span><i class="band" style="background:var(--ln-ghost)"></i>Wobble zone (approximate)</span>
+        <span><i class="line" style="background:var(--ln-fit)"></i>Change bigger than the wobble</span>
+        <span><i class="line" style="background:rgba(15,23,42,.25)"></i>Could be chance</span>
+      </div>
+      <svg id="chgSvg" role="img" aria-label="Dumbbell chart of stunting in NFHS-4 and NFHS-5 for 30 districts, with an approximate margin of error around each NFHS-4 value"></svg>
+      <div class="ln-stats" id="chgStats"></div>
+      <div class="ln-source">Stunting: NFHS-4 (2015–16) and NFHS-5 (2019–21) district fact sheets. Wobble zone: our approximation, see the notes below.</div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p id="chgText"></p>
+    <p>A word of honesty. We do not have the exact number of children measured in each district, so the wobble zone here is approximate. Real surveys visit households in clusters (whole villages at a time), which makes the true wobble a little <em>wider</em> than our band. Treat the grey rows as "not sure", not as "no change".</p>
+
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>The Census counts everyone, but only every 10 years. Population numbers after 2011 are projections.</li>
+      <li>Survey numbers (like NFHS) are estimates from a sample. They have a margin of error, and bigger samples wobble less.</li>
+      <li>Before calling a change real, check that it is bigger than the wobble of both rounds.</li>
+    </ol></div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p><b>Sources.</b> Literacy: Census of India 2011. TFR: NFHS-5 (2019–21) state fact sheet. IMR: SRS Statistical Report 2024. Secondary dropout: UDISE+ 2024–25. District stunting (height-for-age below −2 SD, children under 5): NFHS-4 and NFHS-5 district fact sheets, as compiled in the portal's Health workbook.</p>
+    <p><b>Sampling demo.</b> The district of 1,000 children is a simulation: the number of stunted children is set to the district's NFHS-5 share, placed at random. Each button press draws a simple random sample without replacement (seeded, so every reader starts with the same sequence). The band is the usual 95% margin for a proportion, ±1.96 × √(p(1−p)/n). NFHS itself uses a stratified two-stage cluster sample with survey weights, so its real margins are somewhat wider than a simple random sample of the same size.</p>
+    <p><b>Is a change real?</b> District sample sizes are not in the portal's data, so the number of children measured is an assumption you can change (250, 500 or 1,000 per round). The wobble zone is ±1.96 × √(p₄(1−p₄)/n + p₅(1−p₅)/n), the approximate 95% margin for the difference between two independent rounds. It ignores the cluster design effect, so it is, if anything, too narrow.</p>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="rates-and-ratios.html"><small>Next · M2</small><b>Rates and ratios</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, SRS, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var C = { train: SL.color('train'), val: SL.color('val'), test: SL.color('test'), ink: '#0f172a', ghost: 'rgba(15,23,42,.14)' };
+  var tip = SL.tooltip();
+  var NARROW = document.querySelector('.ln-wide').clientWidth < 600;
+
+  /* ── the idea in one picture ──────────────────── */
+  function gridDots(svg, fillFn) {
+    for (var j = 0; j < 6; j++) {
+      for (var i = 0; i < 10; i++) {
+        svg.append('circle').attr('cx', 30 + i * 20).attr('cy', 24 + j * 20).attr('r', 6.5)
+          .style('fill', fillFn(j * 10 + i));
+      }
+    }
+  }
+  function caption(svg, text) {
+    svg.append('text').attr('x', 120).attr('y', 165).attr('text-anchor', 'middle')
+      .style('font-size', '13px').style('font-weight', '600').style('fill', C.ink).text(text);
+  }
+  (function drawGist() {
+    var s1 = d3.select('#gistCensus');
+    gridDots(s1, function () { return C.train; });
+    caption(s1, 'Everyone, every 10 years');
+
+    var s2 = d3.select('#gistSurvey');
+    var picked = SL.shuffle(SL.range(60), SL.rng(11)).slice(0, 8);
+    gridDots(s2, function (k) { return picked.indexOf(k) >= 0 ? C.val : C.ghost; });
+    s2.append('circle').attr('cx', 150).attr('cy', 72).attr('r', 36)
+      .style('fill', 'rgba(255,255,255,.35)').style('stroke', C.ink).style('stroke-width', 3);
+    s2.append('line').attr('x1', 176).attr('y1', 98).attr('x2', 204).attr('y2', 126)
+      .style('stroke', C.ink).style('stroke-width', 7).style('stroke-linecap', 'round');
+    caption(s2, 'A few homes, scaled up');
+
+    var s3 = d3.select('#gistSRS'), x0 = 22, step = 196 / 11;
+    s3.append('line').attr('x1', 16).attr('x2', 224).attr('y1', 88).attr('y2', 88).style('stroke', C.ink).style('stroke-width', 2);
+    'JFMAMJJASOND'.split('').forEach(function (m, i) {
+      s3.append('line').attr('x1', x0 + i * step).attr('x2', x0 + i * step).attr('y1', 84).attr('y2', 92).style('stroke', C.ink).style('stroke-width', 1.5);
+      s3.append('text').attr('x', x0 + i * step).attr('y', 136).attr('text-anchor', 'middle')
+        .style('font-size', '12px').style('fill', '#475569').text(m);
+    });
+    var births = [2, 1, 3, 2, 1, 2, 3, 1, 2, 2, 1, 3], deaths = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0];
+    births.forEach(function (n, i) {
+      for (var k = 0; k < n; k++) s3.append('circle').attr('cx', x0 + i * step).attr('cy', 76 - k * 11).attr('r', 4.2).style('fill', C.train);
+    });
+    deaths.forEach(function (n, i) {
+      for (var k = 0; k < n; k++) s3.append('circle').attr('cx', x0 + i * step).attr('cy', 101 + k * 11).attr('r', 4.2).style('fill', C.test);
+    });
+    s3.append('circle').attr('cx', 70).attr('cy', 18).attr('r', 4.2).style('fill', C.train);
+    s3.append('text').attr('x', 78).attr('y', 22).style('font-size', '12px').style('fill', '#475569').text('birth');
+    s3.append('circle').attr('cx', 130).attr('cy', 18).attr('r', 4.2).style('fill', C.test);
+    s3.append('text').attr('x', 138).attr('y', 22).style('font-size', '12px').style('fill', '#475569').text('death');
+    caption(s3, 'Recorded all year round');
+  })();
+
+  function signed(v, d) { return (v > 0 ? '+' : v < 0 ? '−' : '') + SL.fmt(Math.abs(v), d == null ? 1 : d); }
+
+  SL.loadData().then(function (data) {
+    var R = SL.rows(data.districts, ['nfhs4.stunted', 'nfhs5.stunted']);
+
+    /* UDISE+ example on the source card */
+    var ud = data.districts.filter(function (d) { return d.name === 'Angul'; })[0] || data.districts[0];
+    var V = { udiseVal: SL.fmt(ud.f.sec_dropout, 1) + '%', udiseDist: ud.name };
+    document.querySelectorAll('[data-v]').forEach(function (el) { if (V[el.dataset.v] != null) el.textContent = V[el.dataset.v]; });
+
+    setupSampling(R);
+    setupChange(R);
+  }).catch(function (err) {
+    console.error(err);
+    document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
+  });
+
+  /* ── sampling demo ────────────────────────────── */
+  function setupSampling(R) {
+    var N = 1000, SIZES = [50, 200, 800];
+    var sel = document.getElementById('sampDistrict');
+    R.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (d) {
+      var o = document.createElement('option');
+      o.value = d.name; o.textContent = d.name + ' (' + SL.fmt(d['nfhs5.stunted'], 1) + '%)';
+      sel.appendChild(o);
+    });
+    sel.value = 'Koraput';
+    if (!sel.value) sel.selectedIndex = 0;
+
+    var waffle = document.getElementById('sampWaffle'), cells = [];
+    for (var i = 0; i < N; i++) { var el = document.createElement('i'); waffle.appendChild(el); cells.push(el); }
+
+    var rand = SL.rng(2021), truth = [], p = 0, draws = [], lastN = 200, name = '';
+
+    var W = NARROW ? 460 : 900, rowH = NARROW ? 66 : 58, M = { t: 30, r: 16, b: 40, l: NARROW ? 96 : 84 };
+    var H = M.t + rowH * SIZES.length + M.b;
+    var svg = d3.select('#sampSvg').attr('viewBox', [0, 0, W, H]);
+    var x = d3.scaleLinear([0, 75], [M.l, W - M.r]).clamp(true);
+    function rowY(n) { return M.t + rowH * (SIZES.indexOf(n) + 0.5); }
+    svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(0,' + (H - M.b) + ')')
+      .call(d3.axisBottom(x).ticks(NARROW ? 5 : 8).tickSize(-(H - M.b - M.t)).tickFormat(''));
+    svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')')
+      .call(d3.axisBottom(x).ticks(NARROW ? 5 : 8).tickFormat(function (v) { return v + '%'; }));
+    svg.append('text').attr('class', 'ln-axis-label').attr('x', W - M.r).attr('y', H - 6).attr('text-anchor', 'end').text('Estimated share stunted →');
+    SIZES.forEach(function (n) {
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', M.l - 10).attr('y', rowY(n)).attr('dy', '0.35em')
+        .attr('text-anchor', 'end').style('fill', 'var(--ink-heading)').text('Ask ' + n);
+    });
+    var gBand = svg.append('g'), gTrue = svg.append('g'), gDots = svg.append('g');
+
+    function reset() {
+      var row = R.filter(function (d) { return d.name === sel.value; })[0];
+      name = row.name; p = row['nfhs5.stunted'] / 100;
+      var k = Math.round(p * N);
+      var order = SL.shuffle(SL.range(N), SL.rng(7 + sel.selectedIndex));
+      truth = new Array(N).fill(false);
+      for (var j = 0; j < k; j++) truth[order[j]] = true;
+      cells.forEach(function (c, j) { c.className = truth[j] ? 'st' : ''; });
+      draws = [];
+      document.getElementById('sampNote').innerHTML = 'In this pretend ' + name + ', <b>' + SL.fmt(k) + ' of 1,000</b> children are stunted (' + SL.fmt(100 * p, 1) + '%). Press a button to ask a random sample.';
+      render();
+    }
+
+    function drawOne(n) {
+      var picked = SL.shuffle(SL.range(N), rand).slice(0, n), hit = 0;
+      picked.forEach(function (j) { if (truth[j]) hit++; });
+      var d = { n: n, hit: hit, est: 100 * hit / n, j: rand() * 2 - 1, picked: picked, id: draws.length };
+      draws.push(d);
+      return d;
+    }
+    function showPicked(d) {
+      cells.forEach(function (c, j) { c.className = truth[j] ? 'st' : ''; });
+      d.picked.forEach(function (j) { cells[j].classList.add('asked'); });
+      var off = d.est - 100 * p;
+      document.getElementById('sampNote').innerHTML = 'You asked <b>' + d.n + '</b> children. <b>' + d.hit + '</b> were stunted, so the estimate is <b>' +
+        SL.fmt(d.est, 1) + '%</b>. The true share is ' + SL.fmt(100 * p, 1) + '%, so this sample was off by ' + SL.fmt(Math.abs(off), 1) + ' points.';
+    }
+    function moe(n) { return 196 * Math.sqrt(p * (1 - p) / n); }
+
+    function render() {
+      var pv = 100 * p, t = d3.transition().duration(SL.dur(400));
+      gBand.selectAll('rect').data(SIZES).join(function (en) {
+        return en.append('rect').attr('x', x(pv)).attr('width', 0);
+      })
+        .attr('y', function (n) { return rowY(n) - rowH * 0.38; }).attr('height', rowH * 0.76).attr('rx', 6)
+        .style('fill', C.val).style('opacity', 0.14)
+        .transition(t)
+        .attr('x', function (n) { return x(pv - moe(n)); })
+        .attr('width', function (n) { return x(pv + moe(n)) - x(pv - moe(n)); });
+      var tl = gTrue.selectAll('line').data([pv]).join(function (en) { return en.append('line').attr('x1', x(pv)).attr('x2', x(pv)); })
+        .attr('y1', M.t - 4).attr('y2', H - M.b).style('stroke', C.ink).style('stroke-width', 2);
+      tl.transition(t).attr('x1', x(pv)).attr('x2', x(pv));
+      var lab = gTrue.selectAll('text').data([pv]).join(function (en) { return en.append('text').attr('x', Math.max(M.l + 60, Math.min(W - M.r - 60, x(pv)))); }).attr('class', 'ln-dlabel')
+        .attr('y', M.t - 10).attr('text-anchor', 'middle').text('True share ' + SL.fmt(pv, 1) + '%');
+      lab.transition(t).attr('x', Math.max(M.l + 60, Math.min(W - M.r - 60, x(pv))));
+
+      var last = draws.length ? draws[draws.length - 1] : null;
+      var dots = gDots.selectAll('circle').data(draws, function (d) { return d.id; });
+      dots.exit().remove();
+      dots.enter().append('circle')
+        .attr('cx', function (d) { return x(d.est); })
+        .attr('cy', function (d) { return rowY(d.n) + d.j * rowH * 0.28; })
+        .attr('r', 0)
+        .style('fill', C.val)
+        .on('pointerenter', function (e, d) { tip.show(e, '<b>Asked ' + d.n + ' children</b><br>' + d.hit + ' stunted → estimate ' + SL.fmt(d.est, 1) + '%<br><span class="muted">True share ' + SL.fmt(100 * p, 1) + '%</span>'); })
+        .on('pointerleave', function () { tip.hide(); })
+        .merge(dots)
+        .style('opacity', function (d) { return d === last ? 1 : 0.55; })
+        .style('stroke', function (d) { return d === last ? C.ink : '#fff'; })
+        .style('stroke-width', function (d) { return d === last ? 2 : 1; })
+        .transition(t)
+        .attr('r', function (d) { return d === last ? 7 : 5; });
+      if (last) gDots.selectAll('circle').filter(function (d) { return d === last; }).raise();
+
+      document.getElementById('sampStats').innerHTML = SIZES.map(function (n) {
+        var ds = draws.filter(function (d) { return d.n === n; }).map(function (d) { return d.est; });
+        var spread = ds.length > 1 ? 'Your ' + ds.length + ' estimates: ' + SL.fmt(d3.min(ds), 1) + '–' + SL.fmt(d3.max(ds), 1) + '%' :
+          ds.length === 1 ? 'Your estimate: ' + SL.fmt(ds[0], 1) + '%' : 'No samples yet';
+        return '<div class="ln-stat"><div class="ln-stat-v">±' + SL.fmt(moe(n), 1) + '</div><div class="ln-stat-l">Margin of error, asking ' + n + ' (points)<br>' + spread + '</div></div>';
+      }).join('');
+    }
+
+    document.querySelectorAll('.ln-btn[data-n]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        lastN = +b.dataset.n;
+        showPicked(drawOne(lastN));
+        render();
+      });
+    });
+    document.getElementById('sampMany').addEventListener('click', function () {
+      var d;
+      for (var k = 0; k < 20; k++) d = drawOne(lastN);
+      showPicked(d);
+      document.getElementById('sampNote').innerHTML += ' <span style="color:var(--ink-subtle)">(The last of 20 samples of ' + lastN + '.)</span>';
+      render();
+    });
+    document.getElementById('sampReset').addEventListener('click', reset);
+    sel.addEventListener('change', reset);
+    reset();
+  }
+
+  /* ── is a change real? ────────────────────────── */
+  function setupChange(R) {
+    var rows = R.map(function (d) {
+      return { name: d.name, a: d['nfhs4.stunted'], b: d['nfhs5.stunted'], diff: d['nfhs5.stunted'] - d['nfhs4.stunted'] };
+    }).sort(function (u, v) { return u.diff - v.diff; });
+    var W = NARROW ? 460 : 900, rowH = NARROW ? 24 : 22;
+    var M = { t: 30, r: NARROW ? 58 : 70, b: 40, l: NARROW ? 134 : 130 };
+    var H = M.t + rows.length * rowH + M.b;
+    var svg = d3.select('#chgSvg').attr('viewBox', [0, 0, W, H]);
+    var x = d3.scaleLinear([5, 55], [M.l, W - M.r]).clamp(true);
+    function y(i) { return M.t + rowH * (i + 0.5); }
+    svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(0,' + (H - M.b) + ')')
+      .call(d3.axisBottom(x).ticks(NARROW ? 5 : 10).tickSize(-(H - M.b - M.t)).tickFormat(''));
+    svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')')
+      .call(d3.axisBottom(x).ticks(NARROW ? 5 : 10).tickFormat(function (v) { return v + '%'; }));
+    svg.append('text').attr('class', 'ln-axis-label').attr('x', W - M.r).attr('y', H - 6).attr('text-anchor', 'end').text('Children under 5 stunted →');
+    svg.append('text').attr('class', 'ln-axis-label').attr('x', W - 4).attr('y', M.t - 10).attr('text-anchor', 'end').text('Change');
+    var gZone = svg.append('g'), gLine = svg.append('g'), gDots = svg.append('g'), gLab = svg.append('g'), gHit = svg.append('g');
+
+    gLab.selectAll('text.nm').data(rows).join('text').attr('class', 'ln-axis-label nm')
+      .attr('x', M.l - 10).attr('y', function (d, i) { return y(i); }).attr('dy', '0.35em').attr('text-anchor', 'end')
+      .style('fill', 'var(--ink-body)').text(function (d) { return d.name; });
+
+    function render(n) {
+      var t = d3.transition().duration(SL.dur(400));
+      rows.forEach(function (d) {
+        var pa = d.a / 100, pb = d.b / 100;
+        d.moe = 196 * Math.sqrt(pa * (1 - pa) / n + pb * (1 - pb) / n);
+        d.clear = Math.abs(d.diff) > d.moe;
+      });
+      gZone.selectAll('rect').data(rows).join(function (en) { return en.append('rect').attr('x', function (d) { return x(d.a); }).attr('width', 0); })
+        .attr('y', function (d, i) { return y(i) - rowH * 0.36; }).attr('height', rowH * 0.72).attr('rx', 4)
+        .style('fill', C.ghost)
+        .transition(t)
+        .attr('x', function (d) { return x(d.a - d.moe); })
+        .attr('width', function (d) { return x(d.a + d.moe) - x(d.a - d.moe); });
+      gLine.selectAll('line').data(rows).join('line')
+        .attr('x1', function (d) { return x(d.a); }).attr('x2', function (d) { return x(d.b); })
+        .attr('y1', function (d, i) { return y(i); }).attr('y2', function (d, i) { return y(i); })
+        .style('stroke', function (d) { return d.clear ? C.ink : 'rgba(15,23,42,.25)'; })
+        .style('stroke-width', function (d) { return d.clear ? 2.5 : 2; });
+      var pts = [];
+      rows.forEach(function (d, i) { pts.push({ d: d, i: i, v: d.a, c: C.train }, { d: d, i: i, v: d.b, c: C.test }); });
+      gDots.selectAll('circle').data(pts).join('circle').attr('class', 'ln-dot').attr('r', NARROW ? 6 : 5.5)
+        .attr('cx', function (p) { return x(p.v); }).attr('cy', function (p) { return y(p.i); })
+        .style('fill', function (p) { return p.c; });
+      gLab.selectAll('text.chg').data(rows).join('text').attr('class', 'ln-axis-label chg')
+        .attr('x', W - 4).attr('y', function (d, i) { return y(i); }).attr('dy', '0.35em').attr('text-anchor', 'end')
+        .style('font-weight', function (d) { return d.clear ? 600 : 400; })
+        .style('fill', function (d) { return d.clear ? 'var(--ink-heading)' : 'var(--ink-subtle)'; })
+        .text(function (d) { return signed(d.diff) + (d.clear ? '' : '?'); });
+      gHit.selectAll('rect').data(rows).join('rect')
+        .attr('x', 0).attr('width', W).attr('y', function (d, i) { return y(i) - rowH / 2; }).attr('height', rowH)
+        .style('fill', 'transparent')
+        .on('pointerenter pointermove', function (e, d) {
+          tip.show(e, '<b>' + d.name + '</b><br>NFHS-4: ' + SL.fmt(d.a, 1) + '% → NFHS-5: ' + SL.fmt(d.b, 1) + '%<br>Change ' + signed(d.diff) + ' points, wobble about ±' + SL.fmt(d.moe, 1) +
+            '<br><span class="muted">' + (d.clear ? 'Bigger than the wobble: likely a real change' : 'Within the wobble: could be chance') + '</span>');
+        })
+        .on('pointerleave', function () { tip.hide(); });
+
+      var fall = rows.filter(function (d) { return d.clear && d.diff < 0; }).length;
+      var rise = rows.filter(function (d) { return d.clear && d.diff > 0; }).length;
+      var unsure = rows.length - fall - rise;
+      var typical = SL.median(rows.map(function (d) { return d.moe; }));
+      document.getElementById('chgStats').innerHTML =
+        '<div class="ln-stat"><div class="ln-stat-v">' + fall + '</div><div class="ln-stat-l">Districts where stunting clearly fell</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + rise + '</div><div class="ln-stat-l">Districts where it clearly rose</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + unsure + '</div><div class="ln-stat-l">Change could be chance (marked ?)</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">±' + SL.fmt(typical, 1) + '</div><div class="ln-stat-l">Typical wobble of a change (points)</div></div>';
+      var nFell = rows.filter(function (d) { return d.diff < 0; }).length;
+      document.getElementById('chgText').innerHTML = 'Stunting went down in <b>' + nFell + ' of 30</b> districts between the two rounds. If about ' + SL.fmt(n) +
+        ' children were measured in each district, the typical wobble of a change is about <b>±' + SL.fmt(typical, 1) + ' points</b>. Then <b>' + fall +
+        '</b> falls and <b>' + rise + '</b> rises are bigger than the wobble. The other <b>' + unsure + '</b> changes could be chance. Try a smaller guess: the wobble grows and fewer changes look certain.';
+    }
+
+    var seg = document.querySelectorAll('.ln-seg button[data-n]');
+    Array.prototype.forEach.call(seg, function (b) {
+      b.addEventListener('click', function () {
+        Array.prototype.forEach.call(seg, function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        render(+b.dataset.n);
+      });
+    });
+    render(500);
+  }
+})();
+</script>
+<script src="../chatbot.js?v=20261005"></script>
+</body>
+</html>

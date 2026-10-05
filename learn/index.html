@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Soochana Learn · Machine learning, explained with Odisha's data</title>
-<meta name="description" content="Visual, interactive explainers of core machine-learning ideas, each built on the portal's own data for Odisha's 30 districts.">
+<title>Soochana Learn · How the numbers work, in pictures</title>
+<meta name="description" content="Simple, visual explainers of how Soochana measures Odisha (fertility, mortality, life expectancy, age structure, projections) and how prediction models work, built on the portal's own data.">
 <link rel="icon" href="../favicon.ico" type="image/x-icon">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20260928-6">
-<link rel="stylesheet" href="learn.css?v=20260929">
+<link rel="stylesheet" href="learn.css?v=20261005">
 <script src="../ui.js?v=20260925-2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="learn.js?v=20260929"></script>
@@ -35,6 +35,22 @@
   .hub-data { margin-top: auto; padding-top: 8px; font-size: 13px; color: var(--ink-subtle); }
   .hub-data b { color: var(--ink-body); font-weight: 500; }
 
+  .hub-track { max-width: var(--ln-w); margin: 46px auto 0; padding: 0 20px; }
+  .hub-track-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: 0 0 14px; }
+  .hub-track-h h2 { font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.02em; color: var(--ink-heading); margin: 0; }
+  .hub-track-h p { margin: 0; font-size: 16px; color: var(--ink-body); flex: 1 1 320px; }
+  .hub-track .hub-grid { padding: 0; margin-top: 0; }
+  .hub-num .ln-track { margin-right: 6px; vertical-align: 1px; }
+  .hub-how { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  .hub-how ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .hub-how li { background: var(--ln-card); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+  .hub-how svg { flex: 0 0 56px; width: 56px; height: 56px; }
+  .hub-how b { display: block; color: var(--ink-heading); font-size: 16px; margin-bottom: 2px; }
+  .hub-how span { font-size: 14.5px; line-height: 1.5; color: var(--ink-body); }
+  .xt-read { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 14px; }
+  .xt-read div { background: var(--ln-soft); border-radius: 10px; padding: 10px 12px; font-size: 14px; line-height: 1.45; display: flex; gap: 10px; align-items: center; }
+  .xt-read i { flex: 0 0 22px; height: 22px; border-radius: 5px; display: block; }
+  @media (max-width: 860px) { .hub-track, .hub-how { padding: 0 16px; } .hub-how ol, .xt-read { grid-template-columns: 1fr; } }
   .xt-wrap { max-width: var(--ln-w); margin: 0 auto; padding: 0 20px; }
   .xt-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: start; }
   .xt-cell { cursor: pointer; }
@@ -74,17 +90,43 @@
 <main>
   <section class="ln-hero">
     <div class="ln-kicker">Soochana Learn</div>
-    <h2 class="ln-title">Machine learning, <em>explained with Odisha's data</em></h2>
-    <p class="ln-dek">Six visual essays on the ideas behind prediction models. Each one uses the portal's own figures for Odisha's 30 districts (literacy, child health, fertility, tribal share and more) and runs every model live in your browser.</p>
-    <div class="ln-byline">By <b>DIU Team</b> · Sources: Census 2011, NFHS-4 and NFHS-5, UDISE+, Government of Odisha</div>
+    <h2 class="ln-title">How the numbers work, <em>in pictures</em></h2>
+    <p class="ln-dek">Short visual lessons on how Soochana measures Odisha, and how prediction models use those numbers. No maths needed. Every example is a real district.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Sources: Census of India, NFHS-4, 5 and 6, SRS, UDISE+, Government of Odisha</div>
   </section>
 
-  <div class="hub-grid" id="hubGrid"></div>
+  <section class="hub-how" aria-label="How each lesson works">
+    <ol>
+      <li><svg viewBox="0 0 56 56" aria-hidden="true"><rect x="4" y="10" width="48" height="36" rx="8" style="fill:#f2f1ec"/><circle cx="17" cy="28" r="6" style="fill:var(--ln-train)"/><path d="M27 28h4" style="stroke:#64748b;stroke-width:2.5;stroke-linecap:round;fill:none"/><circle cx="41" cy="28" r="6" style="fill:var(--ln-test)"/></svg>
+        <div><b>1. See the idea</b><span>Each lesson opens with the whole idea in one picture, and a few words to know.</span></div></li>
+      <li><svg viewBox="0 0 56 56" aria-hidden="true"><rect x="4" y="10" width="48" height="36" rx="8" style="fill:#f2f1ec"/><path d="M12 36 L22 26 L30 31 L43 19" style="stroke:#0f172a;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round"/><circle cx="43" cy="19" r="4" style="fill:var(--ln-val)"/></svg>
+        <div><b>2. Play with it</b><span>Move sliders, press buttons and hover the charts. Every number comes from the portal's own data.</span></div></li>
+      <li><svg viewBox="0 0 56 56" aria-hidden="true"><rect x="4" y="10" width="48" height="36" rx="8" style="fill:#f2f1ec"/><path d="M17 29 l7 7 l15 -16" style="stroke:var(--ln-train);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round"/></svg>
+        <div><b>3. Remember three things</b><span>Each lesson ends with the three points worth keeping.</span></div></li>
+    </ol>
+  </section>
+
+  <section class="hub-track" aria-labelledby="trackM">
+    <div class="hub-track-h">
+      <span class="ln-track is-measure">Track 1</span>
+      <h2 id="trackM">How we measure</h2>
+      <p>Where Soochana's numbers come from and what they mean: rates, fertility, life expectancy, age structure and the projections to 2036.</p>
+    </div>
+    <div class="hub-grid" id="hubMeasure"></div>
+  </section>
+
+  <section class="hub-track" aria-labelledby="trackML">
+    <div class="hub-track-h">
+      <span class="ln-track is-ml">Track 2</span>
+      <h2 id="trackML">Machine learning</h2>
+      <p>How a computer can learn patterns from the 30 districts, how to check it honestly, and where it can go wrong.</p>
+    </div>
+    <div class="hub-grid" id="hubGrid"></div>
+  </section>
 
   <div class="ln-prose">
-    <h2>The data behind the explainers</h2>
-    <p>Every explainer draws on one table: the portal's district profiles, mortality and nutrition figures, fertility estimates, population projections and school statistics, joined into <b data-v="nFeat"></b> indicators for each of the <b data-v="nDist"></b> districts. The matrix below cross-tabulates them. Each square shows how closely two indicators move together across the districts.</p>
-    <p>Choose a square to see the districts behind it.</p>
+    <h2>Which numbers move together?</h2>
+    <p>The lessons in Track 2 use one table: <b data-v="nFeat"></b> indicators for each of the <b data-v="nDist"></b> districts. The grid below compares every pair. Each square answers one question: <em>when one number is high in a district, is the other one high too?</em></p>
   </div>
   <div class="xt-wrap">
     <div class="ln-figure">
@@ -93,8 +135,9 @@
           <button aria-pressed="true" data-set="core">Key indicators</button>
           <button aria-pressed="false" data-set="all">All indicators</button>
         </div>
-        <span style="color:var(--ink-subtle)">Correlation across the 30 districts</span>
+        <span style="color:var(--ink-subtle)">Click any square to see the districts behind it</span>
       </div>
+      <div class="xt-read" id="xtRead"></div>
       <div class="xt-layout">
         <div>
           <svg id="xtSvg" role="img" aria-label="Correlation matrix of district indicators"></svg>
@@ -112,13 +155,13 @@
   <div class="ln-prose">
     <div class="ln-callout warn">
       <span class="ln-callout-t">Moving together is not causing</span>
-      A strong correlation says two indicators rise and fall together across districts. It does not say one drives the other: both may follow a third factor such as income, remoteness or when the district was surveyed. With only 30 districts, a correlation near ±0.3 can easily arise by chance.
+      Two numbers can rise and fall together without one causing the other. Both may follow a third thing, such as income or remoteness. And with only 30 districts, a weak link (a pale square, around ±0.3) can appear by pure chance.
     </div>
   </div>
 
   <section class="ln-notes">
     <h2>About Soochana Learn</h2>
-    <p>Inspired by <a href="https://mlu-explain.github.io/" target="_blank" rel="noopener noreferrer">MLU-Explain</a>, Amazon's visual machine-learning essays, and rebuilt around Odisha's own statistics so that every example is a real district. The models are deliberately small and transparent: they are there to teach how prediction works and where it goes wrong, not to rank districts or guide funding. The modelling table is built by <code>learn/tools/build_learn_data.py</code> from files already in the portal. <a href="data/districts.json">Download the table (JSON)</a>.</p>
+    <p>Track 1 explains the methods behind the figures shown across Soochana: Census counts, NFHS survey estimates, SRS vital rates, and the DIU population and fertility projections (Bayesian approach). Where a picture is an illustration rather than real data, the lesson says so. Track 2 is inspired by <a href="https://mlu-explain.github.io/" target="_blank" rel="noopener noreferrer">MLU-Explain</a>, Amazon's visual machine-learning essays, rebuilt around Odisha's own statistics. Its models are deliberately small and transparent: they teach how prediction works and where it goes wrong, not to rank districts or guide funding. The modelling table is built by <code>learn/tools/build_learn_data.py</code> from files already in the portal. <a href="data/districts.json">Download the table (JSON)</a>.</p>
   </section>
 </main>
 
@@ -136,26 +179,149 @@
   var C = { train: SL.color('train'), val: SL.color('val'), test: SL.color('test'), fit: SL.color('fit') };
   var tip = SL.tooltip();
 
+  var MEASURES = [
+    { n: 'M1', href: 'where-numbers-come-from.html', t: 'Where the numbers come from',
+      d: 'Count everyone, ask a sample, or record every birth and death: the three ways Soochana gets its figures.',
+      data: 'Census, NFHS and SRS', thumb: 'sources' },
+    { n: 'M2', href: 'rates-and-ratios.html', t: 'Rates and ratios',
+      d: 'Why we say "28 per 1,000" and not just "28": making a big district and a small one comparable.',
+      data: 'Infant mortality, sex ratio, growth', thumb: 'waffle' },
+    { n: 'M3', href: 'fertility-rate.html', t: 'Total Fertility Rate',
+      d: 'What "1.8 children per woman" really means, and why 2.1 is the number to watch.',
+      data: 'District fertility, 2020–2036', thumb: 'tfr' },
+    { n: 'M4', href: 'life-expectancy.html', t: 'Life Expectancy',
+      d: 'Follow 100 imaginary babies through life to see where "70.4 years" comes from.',
+      data: 'SRS and NFHS-based estimates', thumb: 'survive' },
+    { n: 'M5', href: 'age-structure.html', t: 'Age Structure',
+      d: 'Read a population pyramid, and see how many children and elders each worker supports.',
+      data: 'Odisha by age, 1991–2036', thumb: 'pyramid' },
+    { n: 'M6', href: 'projections.html', t: 'Projecting the Future',
+      d: 'How we estimate Odisha in 2036: age everyone forward, add births, remove deaths, and show the range.',
+      data: 'DIU projections (Bayesian approach)', thumb: 'project' },
+  ];
+
   var ESSAYS = [
     { n: '01', href: 'train-test-validation.html', t: 'Train, Test and Validation',
-      d: 'Why a model graded on answers it has already seen always looks clever, and how to measure it honestly.',
+      d: 'A model must be tested on districts it has never seen. Here is how, and why.',
       data: 'Female literacy and child stunting', thumb: 'split' },
     { n: '02', href: 'bias-variance.html', t: 'The Bias–Variance Tradeoff',
-      d: 'Too simple and a model misses the pattern; too flexible and it chases noise. Finding the sweet spot.',
+      d: 'Too simple misses the pattern; too flexible copies the noise. Finding the middle.',
       data: 'District health and literacy', thumb: 'fan' },
     { n: '03', href: 'logistic-regression.html', t: 'Logistic Regression',
-      d: 'Turning a straight line into a probability: how likely is a district to have above-average stunting?',
+      d: 'Turning a score into a chance: how likely is a district to have high child stunting?',
       data: 'Female literacy and child stunting', thumb: 'sigmoid' },
     { n: '04', href: 'decision-tree.html', t: 'Decision Trees',
-      d: 'A model that plays twenty questions with the data, splitting districts until each group is alike.',
+      d: 'A model that asks yes-or-no questions, one after another, until each group of districts is alike.',
       data: 'Child health, literacy and tribal share', thumb: 'tree' },
     { n: '05', href: 'neural-networks.html', t: 'Neural Networks',
-      d: 'Stacking simple neurons into a model that can bend its decision boundary, and why that can backfire on 30 districts.',
+      d: 'Many tiny calculators joined together can draw curved boundaries, and can also over-learn 30 districts.',
       data: 'Child stunting from two district traits', thumb: 'net' },
     { n: '06', href: 'equality-of-odds.html', t: 'Equality of Odds',
-      d: 'A targeting model can under-serve a group even when it never sees group membership. What "fair" can mean.',
+      d: 'Can a model be unfair to tribal districts even when it never sees who is tribal? What "fair" can mean.',
       data: 'Nutrition targeting and tribal-majority districts', thumb: 'fair' },
   ];
+
+  /* ── Track 1 cards: drawn from the state and district files ── */
+  function card(grid, e, track, draw) {
+    var a = grid.append('a').attr('class', 'hub-card').attr('href', e.href);
+    var th = a.append('span').attr('class', 'hub-thumb').attr('aria-hidden', 'true');
+    var body = a.append('div').attr('class', 'hub-body');
+    body.append('span').attr('class', 'hub-num').html('<span class="ln-track ' + (track === 'm' ? 'is-measure' : 'is-ml') + '">' + (track === 'm' ? 'How we measure' : 'Machine learning') + '</span>' + e.n);
+    body.append('h3').attr('class', 'hub-title').text(e.t);
+    body.append('p').attr('class', 'hub-desc').text(e.d);
+    body.append('span').attr('class', 'hub-data').html('Data: <b>' + e.data + '</b>');
+    var svg = th.append('svg').attr('viewBox', '0 0 320 180').attr('preserveAspectRatio', 'xMidYMid meet');
+    try { draw(svg); } catch (err) { console.error(err); }
+  }
+  var INK = '#0f172a', GHOST = 'rgba(15,23,42,.16)';
+  function txt(svg, x, y, s, o) {
+    o = o || {};
+    return svg.append('text').attr('x', x).attr('y', y).attr('font-size', o.size || 12).attr('text-anchor', o.anchor || 'start')
+      .attr('fill', o.fill || '#334155').attr('font-weight', o.weight || 500).text(s);
+  }
+  Promise.all([
+    fetch('../datasets/state_demographics.json').then(function (r) { return r.json(); }),
+    fetch('../datasets/district_fertility_trends.json').then(function (r) { return r.json(); }),
+  ]).then(function (res) {
+    var SD = res[0], FT = res[1];
+    var POP = SD.population_trends.filter(function (d) { return typeof d.total === 'number' && d.total > 1e6; });
+    var M_THUMBS = {
+      sources: function (svg) {
+        /* census: every square filled · survey: a few · registration: a running tally */
+        var cols = [[40, 'Census', 'count all', function () { return true; }],
+                    [130, 'Survey', 'ask a sample', function (k) { return [3, 9, 14, 20, 27, 33].indexOf(k) !== -1; }]];
+        cols.forEach(function (c) {
+          for (var k = 0; k < 36; k++) {
+            svg.append('rect').attr('x', c[0] + (k % 6) * 10).attr('y', 42 + Math.floor(k / 6) * 10).attr('width', 8).attr('height', 8).attr('rx', 2)
+              .attr('fill', c[3](k) ? (c[0] === 40 ? C.train : C.val) : GHOST);
+          }
+          txt(svg, c[0] + 29, 126, c[1], { anchor: 'middle', fill: INK, weight: 600 });
+          txt(svg, c[0] + 29, 141, c[2], { anchor: 'middle', size: 11 });
+        });
+        svg.append('line').attr('x1', 220).attr('x2', 290).attr('y1', 72).attr('y2', 72).style('stroke', GHOST).style('stroke-width', '2px');
+        [226, 236, 251, 259, 274, 283].forEach(function (x, k) {
+          svg.append('line').attr('x1', x).attr('x2', x).attr('y1', 60).attr('y2', 84).style('stroke', k % 2 ? C.test : INK).style('stroke-width', '2.5px');
+        });
+        txt(svg, 255, 126, 'Registration', { anchor: 'middle', fill: INK, weight: 600 });
+        txt(svg, 255, 141, 'record all year', { anchor: 'middle', size: 11 });
+      },
+      waffle: function (svg) {
+        /* 1,000 babies, 28 of them orange: Odisha's infant mortality rate (SRS) */
+        for (var k = 0; k < 1000; k++) {
+          svg.append('rect').attr('x', 30 + (k % 50) * 4.2).attr('y', 30 + Math.floor(k / 50) * 6).attr('width', 3.4).attr('height', 4.8)
+            .attr('fill', k >= 972 ? C.test : 'rgba(15,23,42,.13)');
+        }
+        txt(svg, 250, 92, '28', { size: 30, fill: C.test, weight: 600 });
+        txt(svg, 250, 110, 'per 1,000', { size: 11 });
+        txt(svg, 250, 124, 'babies', { size: 11 });
+      },
+      tfr: function (svg) {
+        var names = Object.keys(FT), vals = names.map(function (n) { return FT[n]['2020']; }).filter(function (v) { return v != null; }).sort(d3.ascending);
+        /* one bar per district, sorted, against the 2.1 replacement line */
+        var y = d3.scaleLinear([0, 3], [150, 20]), bw = 260 / vals.length;
+        vals.forEach(function (v, k) {
+          svg.append('rect').attr('x', 30 + k * bw).attr('y', y(v)).attr('width', bw - 1.6).attr('height', y(0) - y(v)).attr('rx', 1.5)
+            .attr('fill', v >= 2.1 ? C.test : C.train);
+        });
+        svg.append('line').attr('x1', 26).attr('x2', 294).attr('y1', y(2.1)).attr('y2', y(2.1)).style('stroke', INK).style('stroke-width', '1.4px').style('stroke-dasharray', '4 4');
+        txt(svg, 30, y(2.1) - 6, '2.1 = replacement level', { size: 11, fill: INK, weight: 600 });
+        txt(svg, 30, 168, '30 districts, children per woman, 2020', { size: 11 });
+      },
+      survive: function (svg) {
+        /* illustrative survival curve: share of 100 babies still alive by age */
+        var x = d3.scaleLinear([0, 100], [30, 300]), y = d3.scaleLinear([0, 1], [150, 24]);
+        function s(a) { return 0.972 * Math.exp(-0.00004 / 0.095 * (Math.exp(0.095 * a) - 1)) * Math.exp(-0.0015 * a); }
+        var pts = d3.range(0, 101, 1).map(function (a) { return [x(a), y(a === 0 ? 1 : s(a))]; });
+        svg.append('path').attr('d', d3.area().x(function (p) { return p[0]; }).y0(y(0)).y1(function (p) { return p[1]; })(pts)).style('fill', 'rgba(0,137,158,.16)').style('stroke', 'none');
+        svg.append('path').attr('d', d3.line()(pts)).style('fill', 'none').style('stroke', C.train).style('stroke-width', '2.5px');
+        svg.append('line').attr('x1', x(70.4)).attr('x2', x(70.4)).attr('y1', 24).attr('y2', 150).style('stroke', C.test).style('stroke-width', '1.6px').style('stroke-dasharray', '4 4');
+        txt(svg, x(70.4) + 5, 36, '70.4 years', { size: 11, fill: C.test, weight: 600 });
+        txt(svg, 30, 168, 'Share of 100 babies still alive, by age', { size: 11 });
+      },
+      pyramid: function (svg) {
+        var P = SD.pyramids['2021'], max = d3.max(P, function (d) { return Math.max(d.male, d.female); });
+        var w = d3.scaleLinear([0, max], [0, 120]), h = 140 / P.length;
+        P.forEach(function (d, k) {
+          var yy = 160 - (k + 1) * h, i = parseInt(d.age, 10), col = i < 15 ? C.train : i < 60 ? C.val : C.test;
+          svg.append('rect').attr('x', 160 - w(d.male) - 1).attr('y', yy).attr('width', w(d.male)).attr('height', h - 1.2).attr('fill', col).attr('opacity', 0.85);
+          svg.append('rect').attr('x', 161).attr('y', yy).attr('width', w(d.female)).attr('height', h - 1.2).attr('fill', col).attr('opacity', 0.55);
+        });
+        txt(svg, 30, 168, 'Men', { size: 11 }); txt(svg, 290, 168, 'Women', { size: 11, anchor: 'end' });
+        txt(svg, 160, 174, 'Odisha, 2021', { size: 11, anchor: 'middle', fill: INK, weight: 600 });
+      },
+      project: function (svg) {
+        var x = d3.scaleLinear([1901, 2036], [24, 300]), y = d3.scaleLinear([0, 5.6e7], [154, 22]);
+        var past = POP.filter(function (d) { return d.year <= 2011; }), fut = POP.filter(function (d) { return d.year >= 2011; });
+        var band = fut.map(function (d) { var k = (d.year - 2011) / 25; return [x(d.year), y(d.total * (1 + 0.05 * k)), y(d.total * (1 - 0.05 * k))]; });
+        svg.append('path').attr('d', d3.area().x(function (p) { return p[0]; }).y0(function (p) { return p[2]; }).y1(function (p) { return p[1]; })(band)).style('fill', 'rgba(212,70,15,.14)').style('stroke', 'none');
+        svg.append('path').attr('d', d3.line()(past.map(function (d) { return [x(d.year), y(d.total)]; }))).style('fill', 'none').style('stroke', INK).style('stroke-width', '2.2px');
+        svg.append('path').attr('d', d3.line()(fut.map(function (d) { return [x(d.year), y(d.total)]; }))).style('fill', 'none').style('stroke', C.test).style('stroke-width', '2.2px').style('stroke-dasharray', '5 4');
+        txt(svg, 24, 168, 'Census 1901–2011', { size: 11 }); txt(svg, 300, 168, 'projected to 2036', { size: 11, anchor: 'end', fill: C.test });
+      },
+    };
+    var gm = d3.select('#hubMeasure');
+    MEASURES.forEach(function (e) { card(gm, e, 'm', M_THUMBS[e.thumb]); });
+  }).catch(function (err) { console.error(err); });
 
   SL.loadData().then(function (data) {
     var D = data.districts, meta = data.meta;
@@ -243,16 +409,7 @@
     };
 
     var grid = d3.select('#hubGrid');
-    ESSAYS.forEach(function (e) {
-      var a = grid.append('a').attr('class', 'hub-card').attr('href', e.href);
-      var th = a.append('span').attr('class', 'hub-thumb').attr('aria-hidden', 'true');
-      var body = a.append('div').attr('class', 'hub-body');
-      body.append('span').attr('class', 'hub-num').text('Explainer ' + e.n);
-      body.append('h3').attr('class', 'hub-title').text(e.t);
-      body.append('p').attr('class', 'hub-desc').text(e.d);
-      body.append('span').attr('class', 'hub-data').html('Data: <b>' + e.data + '</b>');
-      THUMBS[e.thumb](th.append('svg').attr('viewBox', '0 0 320 180').attr('preserveAspectRatio', 'xMidYMid meet'));
-    });
+    ESSAYS.forEach(function (e) { card(grid, e, 'ml', THUMBS[e.thumb]); });
 
 
     /* ── cross-tab (correlation matrix) ────────── */
@@ -269,6 +426,14 @@
     /* diverging: teal (−1) → neutral grey (0) → orange (+1) */
     var div = d3.scaleLinear([-1, 0, 1], [C.train, '#eceae4', C.test]).interpolate(d3.interpolateLab).clamp(true);
     document.getElementById('xtBar').style.background = 'linear-gradient(90deg,' + div(-1) + ',' + div(0) + ',' + div(1) + ')';
+
+    /* how to read a square, with a real example for each colour */
+    function rOf(a, b) { var rr = SL.rows(D, [a, b]); return SL.corr(rr.map(function (d) { return d[a]; }), rr.map(function (d) { return d[b]; })); }
+    var exNeg = rOf('f.female_lit', 'nfhs5.stunted'), exPos = rOf('nfhs5.imr', 'nfhs5.u5mr');
+    document.getElementById('xtRead').innerHTML =
+      '<div><i style="background:' + div(0.85) + '"></i><span><b>Dark orange:</b> both high together. Infant and child deaths: ' + (exPos >= 0 ? '+' : '−') + SL.fmt(Math.abs(exPos), 2) + '</span></div>' +
+      '<div><i style="background:' + div(0) + ';border:1px solid rgba(15,23,42,.12)"></i><span><b>Pale:</b> no clear link. Knowing one tells you little about the other.</span></div>' +
+      '<div><i style="background:' + div(-0.85) + '"></i><span><b>Dark teal:</b> one high, the other low. Women\'s literacy and stunting: ' + (exNeg >= 0 ? '+' : '−') + SL.fmt(Math.abs(exNeg), 2) + '</span></div>';
 
     var set = 'core', sel = ['f.female_lit', 'nfhs5.stunted'];
     function drawMatrix() {

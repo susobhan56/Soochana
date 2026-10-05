@@ -34,9 +34,12 @@ One document of the whole home page: Odisha at a glance, the six-chapter story (
 
 ## Soochana Learn
 
-Visual machine-learning explainers in the style of [MLU-Explain](https://mlu-explain.github.io/), built on the portal's own data for the 30 districts. Linked from every page header as **Learn**; start at `learn/index.html`.
+Simple, visual lessons in two tracks, built on the portal's own data. Linked from every page header as **Learn**; start at `learn/index.html`.
 
-- Pages: `learn/train-test-validation.html`, `bias-variance.html`, `logistic-regression.html`, `decision-tree.html`, `neural-networks.html`, `equality-of-odds.html`, plus the hub `learn/index.html` (cards and an indicator correlation matrix).
+- **Track 1, How we measure** (the methods behind the portal's own figures): `learn/where-numbers-come-from.html` (Census, NFHS, SRS; samples and margin of error), `rates-and-ratios.html` (per 1,000, IMR, MMR, sex ratio, growth rate), `fertility-rate.html` (TFR, replacement level), `life-expectancy.html`, `age-structure.html` (pyramids, dependency ratio), `projections.html` (cohort-component method, the Bayesian approach). They read `datasets/*.json` directly. Pictures that are illustrations rather than real data say so in their captions.
+- **Track 2, Machine learning** (in the style of [MLU-Explain](https://mlu-explain.github.io/)): `learn/train-test-validation.html`, `bias-variance.html`, `logistic-regression.html`, `decision-tree.html`, `neural-networks.html`, `equality-of-odds.html`.
+- Every lesson follows one pattern, so it reads simply: the idea in one picture (`.ln-gist`) and "Words to know" (`.ln-words`) at the top; one plain question per section with one chart; a "Remember" box (`.ln-remember`) at the end; technical detail only in "Data and method". The components are at the end of `learn/learn.css`.
+- The hub `learn/index.html` has both tracks' cards and an indicator correlation matrix.
 - Shared code: `learn/learn.js` (models, metrics, seeded splits, the scroll engine) and `learn/learn.css`. Every model runs in the browser, so no number in the prose is typed in by hand.
 - Data: `learn/data/districts.json`, one row per district with about 40 indicators. It is generated. After the source files in `datasets/` or `excel/` change, rebuild it with `python learn/tools/build_learn_data.py` (standard library only). The script prints any value it could not find.
 - Tests: `tests/learn.test.js` checks the maths against the real table.

@@ -306,3 +306,133 @@ input[type=range] { accent-color: var(--teal); width: 150px; }
   box-shadow: none !important;
   transform: none !important;
 }
+
+/* ══════════════════════════════════════════════════════════
+   SIMPLE-FIRST COMPONENTS (Oct 2026)
+   Every page opens with the idea in one picture before any detail.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── "The idea in one picture": 2–4 panels joined by arrows ── */
+.ln-gist {
+  max-width: 1040px; margin: 0 auto 34px; padding: 0 20px;
+}
+.ln-gist-box {
+  background: var(--ln-card); border: 1px solid var(--border);
+  border-radius: 18px; padding: 22px 22px 18px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.03), 0 22px 44px -30px rgba(0,0,0,.22);
+}
+.ln-gist-k {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--teal); margin: 0 0 14px;
+}
+.ln-gist-k::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--orange-lit); }
+.ln-gist-panels {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+  gap: 34px; position: relative;
+}
+.ln-gist-p { margin: 0; position: relative; display: flex; flex-direction: column; gap: 10px; }
+/* the arrow between panels */
+.ln-gist-p + .ln-gist-p::before {
+  content: '→'; position: absolute; left: -26px; top: 34%;
+  font-size: 22px; line-height: 1; color: var(--ink-subtle);
+}
+.ln-gist-art {
+  background: var(--ln-soft); border-radius: 12px; aspect-ratio: 4 / 3;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.ln-gist-art svg { width: 100%; height: 100%; display: block; }
+.ln-gist-p figcaption { font-size: 15px; line-height: 1.5; color: var(--ink-body); }
+.ln-gist-p figcaption > b:first-child { display: block; color: var(--ink-heading); font-size: 16px; margin-bottom: 2px; }
+.ln-gist-p figcaption b { color: var(--ink-heading); }
+.ln-gist-n {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; margin-right: 6px;
+  background: var(--ink-heading); color: #fff; font-size: 12px; font-weight: 600; vertical-align: 1px;
+}
+.ln-gist-sum {
+  margin: 18px 0 0; padding: 14px 16px; border-radius: 12px;
+  background: color-mix(in srgb, var(--teal) 7%, var(--ln-card));
+  font-size: 18px; line-height: 1.5; color: var(--ink-heading); font-weight: 500;
+}
+.ln-gist-sum::before { content: 'In one line: '; font-weight: 600; color: var(--teal); }
+
+/* ── "Words to know": a small glossary of chips ── */
+.ln-words {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px; margin: 14px 0 0; padding: 0;
+}
+.ln-words > div {
+  background: var(--ln-soft); border-radius: 10px; padding: 10px 12px; margin: 0;
+}
+.ln-words dt { font-size: 14px; font-weight: 600; color: var(--ink-heading); margin: 0 0 2px; }
+.ln-words dd { font-size: 13.5px; line-height: 1.45; color: var(--ink-body); margin: 0; }
+
+/* ── the formula as a sentence: [box] ÷ [box] × 1,000 ── */
+.ln-recipe {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 12px;
+  margin: 22px 0; padding: 18px 16px; border-radius: 14px; background: var(--ln-soft);
+  font-size: 17px; color: var(--ink-heading);
+}
+.ln-recipe-box {
+  display: inline-flex; flex-direction: column; align-items: center; text-align: center;
+  background: var(--ln-card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 8px 14px; min-width: 110px; line-height: 1.3;
+}
+.ln-recipe-box b { font-size: 22px; font-variant-numeric: tabular-nums; }
+.ln-recipe-box small { font-size: 12.5px; color: var(--ink-subtle); }
+.ln-recipe-op { font-size: 24px; color: var(--ink-subtle); font-weight: 500; }
+.ln-recipe-box.is-result { background: var(--ink-heading); color: #fff; border-color: var(--ink-heading); }
+.ln-recipe-box.is-result small { color: rgba(255,255,255,.75); }
+
+/* ── "Remember" box at the end of every page ── */
+.ln-remember {
+  background: var(--ln-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px 20px 8px; margin: 30px 0;
+}
+.ln-remember-t { font-size: 13px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--orange); margin: 0 0 10px; }
+.ln-remember ol { counter-reset: rem; list-style: none; padding: 0; margin: 0; }
+.ln-remember li { counter-increment: rem; position: relative; padding: 0 0 12px 38px; font-size: 16.5px; line-height: 1.55; }
+.ln-remember li::before {
+  content: counter(rem); position: absolute; left: 0; top: 0;
+  width: 26px; height: 26px; border-radius: 50%; background: var(--ln-soft);
+  color: var(--ink-heading); font-weight: 600; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── "Where you see this on Soochana" link strip ── */
+.ln-seeit {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  font-size: 14px; color: var(--ink-subtle); margin: 4px 0 18px;
+}
+.ln-seeit a {
+  display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+  padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--ln-card); color: var(--ink-heading); font-weight: 500;
+}
+.ln-seeit a:hover { border-color: var(--teal); color: var(--teal); }
+
+/* ── a waffle of people (100 or 1,000 small squares) ── */
+.ln-waffle { display: grid; gap: 2px; }
+.ln-waffle i { display: block; aspect-ratio: 1; border-radius: 2px; background: var(--ln-ghost); transition: background .25s var(--ease); }
+
+/* ── track label on hub cards / page kickers ── */
+.ln-track {
+  display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 999px; background: var(--ln-soft); color: var(--ink-body);
+}
+.ln-track.is-measure { background: color-mix(in srgb, var(--ln-train) 12%, #fff); color: #005f6e; }
+.ln-track.is-ml { background: color-mix(in srgb, var(--ln-val) 12%, #fff); color: #5b37a3; }
+
+@media (max-width: 860px) {
+  .ln-gist { padding: 0 16px; }
+  .ln-gist-box { padding: 16px 14px 14px; }
+  .ln-gist-panels { grid-auto-flow: row; grid-auto-columns: auto; gap: 30px; }
+  .ln-gist-p + .ln-gist-p::before { content: '↓'; left: 50%; top: -26px; transform: translateX(-50%); }
+  .ln-gist-art { aspect-ratio: 16 / 9; }
+  .ln-gist-sum { font-size: 16.5px; }
+  .ln-recipe { font-size: 15px; }
+  .ln-recipe-box { min-width: 90px; padding: 6px 10px; }
+  .ln-recipe-box b { font-size: 19px; }
+}
+@media (prefers-reduced-motion: reduce) { .ln-waffle i { transition: none; } }

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20260928-6">
-<link rel="stylesheet" href="learn.css?v=20260929">
+<link rel="stylesheet" href="learn.css?v=20261005">
 <script src="../ui.js?v=20260925-2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="learn.js?v=20260929"></script>
@@ -41,15 +41,91 @@
 
 <main>
   <section class="ln-hero">
-    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · 01</div>
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-ml">Machine learning</span> · 01</div>
     <h2 class="ln-title">Train, Test <em>and</em> Validation</h2>
-    <p class="ln-dek">A model that has seen the answers will always look clever. Here is how to find out whether it has actually learned something, using child stunting across Odisha's 30 districts.</p>
+    <p class="ln-dek">A model that has already seen the answers will always look clever, so we test it on districts it has never seen.</p>
     <div class="ln-byline">By <b>DIU Team</b> · Data: Census 2011, NFHS-4 and NFHS-5 · Every number on this page is computed live in your browser</div>
   </section>
 
+  <section class="ln-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="Thirty districts dealt into three piles: 18 for training, 6 for validation and 6 for test">
+            <text x="120" y="24" text-anchor="middle" style="font-size:13px;font-weight:600;fill:#0f172a">30 districts, shuffled</text>
+            <line x1="104" y1="34" x2="62" y2="56" style="stroke:#94a3b8;stroke-width:1.5"/>
+            <line x1="120" y1="34" x2="146" y2="58" style="stroke:#94a3b8;stroke-width:1.5"/>
+            <line x1="136" y1="34" x2="204" y2="58" style="stroke:#94a3b8;stroke-width:1.5"/>
+            <g style="fill:var(--ln-train)">
+              <circle cx="20" cy="70" r="5.5"/><circle cx="34" cy="70" r="5.5"/><circle cx="48" cy="70" r="5.5"/><circle cx="62" cy="70" r="5.5"/><circle cx="76" cy="70" r="5.5"/><circle cx="90" cy="70" r="5.5"/>
+              <circle cx="20" cy="84" r="5.5"/><circle cx="34" cy="84" r="5.5"/><circle cx="48" cy="84" r="5.5"/><circle cx="62" cy="84" r="5.5"/><circle cx="76" cy="84" r="5.5"/><circle cx="90" cy="84" r="5.5"/>
+              <circle cx="20" cy="98" r="5.5"/><circle cx="34" cy="98" r="5.5"/><circle cx="48" cy="98" r="5.5"/><circle cx="62" cy="98" r="5.5"/><circle cx="76" cy="98" r="5.5"/><circle cx="90" cy="98" r="5.5"/>
+            </g>
+            <g style="fill:var(--ln-val)">
+              <circle cx="132" cy="70" r="5.5"/><circle cx="146" cy="70" r="5.5"/><circle cx="160" cy="70" r="5.5"/>
+              <circle cx="132" cy="84" r="5.5"/><circle cx="146" cy="84" r="5.5"/><circle cx="160" cy="84" r="5.5"/>
+            </g>
+            <g style="fill:var(--ln-test)">
+              <circle cx="192" cy="70" r="5.5"/><circle cx="206" cy="70" r="5.5"/><circle cx="220" cy="70" r="5.5"/>
+              <circle cx="192" cy="84" r="5.5"/><circle cx="206" cy="84" r="5.5"/><circle cx="220" cy="84" r="5.5"/>
+            </g>
+            <text x="55" y="128" text-anchor="middle" style="font-size:12px;font-weight:600;fill:var(--ln-train)">Training 18</text>
+            <text x="146" y="128" text-anchor="middle" style="font-size:12px;font-weight:600;fill:var(--ln-val)">Validation 6</text>
+            <text x="206" y="128" text-anchor="middle" style="font-size:12px;font-weight:600;fill:var(--ln-test)">Test 6</text>
+            <text x="120" y="160" text-anchor="middle" style="font-size:11px;fill:#64748b">One dot = one district</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">1</span>Deal three piles</b>Shuffle the 30 districts. Deal 18 into training, 6 into validation and 6 into test.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="The model's line is drawn through the teal training dots; violet validation dots show how far it misses">
+            <path d="M28,22V152H226" style="fill:none;stroke:rgba(15,23,42,.25);stroke-width:1.5"/>
+            <path d="M35,50L215,135" style="fill:none;stroke:#0f172a;stroke-width:2.5"/>
+            <g style="fill:var(--ln-train)">
+              <circle cx="45" cy="52" r="5.5"/><circle cx="60" cy="68" r="5.5"/><circle cx="72" cy="60" r="5.5"/><circle cx="96" cy="84" r="5.5"/><circle cx="108" cy="76" r="5.5"/>
+              <circle cx="124" cy="96" r="5.5"/><circle cx="140" cy="94" r="5.5"/><circle cx="162" cy="114" r="5.5"/><circle cx="176" cy="108" r="5.5"/><circle cx="198" cy="130" r="5.5"/><circle cx="208" cy="122" r="5.5"/>
+            </g>
+            <path d="M82,59V72M150,104V118M185,108V121" style="fill:none;stroke:var(--ln-val);stroke-width:1.5;stroke-dasharray:3 3"/>
+            <g style="fill:var(--ln-val)"><circle cx="82" cy="58" r="5.5"/><circle cx="150" cy="119" r="5.5"/><circle cx="185" cy="107" r="5.5"/></g>
+            <text x="216" y="40" text-anchor="end" style="font-size:12px;font-weight:600;fill:var(--ln-train)">learn from these</text>
+            <text x="216" y="56" text-anchor="end" style="font-size:12px;font-weight:600;fill:var(--ln-val)">check on these</text>
+            <text x="40" y="170" style="font-size:11px;fill:#64748b">Illustration, not real data</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Learn, then choose</b>The model learns only from the training pile. The validation pile helps us pick the best model.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="The test pile is opened once at the end to give an honest score">
+            <rect x="26" y="74" width="104" height="70" rx="10" style="fill:#fff;stroke:rgba(15,23,42,.3);stroke-width:1.5"/>
+            <rect x="26" y="62" width="104" height="11" rx="4" transform="rotate(-20 26 73)" style="fill:rgba(15,23,42,.14)"/>
+            <g style="fill:var(--ln-test)">
+              <circle cx="52" cy="96" r="6"/><circle cx="78" cy="96" r="6"/><circle cx="104" cy="96" r="6"/>
+              <circle cx="52" cy="122" r="6"/><circle cx="78" cy="122" r="6"/><circle cx="104" cy="122" r="6"/>
+            </g>
+            <path d="M140,109H160M154,103L161,109L154,115" style="fill:none;stroke:#0f172a;stroke-width:2"/>
+            <circle cx="198" cy="109" r="32" style="fill:#fff;stroke:#0f172a;stroke-width:2"/>
+            <text x="198" y="104" text-anchor="middle" style="font-size:12px;font-weight:600;fill:#0f172a">honest</text>
+            <text x="198" y="120" text-anchor="middle" style="font-size:12px;font-weight:600;fill:#0f172a">score</text>
+            <text x="120" y="166" text-anchor="middle" style="font-size:11px;fill:#64748b"><tspan style="font-weight:600;fill:var(--ln-test)">Test pile</tspan>: opened once, at the end</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>Open the test pile once</b>At the very end, we score the chosen model on the test pile. That is its honest score.</figcaption>
+        </figure>
+      </div>
+      <p class="ln-gist-sum">Never grade a model on the districts it learned from: keep some hidden until the end.</p>
+      <dl class="ln-words">
+        <div><dt>Model</dt><dd>A rule that guesses one number from another, learned from data.</dd></div>
+        <div><dt>Training set</dt><dd>The districts the model learns from.</dd></div>
+        <div><dt>Validation set</dt><dd>Districts kept aside to choose between models.</dd></div>
+        <div><dt>Test set</dt><dd>Districts locked away and used once, for the final score.</dd></div>
+        <div><dt>Error (RMSE)</dt><dd>Typical size of a miss, in percentage points. Lower is better.</dd></div>
+        <div><dt>Cross-validation</dt><dd>Taking turns, so every district is a test district once.</dd></div>
+      </dl>
+    </div>
+  </section>
+
   <div class="ln-prose">
-    <p>Suppose the state wants a quick way to estimate how many children under five are <strong>stunted</strong> (too short for their age) in a district, from something already known about it. Female literacy is a natural candidate: mothers who can read tend to have better-fed, healthier children.</p>
-    <p>We can fit a model to the 30 districts and see how well it predicts. The hard part is not fitting it. It is <em>measuring honestly</em> how well it will work on a district it has not seen.</p>
+    <p>Can we guess how many young children are <strong>stunted</strong> (too short for their age) in a district? We try to guess it from one thing we already know: how many women can read.</p>
+    <p>Mothers who can read tend to have healthier, better-fed children. So female literacy is a good clue.</p>
+    <p>Teaching a model with 30 districts is easy. The hard part is checking it <em>honestly</em>. Will it work on a district it has never seen?</p>
   </div>
 
   <!-- ── scroll story ─────────────────────────────── -->
@@ -57,42 +133,43 @@
     <div class="ln-steps">
       <div class="ln-step"><div class="ln-card">
         <h3>Thirty districts</h3>
-        <p>Each dot is one district. Across: the share of women who could read in 2011. Up: the share of children under five who were stunted in NFHS-5 (2019–21).</p>
+        <p>Each dot is one district. Left to right: the share of women who could read in 2011. Bottom to top: the share of children under five who were stunted in NFHS-5 (2019–21).</p>
         <p>The pattern is clear. Where more women read, fewer children are stunted.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
-        <h3>Fit, and grade yourself</h3>
-        <p>Let's fit a very flexible curve (a degree-<span data-v="bigDeg"></span> polynomial) to all 30 districts, then check its predictions on those same districts.</p>
-        <p>Its typical error is <b data-v="bigTrain"></b> percentage points, better than a straight line's <b data-v="lineAll"></b> on the same districts. Graded this way, the wiggly curve wins.</p><p>But look at the ends, where it shoots off the chart. It has fitted the quirks of these 30 districts, not the pattern.</p>
+        <h3>Grading its own homework</h3>
+        <p>Let's fit a very bendy curve to all 30 districts. (It is a degree-<span data-v="bigDeg"></span> polynomial: a higher degree lets a curve bend more.) Then we check it on the same 30 districts.</p>
+        <p>Its typical miss is <b data-v="bigTrain"></b> percentage points. A straight line misses by <b data-v="lineAll"></b>. Graded this way, the bendy curve wins.</p>
+        <p>But look at the ends, where it shoots off the chart. It has learned the quirks of these 30 districts, not the real pattern.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Hide some answers</h3>
-        <p>The fix is to set some districts aside before training. We shuffle the 30 and deal them into three piles:</p>
-        <p><span class="ln-k ln-k-train"><span>Training</span></span> (18) to fit the model, <span class="ln-k ln-k-val"><span>validation</span></span> (6) to choose between models, and <span class="ln-k ln-k-test"><span>test</span></span> (6), locked away until the very end.</p>
+        <p>The fix is to hide some districts before the model learns. We shuffle the 30 and deal them into three piles:</p>
+        <p><span class="ln-k ln-k-train"><span>Training</span></span> (18) to teach the model. <span class="ln-k ln-k-val"><span>Validation</span></span> (6) to choose between models. <span class="ln-k ln-k-test"><span>Test</span></span> (6), locked away until the very end.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Back on the chart</h3>
-        <p>Same districts, same positions, now coloured by pile. The model may learn only from the <span class="ln-k ln-k-train"><span>training</span></span> dots.</p>
+        <p>Same districts, same places, now coloured by pile. The model may learn only from the <span class="ln-k ln-k-train"><span>training</span></span> dots.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Train</h3>
-        <p>We fit three candidates to the 18 training districts: a straight line, a gentle curve (degree 3) and a wiggly one (degree 8).</p>
-        <p>On training data the wiggliest always wins. Training errors: <b data-v="tr1"></b>, <b data-v="tr3"></b> and <b data-v="tr8"></b> points.</p>
+        <p>We teach three candidate models on the 18 training districts: a straight line, a gentle curve (degree 3) and a bendy curve (degree 8).</p>
+        <p>On training data, the bendiest curve always wins. Typical misses: <b data-v="tr1"></b>, <b data-v="tr3"></b> and <b data-v="tr8"></b> points.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
-        <h3>Validate</h3>
-        <p>Now score each candidate on the 6 <span class="ln-k ln-k-val"><span>validation</span></span> districts, which none of them saw.</p>
-        <p>Validation errors: <b data-v="va1"></b>, <b data-v="va3"></b> and <b data-v="va8"></b>. The <b data-v="bestName"></b> does best on districts it has not seen, so that is the model we keep.</p>
+        <h3>Choose with the validation pile</h3>
+        <p>Now we check each candidate on the 6 <span class="ln-k ln-k-val"><span>validation</span></span> districts. None of the models has seen them.</p>
+        <p>Typical misses: <b data-v="va1"></b>, <b data-v="va3"></b> and <b data-v="va8"></b> points. The <b data-v="bestName"></b> does best on districts it has not seen. So that is the model we keep.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Test, once</h3>
-        <p>Finally we unlock the <span class="ln-k ln-k-test"><span>test</span></span> districts and score the chosen model on them once.</p>
-        <p>Its error on them is <b data-v="teErr"></b> points. That is the number to report, because nothing about the model was tuned to these six districts.</p>
+        <p>Finally we open the <span class="ln-k ln-k-test"><span>test</span></span> pile and score the chosen model, just once.</p>
+        <p>It misses by <b data-v="teErr"></b> points on these six districts. This is the number to report. Nothing about the model was tuned to them.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Why three piles, not two?</h3>
-        <p>We chose between the candidates by looking at validation scores, so the winner is partly tuned to those six districts and its validation score flatters it.</p>
-        <p>The test pile had no say in any choice, so its score is still an honest one.</p>
+        <p>We picked the winner by looking at its validation score. So the winner is partly tuned to those six districts, and that score flatters it.</p>
+        <p>The test pile played no part in any choice. Its score is still honest.</p>
       </div></div>
     </div>
     <div class="ln-graphic" aria-live="polite">
@@ -108,9 +185,11 @@
 
   <!-- ── interactive 1: model complexity on one split ─ -->
   <div class="ln-prose">
-    <h2>Try it: pick the model yourself</h2>
-    <p>Below, the curve's flexibility (its polynomial degree) runs along the bottom. The <span class="ln-k ln-k-train"><span>training</span></span> error keeps falling as the curve gets more flexible. The <span class="ln-k ln-k-val"><span>validation</span></span> error falls at first, then rises once the curve starts chasing noise in the 18 training districts. The best model sits at the bottom of the validation curve.</p>
-    <p>Press <em>Deal again</em> to reshuffle the districts. Notice how much the picture changes.</p>
+    <h2>Try it: how bendy should the curve be?</h2>
+    <p>Move the <em>Degree</em> slider to let the curve bend more. Then watch the two lines on the right.</p>
+    <p>The <span class="ln-k ln-k-train"><span>training</span></span> error keeps falling. A bendier curve can always hug the training dots more closely.</p>
+    <p>The <span class="ln-k ln-k-val"><span>validation</span></span> error falls at first, then rises. That rise is the curve chasing <strong>noise</strong> (chance ups and downs) in the 18 training districts. The best model sits at the lowest point of the validation line.</p>
+    <p>Press <em>Deal again</em> to reshuffle the piles. Notice how much the picture changes.</p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure">
@@ -121,7 +200,8 @@
       </div>
       <div class="ln-grid2">
         <div>
-          <p class="ln-figure-t">The chosen curve on this split</p>
+          <p class="ln-figure-t">The chosen curve on this deal</p>
+          <p class="ln-figure-s">Each dot is a district, coloured by its pile. The black curve learned from the teal dots only.</p>
           <div class="ln-legend">
             <span><i style="background:var(--ln-train)"></i>Training (18)</span>
             <span><i style="background:var(--ln-val)"></i>Validation (6)</span>
@@ -130,7 +210,8 @@
           <svg id="fitSvg" role="img" aria-label="Fitted curve on the current split"></svg>
         </div>
         <div>
-          <p class="ln-figure-t">Error by flexibility (RMSE, percentage points)</p>
+          <p class="ln-figure-t">Typical miss for each degree (percentage points)</p>
+          <p class="ln-figure-s">Lower is better. Click a degree to see its curve.</p>
           <div class="ln-legend">
             <span><i class="line" style="background:var(--ln-train)"></i>Training error</span>
             <span><i class="line" style="background:var(--ln-val)"></i>Validation error</span>
@@ -139,17 +220,21 @@
         </div>
       </div>
       <div class="ln-stats" id="fitStats"></div>
+      <div class="ln-source">Female literacy: Census 2011 · Stunting: NFHS-5 (2019–21)</div>
     </div>
   </div>
 
   <!-- ── interactive 2: luck of the draw + cross-validation ─ -->
   <div class="ln-prose">
-    <h2>With 30 districts, the dealing is luck</h2>
-    <p>Six test districts is a small sample. If the shuffle happens to put Angul, Jajpur and Rayagada in the test pile (each sits almost exactly on the trend), the model looks brilliant. Put Sambalpur, Puri or Bhadrak there instead (each 8 or more points off it) and the same model looks poor.</p>
-    <p>Below we deal the districts <b>1,000 times</b>, fit a straight line on each training pile, and record the test error. Each dot in the strip is one deal.</p>
+    <h2>Does it matter which districts land in the test pile?</h2>
+    <p>Yes, a lot. Six test districts is a small sample.</p>
+    <p>Say the shuffle puts Angul, Jajpur and Rayagada in the test pile. Each sits almost exactly on the trend, so the model looks brilliant. Put Sambalpur, Puri or Bhadrak there instead (each 8 or more points off the trend), and the same model looks poor.</p>
+    <p>Below, we deal the districts <b>1,000 times</b>. Each time, we teach a straight line on the training pile and score it on the test pile.</p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure">
+      <p class="ln-figure-t">One model, scored on 1,000 different deals</p>
+      <p class="ln-figure-s">Each bar counts deals that gave that score. A wide spread means the score depends on luck.</p>
       <div class="ln-controls">
         <div class="ln-seg" role="group" aria-label="Evaluation method">
           <button aria-pressed="true" data-m="holdout">One test pile of 6</button>
@@ -159,43 +244,52 @@
       </div>
       <svg id="luckSvg" role="img" aria-label="Distribution of test error across 1,000 random splits"></svg>
       <div class="ln-stats" id="luckStats"></div>
+      <div class="ln-source">Female literacy: Census 2011 · Stunting: NFHS-5 (2019–21)</div>
     </div>
   </div>
   <div class="ln-prose">
-    <p><b>Cross-validation</b> uses every district for testing once. Split the 30 into five folds of six. Train on four folds and test on the fifth, rotating until each fold has been the test set. Then average the five scores.</p>
+    <p><b>Cross-validation</b> is a fairer way to score. Split the 30 districts into five groups of six (called <em>folds</em>). Teach the model on four groups and test it on the fifth. Do this five times, so every district is tested once. Then take the average of the five scores.</p>
     <div class="ln-wide" style="padding:0;margin:18px 0">
       <svg id="foldSvg" role="img" aria-label="Five-fold cross-validation: each row holds out a different fifth of the districts"></svg>
     </div>
-    <p>Switch the strip above to <em>5-fold cross-validation</em>. The spread of estimates shrinks, because each estimate now averages over all 30 districts instead of whichever 6 happened to land in the test pile. On small data like ours, this is the honest default.</p>
+    <p>Now switch the chart above to <em>5-fold cross-validation</em>. The bars bunch up much more tightly. Each score now uses all 30 districts, not just six lucky or unlucky ones. With small data like ours, this is the fair default.</p>
   </div>
 
   <!-- ── interactive 3: time split ───────────────── -->
   <div class="ln-prose">
-    <h2>When the test comes from the future</h2>
-    <p>Random piles assume the districts we will predict look like the ones we trained on. Often we want to predict the <em>next</em> survey instead. Here we fit a line of stunting against female literacy on <b>NFHS-4 (2015–16)</b>, then use it to predict <b>NFHS-5 (2019–21)</b>.</p>
+    <h2>What if we need to predict the next survey?</h2>
+    <p>Random piles assume new districts look like the old ones. But often we want to predict the <em>next</em> survey.</p>
+    <p>So here we teach a straight line on <b>NFHS-4 (2015–16)</b>. Then we use it to predict <b>NFHS-5 (2019–21)</b>.</p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure">
+      <p class="ln-figure-t">A line learned on one survey, tested on the next</p>
+      <p class="ln-figure-s">Each district appears twice: teal for 2015–16, orange for 2019–21. A grey line joins the two.</p>
       <div class="ln-legend">
         <span><i style="background:var(--ln-train)"></i>NFHS-4, used for training</span>
         <span><i style="background:var(--ln-test)"></i>NFHS-5, the future test</span>
-        <span><i class="line" style="background:var(--ln-fit)"></i>Line fitted on NFHS-4</span>
+        <span><i class="line" style="background:var(--ln-fit)"></i>Line learned on NFHS-4</span>
       </div>
       <svg id="timeSvg" role="img" aria-label="Stunting against female literacy in NFHS-4 and NFHS-5 with the NFHS-4 line"></svg>
       <div class="ln-stats" id="timeStats"></div>
+      <div class="ln-source">Female literacy: Census 2011 · Stunting: NFHS-4 (2015–16) and NFHS-5 (2019–21)</div>
     </div>
   </div>
   <div class="ln-prose">
     <p id="timeText"></p>
-    <div class="ln-callout">
-      <span class="ln-callout-t">Take-aways</span>
-      A score on data the model trained on is not evidence. Keep a <span class="ln-k ln-k-test"><span>test</span></span> set that plays no part in any decision. Use a <span class="ln-k ln-k-val"><span>validation</span></span> set, or cross-validation, to make the decisions. With only 30 districts, a single split is closer to a lottery ticket than a measurement. And if the model is meant for the next survey, test it on a later survey, not on a random pile.
-    </div>
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>A score on districts the model learned from proves nothing. Always test it on districts it has not seen.</li>
+      <li>Use the <span class="ln-k ln-k-val"><span>validation</span></span> pile (or cross-validation) to make choices. Open the <span class="ln-k ln-k-test"><span>test</span></span> pile only once, at the end.</li>
+      <li>With only 30 districts, one deal is partly luck, so cross-validation is fairer. If the model must predict the next survey, test it on a later survey.</li>
+    </ol></div>
   </div>
 
   <section class="ln-notes">
     <h2>Data and method</h2>
-    <p>Female literacy is from Census 2011; stunting (children under 5, height-for-age) is from the NFHS-4 and NFHS-5 district fact sheets as compiled in the portal's Health workbook. Errors are root-mean-square errors in percentage points. Polynomials are fitted by least squares with the literacy axis rescaled to −1…1 for numerical stability. Random deals use a fixed seed, so every reader sees the same first split. <em>Deal again</em> draws a new one. The models are teaching devices: 30 districts are far too few for a planning tool, and literacy is not the only reason stunting differs.</p>
+    <p>Female literacy is from Census 2011. Stunting (children under 5, height-for-age) is from the NFHS-4 and NFHS-5 district fact sheets, as compiled in the portal's Health workbook.</p>
+    <p>The "typical miss" is the root-mean-square error (RMSE): square each district's miss, average the squares, then take the square root. It is in percentage points. Curves are polynomials fitted by least squares, with the literacy axis rescaled to −1…1 for numerical stability. A degree-<var>d</var> polynomial can bend up to <var>d</var> − 1 times.</p>
+    <p>Random deals use a fixed seed, so every reader sees the same first split; <em>Deal again</em> draws a new one. The luck chart deals 24 training and 6 test districts each time; the "spread" is the standard deviation of the 1,000 scores. Cross-validation uses 5 folds of 6 districts.</p>
+    <p>The models are teaching devices. Thirty districts are far too few for a planning tool, and literacy is not the only reason stunting differs.</p>
     <details class="ln-details">
       <summary>Show the data table</summary>
       <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
@@ -204,8 +298,8 @@
 
   <nav class="ln-next" aria-label="More explainers">
     <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="projections.html"><small>Previous · How we measure · M6</small><b>Projecting the Future</b></a>
     <a href="bias-variance.html"><small>Next · 02</small><b>The Bias–Variance Tradeoff</b></a>
-    <a href="logistic-regression.html"><small>03</small><b>Logistic Regression</b></a>
   </nav>
 </main>
 
@@ -440,7 +534,7 @@
     var lsvg = d3.select('#luckSvg').attr('viewBox', [0, 0, lW, lH]);
     var lx = d3.scaleLinear([0, Math.ceil(d3.max(hold))], [lM.l, lW - lM.r]);
     lsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (lH - lM.b) + ')').call(d3.axisBottom(lx).ticks(NARROW ? 5 : 10));
-    lsvg.append('text').attr('class', 'ln-axis-label').attr('x', lW - lM.r).attr('y', lH - 6).attr('text-anchor', 'end').text(NARROW ? 'Estimated error (RMSE, points) →' : 'Estimated error of the same straight-line model (RMSE, points) →');
+    lsvg.append('text').attr('class', 'ln-axis-label').attr('x', lW - lM.r).attr('y', lH - 6).attr('text-anchor', 'end').text(NARROW ? 'Test score: typical miss (points) →' : 'Test score of the same straight-line model: typical miss (points) →');
     var lBars = lsvg.append('g'), lMean = lsvg.append('g');
     function drawLuck(mode) {
       var vals = mode === 'cv' ? cv : hold, col = mode === 'cv' ? C.val : C.test;
@@ -453,18 +547,18 @@
           if (!h) return '';
           return 'M' + x0 + ',' + yb + 'V' + (yb - h + r) + 'q0,-' + r + ' ' + r + ',-' + r + 'H' + (x0 + w - r) + 'q' + r + ',0 ' + r + ',' + r + 'V' + yb + 'Z';
         })
-        .on('pointerenter', function (ev, b) { tip.show(ev, SL.fmt(b.length) + ' of ' + SL.fmt(TRIALS) + ' deals<br><span class="muted">estimated error ' + SL.fmt(b.x0, 2) + '–' + SL.fmt(b.x1, 2) + '</span>'); })
+        .on('pointerenter', function (ev, b) { tip.show(ev, SL.fmt(b.length) + ' of ' + SL.fmt(TRIALS) + ' deals<br><span class="muted">typical miss ' + SL.fmt(b.x0, 2) + '–' + SL.fmt(b.x1, 2) + '</span>'); })
         .on('pointerleave', function () { tip.hide(); });
       var lo = SL.quantile(vals, 0.05), hi = SL.quantile(vals, 0.95), mu = SL.mean(vals);
       lMean.selectAll('*').remove();
       lMean.append('line').attr('x1', lx(lo)).attr('x2', lx(hi)).attr('y1', 12).attr('y2', 12).attr('stroke', 'var(--ink-heading)').attr('stroke-width', 2);
       [lo, hi].forEach(function (v) { lMean.append('line').attr('x1', lx(v)).attr('x2', lx(v)).attr('y1', 7).attr('y2', 17).attr('stroke', 'var(--ink-heading)').attr('stroke-width', 2); });
       var mid = Math.max(lM.l + 120, Math.min(lW - lM.r - 120, lx((lo + hi) / 2)));
-      lMean.append('text').attr('class', 'ln-dlabel').attr('x', mid).attr('y', 30).attr('text-anchor', 'middle').text('90% of estimates: ' + SL.fmt(lo, 1) + ' to ' + SL.fmt(hi, 1));
+      lMean.append('text').attr('class', 'ln-dlabel').attr('x', mid).attr('y', 30).attr('text-anchor', 'middle').text('90% of scores: ' + SL.fmt(lo, 1) + ' to ' + SL.fmt(hi, 1));
       document.getElementById('luckStats').innerHTML =
-        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(SL.std(vals), 2) + '</div><div class="ln-stat-l">Spread of estimates (std. dev., points)</div></div>' +
-        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(d3.min(vals), 1) + ' – ' + SL.fmt(d3.max(vals), 1) + '</div><div class="ln-stat-l">Luckiest to unluckiest estimate</div></div>' +
-        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(mu, 1) + '</div><div class="ln-stat-l">Average estimate</div></div>';
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(SL.std(vals), 2) + '</div><div class="ln-stat-l">Spread of the scores (points)</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(d3.min(vals), 1) + ' – ' + SL.fmt(d3.max(vals), 1) + '</div><div class="ln-stat-l">Luckiest to unluckiest score</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(mu, 1) + '</div><div class="ln-stat-l">Average score</div></div>';
       document.getElementById('cvNote').textContent = mode === 'cv'
         ? 'Spread shrinks by ' + SL.fmt(100 * (1 - SL.std(cv) / SL.std(hold)), 0) + '% compared with a single test pile.'
         : 'Same model, same data: only the deal changes.';
@@ -521,7 +615,7 @@
       '<div class="ln-stat"><div class="ln-stat-v">' + signed(bias4) + '</div><div class="ln-stat-l"><i style="background:' + C.train + '"></i>Average miss on NFHS-4: the misses cancel out</div></div>' +
       '<div class="ln-stat"><div class="ln-stat-v">' + signed(bias) + '</div><div class="ln-stat-l"><i style="background:' + C.test + '"></i>Average miss on NFHS-5: consistently too high</div></div>' +
       '<div class="ln-stat"><div class="ln-stat-v">' + over + ' of ' + R.length + '</div><div class="ln-stat-l">Districts where it over-predicts stunting</div></div>';
-    document.getElementById('timeText').innerHTML = 'The typical size of a miss barely changes: <b>' + SL.fmt(errPast, 1) + '</b> points on NFHS-4 and <b>' + SL.fmt(errFuture, 1) + '</b> on NFHS-5. What changes is the <em>direction</em>. On the data it was fitted to, the line’s misses cancel out, some too high and some too low. On NFHS-5 it over-predicts stunting in <b>' + over + '</b> of the 30 districts, by <b>' + SL.fmt(bias, 1) + '</b> points on average, because stunting fell across Odisha between the surveys (the grey lines join each district’s two rounds). A plan sized with the old line would consistently overshoot. Random splits cannot reveal this kind of error, because the shift only shows up when you test on the later survey.';
+    document.getElementById('timeText').innerHTML = 'The typical miss hardly changes: <b>' + SL.fmt(errPast, 1) + '</b> points on NFHS-4 and <b>' + SL.fmt(errFuture, 1) + '</b> on NFHS-5. What changes is the <em>direction</em> of the misses. On NFHS-4, some guesses are too high and some too low, so they cancel out. On NFHS-5, the line guesses too high in <b>' + over + '</b> of the 30 districts, by <b>' + SL.fmt(bias, 1) + '</b> points on average. Why? Stunting fell across Odisha between the two surveys. A plan built on the old line would aim too high. Random piles cannot show this. Only testing on the later survey can.';
 
     /* ── data table ─────────────────────────────── */
     document.getElementById('dataTable').innerHTML = '<thead><tr><th>District</th><th>Female literacy %</th><th>Stunted % NFHS-4</th><th>Stunted % NFHS-5</th></tr></thead><tbody>' +

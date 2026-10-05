@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20260928-6">
-<link rel="stylesheet" href="learn.css?v=20260929">
+<link rel="stylesheet" href="learn.css?v=20261005">
 <script src="../ui.js?v=20260925-2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="learn.js?v=20260929"></script>
@@ -41,15 +41,68 @@
 
 <main>
   <section class="ln-hero">
-    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · 02</div>
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-ml">Machine learning</span> · 02</div>
     <h2 class="ln-title">The <em>Bias–Variance</em> Tradeoff</h2>
-    <p class="ln-dek">A model can be wrong in two ways: too rigid to see the pattern, or so eager that it memorises the noise. Here is how to find the balance, using underweight children across Odisha's 30 districts.</p>
+    <p class="ln-dek">A model can be wrong by being too simple or too wiggly, and the best one sits in between.</p>
     <div class="ln-byline">By <b>DIU Team</b> · Data: Census 2011 and NFHS-5 · Every number on this page is computed live in your browser</div>
   </section>
 
+  <section class="ln-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="Too simple: a flat line through dots that rise and level off, missing the pattern">
+            <path d="M20,20V160H228" style="fill:none;stroke:rgba(15,23,42,.25);stroke-width:1.5"/>
+            <path d="M35,139V75.5M50,103V75.5M65,100V75.5M80,74V75.5M95,82V75.5M110,64V75.5M125,74V75.5M140,56V75.5M155,65V75.5M170,51V75.5M185,64V75.5M200,50V75.5M215,60V75.5" style="fill:none;stroke:var(--ln-train);stroke-width:1.5;stroke-dasharray:3 3"/>
+            <path d="M20,75.5H228" style="fill:none;stroke:#0f172a;stroke-width:2.5"/>
+            <g style="fill:#64748b"><circle cx="35" cy="139" r="5"/><circle cx="50" cy="103" r="5"/><circle cx="65" cy="100" r="5"/><circle cx="80" cy="74" r="5"/><circle cx="95" cy="82" r="5"/><circle cx="110" cy="64" r="5"/><circle cx="125" cy="74" r="5"/><circle cx="140" cy="56" r="5"/><circle cx="155" cy="65" r="5"/><circle cx="170" cy="51" r="5"/><circle cx="185" cy="64" r="5"/><circle cx="200" cy="50" r="5"/><circle cx="215" cy="60" r="5"/></g>
+            <text x="222" y="140" text-anchor="end" style="font-size:13px;font-weight:600;fill:var(--ln-train)">Too simple</text>
+            <text x="24" y="174" style="font-size:11px;fill:#64748b">Illustration, not real data</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">1</span>Too simple: bias</b>A flat line cannot follow the rise. It misses in the same places every time.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="Too wiggly: a curve that passes through every dot, and a second curve from a slightly different sample that looks very different">
+            <defs><clipPath id="gistClipBV"><rect x="20" y="14" width="208" height="146"/></clipPath></defs>
+            <path d="M20,20V160H228" style="fill:none;stroke:rgba(15,23,42,.25);stroke-width:1.5"/>
+            <g clip-path="url(#gistClipBV)">
+              <path d="M22,95C24.2,99.8 30.3,120.7 35,124.1C39.7,127.5 45,122 50,115.5C55,109 60,89.3 65,85.1C70,80.8 75,92.5 80,90C85,87.5 90,72 95,70.1C100,68.1 105,80.2 110,78.4C115,76.6 120,61.1 125,59.3C130,57.5 135,68.5 140,67.4C145,66.2 150,52.7 155,52.3C160,51.9 165,65 170,64.8C175,64.5 180,51.4 185,50.7C190,50.1 195,58.7 200,60.9C205,63.2 210.3,45.4 215,64.4C219.7,83.4 225.8,156.6 228,175" style="fill:none;stroke:var(--ln-val);stroke-width:2;opacity:.75"/>
+              <path d="M22,178C24.2,171.5 30.3,151.5 35,139C39.7,126.5 45,109.5 50,103C55,96.5 60,104.8 65,100C70,95.2 75,77 80,74C85,71 90,83.7 95,82C100,80.3 105,65.3 110,64C115,62.7 120,75.3 125,74C130,72.7 135,57.5 140,56C145,54.5 150,65.8 155,65C160,64.2 165,51.2 170,51C175,50.8 180,64.2 185,64C190,63.8 195,50.7 200,50C205,49.3 210.3,67 215,60C219.7,53 225.8,16.7 228,8" style="fill:none;stroke:#0f172a;stroke-width:2.5"/>
+            </g>
+            <g style="fill:#64748b"><circle cx="35" cy="139" r="5"/><circle cx="50" cy="103" r="5"/><circle cx="65" cy="100" r="5"/><circle cx="80" cy="74" r="5"/><circle cx="95" cy="82" r="5"/><circle cx="110" cy="64" r="5"/><circle cx="125" cy="74" r="5"/><circle cx="140" cy="56" r="5"/><circle cx="155" cy="65" r="5"/><circle cx="170" cy="51" r="5"/><circle cx="185" cy="64" r="5"/><circle cx="200" cy="50" r="5"/><circle cx="215" cy="60" r="5"/></g>
+            <text x="200" y="128" text-anchor="end" style="font-size:13px;font-weight:600;fill:var(--ln-val)">Too wiggly</text>
+            <text x="200" y="144" text-anchor="end" style="font-size:11px;fill:var(--ln-val)">new sample, new shape</text>
+            <text x="24" y="174" style="font-size:11px;fill:#64748b">Illustration, not real data</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Too wiggly: variance</b>This curve chases every dot. Survey again and it changes shape completely (violet).</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="Just right: a smooth curve that rises and levels off with the dots">
+            <path d="M20,20V160H228" style="fill:none;stroke:rgba(15,23,42,.25);stroke-width:1.5"/>
+            <path d="M25,150C26.7,146.8 31.7,136.8 35,131.1C38.3,125.4 41.7,120.5 45,115.9C48.3,111.4 51.7,107.4 55,103.8C58.3,100.1 61.7,97 65,94.1C68.3,91.1 71.7,88.6 75,86.3C78.3,83.9 81.7,81.9 85,80C88.3,78.2 91.7,76.5 95,75.1C98.3,73.6 101.7,72.3 105,71.1C108.3,69.9 111.7,68.8 115,67.9C118.3,66.9 121.7,66.1 125,65.3C128.3,64.5 131.7,63.9 135,63.2C138.3,62.6 141.7,62.1 145,61.6C148.3,61.1 151.7,60.7 155,60.3C158.3,59.9 161.7,59.5 165,59.2C168.3,58.9 171.7,58.6 175,58.4C178.3,58.1 181.7,57.9 185,57.7C188.3,57.5 191.7,57.3 195,57.2C198.3,57 201.7,56.9 205,56.7C208.3,56.6 211.7,56.5 215,56.4C218.3,56.3 223.3,56.2 225,56.1" style="fill:none;stroke:#0f172a;stroke-width:2.5"/>
+            <g style="fill:#64748b"><circle cx="35" cy="139" r="5"/><circle cx="50" cy="103" r="5"/><circle cx="65" cy="100" r="5"/><circle cx="80" cy="74" r="5"/><circle cx="95" cy="82" r="5"/><circle cx="110" cy="64" r="5"/><circle cx="125" cy="74" r="5"/><circle cx="140" cy="56" r="5"/><circle cx="155" cy="65" r="5"/><circle cx="170" cy="51" r="5"/><circle cx="185" cy="64" r="5"/><circle cx="200" cy="50" r="5"/><circle cx="215" cy="60" r="5"/></g>
+            <text x="222" y="140" text-anchor="end" style="font-size:13px;font-weight:600;fill:#0f172a">Just right</text>
+            <text x="24" y="174" style="font-size:11px;fill:#64748b">Illustration, not real data</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>Just right</b>A gentle curve follows the pattern but ignores the noise. Its total error is smallest.</figcaption>
+        </figure>
+      </div>
+      <p class="ln-gist-sum">Too simple misses the pattern, too flexible chases noise: the best model balances the two.</p>
+      <dl class="ln-words">
+        <div><dt>Bias</dt><dd>Built-in error from a model too simple to see the pattern.</dd></div>
+        <div><dt>Variance</dt><dd>How much a model's answer jumps when the data change a little.</dd></div>
+        <div><dt>Underfitting</dt><dd>Too simple: high bias. Misses the pattern even on known districts.</dd></div>
+        <div><dt>Overfitting</dt><dd>Too flexible: high variance. Learns the noise, fails on new districts.</dd></div>
+        <div><dt>Model complexity</dt><dd>How flexible a model is: how much it can bend.</dd></div>
+      </dl>
+    </div>
+  </section>
+
   <div class="ln-prose">
-    <p>Suppose we want a rough estimate of how many children under five are <strong>underweight</strong> in a district, from one thing we already know about it: the share of its people who belong to a <strong>Scheduled Tribe</strong>. In Odisha the two travel together, because tribal share goes hand in hand with remoteness, forest villages and distance from health services.</p>
-    <p>Tribal share does not <em>cause</em> underweight. It is a marker for many things at once. But it makes a good test case, because the relationship is not a straight line, and the districts do not sit neatly on any curve. That is exactly the situation where a model can go wrong in two opposite directions.</p>
+    <p>Can we guess how many young children are <strong>underweight</strong> (too light for their age) in a district? We try to guess it from one thing we already know: the share of people who belong to a <strong>Scheduled Tribe</strong>.</p>
+    <p>In Odisha the two go together. Districts with more tribal people tend to be more remote, with more forest villages and fewer nearby health services.</p>
+    <p>Tribal share does not <em>cause</em> underweight. It is a marker for many things at once. But it is a good test case. The link is not a straight line, and the districts do not sit neatly on any curve. That is when a model can go wrong in two opposite ways.</p>
   </div>
 
   <!-- ── scroll story ─────────────────────────────── -->
@@ -57,48 +110,49 @@
     <div class="ln-steps">
       <div class="ln-step"><div class="ln-card">
         <h3>Thirty districts</h3>
-        <p>Each dot is one district. Across: the share of the population that is Scheduled Tribe (Census 2011). Up: the share of children under five who are underweight (NFHS-5, 2019–21).</p>
-        <p>Underweight rises steeply across the least tribal districts, then much more gently. And plenty of districts sit well above or below their neighbours.</p>
+        <p>Each dot is one district. Left to right: the share of people who are Scheduled Tribe (Census 2011). Bottom to top: the share of children under five who are underweight (NFHS-5, 2019–21).</p>
+        <p>Underweight rises steeply across the least tribal districts, then much more gently. And many districts sit well above or below their neighbours.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Too simple: one number</h3>
-        <p>The simplest possible model ignores tribal share and predicts the same figure for every district: the average, <b data-v="meanY"></b>%.</p>
-        <p>Its typical miss is <b data-v="rmse0"></b> percentage points. It is not unlucky; it is <em>built</em> to miss, because it cannot see the pattern at all. That built-in wrongness is called <strong>bias</strong>.</p>
+        <p>The simplest model ignores tribal share. It guesses the same figure for every district: the average, <b data-v="meanY"></b>%.</p>
+        <p>Its typical miss is <b data-v="rmse0"></b> percentage points. This is not bad luck. The model is <em>built</em> to miss, because it cannot see the pattern at all. This built-in error is called <strong>bias</strong>.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Still too simple: a straight line</h3>
-        <p>A straight line does much better: a typical miss of <b data-v="rmse1"></b> points. But its misses are not random.</p>
-        <p>It predicts too much for <b data-v="lowOver"></b> of the <b data-v="lowN"></b> districts where fewer than 8% of people are tribal, and too little for <b data-v="midUnder"></b> of the <b data-v="midN"></b> districts between 8% and 40%. A line cannot bend, so it will miss in the same places however much data we give it. That is bias too.</p>
+        <p>A straight line does much better: a typical miss of <b data-v="rmse1"></b> points. But its misses follow a pattern.</p>
+        <p>In the least tribal districts (under 8% tribal), it guesses too high for <b data-v="lowOver"></b> of <b data-v="lowN"></b>. In the middle group (8% to 40%), it guesses too low for <b data-v="midUnder"></b> of <b data-v="midN"></b>.</p>
+        <p>A line cannot bend. It will miss in the same places, however much data we give it. That is bias too.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Too flexible: a degree-10 curve</h3>
-        <p>So let's allow lots of bends. A degree-10 polynomial fitted to the same 30 districts has a typical miss of only <b data-v="rmse10"></b> points on them.</p>
-        <p>But look at the wiggles between districts, and the plunge at each end where there is nothing to hold it. It has learned these 30 districts, quirks and all, rather than the pattern.</p>
+        <p>Now let the curve bend a lot. A degree-10 curve (it can bend up to nine times) has a typical miss of only <b data-v="rmse10"></b> points on these 30 districts.</p>
+        <p>But look at the wiggles between districts, and the plunge at each end. It has learned these 30 districts, quirks and all, not the pattern.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
-        <h3>What if the data had come out differently?</h3>
-        <p>Each district's figure comes from a sample survey. Survey different households and every dot would shift a little. A good model should not care much.</p>
-        <p>We can mimic this with a <strong>bootstrap</strong>: draw 30 districts at random <em>with replacement</em>, so some come up twice and some not at all. In this draw, <b data-v="bsOut"></b> districts were left out and <b data-v="bsDup"></b> were drawn more than once. Refit the degree-10 curve and it changes shape completely.</p>
+        <h3>What if the survey had come out differently?</h3>
+        <p>Each district's figure comes from a sample survey. Survey different households and every dot would move a little. A good model should not change much.</p>
+        <p>We can imitate this with a <strong>redraw</strong> (statisticians call it a <em>bootstrap</em>). Pick 30 districts at random, allowing repeats. In this redraw, <b data-v="bsOut"></b> districts were left out and <b data-v="bsDup"></b> were picked more than once. Refit the degree-10 curve and it changes shape completely.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Fifty redraws: the straight line</h3>
-        <p>Now repeat that fifty times. Here is the straight line refitted on each redraw.</p>
-        <p>The lines form a tight bundle. From one redraw to the next, a typical prediction moves by only about <b data-v="swing1"></b> points. How much a model jumps around when the data changes is called its <strong>variance</strong>. The line's is low.</p>
+        <p>Now do that fifty times. Here is the straight line refitted on each redraw.</p>
+        <p>The lines form a tight bundle. A typical guess moves by only about <b data-v="swing1"></b> points between redraws. How much a model jumps around when the data change is called <strong>variance</strong>. The line's variance is low.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Fifty redraws: the degree-10 curve</h3>
         <p>The same fifty redraws, now with the degree-10 curve. The bundle explodes into a fan.</p>
-        <p>A typical prediction swings by about <b data-v="swing10"></b> points between redraws, for an outcome that only runs from <b data-v="yMin"></b>% to <b data-v="yMax"></b>% across the districts. This model has very high variance: what it says depends more on which districts it happened to see than on the pattern.</p>
+        <p>A typical guess swings by about <b data-v="swing10"></b> points between redraws. Yet the real figures only run from <b data-v="yMin"></b>% to <b data-v="yMax"></b>%. This model has very high variance. Its answer depends more on which districts it saw than on the pattern.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Bias, made visible</h3>
-        <p>Nobody knows the true pattern. As a stand-in we use a smooth local average of nearby districts (dashed).</p>
-        <p>Average the fifty straight lines and the result still misses it: too high at the left, too low in the middle, and wrong again further right. That average gap, about <b data-v="gap1"></b> points, is the line's <span class="ln-k ln-k-train"><span>bias</span></span>. Redrawing the data will not shrink it.</p>
+        <p>Nobody knows the true pattern. As a stand-in, we use a smooth average of nearby districts (the dashed line).</p>
+        <p>Now average the fifty straight lines. The result still misses the stand-in: too high on the left, too low in the middle, wrong again on the right. That average gap, about <b data-v="gap1"></b> points, is the line's <span class="ln-k ln-k-train"><span>bias</span></span>. More redraws will not shrink it.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Just right: degree <span data-v="bestDeg"></span></h3>
-        <p>A gentle curve (degree <span data-v="bestDeg"></span>) sits in between. Its average stays within about <b data-v="gapB"></b> points of the pattern, against <b data-v="gap1"></b> for the line.</p>
-        <p>And its bundle stays fairly tight: a typical swing of <b data-v="swingB"></b> points, nowhere near the degree-10 fan. Out of all the polynomial degrees, this one makes the smallest total error. That balance is the <strong>bias–variance tradeoff</strong>.</p>
+        <p>A gentle curve (degree <span data-v="bestDeg"></span>) sits in between. Its average stays within about <b data-v="gapB"></b> points of the pattern. The line was <b data-v="gap1"></b> points away.</p>
+        <p>Its bundle also stays fairly tight: a typical swing of <b data-v="swingB"></b> points, nowhere near the degree-10 fan. Of all the degrees, this one has the smallest total error. Finding that balance is the <strong>bias–variance tradeoff</strong>.</p>
       </div></div>
     </div>
     <div class="ln-graphic" aria-live="polite">
@@ -114,18 +168,21 @@
 
   <!-- ── the decomposition ─────────────────────────── -->
   <div class="ln-prose">
-    <h2>Three sources of error</h2>
-    <p>The error a model makes on a new district can be split into three parts that add up exactly:</p>
+    <h2>Where does a model's error come from?</h2>
+    <p>The error a model makes on a new district has three parts. They add up exactly:</p>
     <div class="ln-eq">expected error = <span class="ln-k ln-k-train"><span>bias²</span></span> + <span class="ln-k ln-k-val"><span>variance</span></span> + noise</div>
-    <p><span class="ln-k ln-k-train"><span>Bias²</span></span> is how far the model's average curve sits from the pattern. <span class="ln-k ln-k-val"><span>Variance</span></span> is how much it jumps around from one redraw of the data to the next. <strong>Noise</strong> is everything tribal share cannot explain: the part even a perfect curve would miss. Here it comes to about <b data-v="noise"></b> squared points, a typical miss of <b data-v="noiseRt"></b> points that no model of this one variable can remove.</p>
-    <p>All three are measured in <em>squared</em> percentage points, because squaring is what makes them add up. Take the square root of the total to get back to a typical miss in points.</p>
+    <p><span class="ln-k ln-k-train"><span>Bias²</span></span> is how far the model's average curve sits from the pattern. <span class="ln-k ln-k-val"><span>Variance</span></span> is how much the model jumps around from one redraw to the next. <strong>Noise</strong> is everything tribal share cannot explain. Even a perfect curve would miss by this much.</p>
+    <p>Here, noise comes to about <b data-v="noise"></b> squared points. That is a typical miss of <b data-v="noiseRt"></b> points that no model using only tribal share can remove.</p>
+    <p>Why "squared"? Each miss is multiplied by itself first, because that is how the three parts add up. To get back to a typical miss in points, take the square root of the total.</p>
   </div>
 
   <!-- ── interactive 1: complexity, fan and decomposition ─ -->
   <div class="ln-prose">
-    <h2>Try it: bend the model yourself</h2>
-    <p>Move the slider to make the model more flexible. On the left, forty curves, each fitted to a different redraw of the districts. On the right, the three sources of error for every setting, each averaged over 200 redraws. As flexibility grows, <span class="ln-k ln-k-train"><span>bias²</span></span> falls and <span class="ln-k ln-k-val"><span>variance</span></span> rises, so their <span class="ln-k ln-k-test"><span>total</span></span> traces a U. The best model sits at the bottom of the U.</p>
-    <p>Switch to <em>Nearest neighbours</em> for a different kind of flexibility: predict each district from the average of the <var>k</var> districts with the closest tribal share. With <var>k</var> = 30 it averages every district (the flat line again); with <var>k</var> = 1 it copies the single closest one.</p>
+    <h2>Try it: find the bottom of the U</h2>
+    <p>Move the slider to make the model more flexible.</p>
+    <p>On the left are forty curves, each fitted to a different redraw of the districts. On the right are the three parts of the error at every setting, averaged over 200 redraws.</p>
+    <p>As flexibility grows, <span class="ln-k ln-k-train"><span>bias²</span></span> falls and <span class="ln-k ln-k-val"><span>variance</span></span> rises. So their <span class="ln-k ln-k-test"><span>total</span></span> makes a U shape. The best model sits at the bottom of the U.</p>
+    <p>Switch to <em>Nearest neighbours</em> for a different kind of model. It guesses each district from the average of the <var>k</var> districts with the closest tribal share. With <var>k</var> = 30 it averages every district: the flat line again. With <var>k</var> = 1 it copies the single closest district.</p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure">
@@ -141,6 +198,7 @@
       <div class="ln-grid2">
         <div>
           <p class="ln-figure-t" id="fanTitle">Forty refits of the current model</p>
+          <p class="ln-figure-s">Grey: one curve per redraw. Black: their average. Dashed: the stand-in pattern.</p>
           <div class="ln-legend">
             <span><i style="background:#64748b"></i>District</span>
             <span><i class="line" style="background:var(--ln-ghost)"></i>One redraw's fit</span>
@@ -150,7 +208,8 @@
           <svg id="fanSvg" role="img" aria-label="Forty fitted curves from redraws of the districts, with their average and the stand-in pattern"></svg>
         </div>
         <div>
-          <p class="ln-figure-t">Error by flexibility (squared points)</p>
+          <p class="ln-figure-t">The three parts of the error (squared points)</p>
+          <p class="ln-figure-s">Lower is better. Look for the lowest point of the orange total line. Click to jump there.</p>
           <div class="ln-legend">
             <span><i class="line" style="background:var(--ln-train)"></i>Bias²</span>
             <span><i class="line" style="background:var(--ln-val)"></i>Variance</span>
@@ -161,6 +220,7 @@
         </div>
       </div>
       <div class="ln-stats" id="cxStats"></div>
+      <div class="ln-source">Scheduled Tribe share: Census 2011 · Underweight: NFHS-5 (2019–21)</div>
     </div>
   </div>
   <div class="ln-prose">
@@ -169,8 +229,9 @@
 
   <!-- ── interactive 2: regularisation ──────────────── -->
   <div class="ln-prose">
-    <h2>Put a flexible model on a leash</h2>
-    <p>Choosing fewer bends is not the only way to tame a model. <strong>Ridge regression</strong> keeps all ten bends of the degree-10 curve but charges a penalty, <var>λ</var> (lambda), for steep bends. With no penalty it is the wild fan from before. As the penalty grows the fan closes. Too much and the curve is squashed flat towards the average, and bias returns.</p>
+    <h2>Can we keep a flexible model calm?</h2>
+    <p>Choosing fewer bends is not the only fix. <strong>Ridge regression</strong> keeps all the bends of the degree-10 curve. But it adds a penalty for sharp bends. The size of the penalty is set by <var>λ</var> (the Greek letter lambda).</p>
+    <p>With no penalty, you get the wild fan from before. As the penalty grows, the fan closes. Too much penalty squashes the curve flat towards the average, and bias comes back.</p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure">
@@ -180,7 +241,8 @@
       </div>
       <div class="ln-grid2">
         <div>
-          <p class="ln-figure-t">Forty refits of a degree-10 curve with penalty</p>
+          <p class="ln-figure-t">Forty refits of a degree-10 curve, with a penalty</p>
+          <p class="ln-figure-s">Grey: one curve per redraw. Raise the penalty and watch the fan close.</p>
           <div class="ln-legend">
             <span><i class="line" style="background:var(--ln-ghost)"></i>One redraw's fit</span>
             <span><i class="line" style="background:var(--ln-fit)"></i>Average of 40 fits</span>
@@ -189,7 +251,8 @@
           <svg id="ridgeSvg" role="img" aria-label="Forty penalised degree-10 curves fitted to redraws of the districts"></svg>
         </div>
         <div>
-          <p class="ln-figure-t">Error by penalty (squared points)</p>
+          <p class="ln-figure-t">The three parts of the error, by penalty (squared points)</p>
+          <p class="ln-figure-s">Lower is better. A stronger penalty is further right.</p>
           <div class="ln-legend">
             <span><i class="line" style="background:var(--ln-train)"></i>Bias²</span>
             <span><i class="line" style="background:var(--ln-val)"></i>Variance</span>
@@ -200,14 +263,16 @@
         </div>
       </div>
       <div class="ln-stats" id="lamStats"></div>
+      <div class="ln-source">Scheduled Tribe share: Census 2011 · Underweight: NFHS-5 (2019–21)</div>
     </div>
   </div>
   <div class="ln-prose">
     <p id="lamText"></p>
-    <div class="ln-callout">
-      <span class="ln-callout-t">Take-aways</span>
-      A model that is too simple is wrong in the same way every time: that is <span class="ln-k ln-k-train"><span>bias</span></span>, and more data will not fix it. A model that is too flexible is wrong in a different way every time: that is <span class="ln-k ln-k-val"><span>variance</span></span>, and it is worst when data are scarce, as with 30 districts. Some error is plain noise that no model of the chosen inputs can remove. The best model balances the first two, and you find it by measuring error on data the model did not see, as in <a href="train-test-validation.html">explainer 01</a>, never by how well it fits the data it was trained on.
-    </div>
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>A model that is too simple is wrong in the same way every time. That is <span class="ln-k ln-k-train"><span>bias</span></span>, and more data will not fix it.</li>
+      <li>A model that is too flexible is wrong in a different way every time. That is <span class="ln-k ln-k-val"><span>variance</span></span>. It is worst when data are few, like our 30 districts.</li>
+      <li>Find the balance by testing on districts the model did not see (as in <a href="train-test-validation.html">explainer 01</a>), never by how well it fits the districts it learned from.</li>
+    </ol></div>
   </div>
 
   <section class="ln-notes">
@@ -225,8 +290,8 @@
 
   <nav class="ln-next" aria-label="More explainers">
     <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="train-test-validation.html"><small>Previous · 01</small><b>Train, Test and Validation</b></a>
     <a href="logistic-regression.html"><small>Next · 03</small><b>Logistic Regression</b></a>
-    <a href="train-test-validation.html"><small>01</small><b>Train, Test and Validation</b></a>
   </nav>
 </main>
 
@@ -625,11 +690,11 @@
       document.getElementById('cxNote').textContent = 'Lowest total error: ' + cxName(best).toLowerCase() + '.';
       var bi = mode === 'poly' ? best : best - 1, flex = mode === 'poly' ? i - bi : bi - i;
       var verdict = flex === 0 ? 'This is the sweet spot: the lowest total error of any setting, ' + fv(r.total) + ' squared points.'
-        : (flex < 0 ? 'Too rigid: the model misses the shape, and bias² (' + fv(r.bias2) + ') is what holds it back.'
-          : 'Too flexible: the model chases the particular districts it saw, and variance (' + fv(r.vari) + ') is what holds it back.') +
-          ' Expected error ' + fv(r.total) + ' squared points, against ' + fv(res[bi].total) + ' at the best setting (' + cxName(best).toLowerCase() + ').';
+        : (flex < 0 ? 'Too simple: the model misses the shape. Bias² (' + fv(r.bias2) + ') is what holds it back.'
+          : 'Too flexible: the model chases the districts it happened to see. Variance (' + fv(r.vari) + ') is what holds it back.') +
+          ' Total error ' + fv(r.total) + ' squared points, against ' + fv(res[bi].total) + ' at the best setting (' + cxName(best).toLowerCase() + ').';
       document.getElementById('cxText').innerHTML = '<b>' + cxName(c) + '.</b> ' + verdict +
-        (mode === 'poly' && c >= 8 && polyRes[10].bias2 > 5 * polyRes[bestDeg].bias2 ? ' At the far right even bias climbs again: the curves are so wild that their average is dragged off the pattern too. With 30 districts, that much flexibility is more than the data can support.' : '');
+        (mode === 'poly' && c >= 8 && polyRes[10].bias2 > 5 * polyRes[bestDeg].bias2 ? ' At the far right even bias climbs again. The curves are so wild that their average is pulled off the pattern too. Thirty districts cannot support that much flexibility.' : '');
     }
     slider.addEventListener('input', function () { drawCx(); });
     document.querySelectorAll('#modeSeg button').forEach(function (b) { b.addEventListener('click', function () { if (b.dataset.m !== mode) setMode(b.dataset.m); }); });
@@ -661,7 +726,7 @@
     var rBest = ridgeRes[bestLam].total, pBest = polyRes[bestDeg].total;
     document.getElementById('lamText').innerHTML = 'With the best penalty (<var>λ</var> = ' + LAM_LABEL[bestLam] + '), the degree-10 curve reaches an expected error of <b>' + fv(rBest) + '</b> squared points, ' +
       (rBest < pBest - 1 ? 'better than' : rBest > pBest + 1 ? 'a little worse than' : 'about the same as') + ' the best plain polynomial (degree ' + bestDeg + ', <b>' + fv(pBest) + '</b>). ' +
-      'Without a penalty it was <b>' + fv(ridgeRes[0].total) + '</b>. Penalties like this are one of the main ways large models with thousands of settings avoid the degree-10 trap: flexibility is allowed, but it has to earn its keep.';
+      'Without a penalty it was <b>' + fv(ridgeRes[0].total) + '</b>. Large models with thousands of settings use penalties like this to avoid the degree-10 trap. They may bend, but only where the data really call for it.';
 
     /* ── notes ──────────────────────────────────── */
     var fm = data.meta.features;

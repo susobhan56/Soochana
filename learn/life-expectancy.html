@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Expectancy · Soochana Learn</title>
+<meta name="description" content="What Odisha's life expectancy of 70.4 years really means: an average built from this year's death rates, shown with 100 imaginary babies, the effect of infant deaths and district estimates for women and men.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20261005">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  .le-myths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .le-myth { background: var(--ln-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .le-myth-k { font-size: 12px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; }
+  .le-myth-k.is-myth { color: var(--orange); }
+  .le-myth-k.is-fact { color: #005f6e; }
+  .le-myth p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--ink-body); }
+  .le-myth p.le-claim { font-size: 16.5px; font-weight: 600; color: var(--ink-heading); }
+  .le-myth hr { border: 0; border-top: 1px dashed var(--border); margin: 2px 0; width: 100%; }
+  .le-note { font-size: 14px; color: var(--ink-subtle); margin: 6px 0 0; }
+  @media (max-width: 860px) { .le-myths { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M4</div>
+    <h2 class="ln-title">Life <em>Expectancy</em></h2>
+    <p class="ln-dek">Odisha's life expectancy of 70.4 years is an average built from this year's death rates, not a forecast for any one baby.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: SRS abridged life tables 2020–24, district estimates from NFHS-4 and NFHS-5</div>
+  </section>
+
+  <section class="ln-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gist1" viewBox="0 0 240 180" role="img" aria-label="A grid of 100 dots, one for each imaginary baby."></svg></div>
+          <figcaption><b><span class="ln-gist-n">1</span>Start with 100 babies</b>Imagine 100 babies born today. They are not real babies, just a way to count.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gist2" viewBox="0 0 240 180" role="img" aria-label="The same 100 dots, with some greyed out to show those who have died by age 70."></svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Apply this year's death rates</b>At each age, some die, at the rate people of that age die today.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gist3" viewBox="0 0 240 180" role="img" aria-label="A falling curve of the share still alive by age, with the area under it shaded and the average of 70.4 years marked."></svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>Average the years they lived</b>Add up all the years the 100 lived and divide by 100. For Odisha that is 70.4.</figcaption>
+        </figure>
+      </div>
+      <p class="ln-gist-sum">Life expectancy is the average number of years 100 babies would live if today's death rates never changed.</p>
+      <dl class="ln-words">
+        <div><dt>Life expectancy at birth</dt><dd>Average years a newborn would live at today's death rates.</dd></div>
+        <div><dt>Life table</dt><dd>A table following imaginary babies through every age, using death rates.</dd></div>
+        <div><dt>Death rate by age</dt><dd>Share of people of one age who die within a year.</dd></div>
+        <div><dt>Period measure</dt><dd>A snapshot of one period's rates, not anyone's real life story.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <div class="ln-prose">
+    <p>When we say "life expectancy in Odisha is 70.4 years", it is easy to hear "people in Odisha die at 70". That is not what it means. This page builds the number step by step, so you can see what it does say.</p>
+    <p>By sex, the figure is <strong>69.2 years for men</strong> and <strong>71.8 years for women</strong> (SRS abridged life tables, 2020–24).</p>
+    <div class="ln-seeit">Where you see this on Soochana: <a href="../odisha.html">Odisha dashboard</a><a href="../district.html">District pages</a><a href="../district-health.html">District health</a></div>
+
+    <h2>Follow 100 babies</h2>
+    <p>Start with 100 imaginary babies. Each year, take away the share who would die at that age, using <strong>this year's</strong> death rates.</p>
+    <p>A few die as babies. Then very few die through childhood and youth. Deaths pick up again after about 50. Drag the slider to move through the ages.</p>
+  </div>
+
+  <div class="ln-wide">
+    <figure class="ln-figure">
+      <div class="ln-controls">
+        <button class="ln-btn" id="playBtn" type="button">Play 100 years</button>
+        <label>Age <input type="range" id="ageSlider" min="0" max="100" step="1" value="0" aria-label="Age, 0 to 100"><output id="ageOut">0</output></label>
+        <div class="ln-seg" role="group" aria-label="How to show the area">
+          <button type="button" aria-pressed="true" data-mode="area">Area under the curve</button>
+          <button type="button" aria-pressed="false" data-mode="block">Same area as a block</button>
+        </div>
+      </div>
+      <div class="ln-grid2">
+        <div>
+          <p class="ln-figure-t">100 imaginary babies</p>
+          <p class="ln-figure-s">Grey: died by this age</p>
+          <svg id="dotsSvg" style="max-width:380px;margin:0 auto" role="img" aria-label="A grid of 100 people. Those who have died by the chosen age turn grey."></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t">Share still alive, by age</p>
+          <p class="ln-figure-s" id="survSub">The darker shading is the years lived so far</p>
+          <svg id="survSvg" role="img" aria-label="Survival curve: the share of the 100 babies still alive at each age from 0 to 100, with the area under it shaded"></svg>
+        </div>
+      </div>
+      <div class="ln-stats" id="survStats"></div>
+      <div class="ln-source">Illustration built to match Odisha's life expectancy of 70.4 years (SRS abridged life tables 2020–24), with 28 in 1,000 babies dying before age 1 (IMR, SRS). Not Odisha's actual life table.</div>
+    </figure>
+  </div>
+
+  <div class="ln-prose">
+    <h3>Why the area is the average</h3>
+    <p>Look at the curve one year at a time. If 90 of the 100 babies are alive at age 40, they live 90 years of life between them in that year.</p>
+    <p>Add this up over every age and you get the shaded area. It is the <strong>total years lived</strong> by all 100 babies. Divide by 100 and you have the average:</p>
+    <div class="ln-recipe" aria-label="Life expectancy recipe">
+      <span class="ln-recipe-box"><b data-v="totalYears"></b><small>years lived by<br>all 100 babies</small></span>
+      <span class="ln-recipe-op">÷</span>
+      <span class="ln-recipe-box"><b>100</b><small>babies</small></span>
+      <span class="ln-recipe-op">=</span>
+      <span class="ln-recipe-box is-result"><b data-v="e0"></b><small>life expectancy at birth</small></span>
+    </div>
+    <p>Press <em>Same area as a block</em>. The same area is squeezed into a rectangle. Its width is 70.4 years. That is what "average" means here: if every baby lived exactly the same length of life, it would be 70.4 years.</p>
+
+    <h2>Why babies matter so much</h2>
+    <p>The <strong>infant mortality rate (IMR)</strong> is the number of babies, out of 1,000 born, who die before their first birthday. Odisha's IMR is 28 (SRS).</p>
+    <p>A baby who dies loses a whole life. In our illustration, that is about <b data-v="yearsBaby"></b> years taken out of the total. A death at age 70 takes away about <b data-v="years70"></b> years. So a few baby deaths pull the average down a lot.</p>
+    <p>Try other infant death levels. Everything else stays the same.</p>
+  </div>
+
+  <div class="ln-wide">
+    <figure class="ln-figure">
+      <div class="ln-controls">
+        <span>Babies dying before age 1, per 1,000:</span>
+        <div class="ln-seg" role="group" aria-label="Infant mortality rate" id="imrSeg">
+          <button type="button" aria-pressed="false" data-imr="10">10</button>
+          <button type="button" aria-pressed="true" data-imr="28">28 (Odisha)</button>
+          <button type="button" aria-pressed="false" data-imr="60">60</button>
+          <button type="button" aria-pressed="false" data-imr="100">100</button>
+        </div>
+      </div>
+      <p class="ln-figure-t" id="imrTitle">Share still alive, by age</p>
+      <p class="ln-figure-s">Only the deaths in the first year change. The shaded area, and so the average, changes with them.</p>
+      <div class="ln-legend">
+        <span><i class="line" style="background:var(--ln-train)"></i>Chosen infant death level</span>
+        <span><i class="line" style="background:#94a3b8"></i>Odisha today (IMR 28)</span>
+      </div>
+      <svg id="imrSvg" role="img" aria-label="Survival curves for different infant mortality rates, with life expectancy marked"></svg>
+      <div class="ln-stats" id="imrStats"></div>
+      <div class="ln-source">Illustration, not real data. Death rates after age 1 are held at the level that gives Odisha's 70.4 years with an IMR of 28.</div>
+    </figure>
+  </div>
+
+  <div class="ln-prose">
+    <p>This is why life expectancy rose so fast across India as fewer babies died. Saving a baby adds a whole lifetime to the total. Saving the life of an old person adds a few years.</p>
+    <p>It also explains a common puzzle. When life expectancy was low, it was not because everyone died young. Many babies died, and that dragged the average down.</p>
+
+    <h2>Districts: women live longer</h2>
+    <p>In every district of Odisha, women are expected to live longer than men. This is true almost everywhere in the world. It is partly biology and partly that men face more risks from work, accidents, tobacco and alcohol.</p>
+    <p>The chart shows estimates for each district. They are built from NFHS survey data, which is a <strong>different source</strong> from the SRS state figure of 70.4. The two use different methods, so compare districts with each other, not with the state number.</p>
+  </div>
+
+  <div class="ln-wide">
+    <figure class="ln-figure">
+      <div class="ln-controls">
+        <div class="ln-seg" role="group" aria-label="What to show">
+          <button type="button" aria-pressed="true" data-dmode="gap">Women vs men (NFHS-5)</button>
+          <button type="button" aria-pressed="false" data-dmode="change">Change since NFHS-4</button>
+        </div>
+      </div>
+      <p class="ln-figure-t" id="distTitle">Life expectancy at birth by district, women and men, NFHS-5</p>
+      <p class="ln-figure-s" id="distSub">Each row is a district, highest at the top. The grey bar is the gap between women and men. Hover for values.</p>
+      <div class="ln-legend" id="distLegend"></div>
+      <svg id="distSvg" role="img" aria-label="Dumbbell chart of life expectancy for women and men in Odisha's 30 districts"></svg>
+      <div class="ln-stats" id="distStats"></div>
+      <div class="ln-source">District life expectancy: estimates derived from NFHS-4 (2015–16) and NFHS-5 (2019–21) data. Not the same method as the SRS state figure.</div>
+    </figure>
+  </div>
+
+  <div class="ln-prose">
+    <p id="distText"></p>
+
+    <h2>Common mistakes</h2>
+  </div>
+
+  <div class="ln-wide">
+    <div class="le-myths">
+      <div class="le-myth">
+        <span class="le-myth-k is-myth">Myth</span>
+        <p class="le-claim">"Life expectancy is 70, so most people die at 70."</p>
+        <hr>
+        <span class="le-myth-k is-fact">Fact</span>
+        <p>It is an average. Deaths are spread over many ages. In our illustration, half of all babies live past <b data-v="median"></b>. A person who reaches 60 lives, on average, to about <b data-v="to60"></b>.</p>
+      </div>
+      <div class="le-myth">
+        <span class="le-myth-k is-myth">Myth</span>
+        <p class="le-claim">"A baby born today will live 70.4 years."</p>
+        <hr>
+        <span class="le-myth-k is-fact">Fact</span>
+        <p>It uses this year's death rates for every age. If death rates keep falling, as they have for decades, today's babies will probably live longer. It is a snapshot, a period measure.</p>
+      </div>
+      <div class="le-myth">
+        <span class="le-myth-k is-myth">Myth</span>
+        <p class="le-claim">"Low life expectancy means few people grow old."</p>
+        <hr>
+        <span class="le-myth-k is-fact">Fact</span>
+        <p>A low average is often caused by many babies dying. Those who survive childhood can still live long. Try the infant death buttons above.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ln-prose">
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>Life expectancy at birth is the average years 100 babies would live if today's death rates at every age never changed.</li>
+      <li>It is the area under the survival curve, divided by the number of babies. It is not the age at which most people die.</li>
+      <li>Baby deaths pull it down a lot, because each one removes a whole lifetime. Fewer infant deaths raised it fast.</li>
+      <li>Odisha: 70.4 years (men 69.2, women 71.8; SRS 2020–24). District figures come from NFHS and a different method, so compare them with each other.</li>
+    </ol></div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p><b>State figure.</b> Life expectancy at birth of 70.4 years (male 69.2, female 71.8) is from the SRS abridged life tables for 2020–24. IMR of 28 per 1,000 live births is from SRS.</p>
+    <p><b>The 100-babies illustration.</b> The survival curve is not Odisha's life table. It is a smooth Gompertz–Makeham curve (death risk = a small constant plus a part that grows about 8.5% with each year of age after age 1), with 2.8% of babies dying in the first year, most of them in the first weeks. The rising part is tuned so that the area under the curve equals 70.4 years. Medians and "average age at death after 60" quoted on this page come from this illustration, not from SRS. Life expectancy is computed as the sum of person-years lived (trapezoids by single year of age, with infant deaths placed early in the first year) divided by the starting number.</p>
+    <p><b>Infant deaths.</b> The infant-mortality buttons change only the first-year death risk and keep all later death rates fixed, so the change in life expectancy shows the effect of infant deaths alone. In real life, child and adult death rates have also fallen.</p>
+    <p><b>Districts.</b> District life expectancy for men and women (datasets/district_life_expectancy.json) are estimates derived from NFHS-4 and NFHS-5 data. They are a different source and method from SRS, which is why most district values are higher than the SRS state figure. Use them to compare districts and the gap between women and men, not as replacements for the SRS number.</p>
+    <details class="ln-details">
+      <summary>Show the district table</summary>
+      <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
+    </details>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="fertility-rate.html"><small>Previous · M3</small><b>Total Fertility Rate</b></a>
+    <a href="age-structure.html"><small>Next · M5</small><b>Age Structure</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, SRS, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var C = { train: SL.color('train') || '#00899e', val: SL.color('val') || '#7b52c7', test: SL.color('test') || '#d4460f', ink: '#0f172a', ghost: 'rgba(15,23,42,.14)', grey: '#94a3b8' };
+  var tip = SL.tooltip();
+  var NARROW = document.querySelector('.ln-wide').clientWidth < 600;
+  var E0 = 70.4, IMR = 28;
+
+  /* ── the illustrative life table ───────────────────
+     Gompertz–Makeham after age 1: hazard = MK_A + B·e^(MK_C·(age−1)).
+     q0 babies die in year 0, mostly early: l(a) = 1 − q0·(1 − (1 − a)^6),
+     so the average infant death happens at 1/7 of a year. B is tuned so
+     that the area under the curve is 70.4 years with q0 = 0.028. */
+  var MK_A = 0.0015, MK_C = 0.085, MAXAGE = 110, A0 = 1 / 7;
+  function table(q0, B) {
+    var l = [1];
+    for (var x = 1; x <= MAXAGE; x++) {
+      var t = x - 1;
+      l.push((1 - q0) * Math.exp(-MK_A * t - B / MK_C * (Math.exp(MK_C * t) - 1)));
+    }
+    return { q0: q0, l: l };
+  }
+  function lAt(T, a) {
+    if (a <= 0) return 1;
+    if (a < 1) return 1 - T.q0 * (1 - Math.pow(1 - a, 6));
+    if (a >= MAXAGE) return T.l[MAXAGE];
+    var f = Math.floor(a), r = a - f;
+    return T.l[f] * Math.pow(T.l[f + 1] / T.l[f], r);
+  }
+  /* remaining life expectancy at whole age x0 */
+  function ex(T, x0) {
+    var l = T.l, s = x0 === 0 ? l[1] + A0 * (l[0] - l[1]) : (l[x0] + l[x0 + 1]) / 2;
+    for (var x = x0 + 1; x < MAXAGE; x++) s += (l[x] + l[x + 1]) / 2;
+    return s / l[x0];
+  }
+  var lo = 1e-7, hi = 1e-2;
+  for (var it = 0; it < 80; it++) {
+    var mid = Math.sqrt(lo * hi);
+    if (ex(table(IMR / 1000, mid), 0) > E0) lo = mid; else hi = mid;
+  }
+  var BGOMP = Math.sqrt(lo * hi);
+  var BASE = table(IMR / 1000, BGOMP);
+  var e0 = ex(BASE, 0);
+
+  /* age at which survival falls to p (bisection on the smooth curve) */
+  function ageAt(T, p) {
+    var a = 0, b = MAXAGE;
+    if (lAt(T, b) > p) return MAXAGE;
+    for (var k = 0; k < 50; k++) { var m = (a + b) / 2; if (lAt(T, m) > p) a = m; else b = m; }
+    return (a + b) / 2;
+  }
+  /* the 100 babies: baby j dies when survival drops below 1 − (j + 0.5)/100 */
+  var deathAge = d3.range(100).map(function (j) { return ageAt(BASE, 1 - (j + 0.5) / 100); });
+  var place = SL.shuffle(SL.range(100), SL.rng(70));     /* grid slot → baby */
+  function aliveAt(a) { return deathAge.filter(function (d) { return d > a; }).length; }
+
+  var V = {
+    totalYears: SL.fmt(e0 * 100), e0: SL.fmt(e0, 1),
+    yearsBaby: SL.fmt(ex(BASE, 1) + 1, 0), years70: SL.fmt(ex(BASE, 70), 0),
+    median: SL.fmt(ageAt(BASE, 0.5), 0), to60: SL.fmt(60 + ex(BASE, 60), 0),
+  };
+  document.querySelectorAll('[data-v]').forEach(function (el) { el.textContent = V[el.dataset.v]; });
+
+  var AG = d3.range(0, 100.001, 0.25);
+
+  /* ── the idea in one picture ───────────────────── */
+  function miniGrid(svg, age) {
+    var s = 13, x0 = 120 - 4.5 * s, y0 = 26;
+    for (var k = 0; k < 100; k++) {
+      var b = place[k], alive = deathAge[b] > age;
+      svg.append('circle').attr('cx', x0 + (k % 10) * s).attr('cy', y0 + Math.floor(k / 10) * s).attr('r', 5)
+        .style('fill', alive ? C.train : 'rgba(15,23,42,.16)');
+    }
+  }
+  (function gist() {
+    var g1 = d3.select('#gist1');
+    miniGrid(g1, 0);
+    g1.append('text').attr('x', 120).attr('y', 172).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('100 babies, all alive');
+    var g2 = d3.select('#gist2');
+    miniGrid(g2, 70);
+    g2.append('text').attr('x', 120).attr('y', 172).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('By age 70: ' + (100 - aliveAt(70)) + ' have died');
+    var g3 = d3.select('#gist3'), gx = d3.scaleLinear([0, 100], [22, 226]), gy = d3.scaleLinear([0, 1], [146, 26]);
+    g3.append('path').attr('d', d3.area().x(function (a) { return gx(a); }).y0(gy(0)).y1(function (a) { return gy(lAt(BASE, a)); })(AG))
+      .style('fill', C.train).style('opacity', 0.25).style('stroke', 'none');
+    g3.append('path').attr('d', d3.line().x(function (a) { return gx(a); }).y(function (a) { return gy(lAt(BASE, a)); })(AG))
+      .style('fill', 'none').style('stroke', C.ink).style('stroke-width', 2);
+    g3.append('line').attr('x1', gx(e0)).attr('x2', gx(e0)).attr('y1', 20).attr('y2', 146).style('stroke', C.test).style('stroke-width', 2).style('stroke-dasharray', '4 3');
+    g3.append('text').attr('x', gx(e0) - 4).attr('y', 18).attr('text-anchor', 'end').style('font-size', '13px').style('font-weight', 600).style('fill', C.ink).text('average 70.4 yrs');
+    g3.append('line').attr('x1', 22).attr('x2', 226).attr('y1', 146).attr('y2', 146).style('stroke', '#94a3b8');
+    [0, 50, 100].forEach(function (a) {
+      g3.append('text').attr('x', gx(a)).attr('y', 162).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text(a);
+    });
+    g3.append('text').attr('x', 120).attr('y', 177).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('age');
+    g3.append('text').attr('x', gx(30)).attr('y', gy(0.42)).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#005f6e').text('years lived');
+  })();
+
+  /* ── follow 100 babies ─────────────────────────── */
+  var dW = 300, dH = 300;
+  var dsvg = d3.select('#dotsSvg').attr('viewBox', [0, 0, dW, dH]);
+  var people = d3.range(100).map(function (k) {
+    var x = 24 + (k % 10) * 28, y = 22 + Math.floor(k / 10) * 28, g = dsvg.append('g');
+    var head = g.append('circle').attr('cx', x).attr('cy', y - 6).attr('r', 5);
+    var body = g.append('rect').attr('x', x - 7).attr('y', y).attr('width', 14).attr('height', 11).attr('rx', 5);
+    var b = place[k];
+    g.on('pointerenter', function (e) {
+      var d = deathAge[b];
+      tip.show(e, 'This imaginary baby lives to <b>' + (d < 1 ? 'under 1 year' : 'age ' + Math.floor(d)) + '</b>');
+    }).on('pointerleave', function () { tip.hide(); });
+    return { b: b, parts: [head, body] };
+  });
+
+  var sW = 480, sH = 320, sM = { t: 16, r: 16, b: 42, l: 46 };
+  var ssvg = d3.select('#survSvg').attr('viewBox', [0, 0, sW, sH]);
+  var sx = d3.scaleLinear([0, 100], [sM.l, sW - sM.r]), sy = d3.scaleLinear([0, 1], [sH - sM.b, sM.t]);
+  ssvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + sM.l + ',0)').call(d3.axisLeft(sy).ticks(5).tickSize(-(sW - sM.l - sM.r)).tickFormat(''));
+  var areaFull = ssvg.append('path').style('fill', C.train).style('opacity', 0.16).style('stroke', 'none');
+  var areaSoFar = ssvg.append('path').style('fill', C.train).style('opacity', 0.38).style('stroke', 'none');
+  ssvg.append('path').attr('d', d3.line().x(function (a) { return sx(a); }).y(function (a) { return sy(lAt(BASE, a)); })(AG))
+    .style('fill', 'none').style('stroke', C.ink).style('stroke-width', 2.2);
+  ssvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (sH - sM.b) + ')').call(d3.axisBottom(sx).ticks(5));
+  ssvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + sM.l + ',0)').call(d3.axisLeft(sy).ticks(5).tickFormat(function (v) { return Math.round(v * 100); }));
+  ssvg.append('text').attr('class', 'ln-axis-label').attr('x', sW - sM.r).attr('y', sH - 6).attr('text-anchor', 'end').text('Age (years) →');
+  ssvg.append('text').attr('class', 'ln-axis-label').attr('text-anchor', 'middle').attr('transform', 'translate(11,' + ((sM.t + sH - sM.b) / 2) + ') rotate(-90)').text('Still alive, out of 100 →');
+  var e0Line = ssvg.append('line').attr('x1', sx(e0)).attr('x2', sx(e0)).attr('y1', sM.t).attr('y2', sH - sM.b).style('stroke', C.test).style('stroke-width', 2).style('stroke-dasharray', '5 4').style('opacity', 0);
+  var e0Lab = ssvg.append('text').attr('class', 'ln-dlabel').attr('x', sx(e0) + 6).attr('y', sy(0.92)).style('opacity', 0).text('70.4 years');
+  var areaLab = ssvg.append('text').attr('class', 'ln-dlabel').attr('x', sx(32)).attr('y', sy(0.4)).attr('text-anchor', 'middle');
+  var mLine = ssvg.append('line').style('stroke', C.ink).style('stroke-dasharray', '3 4');
+  var mDot = ssvg.append('circle').attr('r', 6).attr('fill', C.test).style('stroke', '#fff').style('stroke-width', 2);
+  var mLab = ssvg.append('text').attr('class', 'ln-dlabel');
+
+  var mode = 'area';
+  var area = d3.area().x(function (p) { return sx(p[0]); }).y0(sy(0)).y1(function (p) { return sy(p[1]); });
+  function drawShape(animate) {
+    var pts = AG.map(function (a) { return [a, mode === 'block' ? (a <= e0 ? 1 : 0) : lAt(BASE, a)]; });
+    (animate ? areaFull.transition().duration(SL.dur(600)) : areaFull).attr('d', area(pts));
+    areaSoFar.style('display', mode === 'block' ? 'none' : null);
+    e0Line.transition().duration(SL.dur(400)).style('opacity', mode === 'block' ? 1 : 0);
+    e0Lab.transition().duration(SL.dur(400)).style('opacity', mode === 'block' ? 1 : 0);
+    areaLab.text(mode === 'block' ? 'Same area, 70.4 years wide' : 'Shaded area = years lived');
+    document.getElementById('survSub').textContent = mode === 'block'
+      ? 'The same total years, squeezed into a block 70.4 years wide'
+      : 'The darker shading is the years lived so far';
+  }
+  var slider = document.getElementById('ageSlider');
+  function drawAge(a) {
+    var alive = aliveAt(a), lv = lAt(BASE, a);
+    people.forEach(function (p) {
+      var on = deathAge[p.b] > a;
+      p.parts.forEach(function (el) { el.style('fill', on ? C.train : 'rgba(15,23,42,.15)'); });
+    });
+    var pts = AG.filter(function (x) { return x < a; }).map(function (x) { return [x, lAt(BASE, x)]; });
+    pts.push([a, lv]);
+    areaSoFar.attr('d', a > 0 ? area(pts) : null);
+    mLine.attr('x1', sx(a)).attr('x2', sx(a)).attr('y1', sy(0)).attr('y2', sy(lv));
+    mDot.attr('cx', sx(a)).attr('cy', sy(lv));
+    var right = a < 55;
+    mLab.attr('x', sx(a) + (right ? 10 : -10)).attr('y', sy(lv) - 12).attr('text-anchor', right ? 'start' : 'end')
+      .text('Age ' + Math.floor(a) + ': ' + alive + ' alive');
+    document.getElementById('ageOut').textContent = Math.floor(a);
+    var lived = 0;
+    for (var k = 0; k < 100; k++) lived += Math.min(deathAge[k], a);
+    document.getElementById('survStats').innerHTML =
+      '<div class="ln-stat"><div class="ln-stat-v">' + Math.floor(a) + '</div><div class="ln-stat-l">Age</div></div>' +
+      '<div class="ln-stat"><div class="ln-stat-v">' + alive + '</div><div class="ln-stat-l"><i style="background:' + C.train + '"></i>Still alive, of 100</div></div>' +
+      '<div class="ln-stat"><div class="ln-stat-v">' + (100 - alive) + '</div><div class="ln-stat-l"><i style="background:rgba(15,23,42,.25)"></i>Died so far</div></div>' +
+      '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(lived) + '</div><div class="ln-stat-l">Years lived by the 100 so far</div></div>';
+  }
+  var timer = null, btn = document.getElementById('playBtn');
+  function stop() { if (timer) { timer.stop(); timer = null; } btn.textContent = 'Play 100 years'; }
+  btn.addEventListener('click', function () {
+    if (timer) { stop(); return; }
+    var start = +slider.value >= 100 ? 0 : +slider.value, total = SL.dur(9000) * (100 - start) / 100;
+    if (!total) { slider.value = 100; drawAge(100); return; }
+    btn.textContent = 'Pause';
+    timer = d3.timer(function (el) {
+      var a = Math.min(100, start + (el / total) * (100 - start));
+      slider.value = Math.floor(a);
+      drawAge(a);
+      if (a >= 100) stop();
+    });
+  });
+  slider.addEventListener('input', function () { stop(); drawAge(+slider.value); });
+  document.querySelectorAll('[data-mode]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('[data-mode]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      mode = b.dataset.mode;
+      drawShape(true);
+    });
+  });
+  drawShape(false);
+  drawAge(0);
+
+  /* ── why babies matter ─────────────────────────── */
+  var iW = NARROW ? 440 : 900, iH = NARROW ? 320 : 330, iM = { t: 20, r: 20, b: 42, l: 46 };
+  var isvg = d3.select('#imrSvg').attr('viewBox', [0, 0, iW, iH]);
+  var ix = d3.scaleLinear([0, 100], [iM.l, iW - iM.r]), iy = d3.scaleLinear([0, 1], [iH - iM.b, iM.t]);
+  isvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + iM.l + ',0)').call(d3.axisLeft(iy).ticks(5).tickSize(-(iW - iM.l - iM.r)).tickFormat(''));
+  var iArea = isvg.append('path').style('fill', C.train).style('opacity', 0.18).style('stroke', 'none');
+  var iLine = d3.line().x(function (p) { return ix(p[0]); }).y(function (p) { return iy(p[1]); });
+  isvg.append('path').attr('d', iLine(AG.map(function (a) { return [a, lAt(BASE, a)]; })))
+    .style('fill', 'none').style('stroke', C.grey).style('stroke-width', 2).style('stroke-dasharray', '6 4');
+  var iCurve = isvg.append('path').style('fill', 'none').style('stroke', C.train).style('stroke-width', 2.5);
+  isvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (iH - iM.b) + ')').call(d3.axisBottom(ix).ticks(NARROW ? 5 : 10));
+  isvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + iM.l + ',0)').call(d3.axisLeft(iy).ticks(5).tickFormat(function (v) { return Math.round(v * 100); }));
+  isvg.append('text').attr('class', 'ln-axis-label').attr('x', iW - iM.r).attr('y', iH - 6).attr('text-anchor', 'end').text('Age (years) →');
+  isvg.append('text').attr('class', 'ln-axis-label').attr('text-anchor', 'middle').attr('transform', 'translate(11,' + ((iM.t + iH - iM.b) / 2) + ') rotate(-90)').text('Still alive, out of 100 →');
+  var iE = isvg.append('line').attr('y1', iM.t + 24).attr('y2', iH - iM.b).style('stroke', C.test).style('stroke-width', 2).style('stroke-dasharray', '5 4');
+  var iELab = isvg.append('text').attr('class', 'ln-dlabel').attr('y', iM.t + 16).attr('text-anchor', 'middle');
+  var iFirst = true;
+  function drawImr(imr) {
+    var T = table(imr / 1000, BGOMP), e = ex(T, 0), pts = AG.map(function (a) { return [a, lAt(T, a)]; });
+    var t = d3.transition().duration(iFirst ? 0 : SL.dur(400));
+    iFirst = false;
+    iArea.transition(t).attr('d', d3.area().x(function (p) { return ix(p[0]); }).y0(iy(0)).y1(function (p) { return iy(p[1]); })(pts));
+    iCurve.transition(t).attr('d', iLine(pts));
+    iE.transition(t).attr('x1', ix(e)).attr('x2', ix(e));
+    iELab.transition(t).attr('x', ix(e));
+    iELab.text('Life expectancy ' + SL.fmt(e, 1));
+    var diff = e - e0, sign = diff > 0.05 ? '+' : diff < -0.05 ? '−' : '';
+    document.getElementById('imrTitle').textContent = 'If ' + imr + ' in 1,000 babies died before age 1';
+    document.getElementById('imrStats').innerHTML =
+      '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(e, 1) + '</div><div class="ln-stat-l">Life expectancy at birth (years)</div></div>' +
+      '<div class="ln-stat"><div class="ln-stat-v">' + sign + SL.fmt(Math.abs(diff), 1) + '</div><div class="ln-stat-l">Years compared with Odisha today</div></div>' +
+      '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(imr / 10, imr % 10 ? 1 : 0) + '</div><div class="ln-stat-l">Babies of 100 who die in year 1</div></div>';
+  }
+  document.querySelectorAll('[data-imr]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('[data-imr]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      drawImr(+b.dataset.imr);
+    });
+  });
+  drawImr(IMR);
+
+  /* ── districts ─────────────────────────────────── */
+  fetch('../datasets/district_life_expectancy.json').then(function (r) {
+    if (!r.ok) throw new Error('district_life_expectancy.json: ' + r.status);
+    return r.json();
+  }).then(function (raw) {
+    var D = Object.keys(raw).map(function (name) {
+      var v = raw[name];
+      return { name: name, m4: +v.male.nfhs4, m5: +v.male.nfhs5, f4: +v.female.nfhs4, f5: +v.female.nfhs5 };
+    }).filter(function (d) { return [d.m4, d.m5, d.f4, d.f5].every(function (x) { return !isNaN(x); }); });
+    D.forEach(function (d) { d.gap = d.f5 - d.m5; d.gain = ((d.f5 - d.f4) + (d.m5 - d.m4)) / 2; });
+
+    var rowH = NARROW ? 24 : 21, M = NARROW ? { t: 12, r: 76, b: 44, l: 120 } : { t: 12, r: 90, b: 44, l: 130 };
+    var W = NARROW ? 440 : 900, H = M.t + rowH * D.length + M.b;
+    var svg = d3.select('#distSvg').attr('viewBox', [0, 0, W, H]);
+    var allV = [];
+    D.forEach(function (d) { allV.push(d.m4, d.m5, d.f4, d.f5); });
+    var x = d3.scaleLinear([Math.floor(d3.min(allV)) - 0.5, Math.ceil(d3.max(allV)) + 0.5], [M.l, W - M.r]);
+    svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(0,' + (H - M.b) + ')')
+      .call(d3.axisBottom(x).ticks(NARROW ? 5 : 8).tickSize(-(H - M.b - M.t)).tickFormat(''));
+    svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')').call(d3.axisBottom(x).ticks(NARROW ? 5 : 8));
+    svg.append('text').attr('class', 'ln-axis-label').attr('x', W - M.r).attr('y', H - 8).attr('text-anchor', 'end').text('Life expectancy at birth (years) →');
+
+    var rows = svg.append('g').selectAll('g').data(D, function (d) { return d.name; }).join('g');
+    var nameT = rows.append('text').attr('class', 'ln-axis-label').attr('x', M.l - 10).attr('dy', '0.35em').attr('text-anchor', 'end').text(function (d) { return d.name; });
+    var gapL = rows.append('line').attr('x1', function (d) { return x(d.m5); }).attr('x2', function (d) { return x(d.f5); })
+      .style('stroke', 'rgba(15,23,42,.16)').style('stroke-width', 6).style('stroke-linecap', 'round');
+    function arrow(k4, k5, col) {
+      return rows.append('line').attr('x1', function (d) { return x(d[k4]); }).attr('x2', function (d) { return x(d[k5]); })
+        .style('stroke', col).style('stroke-width', 2).style('opacity', 0);
+    }
+    var arF = arrow('f4', 'f5', C.val), arM = arrow('m4', 'm5', C.train);
+    function dot(k, col, hollow) {
+      return rows.append('circle').attr('r', NARROW ? 6 : 5.5).attr('cx', function (d) { return x(d[k]); })
+        .attr('fill', hollow ? '#fff' : col).style('stroke', hollow ? col : '#fff').style('stroke-width', hollow ? 2 : 1.5)
+        .style('opacity', hollow ? 0 : 1);
+    }
+    var dF4 = dot('f4', C.val, true), dM4 = dot('m4', C.train, true), dM5 = dot('m5', C.train), dF5 = dot('f5', C.val);
+    var tag = rows.append('text').attr('class', 'ln-dlabel').attr('dy', '0.35em');
+    rows.append('rect').attr('x', 0).attr('y', -rowH / 2).attr('width', W).attr('height', rowH).style('fill', 'transparent')
+      .on('pointerenter', function (e, d) { tip.show(e, tipHtml(d)); })
+      .on('pointermove', function (e, d) { tip.show(e, tipHtml(d)); })
+      .on('pointerleave', function () { tip.hide(); });
+    function tipHtml(d) {
+      return '<b>' + d.name + '</b><br>Women: ' + SL.fmt(d.f4, 1) + ' → ' + SL.fmt(d.f5, 1) + '<br>Men: ' + SL.fmt(d.m4, 1) + ' → ' + SL.fmt(d.m5, 1) +
+        '<br><span class="muted">NFHS-4 → NFHS-5, years. Gap in NFHS-5: ' + SL.fmt(d.gap, 1) + '</span>';
+    }
+
+    var LEG = {
+      gap: '<span><i style="background:' + C.val + '"></i>Women, NFHS-5</span><span><i style="background:' + C.train + '"></i>Men, NFHS-5</span>',
+      change: '<span><i style="background:#fff;border:2px solid #64748b;box-sizing:border-box"></i>NFHS-4 (2015–16)</span><span><i style="background:#64748b"></i>NFHS-5 (2019–21)</span><span><i class="line" style="background:' + C.val + '"></i>Women</span><span><i class="line" style="background:' + C.train + '"></i>Men</span>',
+    };
+    var first = true;
+    function draw(m) {
+      var key = m === 'gap' ? function (d) { return d.f5; } : function (d) { return d.gain; };
+      var sorted = D.slice().sort(function (a, b) { return key(b) - key(a); });
+      var top = sorted[0], bot = sorted[sorted.length - 1];
+      var idx = {};
+      sorted.forEach(function (d, i) { idx[d.name] = i; });
+      var t = d3.transition().duration(first ? 0 : SL.dur(600)).ease(d3.easeCubicInOut);
+      first = false;
+      var ch = m === 'change', off = ch ? (NARROW ? 5 : 4.5) : 0;
+      rows.transition(t).attr('transform', function (d) { return 'translate(0,' + (M.t + rowH * (idx[d.name] + 0.5)) + ')'; });
+      gapL.transition(t).style('opacity', ch ? 0 : 1);
+      [arF, dF4].forEach(function (s) { s.transition(t).style('opacity', ch ? 1 : 0); });
+      [arM, dM4].forEach(function (s) { s.transition(t).style('opacity', ch ? 1 : 0); });
+      arF.transition(t).attr('y1', -off).attr('y2', -off);
+      arM.transition(t).attr('y1', off).attr('y2', off);
+      dF4.transition(t).attr('cy', -off); dF5.transition(t).attr('cy', -off);
+      dM4.transition(t).attr('cy', off); dM5.transition(t).attr('cy', off);
+      var special = function (d) { return d === top || d === bot; };
+      nameT.style('font-weight', function (d) { return special(d) ? 700 : null; }).style('fill', function (d) { return special(d) ? C.ink : null; });
+      tag.attr('x', function (d) { return x(Math.max(d.f5, d.m5)) + 10; })
+        .text(function (d) {
+          if (!special(d)) return '';
+          if (!ch) return d === top ? 'highest' : 'lowest';
+          return (d === top ? 'most ' : 'least ') + '+' + SL.fmt(d.gain, 1);
+        });
+      document.getElementById('distLegend').innerHTML = LEG[m];
+      document.getElementById('distTitle').textContent = ch
+        ? 'Change in life expectancy by district, NFHS-4 to NFHS-5'
+        : 'Life expectancy at birth by district, women and men, NFHS-5';
+      document.getElementById('distSub').textContent = ch
+        ? 'Each line runs from NFHS-4 (hollow) to NFHS-5 (filled). Biggest gain at the top. Hover for values.'
+        : 'Each row is a district, highest at the top. The grey bar is the gap between women and men. Hover for values.';
+      var avgGain = SL.mean(D.map(function (d) { return d.gain; })), avgGap = SL.mean(D.map(function (d) { return d.gap; }));
+      document.getElementById('distStats').innerHTML = ch
+        ? '<div class="ln-stat"><div class="ln-stat-v">+' + SL.fmt(avgGain, 1) + '</div><div class="ln-stat-l">Average gain, years (women and men)</div></div>' +
+          '<div class="ln-stat"><div class="ln-stat-v">' + top.name + '</div><div class="ln-stat-l">Biggest gain: +' + SL.fmt(top.gain, 1) + ' years</div></div>' +
+          '<div class="ln-stat"><div class="ln-stat-v">' + bot.name + '</div><div class="ln-stat-l">Smallest gain: +' + SL.fmt(bot.gain, 1) + ' years</div></div>'
+        : '<div class="ln-stat"><div class="ln-stat-v">' + top.name + '</div><div class="ln-stat-l">Highest: women ' + SL.fmt(top.f5, 1) + ', men ' + SL.fmt(top.m5, 1) + '</div></div>' +
+          '<div class="ln-stat"><div class="ln-stat-v">' + bot.name + '</div><div class="ln-stat-l">Lowest: women ' + SL.fmt(bot.f5, 1) + ', men ' + SL.fmt(bot.m5, 1) + '</div></div>' +
+          '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(avgGap, 1) + '</div><div class="ln-stat-l">Average extra years for women</div></div>';
+    }
+    document.querySelectorAll('[data-dmode]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('[data-dmode]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        draw(b.dataset.dmode);
+      });
+    });
+    draw('gap');
+
+    var womenAhead = D.filter(function (d) { return d.gap > 0; }).length;
+    var rose = D.filter(function (d) { return d.f5 > d.f4 && d.m5 > d.m4; }).length;
+    var byF = D.slice().sort(function (a, b) { return b.f5 - a.f5; });
+    document.getElementById('distText').innerHTML = 'Women are ahead in <b>' + womenAhead + ' of ' + D.length + '</b> districts. ' +
+      'The range between districts is wider than the gap between women and men: from <b>' + byF[0].name + '</b> (women ' + SL.fmt(byF[0].f5, 1) + ') to <b>' + byF[byF.length - 1].name + '</b> (women ' + SL.fmt(byF[byF.length - 1].f5, 1) + '). ' +
+      'Between the two surveys, life expectancy rose for both women and men in <b>' + rose + ' of ' + D.length + '</b> districts.';
+
+    document.getElementById('dataTable').innerHTML = '<thead><tr><th>District</th><th>Women NFHS-4</th><th>Women NFHS-5</th><th>Men NFHS-4</th><th>Men NFHS-5</th></tr></thead><tbody>' +
+      D.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).map(function (d) {
+        return '<tr><td>' + d.name + '</td><td>' + SL.fmt(d.f4, 1) + '</td><td>' + SL.fmt(d.f5, 1) + '</td><td>' + SL.fmt(d.m4, 1) + '</td><td>' + SL.fmt(d.m5, 1) + '</td></tr>';
+      }).join('') + '</tbody>';
+  }).catch(function (err) {
+    console.error(err);
+    document.getElementById('distText').innerHTML = '<span class="ln-callout warn" style="display:block">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</span>';
+  });
+})();
+</script>
+<script src="../chatbot.js?v=20261005"></script>
+</body>
+</html>

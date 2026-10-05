@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20260928-6">
-<link rel="stylesheet" href="learn.css?v=20260929">
+<link rel="stylesheet" href="learn.css?v=20261005">
 <script src="../ui.js?v=20260925-2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="learn.js?v=20260929"></script>
@@ -37,6 +37,10 @@
   #presetNote { color: var(--ink-subtle); }
   .ln-controls .eo-btns { display: flex; flex-wrap: wrap; gap: 8px; }
   .ln-btn.ghost[aria-pressed="true"] { background: var(--ink-heading); color: #fff; }
+  /* "the idea in one picture" panel text */
+  .ln-gist svg text { font-family: var(--font-sans); font-size: 12px; font-weight: 500; fill: #0f172a; }
+  .ln-gist svg .g-b, .ln-gist svg .g-b text { font-weight: 600; }
+  .ln-gist svg .g-s, .ln-gist svg .g-s text { fill: #475569; }
   @media (max-width: 860px) {
     /* the SVGs scale down on phones; keep their own text near 10–12px */
     .eo-row-t { font-size: 17px; }
@@ -71,16 +75,104 @@
 
 <main>
   <section class="ln-hero">
-    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · 06</div>
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-ml">Machine learning</span> · 06</div>
     <h2 class="ln-title">Equality <em>of</em> Odds</h2>
-    <p class="ln-dek">A model can serve one group of districts less well than another without ever being told who is in which group. Here is how to check, and what each idea of “fair” costs, using child stunting across Odisha's 30 districts.</p>
+    <p class="ln-dek">A model can serve one group of districts worse than another without ever seeing the groups, so we check its mistakes group by group.</p>
     <div class="ln-byline">By <b>DIU Team</b> · Data: Census 2011, NFHS-4 and NFHS-5 · Every number on this page is computed live in your browser</div>
   </section>
 
+  <section class="ln-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="Districts from two groups pass through a model that gives each a need score. Those above a bar are picked, the rest are not.">
+            <g style="fill:var(--ln-ga)">
+              <circle cx="20" cy="46" r="6"/><circle cx="38" cy="70" r="6"/><circle cx="20" cy="94" r="6"/><circle cx="38" cy="118" r="6"/><circle cx="20" cy="142" r="6"/>
+            </g>
+            <g style="fill:var(--ln-gb)">
+              <rect x="32" y="40" width="12" height="12" rx="1.5"/><rect x="14" y="64" width="12" height="12" rx="1.5"/><rect x="32" y="88" width="12" height="12" rx="1.5"/><rect x="14" y="112" width="12" height="12" rx="1.5"/><rect x="32" y="136" width="12" height="12" rx="1.5"/>
+            </g>
+            <line x1="50" y1="94" x2="64" y2="94" style="stroke:#64748b;stroke-width:1.5"/>
+            <polygon points="70,94 62,89 62,99" style="fill:#64748b"/>
+            <rect x="72" y="64" width="80" height="60" rx="9" style="fill:#f2f1ec;stroke:#0f172a;stroke-width:1.4"/>
+            <text x="112" y="89" text-anchor="middle" class="g-b">Model</text>
+            <text x="112" y="106" text-anchor="middle" class="g-s">need score</text>
+            <line x1="154" y1="84" x2="172" y2="60" style="stroke:#64748b;stroke-width:1.5"/>
+            <line x1="154" y1="104" x2="172" y2="128" style="stroke:#64748b;stroke-width:1.5"/>
+            <text x="204" y="30" text-anchor="middle" class="g-b">picked</text>
+            <rect x="176" y="38" width="56" height="40" rx="7" style="fill:#fff;stroke:#0f172a;stroke-width:1.4"/>
+            <circle cx="192" cy="52" r="6" style="fill:var(--ln-ga)"/><circle cx="216" cy="52" r="6" style="fill:var(--ln-ga)"/>
+            <rect x="186" y="60" width="12" height="12" rx="1.5" style="fill:var(--ln-gb)"/><circle cx="216" cy="66" r="6" style="fill:var(--ln-ga)"/>
+            <text x="204" y="102" text-anchor="middle" class="g-s">not picked</text>
+            <rect x="176" y="110" width="56" height="40" rx="7" style="fill:#fff;stroke:rgba(15,23,42,.25);stroke-dasharray:3 3"/>
+            <g style="opacity:.55">
+              <rect x="186" y="118" width="12" height="12" rx="1.5" style="fill:var(--ln-gb)"/><rect x="210" y="118" width="12" height="12" rx="1.5" style="fill:var(--ln-gb)"/>
+              <circle cx="192" cy="138" r="6" style="fill:var(--ln-ga)"/><rect x="210" y="132" width="12" height="12" rx="1.5" style="fill:var(--ln-gb)"/>
+            </g>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">1</span>A model picks districts</b>A model gives each district a need score. Districts that clear a bar are picked for a nutrition programme.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="Only the districts that truly need help, in two rows. Ticks mark the ones the model picked, using one bar of 50 for everyone.">
+            <text x="10" y="20" class="g-b" style="fill:var(--ln-ga)">Higher-ST districts in need</text>
+            <g style="fill:var(--ln-ga)">
+              <circle cx="20" cy="42" r="7"/><circle cx="40" cy="42" r="7"/><circle cx="60" cy="42" r="7"/><circle cx="80" cy="42" r="7"/><circle cx="100" cy="42" r="7"/><circle cx="120" cy="42" r="7"/><circle cx="140" cy="42" r="7"/><circle cx="160" cy="42" r="7"/><circle cx="180" cy="42" r="7"/>
+              <circle cx="200" cy="42" r="7" style="opacity:.3"/><circle cx="220" cy="42" r="7" style="opacity:.3"/>
+            </g>
+            <g style="fill:none;stroke:#0f172a;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round">
+              <polyline points="16,58 19,61 25,54"/><polyline points="36,58 39,61 45,54"/><polyline points="56,58 59,61 65,54"/><polyline points="76,58 79,61 85,54"/><polyline points="96,58 99,61 105,54"/><polyline points="116,58 119,61 125,54"/><polyline points="136,58 139,61 145,54"/><polyline points="156,58 159,61 165,54"/><polyline points="176,58 179,61 185,54"/>
+            </g>
+            <text x="10" y="82"><tspan data-v="tpA">9</tspan> of <tspan data-v="needA">11</tspan> picked</text>
+            <text x="10" y="112" class="g-b" style="fill:var(--ln-gb)">Other districts in need</text>
+            <g style="fill:var(--ln-gb)">
+              <rect x="13" y="127" width="14" height="14" rx="2"/><rect x="33" y="127" width="14" height="14" rx="2"/><rect x="53" y="127" width="14" height="14" rx="2"/>
+              <rect x="73" y="127" width="14" height="14" rx="2" style="opacity:.3"/><rect x="93" y="127" width="14" height="14" rx="2" style="opacity:.3"/>
+            </g>
+            <g style="fill:none;stroke:#0f172a;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round">
+              <polyline points="16,149 19,152 25,145"/><polyline points="36,149 39,152 45,145"/><polyline points="56,149 59,152 65,145"/>
+            </g>
+            <text x="10" y="172"><tspan data-v="tpB">3</tspan> of <tspan data-v="needB">5</tspan> picked</text>
+            <text x="230" y="172" text-anchor="end" class="g-s">✓ = picked</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Compare the needy in each group</b>Look only at districts that truly need help. With one bar for everyone, the model picks <b data-v="tprA"></b> of needy higher-ST districts but only <b data-v="tprB"></b> of needy other districts.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="Fair in this sense: the share of needy districts picked is equal in both groups, and the share of false alarms is equal too.">
+            <text x="14" y="22" class="g-b">Needy districts picked</text>
+            <rect x="14" y="32" width="160" height="14" rx="3" style="fill:rgba(15,23,42,.08)"/>
+            <rect x="14" y="32" width="128" height="14" rx="3" style="fill:var(--ln-ga)"/>
+            <rect x="14" y="52" width="160" height="14" rx="3" style="fill:rgba(15,23,42,.08)"/>
+            <rect x="14" y="52" width="128" height="14" rx="3" style="fill:var(--ln-gb)"/>
+            <text x="204" y="57" text-anchor="middle" style="font-size:26px;font-weight:600">=</text>
+            <text x="14" y="98" class="g-b">False alarms</text>
+            <rect x="14" y="108" width="160" height="14" rx="3" style="fill:rgba(15,23,42,.08)"/>
+            <rect x="14" y="108" width="40" height="14" rx="3" style="fill:var(--ln-ga)"/>
+            <rect x="14" y="128" width="160" height="14" rx="3" style="fill:rgba(15,23,42,.08)"/>
+            <rect x="14" y="128" width="40" height="14" rx="3" style="fill:var(--ln-gb)"/>
+            <text x="204" y="133" text-anchor="middle" style="font-size:26px;font-weight:600">=</text>
+            <text x="14" y="168" class="g-s">teal = higher-ST · violet = other</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>Fair means equal, both ways</b>In this sense, a model is fair if both groups get the same share of needy districts picked, and the same share of false alarms. <em>Illustration, not real data.</em></figcaption>
+        </figure>
+      </div>
+      <p class="ln-gist-sum">Equality of odds asks that needy districts have the same chance of being picked in every group, and that districts not in need have the same chance of a false alarm.</p>
+      <dl class="ln-words">
+        <div><dt>True-positive rate</dt><dd>Of the districts truly in need, the share the model picked.</dd></div>
+        <div><dt>False-positive rate</dt><dd>Of the districts not in need, the share picked anyway: false alarms.</dd></div>
+        <div><dt>Threshold (bar)</dt><dd>The score a district must reach to be picked.</dd></div>
+        <div><dt>Group fairness</dt><dd>Checking that a model's mistakes fall equally on different groups.</dd></div>
+        <div><dt>Equality of odds</dt><dd>Equal true-positive and equal false-positive rates in every group.</dd></div>
+      </dl>
+    </div>
+  </section>
+
   <div class="ln-prose">
-    <p>Suppose the state has money for an extra child-nutrition programme and wants it to reach the districts that need it. Call a district <strong>in need</strong> if the share of children under five who are stunted (too short for their age) is at or above the Odisha average of <b data-v="stAvg"></b> in NFHS-5 (2019–21).</p>
-    <p>The catch: survey results arrive years late. So planners score each district from data they already have, and fund every district whose score clears a bar. We will build such a score, then ask a question that overall accuracy cannot answer: <strong>does it work equally well for every kind of district?</strong></p>
-    <p>We compare two groups: the <b data-v="nA"></b> districts where at least 30% of people belong to Scheduled Tribes (ST), and the other <b data-v="nB"></b>. We call them <span class="ln-k ln-k-ga"><span>higher-ST districts</span></span> and <span class="ln-k ln-k-gb eo-sq"><span>other districts</span></span>. The point is not the groups themselves. It is that a model can treat them differently even though it never sees which group a district is in.</p>
+    <p>Suppose the state has money for an extra child-nutrition programme. It wants the money to reach the districts that need it. We call a district <strong>in need</strong> if the share of its children under five who are stunted (too short for their age) is at or above the Odisha average of <b data-v="stAvg"></b> in NFHS-5 (2019–21).</p>
+    <p>The problem: survey results arrive years late. So planners give each district a score from data they already have. Every district whose score clears a bar gets the money. We will build such a score. Then we ask a question that overall accuracy cannot answer: <strong>does it work equally well for every kind of district?</strong></p>
+    <p>We compare two groups. The first is the <b data-v="nA"></b> districts where at least 30% of people belong to Scheduled Tribes (ST). The second is the other <b data-v="nB"></b>. We call them <span class="ln-k ln-k-ga"><span>higher-ST districts</span></span> and <span class="ln-k ln-k-gb eo-sq"><span>other districts</span></span>. The groups are just an example. The point is that a model can treat them differently even though it never sees which group a district is in.</p>
+    <h2>Does one rule for everyone treat both groups alike?</h2>
+    <p>Scroll on. The chart changes with each step.</p>
   </div>
 
   <!-- ── scroll story ─────────────────────────────── -->
@@ -88,64 +180,64 @@
     <div class="ln-steps">
       <div class="ln-step"><div class="ln-card">
         <h3>Thirty districts</h3>
-        <p>Each mark is one district, placed by the share of its children under five who are stunted (NFHS-5). The dashed line is the Odisha average, <b data-v="stAvg"></b>.</p>
-        <p><b>Filled</b> marks sit at or above it: the <b data-v="needAll"></b> districts we call <em>in need</em>. <b>Hollow</b> marks are below it.</p>
+        <p>Each mark is one district. It is placed by the share of its children under five who are stunted (NFHS-5). The dashed line is the Odisha average, <b data-v="stAvg"></b>.</p>
+        <p><b>Filled</b> marks are at or above it: the <b data-v="needAll"></b> districts we call <em>in need</em>. <b>Hollow</b> marks are below it.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Two groups, different starting points</h3>
         <p>The same districts in two rows. Top: the <b data-v="nA"></b> <span class="ln-k ln-k-ga"><span>higher-ST districts</span></span> (circles). <b data-v="needA"></b> of them are in need (<b data-v="baseA"></b>).</p>
         <p>Bottom: the <b data-v="nB"></b> <span class="ln-k ln-k-gb eo-sq"><span>other districts</span></span> (squares). <b data-v="needB"></b> are in need (<b data-v="baseB"></b>).</p>
-        <p>How common need is in a group is called its <b>base rate</b>. The two base rates differ a lot, and that difference drives everything that follows.</p>
+        <p>How common need is in a group is called its <b>base rate</b>. The two base rates are very different. That difference drives everything that follows.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>A score from older data</h3>
-        <p>NFHS-5 was not out when the plan had to be made. So we train a logistic regression (see explainer 03) on two things known earlier: <b>female literacy</b> (Census 2011) and <b>child stunting in NFHS-4</b> (2015–16). More past stunting raises the score; more female literacy lowers it.</p>
-        <p>Across the chart is now each district's <b>need score</b>, from 0 to 100. <b>Tribal share is not in the model.</b></p>
-        <p>To keep the check honest (explainer 01), each district is scored by a copy of the model trained on the other <b data-v="nMinus1"></b>, so no district is graded by a model that saw its answer.</p>
+        <p>NFHS-5 was not out when the plan had to be made. So we build a score from two older facts: <b>female literacy</b> (Census 2011) and <b>child stunting in NFHS-4</b> (2015–16). The method is logistic regression (explainer 03). More past stunting raises the score. More female literacy lowers it.</p>
+        <p>Left to right is now each district's <b>need score</b>, from 0 to 100. <b>Tribal share is not used.</b></p>
+        <p>To keep the test fair (explainer 01), each district is scored by a model that never saw it. That model learned from the other <b data-v="nMinus1"></b> districts.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>One bar for everyone</h3>
-        <p>The state funds every district scoring <b data-v="t0"></b> or more: everything right of the line.</p>
+        <p>The state funds every district with a score of <b data-v="t0"></b> or more: everything right of the line.</p>
         <p>That funds <b data-v="fundA"></b> of the <b data-v="nA"></b> higher-ST districts and <b data-v="fundB"></b> of the <b data-v="nB"></b> others, <b data-v="fundAll"></b> in all. The same rule for everyone sounds fair. Is it?</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Four kinds of outcome</h3>
-        <p>Filled and right of the line: needy and funded (<b>true positives</b>). Hollow and left: rightly not funded (<b>true negatives</b>).</p>
-        <p>The two mistakes are highlighted. Filled but left of the line: needy districts the rule <b>misses</b> (false negatives), <span data-v="fnNamesA"></span> among higher-ST districts and <span data-v="fnNamesB"></span> among the others.</p>
-        <p>Hollow but right of the line: <b>funded without need</b> (false positives), <span data-v="fpNamesA"></span>; and <span data-v="fpNamesB"></span>.</p>
+        <p>Filled and right of the line: in need and funded (a <b>true positive</b>). Hollow and left of the line: rightly not funded (a <b>true negative</b>).</p>
+        <p>The two kinds of mistake are highlighted. Filled but left of the line: needy districts the rule <b>misses</b> (false negatives). These are <span data-v="fnNamesA"></span> among higher-ST districts, and <span data-v="fnNamesB"></span> among the others.</p>
+        <p>Hollow but right of the line: districts <b>funded without need</b> (false positives, or false alarms). These are <span data-v="fpNamesA"></span>; and <span data-v="fpNamesB"></span>.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>If a district is in need, will it be funded?</h3>
-        <p>Look only at the filled marks. Of <b data-v="needA"></b> needy higher-ST districts, <b data-v="tpA"></b> are funded: a <b>true-positive rate</b> of <b data-v="tprA"></b>. Of <b data-v="needB"></b> needy other districts, <b data-v="tpB"></b> are: <b data-v="tprB"></b>.</p>
-        <p>So a needy district is less likely to be funded if it is not a higher-ST district. The model never saw tribal share. The gap comes from how well its two signals track need in each group.</p>
+        <p>Look only at the filled marks. Of <b data-v="needA"></b> needy higher-ST districts, <b data-v="tpA"></b> are funded. That is a <b>true-positive rate</b> of <b data-v="tprA"></b>. Of <b data-v="needB"></b> needy other districts, <b data-v="tpB"></b> are funded: <b data-v="tprB"></b>.</p>
+        <p>So a needy district has less chance of funding if it is not a higher-ST district. The model never saw tribal share. The gap comes from how well its two facts track need in each group.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>If it is not in need, will it be funded anyway?</h3>
-        <p>Now only the hollow marks. <b data-v="fpA"></b> of the <b data-v="negA"></b> higher-ST districts not in need is funded (<b data-v="fprA"></b>); <b data-v="fpB"></b> of <b data-v="negB"></b> other districts are (<b data-v="fprB"></b>). This is the <b>false-positive rate</b>.</p>
-        <p>Careful: the top row has only <b data-v="negA"></b> such districts, so a single district moves its rate by <b data-v="stepFprA"></b> points.</p>
+        <p>Now look only at the hollow marks. <b data-v="fpA"></b> of the <b data-v="negA"></b> higher-ST districts not in need is funded (<b data-v="fprA"></b>). <b data-v="fpB"></b> of <b data-v="negB"></b> other districts are funded (<b data-v="fprB"></b>). This is the <b>false-positive rate</b>: the rate of false alarms.</p>
+        <p>Careful: the top row has only <b data-v="negA"></b> such districts. One district moves its rate by <b data-v="stepFprA"></b> points.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Three ways to define “fair”</h3>
-        <p><b>Demographic parity</b>: fund the same share of each group. Now <b data-v="flagA"></b> against <b data-v="flagB"></b>.</p>
-        <p><b>Equal opportunity</b>: a needy district has the same chance of funding in either group, so equal true-positive rates. Now <b data-v="tprA"></b> against <b data-v="tprB"></b>.</p>
-        <p><b>Equalised odds</b>: equal true-positive <em>and</em> equal false-positive rates. The false-positive rates are <b data-v="fprA"></b> against <b data-v="fprB"></b>.</p>
+        <p><b>Equal share funded</b> (also called demographic parity): fund the same share of each group. Now <b data-v="flagA"></b> against <b data-v="flagB"></b>.</p>
+        <p><b>Equal opportunity</b>: a needy district has the same chance of funding in either group. That means equal true-positive rates. Now <b data-v="tprA"></b> against <b data-v="tprB"></b>.</p>
+        <p><b>Equality of odds</b> (also called equalised odds): equal true-positive rates <em>and</em> equal false-positive rates. The false-positive rates are <b data-v="fprA"></b> against <b data-v="fprB"></b>.</p>
         <p>One bar for everyone meets none of the three.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
-        <h3>They cannot all hold at once</h3>
-        <p>In any group, the share funded is the base rate × the true-positive rate + (1 − base rate) × the false-positive rate.</p>
-        <p>If both rates were equal across the groups, the share funded could still only match if the base rates matched (here <b data-v="baseA"></b> against <b data-v="baseB"></b>), or if the score were useless, funding needy and non-needy districts at the same rate. So we have to choose which kind of fairness matters.</p>
+        <h3>Why can't we have all three?</h3>
+        <p>The share funded in a group is made of two parts: the needy districts funded, plus the districts not in need that are funded anyway.</p>
+        <p>Suppose both rates were equal in the two groups. The share funded would still differ, because need is more common in one group (<b data-v="baseA"></b> against <b data-v="baseB"></b>). It could match only if the score were useless and funded needy and non-needy districts at the same rate. So we must choose which kind of fairness matters most.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
-        <h3>A bar for each group: equal opportunity</h3>
-        <p>To give needy districts the same chance in both groups, we can set a separate bar for each. The closest match: <b data-v="oppThrA"></b> for higher-ST districts and <b data-v="oppThrB"></b> for the others.</p>
-        <p>Needy districts are now funded at <b data-v="oppTprA"></b> and <b data-v="oppTprB"></b>. But the lower bar also funds <b data-v="oppFpB"></b> of the <b data-v="negB"></b> other districts not in need. <b data-v="oppFund"></b> districts are funded in all, up from <b data-v="fundAll"></b>.</p>
+        <h3>A separate bar for each group: equal opportunity</h3>
+        <p>To give needy districts the same chance in both groups, we can set a different bar for each group. The closest match: <b data-v="oppThrA"></b> for higher-ST districts and <b data-v="oppThrB"></b> for the others.</p>
+        <p>Now needy districts are funded at <b data-v="oppTprA"></b> and <b data-v="oppTprB"></b>. But the lower bar also funds <b data-v="oppFpB"></b> of the <b data-v="negB"></b> other districts that are not in need. <b data-v="oppFund"></b> districts are funded in all, up from <b data-v="fundAll"></b>.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
-        <h3>Equalised odds, and levelling down</h3>
-        <p>Matching both rates is harder. With bars alone, two groups land on the same pair of rates only if they have an operating point in common, and <span data-v="sharedText"></span>.</p>
+        <h3>Equality of odds, and levelling down</h3>
+        <p>Matching both rates is harder. With bars alone, the two groups can reach exactly the same pair of rates only at a few points, and <span data-v="sharedText"></span>.</p>
         <p>The closest the bars get: <b data-v="oddsThrA"></b> and <b data-v="oddsThrB"></b>. True-positive rates <b data-v="oddsTprA"></b> and <b data-v="oddsTprB"></b>; false-positive rates <b data-v="oddsFprA"></b> and <b data-v="oddsFprB"></b>.</p>
-        <p>Only <b data-v="oddsFund"></b> districts are funded, and <b data-v="oddsMissed"></b> needy districts are missed. The groups are treated alike by treating both worse.</p>
+        <p>Only <b data-v="oddsFund"></b> districts are funded, and <b data-v="oddsMissed"></b> needy districts are missed. The groups are treated alike by treating both worse. This is called <b>levelling down</b>.</p>
       </div></div>
     </div>
     <div class="ln-graphic" aria-live="polite">
@@ -162,8 +254,8 @@
   <!-- ── interactive: two bars, ROC ──────────────── -->
   <div class="ln-prose">
     <h2>Try it: set the bars yourself</h2>
-    <p>Move each group's bar with the sliders, or drag the lines on the score chart. Tick <em>Same bar for both</em> to move them together. The buttons search every pair of bars for the setting that comes closest to each definition of fairness.</p>
-    <p>The chart on the right is a <b>ROC curve</b> for each group. It traces every possible bar, from the strictest (bottom left: fund no one) to the most lenient (top right: fund everyone). Higher up means more needy districts funded; further right means more districts funded that are not in need. Each group's current bar is one point on its curve. <b>Equalised odds means the two points sit on top of each other.</b></p>
+    <p>Move each group's bar with the sliders, or drag the lines on the score chart. Tick <em>Same bar for both</em> to move them together. The buttons search every pair of bars for the one closest to each idea of fairness.</p>
+    <p>The chart on the right is a <b>ROC curve</b> for each group: a line through every possible bar. Bottom left is the strictest bar (fund no one). Top right is the most lenient (fund everyone). Higher up means more needy districts funded. Further right means more false alarms. Each group's current bar is one point on its curve. <b>Equality of odds means the two points sit on top of each other.</b></p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure">
@@ -193,7 +285,8 @@
           <svg id="rocSvg" role="img" aria-label="ROC curves for higher-ST and other districts with each group's current operating point"></svg>
         </div>
       </div>
-      <div class="ln-grid2" style="margin-top:14px">
+      <p class="ln-figure-s" style="margin-top:14px">Below, each box sorts one group's districts: funded or not (columns), in need or not (rows). The shaded column is funded.</p>
+      <div class="ln-grid2">
         <div>
           <p class="ln-figure-t"><span class="ln-k ln-k-ga"><span>Higher-ST districts</span></span> <span id="gridAT" style="font-weight:400;color:var(--ink-subtle)"></span></p>
           <svg id="gridA" role="img" aria-label="Higher-ST districts sorted into funded or not, in need or not"></svg>
@@ -204,28 +297,32 @@
         </div>
       </div>
       <div class="ln-stats" id="eoStats"></div>
+      <div class="ln-source">Stunting: NFHS-4 (2015–16), NFHS-5 (2019–21) · Female literacy and ST share: Census 2011</div>
     </div>
   </div>
 
   <div class="ln-prose">
-    <h2>Small numbers, big jumps</h2>
+    <h2>Why do the rates jump in big steps?</h2>
     <p id="jumpText"></p>
-    <p>Real targeting would work with blocks or villages, where there are hundreds of units per group, and would put error bars on every rate. NFHS stunting is itself a sample estimate: <b data-v="nearLine"></b> of the 30 districts sit within 2 points of the <b data-v="stAvg"></b> line, so a slightly different survey sample could move them across it.</p>
+    <p>Real targeting would use blocks or villages, with hundreds of units in each group. It would also show how uncertain each rate is. NFHS stunting is itself a survey estimate: <b data-v="nearLine"></b> of the 30 districts sit within 2 points of the <b data-v="stAvg"></b> line. A slightly different survey sample could move them across it.</p>
 
-    <h2>So which is fair?</h2>
-    <p>No formula can settle this. Each definition protects against a different harm. <b>Equal opportunity</b> asks that needy children have the same chance of help wherever they live. <b>Equalised odds</b> adds that districts not in need should be funded equally often too, so no group gets more than its share of spare money. <b>Demographic parity</b> ignores need altogether, which makes little sense for a programme meant to follow need.</p>
-    <p>For a nutrition programme, missing a needy district is usually the costlier mistake, which points to equal opportunity. Its price here is money spent in districts that did not need it. Setting a different bar for each group is also a decision that uses group membership, which is a policy and legal question, not a statistical one.</p>
-    <p>The better fix is often a better score. The gaps exist because female literacy and past stunting track need well in one group and less well in the other. Pick a needy and a non-needy higher-ST district at random, and the score ranks the needy one higher <b data-v="aucA"></b> of the time; among the other districts, only <b data-v="aucB"></b>. A score built on indicators that track need equally well in every group closes the gap without trading one harm for another.</p>
-    <div class="ln-callout">
-      <span class="ln-callout-t">Take-aways</span>
-      Leaving group membership out of a model does not make it fair: other inputs can carry the same pattern. Check error rates <em>per group</em>, not only overall accuracy. When base rates differ, demographic parity, equal opportunity and equalised odds cannot all hold, so decide which harm matters most before you tune anything. Equalising by lowering one group's bar or raising another's has real costs, which you should count in districts, not percentages. And with a few districts per group, every rate jumps in big steps.
-    </div>
+    <h2>So which kind of fair should we choose?</h2>
+    <p>No formula can settle this. Each definition protects against a different harm.</p>
+    <p><b>Equal opportunity</b> asks that needy children have the same chance of help wherever they live. <b>Equality of odds</b> adds that districts not in need are funded equally often too, so no group gets more than its share of spare money. <b>Equal share funded</b> ignores need altogether. That makes little sense for a programme meant to follow need.</p>
+    <p>For a nutrition programme, missing a needy district is usually the worse mistake. That points to equal opportunity. Its price here is money spent in districts that did not need it. Setting a different bar for each group also uses group membership. That is a policy and legal question, not a statistical one.</p>
+    <p>Often the better fix is a better score. The gaps exist because female literacy and past stunting track need well in one group and less well in the other. Pick one needy and one non-needy higher-ST district at random: the score ranks the needy one higher <b data-v="aucA"></b> of the time. Among the other districts, it does so only <b data-v="aucB"></b> of the time. A score built on facts that track need equally well in every group closes the gap without trading one harm for another.</p>
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>Leaving group membership out of a model does not make it fair. Other inputs can carry the same pattern.</li>
+      <li>Check the mistakes group by group: needy districts missed and false alarms, not just overall accuracy.</li>
+      <li>When need is more common in one group, the different ideas of fairness cannot all hold. Decide which harm matters most, and count the cost in districts.</li>
+    </ol></div>
   </div>
 
   <section class="ln-notes">
     <h2>Data and method</h2>
     <p>A district is <em>in need</em> if NFHS-5 child stunting (under 5, height-for-age) is at or above the Odisha average given in the state fact sheet. Higher-ST districts are those with a Scheduled Tribe share of 30% or more in Census 2011. The need score is a logistic regression on female literacy (Census 2011) and NFHS-4 stunting, both standardised, trained by gradient descent (learning rate 0.5, 2,000 steps, no penalty). Each district's score comes from a model trained on the other <span data-v="nMinus1"></span> districts (leave-one-out), so the error rates are not flattered by the model having seen the answer. A district is funded if its score is at or above its group's bar.</p>
-    <p>The preset buttons try every pair of bars that give each group a different outcome, leaving out pairs that fund everyone or no one in a group. They pick the pair with the smallest gap on the chosen measure (for equalised odds, the larger of the two gaps), then the fewest wrong decisions, then the fewest needy districts missed. Research papers sometimes close the remaining gap by randomly mixing two bars for one group; we leave that out, since a lottery is hard to defend for public funding. With <span data-v="nAll"></span> districts, this is a teaching example, not a targeting tool.</p>
+    <p>Why the definitions conflict: in any group, share funded = base rate × true-positive rate + (1 − base rate) × false-positive rate. If both rates match across groups but the base rates differ, the shares funded can match only when the two rates are equal to each other, that is, when the score does no better than chance. On the ROC chart, each bar is an <em>operating point</em>; exact equalised odds needs an operating point the two groups share.</p>
+    <p>The preset buttons try every pair of bars that give each group a different outcome, leaving out pairs that fund everyone or no one in a group. They pick the pair with the smallest gap on the chosen measure (for equalised odds, the larger of the two gaps), then the fewest wrong decisions, then the fewest needy districts missed. Research papers sometimes close the remaining gap by randomly mixing two bars for one group; we leave that out, since a lottery is hard to defend for public funding. The probability that the score ranks a random needy district above a random non-needy one is the area under each group's ROC curve (AUC). With <span data-v="nAll"></span> districts, this is a teaching example, not a targeting tool.</p>
     <details class="ln-details">
       <summary>Show the data table</summary>
       <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
@@ -234,8 +331,9 @@
 
   <nav class="ln-next" aria-label="More explainers">
     <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="neural-networks.html"><small>05</small><b>Neural Networks</b></a>
     <a href="train-test-validation.html"><small>Back to 01</small><b>Train, Test and Validation</b></a>
-    <a href="logistic-regression.html"><small>03</small><b>Logistic Regression</b></a>
+    <a href="where-numbers-come-from.html"><small>How we measure · M1</small><b>Where the numbers come from</b></a>
   </nav>
 </main>
 
@@ -811,8 +909,8 @@
     var PRESET = { opp: opp, odds: odds, parity: parity };
     var NOTE = {
       one: 'One bar of ' + V.t0 + ' for every district.',
-      opp: 'Smallest gap in true-positive rates, then fewest wrong decisions.',
-      odds: 'Smallest possible larger gap across both rates. No pair of bars matches both exactly (other than funding everyone or no one).',
+      opp: 'Needy districts get as equal a chance as the bars allow in both groups. Ties go to the fewest wrong decisions.',
+      odds: 'Both rates as close as the bars allow. No pair of bars matches both exactly, apart from funding everyone or no one.',
       parity: 'Same share of each group funded, as near as whole districts allow, ignoring need.',
     };
     document.querySelectorAll('[data-preset]').forEach(function (b) {
@@ -825,7 +923,7 @@
         update();
       });
     });
-    if (sharedPts.length) NOTE.odds = 'Smallest larger gap across both rates, then fewest wrong decisions.';
+    if (sharedPts.length) NOTE.odds = 'Both rates as close as the bars allow. Ties go to the fewest wrong decisions.';
     document.getElementById('presetNote').textContent = NOTE.one;
     update();
 

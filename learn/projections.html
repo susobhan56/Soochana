@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projecting the Future · Soochana Learn</title>
+<meta name="description" content="How Soochana's population numbers for 2021 to 2036 are made: age everyone forward, remove deaths, add births, allow for migration, and use the Bayesian approach to show the range of possible futures.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20261005">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  .pj-chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 10px 0 4px; }
+  .pj-chip {
+    display: inline-flex; flex-direction: column; padding: 6px 12px; border-radius: 10px;
+    background: var(--ln-soft); border: 1px solid transparent; font-size: 13px; line-height: 1.3; color: var(--ink-subtle);
+  }
+  .pj-chip b { font-size: 17px; color: var(--ink-heading); font-variant-numeric: tabular-nums; }
+  .pj-chip.is-now { background: var(--ln-card); border-color: var(--ln-test); color: var(--ink-body); }
+  .pj-chip.is-later { opacity: 0.45; }
+  .pj-arrow { color: var(--ink-subtle); font-size: 18px; }
+  .pj-text {
+    margin: 10px 0 4px; padding: 10px 14px; border-radius: 10px; background: var(--ln-soft);
+    font-size: 15px; line-height: 1.55; color: var(--ink-body); min-height: 3.2em;
+  }
+  .pj-text b { color: var(--ink-heading); }
+  .pj-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 22px 0; }
+  .pj-card {
+    background: var(--ln-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px 16px 14px;
+    font-size: 15px; line-height: 1.55; color: var(--ink-body);
+  }
+  .pj-card svg { width: 56px; height: 56px; display: block; margin-bottom: 8px; }
+  .pj-card h3 { margin: 0 0 4px; font-size: 17px; color: var(--ink-heading); }
+  .pj-card .pj-from { display: block; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-subtle); margin-bottom: 6px; }
+  .pj-card p { margin: 0 0 8px; }
+  .pj-card a { color: var(--teal); font-weight: 500; font-size: 14px; }
+  .pj-myths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 22px 0; }
+  .pj-myth { background: var(--ln-card); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; font-size: 15px; line-height: 1.5; }
+  .pj-myth p { margin: 0 0 8px; }
+  .pj-myth p:last-child { margin: 0; }
+  .pj-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; margin-right: 6px; vertical-align: 1px; }
+  .pj-tag.myth { background: color-mix(in srgb, var(--ln-test) 14%, #fff); color: #a3360b; }
+  .pj-tag.fact { background: color-mix(in srgb, var(--ln-train) 14%, #fff); color: #005f6e; }
+  .pj-illus {
+    display: inline-block; margin: 2px 0 8px; padding: 4px 10px; border-radius: 8px;
+    background: color-mix(in srgb, var(--ln-test) 10%, #fff); color: #8a2d09; font-size: 13px; font-weight: 500;
+  }
+  .pj-hit { fill: transparent; }
+  @media (max-width: 860px) {
+    .pj-cards, .pj-myths { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M6</div>
+    <h2 class="ln-title">Projecting the future: <em>how we estimate 2036</em></h2>
+    <p class="ln-dek">Nobody has counted Odisha's people in 2036, so here is how Soochana's numbers for 2021 to 2036 are worked out.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census of India; DIU population and fertility projections (Bayesian approach) · Every number is computed live in your browser</div>
+  </section>
+
+  <!-- ── the idea in one picture ───────────────────── -->
+  <section class="ln-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="g1" viewBox="0 0 240 180" role="img" aria-label="A small population pyramid labelled today"></svg></div>
+          <figcaption><b><span class="ln-gist-n">1</span>Start with today's people</b>Count everyone by age and sex. This is the starting pyramid.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="g2" viewBox="0 0 240 180" role="img" aria-label="Every bar moves up one row; the bars get a little shorter because some people die"></svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Everyone gets 5 years older</b>Each group moves up one row. A few people die, so each bar gets a little shorter.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="g3" viewBox="0 0 240 180" role="img" aria-label="A new bar of babies appears at the bottom, and arrows show people moving in and out"></svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>Add babies, allow for moving</b>New babies fill the bottom row. Some people move in, some move out.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="g4" viewBox="0 0 240 180" role="img" aria-label="Three small pyramids for 2026, 2031 and 2036 joined by arrows"></svg></div>
+          <figcaption><b><span class="ln-gist-n">4</span>Repeat every 5 years</b>Do it again and again: 2026, 2031, 2036.</figcaption>
+        </figure>
+      </div>
+      <p class="ln-source" style="margin-top:10px">Pictures in this box are illustrations, not real data.</p>
+      <p class="ln-gist-sum">A projection moves today's population forward five years at a time, using careful guesses about births, deaths and migration.</p>
+      <dl class="ln-words">
+        <div><dt>Projection</dt><dd>An estimate of the future, if present trends continue.</dd></div>
+        <div><dt>Cohort</dt><dd>A group of people born in the same years, followed as they age.</dd></div>
+        <div><dt>Cohort-component method</dt><dd>Age each cohort forward, remove deaths, add births, adjust for migration.</dd></div>
+        <div><dt>Bayesian approach</dt><dd>Combine past patterns from many places with local data to get many possible futures.</dd></div>
+        <div><dt>Uncertainty range</dt><dd>The spread of believable values around the middle estimate.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ── watch a cohort ─────────────────────────────── -->
+  <div class="ln-prose">
+    <h2>Watch a group of people grow older</h2>
+    <p>The orange bars below are one <strong>cohort</strong>: a group of people born in the same five years. In 2021 they are aged 10–14.</p>
+    <p>Press <em>Next 5 years</em>. The whole population gets five years older. Our cohort moves up one row. A new group of babies appears at the bottom, in teal.</p>
+    <p>These are Soochana's real projected numbers for Odisha. Watch how the size of the cohort changes, or does not.</p>
+  </div>
+  <div class="ln-wide">
+    <figure class="ln-figure" style="margin:0">
+      <p class="ln-figure-t">Following one cohort through Odisha's population, 2021 to 2036</p>
+      <p class="ln-figure-s">Each bar is a five-year age group, in lakh people. Men left, women right. Hover a bar for exact numbers.</p>
+      <div class="ln-controls">
+        <button class="ln-btn" id="cohNext" type="button">Next 5 years</button>
+        <button class="ln-btn ghost" id="cohReplay" type="button">Replay</button>
+        <div class="ln-seg" role="group" aria-label="Which cohort to follow" id="cohSeg">
+          <button type="button" aria-pressed="true" data-c="2">Aged 10–14 in 2021</button>
+          <button type="button" aria-pressed="false" data-c="6">Aged 30–34</button>
+          <button type="button" aria-pressed="false" data-c="12">Aged 60–64</button>
+        </div>
+      </div>
+      <div class="ln-legend">
+        <span><i style="background:var(--ln-test)"></i>The cohort we follow</span>
+        <span><i style="background:var(--ln-train)"></i>New births since the last step</span>
+        <span><i style="background:#c3c8d1"></i>Everyone else</span>
+      </div>
+      <svg id="cohSvg" role="img" aria-label="Population pyramid of Odisha with one cohort highlighted as it moves up one row every five years"></svg>
+      <div class="pj-chain" id="cohChain" aria-live="polite"></div>
+      <p class="pj-text" id="cohText" aria-live="polite"></p>
+      <div class="ln-source">DIU population projection (Bayesian approach), Odisha, 2021–2036</div>
+    </figure>
+  </div>
+  <div class="ln-prose">
+    <p>The cohort gets smaller for two reasons. Some of its members <strong>die</strong>. And some <strong>move</strong>, out of Odisha or into it. The difference between two steps is deaths plus net migration.</p>
+    <p>Try the three buttons. People aged 10–14 hardly shrink at all, because few teenagers die. People aged 60–64 in 2021 shrink a lot: about <b data-v="oldLoss"></b> in every 100 are gone by 2036.</p>
+  </div>
+
+  <!-- ── ingredients ────────────────────────────────── -->
+  <div class="ln-prose">
+    <h2>The three ingredients</h2>
+    <p>Every step of a projection needs three careful guesses. Each one comes from real data about the past.</p>
+    <div class="pj-cards">
+      <div class="pj-card">
+        <svg viewBox="0 0 56 56" aria-hidden="true">
+          <circle cx="28" cy="28" r="27" style="fill:color-mix(in srgb, var(--ln-train) 14%, #fff)"/>
+          <circle cx="28" cy="19" r="7" style="fill:var(--ln-train)"/>
+          <rect x="18" y="28" width="20" height="16" rx="8" style="fill:var(--ln-train)"/>
+        </svg>
+        <span class="pj-from">Births ← fertility</span>
+        <h3>How many babies?</h3>
+        <p>This uses the fertility rate (TFR): how many children a woman is expected to have. It is based on NFHS surveys and the recent trend.</p>
+        <a href="fertility-rate.html">Total Fertility Rate →</a>
+      </div>
+      <div class="pj-card">
+        <svg viewBox="0 0 56 56" aria-hidden="true">
+          <circle cx="28" cy="28" r="27" style="fill:color-mix(in srgb, var(--ln-val) 14%, #fff)"/>
+          <path d="M18 12 H38 M18 44 H38 M20 12 C20 24 36 26 36 44 M36 12 C36 24 20 26 20 44" style="fill:none;stroke:var(--ln-val);stroke-width:3;stroke-linecap:round"/>
+          <path d="M23 40 L33 40 L28 33 Z" style="fill:var(--ln-val);stroke:none"/>
+        </svg>
+        <span class="pj-from">Deaths ← life expectancy</span>
+        <h3>How many people die?</h3>
+        <p>This uses life tables: how likely people of each age are to die in the next five years. These come from the Sample Registration System (SRS).</p>
+        <a href="life-expectancy.html">Life Expectancy →</a>
+      </div>
+      <div class="pj-card">
+        <svg viewBox="0 0 56 56" aria-hidden="true">
+          <circle cx="28" cy="28" r="27" style="fill:color-mix(in srgb, var(--ln-test) 14%, #fff)"/>
+          <path d="M28 14 L40 24 V40 H16 V24 Z" style="fill:var(--ln-test);stroke:none"/>
+          <path d="M4 30 H14 M10 26 L14 30 L10 34" style="fill:none;stroke:#0f172a;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"/>
+          <path d="M42 30 H52 M48 26 L52 30 L48 34" style="fill:none;stroke:#0f172a;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"/>
+        </svg>
+        <span class="pj-from">Migration</span>
+        <h3>Who moves in or out?</h3>
+        <p>This uses past patterns of people moving, such as Census migration tables. It is often the hardest part to guess.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── fan chart ──────────────────────────────────── -->
+  <div class="ln-prose">
+    <h2>Many possible futures: the Bayesian idea</h2>
+    <p>Nobody knows exactly how many children women in Koraput will have in 2036. A single guess would hide that.</p>
+    <p>The <strong>Bayesian approach</strong> does something better. It starts with what we know from many places: in most districts and countries, fertility falls in a similar way over time. Then it adds this district's own survey data. Putting the two together, it produces thousands of possible futures. Each one is a believable path.</p>
+    <p>Soochana reports the <strong>middle</strong> path. The spread of the paths shows how sure we can be. The further ahead we look, the wider the spread.</p>
+  </div>
+  <div class="ln-wide">
+    <figure class="ln-figure" style="margin:0">
+      <p class="ln-figure-t" id="fanTitle">Total Fertility Rate, 2020 to 2036</p>
+      <p class="ln-figure-s">Black line: the published projection (the middle path). Grey lines: other possible futures. Shaded band: where most grey lines fall.</p>
+      <p class="pj-illus">Illustration: the grey paths show the idea of uncertainty; they are not the published projection intervals.</p>
+      <div class="ln-controls">
+        <label>District <select id="fanSel" aria-label="Choose a district"></select></label>
+        <button class="ln-btn" id="fanMore" type="button">Draw more futures</button>
+        <span id="fanCount" style="color:var(--ink-subtle)"></span>
+      </div>
+      <div class="ln-legend">
+        <span><i class="line" style="background:#0f172a"></i>Published projection (middle path)</span>
+        <span><i class="line" style="background:rgba(15,23,42,.3)"></i>Possible futures (illustration)</span>
+        <span><i style="background:color-mix(in srgb, var(--ln-train) 25%, #fff);border-radius:2px"></i>Middle 90% of the grey paths</span>
+      </div>
+      <svg id="fanSvg" role="img" aria-label="Fan chart of possible future fertility paths around the published projection for the chosen district"></svg>
+      <div class="ln-source">Black line: 2020 computed from NFHS-5; 2021–2036 DIU district projection (Bayesian approach). Grey paths: random illustration drawn in your browser.</div>
+    </figure>
+  </div>
+  <div class="ln-prose">
+    <p id="fanText"></p>
+  </div>
+
+  <!-- ── projection vs prediction ───────────────────── -->
+  <div class="ln-prose">
+    <h2>A projection is not a promise</h2>
+    <p>People often read a projection as a prediction. It is not quite the same thing.</p>
+    <div class="pj-myths">
+      <div class="pj-myth">
+        <p><span class="pj-tag myth">Myth</span>A projection tells us exactly what will happen.</p>
+        <p><span class="pj-tag fact">Fact</span>It tells us what will happen <b>if</b> today's trends continue. It is a careful "if", not a promise.</p>
+      </div>
+      <div class="pj-myth">
+        <p><span class="pj-tag myth">Myth</span>If the 2036 number turns out different, the method failed.</p>
+        <p><span class="pj-tag fact">Fact</span>Projections are updated when new data arrive, such as a new census or NFHS round. Updating is part of the method.</p>
+      </div>
+      <div class="pj-myth">
+        <p><span class="pj-tag myth">Myth</span>Numbers for the future are made up.</p>
+        <p><span class="pj-tag fact">Fact</span>They are built from real counts (Census), real surveys (NFHS, SRS) and clear rules for births, deaths and migration.</p>
+      </div>
+    </div>
+    <p>Put everything together and you get the line below. Up to 2011, every point is a Census count. There has been no census count since 2011, so from 2021 the line is dashed: these are projections.</p>
+  </div>
+  <div class="ln-wide">
+    <figure class="ln-figure" style="margin:0">
+      <p class="ln-figure-t">Odisha's population, 1901 to 2036</p>
+      <p class="ln-figure-s">Solid line: Census counts. Dashed line: projection. Hover the chart for any year. 1 crore = 100 lakh.</p>
+      <svg id="popSvg" role="img" aria-label="Line chart of Odisha's total population from 1901 to 2036, solid for census years and dashed for projected years"></svg>
+      <div class="ln-source">1901–2011: Census of India · 2021–2036: DIU population projection (Bayesian approach)</div>
+    </figure>
+  </div>
+  <div class="ln-prose">
+    <p id="popText"></p>
+
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>A projection moves everyone forward five years at a time: remove expected deaths, add expected births, allow for migration. Then repeat.</li>
+      <li>The Bayesian approach draws many possible futures and reports the middle one. The range shows how uncertain it is, and it gets wider the further ahead we look.</li>
+      <li>A projection says what happens if trends continue. It is not a promise, and it is updated when new census or survey data arrive.</li>
+    </ol></div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p><b>Population and age groups, 2021–2036:</b> DIU population projection (Bayesian approach), as used across Soochana; state figures follow the Census of India / ORGI population projections using the Bayesian approach. <b>1901–2011:</b> Census of India. A 1936 row in the source file is not a census year and is left out of the line chart. <b>District fertility:</b> 2020 is computed from NFHS-5 (2019–21); 2021–2036 is the DIU district projection (Bayesian approach). The file's NFHS-4 column is not used.</p>
+    <p>The cohort-component method described here is the standard way such projections are built. The exact assumptions for fertility, mortality and migration are set out by ORGI and DIU; the sources named in the three cards are the usual ones. The grey paths in the fan chart are a teaching illustration only: seeded random walks (each year adds a random step with a standard deviation of 0.035 births per woman) centred on the published path. They are not draws from the actual model and not its published intervals. The cohort numbers include both sexes; the 80+ group is open-ended.</p>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="age-structure.html"><small>Previous · M5</small><b>Age Structure</b></a>
+    <a href="train-test-validation.html"><small>Next · Machine learning · 01</small><b>Train, Test and Validation</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var AGES = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79', '80+'];
+  var STEPS = ['2021', '2026', '2031', '2036'];
+  var C = { coh: SL.color('test'), birth: SL.color('train'), val: SL.color('val'), base: '#c3c8d1', ink: '#0f172a' };
+  var tip = SL.tooltip();
+  var NARROW = document.querySelector('.ln-wide').clientWidth < 600;
+
+  function ageTxt(a) { return a.replace('-', '–'); }
+  function lakh(v, d) { return SL.fmt(v / 1e5, d == null ? 1 : d); }
+  function clean(rows) {
+    return AGES.map(function (a) {
+      var r = rows.filter(function (x) { return x.age === a; })[0];
+      var m = +r.male, f = +r.female;
+      return { age: a, male: m, female: f, total: m + f };
+    });
+  }
+
+  /* ── gist panels (illustrations) ─────────────────── */
+  (function () {
+    var W0 = [74, 66, 56, 44, 31, 17], RH = 19, CX = 120;
+    function rowY(i, top) { return (top || 150) - (i + 1) * RH; }
+    function bar(svg, i, w, fill, extra) {
+      var r = svg.append('rect').attr('x', CX - w).attr('y', rowY(i) + 1.5).attr('width', 2 * w).attr('height', RH - 3).attr('rx', 3).style('fill', fill);
+      if (extra) r.style('stroke', extra).style('stroke-dasharray', '3 3').style('stroke-width', 1.4);
+      return r;
+    }
+    function label(svg, x, y, t, anchor, col) {
+      svg.append('text').attr('x', x).attr('y', y).attr('text-anchor', anchor || 'middle').style('font-size', '12px').style('fill', col || '#475569').style('font-weight', 500).text(t);
+    }
+    var s1 = d3.select('#g1');
+    W0.forEach(function (w, i) { bar(s1, i, w, '#94a3b8'); });
+    label(s1, 120, 22, 'today', 'middle', '#0f172a');
+    var s2 = d3.select('#g2');
+    bar(s2, 0, 70, 'none', '#94a3b8');
+    W0.slice(0, 5).forEach(function (w, i) { bar(s2, i + 1, w * 0.93, '#94a3b8'); });
+    s2.append('path').attr('d', 'M212 128 V44 M206 52 L212 44 L218 52').style('fill', 'none').style('stroke', '#0f172a').style('stroke-width', 2).style('stroke-linecap', 'round');
+    label(s2, 212, 145, '+5 yrs');
+    label(s2, 120, 22, 'oldest group: some die', 'middle', C.coh);
+    var s3 = d3.select('#g3');
+    W0.slice(0, 5).forEach(function (w, i) { bar(s3, i + 1, w * 0.93, '#94a3b8'); });
+    bar(s3, 0, 66, C.birth);
+    label(s3, 120, 168, 'new babies', 'middle', C.birth);
+    s3.append('path').attr('d', 'M8 84 H34 M27 78 L34 84 L27 90').style('fill', 'none').style('stroke', '#0f172a').style('stroke-width', 2).style('stroke-linecap', 'round');
+    s3.append('path').attr('d', 'M206 84 H232 M225 78 L232 84 L225 90').style('fill', 'none').style('stroke', '#0f172a').style('stroke-width', 2).style('stroke-linecap', 'round');
+    label(s3, 20, 72, 'in'); label(s3, 220, 72, 'out');
+    var s4 = d3.select('#g4');
+    [['2026', 1], ['2031', 0.82], ['2036', 0.66]].forEach(function (p, k) {
+      var cx = 40 + k * 80, ws = [26, 25, 24, 21, 17, 11];
+      ws.forEach(function (w, i) {
+        var ww = i === 0 ? w * p[1] : w;
+        s4.append('rect').attr('x', cx - ww).attr('y', 130 - (i + 1) * 15).attr('width', 2 * ww).attr('height', 12).attr('rx', 2)
+          .style('fill', i === 0 ? C.birth : '#94a3b8');
+      });
+      label(s4, cx, 150, p[0], 'middle', '#0f172a');
+      if (k < 2) s4.append('path').attr('d', 'M' + (cx + 30) + ' 90 h18 M' + (cx + 42) + ' 85 l6 5 l-6 5').style('fill', 'none').style('stroke', '#0f172a').style('stroke-width', 1.8).style('stroke-linecap', 'round');
+    });
+  })();
+
+  Promise.all([
+    fetch('../datasets/state_demographics.json').then(function (r) { if (!r.ok) throw new Error('state_demographics.json'); return r.json(); }),
+    fetch('../datasets/district_fertility_trends.json').then(function (r) { if (!r.ok) throw new Error('district_fertility_trends.json'); return r.json(); }),
+  ]).then(function (res) {
+    var P = {};
+    STEPS.forEach(function (y) { P[y] = clean(res[0].pyramids[y]); });
+
+    /* ── cohort pyramid ──────────────────────────── */
+    var W = NARROW ? 460 : 880, rowH = NARROW ? 23 : 24, top = 34, bot = 44;
+    var H = top + 17 * rowH + bot, gutR = NARROW ? 70 : 150, gap = NARROW ? 50 : 56, padL = 6;
+    var half = (W - padL - gutR - gap) / 2, cx = padL + half + gap / 2;
+    var XMAX = 23, x = d3.scaleLinear([0, XMAX], [0, half]);
+    function rowY(i) { return top + (16 - i) * rowH; }
+    var svg = d3.select('#cohSvg').attr('viewBox', [0, 0, W, H]);
+    (NARROW ? [0, 10, 20] : [0, 5, 10, 15, 20]).forEach(function (t) {
+      [-1, 1].forEach(function (s) {
+        var xx = s < 0 ? cx - gap / 2 - x(t) : cx + gap / 2 + x(t);
+        svg.append('line').attr('x1', xx).attr('x2', xx).attr('y1', top).attr('y2', top + 17 * rowH).style('stroke', 'var(--ln-grid)');
+        svg.append('text').attr('class', 'ln-axis-label').attr('x', xx).attr('y', top + 17 * rowH + 16).attr('text-anchor', 'middle').text(t);
+      });
+    });
+    svg.append('text').attr('class', 'ln-axis-label').attr('x', cx).attr('y', H - 6).attr('text-anchor', 'middle').text('lakh people');
+    svg.append('text').attr('x', cx - gap / 2 - 4).attr('y', 18).attr('text-anchor', 'end').style('font-size', '14px').style('font-weight', 600).style('fill', 'var(--ink-heading)').text('← Men');
+    svg.append('text').attr('x', cx + gap / 2 + 4).attr('y', 18).style('font-size', '14px').style('font-weight', 600).style('fill', 'var(--ink-heading)').text('Women →');
+    var bigYear = svg.append('text').attr('x', padL + 2).attr('y', top + 30).style('font-size', NARROW ? '30px' : '38px').style('font-weight', 600).style('fill', 'var(--ink-heading)');
+    svg.append('text').attr('class', 'ln-axis-label').attr('x', padL + 3).attr('y', top + 50).text('Projection');
+    var prevFrame = svg.append('rect').attr('x', padL).attr('width', W - padL - gutR + 2).attr('height', rowH).attr('rx', 4)
+      .style('fill', 'none').style('stroke', C.coh).style('stroke-width', 1.4).style('stroke-dasharray', '4 4').style('opacity', 0);
+    var frame = svg.append('rect').attr('x', padL).attr('y', rowY(2)).attr('width', W - padL - gutR + 2).attr('height', rowH).attr('rx', 4)
+      .style('fill', 'color-mix(in srgb, ' + C.coh + ' 9%, transparent)').style('stroke', C.coh).style('stroke-width', 1.6);
+    var arrow = svg.append('path').style('fill', 'none').style('stroke', C.coh).style('stroke-width', 2).style('stroke-linecap', 'round').style('opacity', 0);
+    var mBars = svg.append('g').selectAll('rect').data(AGES).join('rect').attr('rx', 2).attr('height', rowH - 4)
+      .attr('y', function (a, i) { return rowY(i) + 2; }).attr('x', cx - gap / 2).attr('width', 0).style('fill', C.base);
+    var fBars = svg.append('g').selectAll('rect').data(AGES).join('rect').attr('rx', 2).attr('height', rowH - 4)
+      .attr('y', function (a, i) { return rowY(i) + 2; }).attr('x', cx + gap / 2).attr('width', 0).style('fill', C.base);
+    svg.append('g').selectAll('text').data(AGES).join('text').attr('class', 'ln-axis-label').attr('x', cx)
+      .attr('y', function (a, i) { return rowY(i) + rowH / 2; }).attr('dy', '0.35em').attr('text-anchor', 'middle').text(ageTxt);
+    var cohLab = svg.append('text').attr('class', 'ln-dlabel').attr('dy', '0.35em').style('font-weight', 600).style('fill', C.coh);
+    var birthLab = svg.append('text').attr('class', 'ln-dlabel').attr('dy', '0.35em').style('font-weight', 600).style('fill', C.birth);
+    svg.append('g').selectAll('rect').data(AGES).join('rect').attr('class', 'pj-hit')
+      .attr('x', padL).attr('y', function (a, i) { return rowY(i); }).attr('width', W - padL - gutR + 2).attr('height', rowH)
+      .on('pointermove', function (ev, a) {
+        var i = AGES.indexOf(a), y = STEPS[step], r = P[y][i];
+        tip.show(ev, '<b>Aged ' + ageTxt(a) + ', ' + y + '</b><br>Men ' + lakh(r.male, 2) + ' lakh · Women ' + lakh(r.female, 2) + ' lakh<br>Total ' + lakh(r.total, 2) + ' lakh');
+      })
+      .on('pointerleave', function () { tip.hide(); });
+
+    var step = 0, cStart = 2, timer = null, cohDrawn = false;
+    /* The first draw sets everything at once; later steps animate.
+       (A transition waits for the tab to be visible, so a first draw in
+       a background tab would otherwise stay empty until it is opened.) */
+    function anim(sel, t, first) { return first ? sel : sel.transition(t); }
+    function drawCohort() {
+      var y = STEPS[step], p = P[y], ci = cStart + step, t = d3.transition().duration(SL.dur(700)).ease(d3.easeCubicInOut), first = !cohDrawn;
+      cohDrawn = true;
+      function fill(a, i) { return i === ci ? C.coh : (step > 0 && i === 0) ? C.birth : C.base; }
+      anim(mBars.data(p).style('fill', fill), t, first).attr('x', function (r) { return cx - gap / 2 - x(r.male / 1e5); }).attr('width', function (r) { return x(r.male / 1e5); });
+      anim(fBars.data(p).style('fill', fill), t, first).attr('width', function (r) { return x(r.female / 1e5); });
+      anim(frame, t, first).attr('y', rowY(ci));
+      prevFrame.attr('y', rowY(ci - 1)).style('opacity', step > 0 ? 1 : 0);
+      var ax = cx - gap / 2 - x(p[ci].male / 1e5) - 14;
+      arrow.attr('d', 'M' + ax + ',' + (rowY(ci - 1) + rowH - 4) + 'V' + (rowY(ci) + 6) + 'M' + (ax - 5) + ',' + (rowY(ci) + 11) + 'L' + ax + ',' + (rowY(ci) + 6) + 'L' + (ax + 5) + ',' + (rowY(ci) + 11))
+        .style('opacity', step > 0 ? 1 : 0);
+      anim(cohLab, t, first).attr('x', cx + gap / 2 + x(p[ci].female / 1e5) + 6).attr('y', rowY(ci) + rowH / 2).text(lakh(p[ci].total) + ' lakh');
+      birthLab.attr('x', cx + gap / 2 + x(p[0].female / 1e5) + 6).attr('y', rowY(0) + rowH / 2).text(step > 0 ? (NARROW ? 'births' : 'new births') : '');
+      bigYear.text(y);
+
+      document.getElementById('cohChain').innerHTML = STEPS.map(function (yy, k) {
+        var r = P[yy][cStart + k];
+        return '<span class="pj-chip' + (k === step ? ' is-now' : k > step ? ' is-later' : '') + '">' + yy + ' · aged ' + ageTxt(AGES[cStart + k]) + '<b>' + (k > step ? '?' : lakh(r.total) + ' lakh') + '</b></span>';
+      }).join('<span class="pj-arrow" aria-hidden="true">→</span>');
+
+      var first = P['2021'][cStart].total, msg;
+      if (step === 0) {
+        msg = 'This is Odisha in 2021. The orange bars are the <b>' + lakh(first) + ' lakh</b> people aged ' + ageTxt(AGES[cStart]) + '. Press <b>Next 5 years</b>.';
+      } else {
+        var prevY = STEPS[step - 1], before = P[prevY][ci - 1].total, now = p[ci].total, diff = now - before;
+        msg = '<b>Aged ' + ageTxt(AGES[ci - 1]) + ' in ' + prevY + ': ' + lakh(before) + ' lakh → aged ' + ageTxt(AGES[ci]) + ' in ' + y + ': ' + lakh(now) + ' lakh.</b> ' +
+          'That is ' + SL.fmt(Math.abs(diff)) + ' people ' + (diff <= 0 ? 'fewer' : 'more') + ' (' + SL.fmt(100 * Math.abs(diff) / before, 1) + '%), the result of deaths plus people moving in or out. ' +
+          'The teal bar is new: ' + lakh(p[0].total) + ' lakh children aged 0–4, born since ' + prevY + '.' +
+          (step === 3 ? ' Since 2021 the cohort has ' + (now <= first ? 'shrunk' : 'grown') + ' by ' + SL.fmt(100 * Math.abs(first - now) / first, 1) + '%.' : '');
+      }
+      document.getElementById('cohText').innerHTML = msg;
+      var nb = document.getElementById('cohNext');
+      nb.disabled = step >= 3;
+      nb.style.opacity = step >= 3 ? 0.4 : 1;
+    }
+    function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+    document.getElementById('cohNext').addEventListener('click', function () { stopTimer(); if (step < 3) { step += 1; drawCohort(); } });
+    document.getElementById('cohReplay').addEventListener('click', function () {
+      stopTimer(); step = 0; drawCohort();
+      timer = setInterval(function () { if (step >= 3) { stopTimer(); return; } step += 1; drawCohort(); }, SL.dur(1800) || 1800);
+    });
+    document.querySelectorAll('#cohSeg button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        stopTimer();
+        document.querySelectorAll('#cohSeg button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        cStart = +b.dataset.c; step = 0; drawCohort();
+      });
+    });
+    drawCohort();
+    var o0 = P['2021'][12].total, o3 = P['2036'][15].total;
+    document.querySelectorAll('[data-v="oldLoss"]').forEach(function (el) { el.textContent = SL.fmt(100 * (o0 - o3) / o0, 0); });
+
+    /* ── fan chart ───────────────────────────────── */
+    var TF = res[1], FNAMES = Object.keys(TF).sort(), FY = d3.range(2020, 2037);
+    var fsel = document.getElementById('fanSel'), fdist = 'Koraput';
+    fsel.innerHTML = FNAMES.map(function (n) { return '<option' + (n === fdist ? ' selected' : '') + '>' + n + '</option>'; }).join('');
+    var fW = NARROW ? 460 : 880, fH = NARROW ? 340 : 360, fM = { t: 16, r: NARROW ? 16 : 150, b: 36, l: 40 };
+    var fsvg = d3.select('#fanSvg').attr('viewBox', [0, 0, fW, fH]);
+    var fx = d3.scaleLinear([2020, 2036], [fM.l, fW - fM.r]), fy = d3.scaleLinear([0.4, 3.4], [fH - fM.b, fM.t]);
+    fsvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + fM.l + ',0)').call(d3.axisLeft(fy).ticks(6).tickSize(-(fW - fM.l - fM.r)).tickFormat(''));
+    fsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (fH - fM.b) + ')').call(d3.axisBottom(fx).ticks(NARROW ? 4 : 8).tickFormat(d3.format('d')));
+    fsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + fM.l + ',0)').call(d3.axisLeft(fy).ticks(6));
+    fsvg.append('text').attr('class', 'ln-axis-label').attr('x', fM.l + 6).attr('y', fM.t + 10).text('↑ Children per woman (TFR)');
+    fsvg.append('line').attr('x1', fM.l).attr('x2', fW - fM.r).attr('y1', fy(2.1)).attr('y2', fy(2.1)).style('stroke', C.val).style('stroke-dasharray', '5 4').style('stroke-width', 1.5);
+    fsvg.append('text').attr('class', 'ln-dlabel').attr('x', fW - fM.r - 4).attr('y', fy(2.1) - 6).attr('text-anchor', 'end').style('fill', C.val).text('2.1: replacement level');
+    var band = fsvg.append('path').style('fill', 'color-mix(in srgb, ' + C.birth + ' 22%, transparent)').style('stroke', 'none');
+    var pathG = fsvg.append('g');
+    var central = fsvg.append('path').style('fill', 'none').style('stroke', C.ink).style('stroke-width', '3px');
+    var startDot = fsvg.append('circle').attr('r', 5.5).attr('class', 'ln-dot').attr('fill', C.ink);
+    var endLabs = fsvg.append('g');
+    var hover = fsvg.append('g').style('display', 'none');
+    hover.append('line').attr('y1', fM.t).attr('y2', fH - fM.b).style('stroke', 'var(--ink-subtle)').style('stroke-dasharray', '3 3');
+    hover.append('circle').attr('r', 5).attr('fill', C.ink).style('stroke', '#fff').style('stroke-width', 1.5);
+    var STEP_SD = 0.035, MAXP = 400, BATCH = 40, paths = [], batch = 0;
+    function randn(r) { var u = 1 - r(), v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+    function centralVals() { return FY.map(function (y) { return TF[fdist][String(y)]; }); }
+    function addBatch() {
+      var cv = centralVals(), r = SL.rng(1000 + FNAMES.indexOf(fdist) * 97 + batch * 7919);
+      batch += 1;
+      var fresh = [];
+      for (var k = 0; k < BATCH && paths.length < MAXP; k++) {
+        var e = 0, pts = [];
+        for (var i = 0; i < FY.length; i++) { if (i > 0) e += randn(r) * STEP_SD; pts.push(Math.max(0.6, cv[i] + e)); }
+        paths.push(pts); fresh.push(pts);
+      }
+      return fresh;
+    }
+    var line = d3.line().x(function (v, i) { return fx(FY[i]); }).y(function (v) { return fy(v); });
+    function bandStats() {
+      return FY.map(function (y, i) {
+        var col = paths.map(function (p) { return p[i]; });
+        return { lo: SL.quantile(col, 0.05), hi: SL.quantile(col, 0.95) };
+      });
+    }
+    function drawFan(fresh, reset) {
+      var cv = centralVals(), bs = bandStats();
+      var op = paths.length > 120 ? 0.07 : 0.16;
+      if (reset) pathG.selectAll('*').remove();
+      pathG.selectAll('path').style('stroke-opacity', op);
+      fresh.forEach(function (p) {
+        pathG.append('path').attr('d', line(p)).style('fill', 'none').style('stroke', 'rgba(15,23,42,1)').style('stroke-width', '1px')
+          .style('stroke-opacity', 0).transition().duration(SL.dur(600)).style('stroke-opacity', op);
+      });
+      band.transition().duration(SL.dur(400)).attr('d', d3.area().x(function (d, i) { return fx(FY[i]); }).y0(function (d) { return fy(d.lo); }).y1(function (d) { return fy(d.hi); })(bs));
+      central.attr('d', line(cv));
+      startDot.attr('cx', fx(2020)).attr('cy', fy(cv[0]));
+      endLabs.selectAll('*').remove();
+      var last = bs[bs.length - 1], lx = NARROW ? fx(2036) - 6 : fx(2036) + 8, anc = NARROW ? 'end' : 'start';
+      endLabs.append('text').attr('class', 'ln-dlabel').attr('x', lx).attr('y', fy(cv[cv.length - 1]) + (NARROW ? -12 : 0)).attr('dy', '0.35em').attr('text-anchor', anc).style('font-weight', 600).text('2036: ' + SL.fmt(cv[cv.length - 1], 2));
+      if (!NARROW) {
+        endLabs.append('text').attr('class', 'ln-dlabel').attr('x', lx).attr('y', fy(last.hi)).attr('dy', '0.35em').style('fill', 'var(--ink-subtle)').text('high: ' + SL.fmt(last.hi, 2));
+        endLabs.append('text').attr('class', 'ln-dlabel').attr('x', lx).attr('y', fy(last.lo)).attr('dy', '0.35em').style('fill', 'var(--ink-subtle)').text('low: ' + SL.fmt(last.lo, 2));
+      }
+      endLabs.append('text').attr('class', 'ln-dlabel').attr('x', fx(2020) + 8).attr('y', fy(cv[0]) - 12).text('2020: ' + SL.fmt(cv[0], 2) + ' (NFHS-5)');
+      document.getElementById('fanTitle').textContent = 'Total Fertility Rate in ' + fdist + ', 2020 to 2036';
+      document.getElementById('fanCount').textContent = SL.fmt(paths.length) + ' futures drawn' + (paths.length >= MAXP ? ' (that is plenty)' : '');
+      var more = document.getElementById('fanMore');
+      more.disabled = paths.length >= MAXP; more.style.opacity = more.disabled ? 0.4 : 1;
+      var mid = bs[8];
+      document.getElementById('fanText').innerHTML = 'In <b>' + fdist + '</b>, the published projection goes from <b>' + SL.fmt(cv[0], 2) + '</b> children per woman in 2020 to <b>' + SL.fmt(cv[cv.length - 1], 2) + '</b> in 2036. ' +
+        'In this illustration, most grey paths in 2028 fall between ' + SL.fmt(mid.lo, 2) + ' and ' + SL.fmt(mid.hi, 2) + '. By 2036 the range is wider: ' + SL.fmt(last.lo, 2) + ' to ' + SL.fmt(last.hi, 2) + '. ' +
+        'That widening is the honest part: the further ahead we look, the less sure anyone can be. The real model works the same way, with thousands of paths, and Soochana shows its middle one.';
+    }
+    function resetFan() { paths = []; batch = 0; drawFan(addBatch(), true); }
+    fsel.addEventListener('change', function () { fdist = fsel.value; resetFan(); });
+    document.getElementById('fanMore').addEventListener('click', function () { drawFan(addBatch(), false); });
+    fsvg.append('rect').attr('class', 'pj-hit').attr('x', fM.l).attr('y', fM.t).attr('width', fW - fM.l - fM.r).attr('height', fH - fM.t - fM.b)
+      .on('pointermove', function (ev) {
+        var yr = Math.max(2020, Math.min(2036, Math.round(fx.invert(d3.pointer(ev)[0])))), i = yr - 2020, cv = centralVals(), b = bandStats()[i];
+        hover.style('display', null);
+        hover.select('line').attr('x1', fx(yr)).attr('x2', fx(yr));
+        hover.select('circle').attr('cx', fx(yr)).attr('cy', fy(cv[i]));
+        tip.show(ev, '<b>' + fdist + ', ' + yr + '</b><br>Published projection ' + SL.fmt(cv[i], 2) + '<br><span class="muted">Grey paths (illustration): ' + SL.fmt(b.lo, 2) + ' to ' + SL.fmt(b.hi, 2) + '</span>');
+      })
+      .on('pointerleave', function () { hover.style('display', 'none'); tip.hide(); });
+    resetFan();
+
+    /* ── population 1901–2036 ────────────────────── */
+    var POP = res[0].population_trends.filter(function (r) { return typeof r.total === 'number' && r.total > 1e6 && r.year % 5 === 1; })
+      .map(function (r) { return { year: +r.year, total: r.total, proj: r.year > 2011 }; });
+    var pW = NARROW ? 460 : 880, pH = NARROW ? 320 : 340, pM = { t: 22, r: NARROW ? 20 : 60, b: 36, l: 44 };
+    var psvg = d3.select('#popSvg').attr('viewBox', [0, 0, pW, pH]);
+    var px = d3.scaleLinear([1901, 2036], [pM.l, pW - pM.r]), py = d3.scaleLinear([0, 6], [pH - pM.b, pM.t]);
+    psvg.append('rect').attr('x', px(2011)).attr('y', pM.t).attr('width', px(2036) - px(2011)).attr('height', pH - pM.t - pM.b).style('fill', 'var(--ln-soft)');
+    psvg.append('text').attr('class', 'ln-axis-label').attr('x', px(2011) + 6).attr('y', pM.t - 6).text('Projected');
+    psvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + pM.l + ',0)').call(d3.axisLeft(py).ticks(6).tickSize(-(pW - pM.l - pM.r)).tickFormat(''));
+    psvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (pH - pM.b) + ')').call(d3.axisBottom(px).tickValues(NARROW ? [1901, 1951, 2011, 2036] : [1901, 1921, 1941, 1961, 1981, 2001, 2011, 2036]).tickFormat(d3.format('d')));
+    psvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + pM.l + ',0)').call(d3.axisLeft(py).ticks(6));
+    psvg.append('text').attr('class', 'ln-axis-label').attr('x', pM.l + 6).attr('y', pM.t + 10).text('↑ People (crore)');
+    var pl = d3.line().x(function (d) { return px(d.year); }).y(function (d) { return py(d.total / 1e7); });
+    var cen = POP.filter(function (d) { return !d.proj; }), prj = POP.filter(function (d) { return d.year >= 2011; });
+    psvg.append('path').attr('d', pl(cen)).style('fill', 'none').style('stroke', C.ink).style('stroke-width', '2.5px');
+    psvg.append('path').attr('d', pl(prj)).style('fill', 'none').style('stroke', C.ink).style('stroke-width', '2.5px').style('stroke-dasharray', '6 5');
+    psvg.append('g').selectAll('circle').data(POP).join('circle').attr('r', 4)
+      .attr('cx', function (d) { return px(d.year); }).attr('cy', function (d) { return py(d.total / 1e7); })
+      .attr('fill', function (d) { return d.proj ? '#fff' : C.ink; }).style('stroke', C.ink).style('stroke-width', 1.6);
+    var lastP = POP[POP.length - 1], p2011 = POP.filter(function (d) { return d.year === 2011; })[0], p1901 = POP[0];
+    [[p1901, 'start'], [p2011, 'end'], [lastP, 'end']].forEach(function (a) {
+      psvg.append('text').attr('class', 'ln-dlabel').attr('x', px(a[0].year) + (a[1] === 'start' ? 4 : -6)).attr('y', py(a[0].total / 1e7) - 12)
+        .attr('text-anchor', a[1]).style('font-weight', 600).text(a[0].year + ': ' + SL.fmt(a[0].total / 1e7, 2) + ' crore');
+    });
+    var pHover = psvg.append('circle').attr('r', 7).style('fill', 'none').style('stroke', C.coh).style('stroke-width', 2).style('display', 'none');
+    psvg.append('rect').attr('class', 'pj-hit').attr('x', pM.l).attr('y', pM.t).attr('width', pW - pM.l - pM.r).attr('height', pH - pM.t - pM.b)
+      .on('pointermove', function (ev) {
+        var yv = px.invert(d3.pointer(ev)[0]), d = POP.reduce(function (a, b) { return Math.abs(b.year - yv) < Math.abs(a.year - yv) ? b : a; });
+        pHover.style('display', null).attr('cx', px(d.year)).attr('cy', py(d.total / 1e7));
+        tip.show(ev, '<b>' + d.year + (d.proj ? ' (projected)' : ' (Census)') + '</b><br>' + SL.fmt(d.total) + ' people<br><span class="muted">' + SL.fmt(d.total / 1e7, 2) + ' crore</span>');
+      })
+      .on('pointerleave', function () { pHover.style('display', 'none'); tip.hide(); });
+    function tot(y) { return POP.filter(function (d) { return d.year === y; })[0].total; }
+    var g1 = 100 * (tot(2011) / tot(2001) - 1), g2 = 100 * (tot(2031) / tot(2021) - 1);
+    document.getElementById('popText').innerHTML = 'Odisha had <b>' + SL.fmt(tot(1901) / 1e7, 2) + ' crore</b> people in 1901 and <b>' + SL.fmt(tot(2011) / 1e7, 2) + ' crore</b> at the 2011 Census. The projection for 2036 is <b>' + SL.fmt(lastP.total / 1e7, 2) + ' crore</b>. ' +
+      'Growth is slowing. The population grew by ' + SL.fmt(g1, 1) + '% between 2001 and 2011, but is projected to grow by only ' + SL.fmt(g2, 1) + '% between 2021 and 2031. That is the result of the falling fertility you saw above. When the next census is published, these numbers will be checked and updated.';
+  }).catch(function (err) {
+    console.error(err);
+    document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
+  });
+})();
+</script>
+<script src="../chatbot.js?v=20261005"></script>
+</body>
+</html>

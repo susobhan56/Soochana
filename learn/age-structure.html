@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Age Structure · Soochana Learn</title>
+<meta name="description" content="How to read a population pyramid, what the dependency ratio means, and how Odisha's mix of children, working-age adults and older people is changing from 1991 to 2036.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20261005">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  /* the three broad age groups, reusing the validated role colours */
+  .ln-page { --ag-child: var(--ln-train); --ag-work: var(--ln-val); --ag-old: var(--ln-test); }
+  .ag-sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: 0; }
+  .ag-note {
+    margin: 10px 0 4px; padding: 10px 14px; border-radius: 10px; background: var(--ln-soft);
+    font-size: 15px; line-height: 1.55; color: var(--ink-body);
+  }
+  .ag-note b { color: var(--ink-heading); }
+  .ag-waffle-wrap { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 28px; align-items: center; margin: 8px 0 6px; }
+  .ag-waffle-wrap .ln-waffle { gap: 3px; }
+  .ag-waffle-wrap .ln-waffle i { border-radius: 3px; }
+  .ag-key { display: grid; gap: 12px; }
+  .ag-key-row { display: grid; grid-template-columns: 74px 1fr; align-items: center; gap: 12px; }
+  .ag-key-n { font-size: 40px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+  .ag-key-l { font-size: 15px; line-height: 1.4; color: var(--ink-body); }
+  .ag-key-l b { display: block; color: var(--ink-heading); font-size: 16px; }
+  .ag-hover-row { fill: transparent; }
+  .ag-hover-row:hover { fill: rgba(15, 23, 42, 0.05); }
+  .ag-bar { cursor: pointer; }
+  @media (max-width: 860px) {
+    .ag-waffle-wrap { grid-template-columns: 1fr; gap: 18px; }
+    .ag-waffle-wrap .ln-waffle { max-width: 300px; }
+    .ag-key-n { font-size: 32px; }
+  }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M5</div>
+    <h2 class="ln-title">Age Structure: <em>who is young, who is old</em></h2>
+    <p class="ln-dek">How many children, working-age adults and older people live in Odisha, and how that mix is changing.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census 1991 and 2011; DIU population projection (Bayesian approach) for 2021–2036 · Every number is computed live in your browser</div>
+  </section>
+
+  <!-- ── the idea in one picture ───────────────────── -->
+  <section class="ln-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art">
+            <svg viewBox="0 0 240 180" role="img" aria-label="Nine people standing in a row from youngest to oldest">
+              <g id="gistPeople"></g>
+              <line x1="22" y1="150" x2="214" y2="150" style="stroke:#0f172a;stroke-width:1.5"/>
+              <path d="M214 146 L222 150 L214 154 Z" style="fill:#0f172a;stroke:none"/>
+              <text x="22" y="168" style="font-size:12px;fill:#475569">age 0</text>
+              <text x="222" y="168" text-anchor="end" style="font-size:12px;fill:#475569">80+</text>
+            </svg>
+          </div>
+          <figcaption><b><span class="ln-gist-n">1</span>Line everyone up by age</b>Start with the youngest baby and end with the oldest grandparent.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gistPyr" viewBox="0 0 240 180" role="img" aria-label="Odisha's population pyramid in 2021, men on the left and women on the right"></svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Stack them into a pyramid</b>Group people in five-year bands. Men go on the left, women on the right. This is Odisha in 2021.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gistDep" viewBox="0 0 240 180" role="img" aria-label="People of working age compared with children and older people, out of every 100 people in 2021"></svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>Compare earners and dependants</b>In 2021 there were about <b style="display:inline;font-size:inherit" data-v="drGist"></b> children and older people for every 100 people aged 15–59.</figcaption>
+        </figure>
+      </div>
+      <p class="ln-gist-sum">The age mix of a population shows how many people need support and how many can work, and it changes slowly over decades.</p>
+      <dl class="ln-words">
+        <div><dt>Population pyramid</dt><dd>A chart of people by age: men on one side, women on the other.</dd></div>
+        <div><dt>Age group</dt><dd>People of a similar age, such as 20–24, or all children aged 0–14.</dd></div>
+        <div><dt>Working age (15–59)</dt><dd>The ages when most people study, work or earn.</dd></div>
+        <div><dt>Dependency ratio</dt><dd>Children plus older people, for every 100 people of working age.</dd></div>
+        <div><dt>Ageing</dt><dd>When the share of older people in the population keeps rising.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ── reading a pyramid ──────────────────────────── -->
+  <div class="ln-prose">
+    <h2>Reading a pyramid</h2>
+    <p>A population pyramid is two bar charts placed back to back. Each bar is one five-year age group. Babies (aged 0–4) are at the bottom. People aged 80 and over are at the top. Men are on the left and women are on the right.</p>
+    <p>The length of a bar shows how many people are in that group. We count in <strong>lakh</strong> (1 lakh = 1,00,000 people).</p>
+    <p>The shape tells a story. A wide base means many babies are being born. A narrowing base means fewer births. A bulge is a large group of people, moving up through the ages as they grow older.</p>
+    <p>Click a year to see how Odisha's shape has changed. 1991 and 2011 are Census counts. 2021 to 2036 are <strong>projections</strong> (careful estimates of the future).</p>
+  </div>
+  <div class="ln-wide">
+    <figure class="ln-figure" style="margin:0">
+      <p class="ln-figure-t">Odisha's population by age and sex</p>
+      <p class="ln-figure-s">Each bar is one five-year age group, in lakh people. Hover a bar for exact numbers. The dashed outline is 1991, for comparison.</p>
+      <div class="ln-controls">
+        <div class="ln-seg" role="group" aria-label="Year for the pyramid" data-yearseg></div>
+        <button class="ln-btn ghost" id="pyrPlay" type="button">Play 1991 → 2036</button>
+      </div>
+      <div class="ln-legend">
+        <span><i style="background:var(--ag-child)"></i>Children (0–14)</span>
+        <span><i style="background:var(--ag-work)"></i>Working age (15–59)</span>
+        <span><i style="background:var(--ag-old)"></i>Older people (60+)</span>
+        <span><i class="line" style="background:#0f172a"></i>1991 shape</span>
+      </div>
+      <svg id="pyrSvg" role="img" aria-label="Population pyramid of Odisha for the chosen year, with the 1991 shape as a dashed outline"></svg>
+      <p class="ag-note" id="pyrNote" aria-live="polite"></p>
+      <div class="ln-source">1991, 2011: Census of India (age tables) · 2021–2036: DIU population projection (Bayesian approach)</div>
+    </figure>
+  </div>
+  <div class="ln-prose">
+    <p>Look at the bottom of the pyramid. As the years pass, it gets narrower, because families are having fewer children. In 1991, <b data-v="child1991"></b> of every 100 people were children. By 2036, the projection says <b data-v="child2036"></b>.</p>
+    <p>Now look at the middle. The large group of young adults in 2021 moves up by five years at each step. That is the bulge.</p>
+    <p>Finally, look at the top. It gets much wider. Odisha had <b data-v="old1991"></b> lakh people aged 60 and over in 1991. The projection for 2036 is <b data-v="old2036"></b> lakh. This is what <strong>ageing</strong> means.</p>
+    <div class="ln-seeit">See it on Soochana: <a href="../index.html">Home page story</a> <a href="../district.html">District pages</a> <a href="../explore.html">Explore Odisha</a></div>
+  </div>
+
+  <!-- ── 100 people ─────────────────────────────────── -->
+  <div class="ln-prose">
+    <h2>If Odisha were 100 people</h2>
+    <p>Crores of people are hard to picture. So imagine Odisha as a group of just 100 people.</p>
+    <p>Each square below is one person. <span class="ln-k" style="color:var(--ag-child)"><span>Teal</span></span> squares are children (0–14). <span class="ln-k" style="color:var(--ag-work)"><span>Violet</span></span> squares are people of working age (15–59). <span class="ln-k" style="color:var(--ag-old)"><span>Orange</span></span> squares are older people (60 and over).</p>
+  </div>
+  <div class="ln-wide">
+    <figure class="ln-figure" style="margin:0">
+      <p class="ln-figure-t">Out of every 100 people in Odisha, <span data-v="yearLabel"></span></p>
+      <p class="ln-figure-s">Each square is one person. Pick a year and watch the colours change.</p>
+      <div class="ln-controls">
+        <div class="ln-seg" role="group" aria-label="Year for the 100 people" data-yearseg></div>
+      </div>
+      <div class="ag-waffle-wrap">
+        <div class="ln-waffle" id="waffle" style="grid-template-columns:repeat(10,1fr)" role="img" aria-label="100 squares coloured by age group"></div>
+        <div class="ag-key" id="waffleKey" aria-live="polite"></div>
+      </div>
+      <div class="ln-source">Computed from the age groups in the pyramid above. Shares are rounded to whole people so they add up to 100.</div>
+    </figure>
+  </div>
+  <div class="ln-prose">
+    <p id="waffleText"></p>
+  </div>
+
+  <!-- ── dependency ratio ───────────────────────────── -->
+  <div class="ln-prose">
+    <h2>How many people depend on each earner?</h2>
+    <p>Children and most older people depend on others. Someone has to grow the food, earn the money and pay for schools and health care. Most of that work is done by people aged 15 to 59.</p>
+    <p>The <strong>dependency ratio</strong> compares these groups. It counts the children and older people for every 100 people of working age. A lower number means fewer dependants for each earner.</p>
+    <div class="ln-controls" style="justify-content:center">
+      <div class="ln-seg" role="group" aria-label="Year for the dependency ratio" data-yearseg></div>
+    </div>
+    <div class="ln-recipe" aria-live="polite">
+      <span class="ln-recipe-op">(</span>
+      <span class="ln-recipe-box"><b id="recC"></b><small>children 0–14 (lakh)</small></span>
+      <span class="ln-recipe-op">+</span>
+      <span class="ln-recipe-box"><b id="recO"></b><small>older people 60+ (lakh)</small></span>
+      <span class="ln-recipe-op">)</span>
+      <span class="ln-recipe-op">÷</span>
+      <span class="ln-recipe-box"><b id="recW"></b><small>working age 15–59 (lakh)</small></span>
+      <span class="ln-recipe-op">×</span>
+      <span class="ln-recipe-box"><b>100</b><small>to say "per 100"</small></span>
+      <span class="ln-recipe-op">=</span>
+      <span class="ln-recipe-box is-result"><b id="recR"></b><small>dependency ratio, <span id="recY"></span></small></span>
+    </div>
+    <p>The ratio has two parts. The <span class="ln-k" style="color:var(--ag-child)"><span>child ratio</span></span> counts only children per 100 workers. The <span class="ln-k" style="color:var(--ag-old)"><span>old-age ratio</span></span> counts only people aged 60 and over. Add them and you get the total.</p>
+  </div>
+  <div class="ln-wide">
+    <figure class="ln-figure" style="margin:0">
+      <p class="ln-figure-t">Dependants for every 100 people of working age, Odisha</p>
+      <p class="ln-figure-s">The black line is the total. It is the teal line plus the orange line. Hover a point for the number.</p>
+      <div class="ln-legend">
+        <span><i class="line" style="background:#0f172a"></i>Total dependency ratio</span>
+        <span><i class="line" style="background:var(--ag-child)"></i>Child ratio (0–14)</span>
+        <span><i class="line" style="background:var(--ag-old)"></i>Old-age ratio (60+)</span>
+      </div>
+      <svg id="depSvg" role="img" aria-label="Line chart of the total, child and old-age dependency ratios from 1991 to 2036"></svg>
+      <div class="ln-source">Computed from the age groups: Census 1991 and 2011; DIU population projection (Bayesian approach) 2021–2036</div>
+    </figure>
+  </div>
+  <div class="ln-prose">
+    <p>From 1991 to 2021, the total fell from <b data-v="dr1991"></b> to <b data-v="dr2021"></b>. Fewer children were born, so each earner had fewer people to support. You can see the teal line falling.</p>
+    <p>But the orange line is rising. The old-age ratio goes from <b data-v="old2021r"></b> in 2021 to <b data-v="old2036r"></b> in 2036. So after 2021, the total starts to climb again, to <b data-v="dr2036"></b> by 2036.</p>
+    <div class="ln-callout">
+      <span class="ln-callout-t">The "demographic window"</span>
+      Of the six years shown, 2021 has the largest share of people of working age (<span data-v="work2021"></span>%). When many people can work and fairly few depend on them, a state has a chance to grow faster. Economists call this a <strong>demographic window</strong> (or demographic dividend). It only pays off if young people get good schooling, health care and jobs. And it does not stay open for ever: as today's young adults grow old, the share of older people keeps rising.
+    </div>
+  </div>
+
+  <!-- ── districts ──────────────────────────────────── -->
+  <div class="ln-prose">
+    <h2>Districts age differently</h2>
+    <p>Not every district has the same shape. Some have many children. Others have more older people. This can happen when families have had fewer children for longer, or when young adults move away for work.</p>
+    <p>Districts differ a lot in size. So here we compare <strong>shares</strong>: each bar is the percentage of that district's own people in the age group. The black outline is Odisha as a whole.</p>
+  </div>
+  <div class="ln-wide">
+    <figure class="ln-figure" style="margin:0">
+      <div class="ln-controls">
+        <label>District <select id="distSel" aria-label="Choose a district"></select></label>
+        <div class="ln-seg" role="group" aria-label="Year for the district comparison" id="distYear">
+          <button type="button" aria-pressed="false" data-dy="2011">2011 Census</button>
+          <button type="button" aria-pressed="true" data-dy="2021">2021</button>
+          <button type="button" aria-pressed="false" data-dy="2036">2036</button>
+        </div>
+      </div>
+      <div class="ln-grid2">
+        <div>
+          <p class="ln-figure-t" id="distPyrT"></p>
+          <p class="ln-figure-s">Bars: the district (% of its people). Black outline: Odisha.</p>
+          <svg id="distPyr" role="img" aria-label="Population pyramid of the chosen district as shares, with Odisha's shape as an outline"></svg>
+        </div>
+        <div>
+          <p class="ln-figure-t">People aged 60+ as a share of each district</p>
+          <p class="ln-figure-s">Sorted from oldest to youngest. Click a bar to pick that district.</p>
+          <svg id="distRank" role="img" aria-label="Bar chart of the share of people aged 60 and over in each of Odisha's 30 districts"></svg>
+        </div>
+      </div>
+      <div class="ln-stats" id="distStats"></div>
+      <div class="ln-source">2011: Census of India · 2021, 2036: DIU district population projection (Bayesian approach)</div>
+    </figure>
+  </div>
+  <div class="ln-prose">
+    <p id="distText"></p>
+
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>A population pyramid shows people by age: men on the left, women on the right, babies at the bottom.</li>
+      <li>Odisha's pyramid is narrowing at the base and widening at the top: fewer children, more older people.</li>
+      <li>The dependency ratio counts children and older people for every 100 people aged 15–59. It fell from <span data-v="dr1991"></span> in 1991 to <span data-v="dr2021"></span> in 2021, and is projected to rise again as Odisha ages.</li>
+    </ol></div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p><b>1991 and 2011</b> are Census of India counts by five-year age group and sex. People whose age was not stated are left out of the age groups, so the pyramid totals (<span data-v="tot1991"></span> lakh in 1991, <span data-v="tot2011"></span> lakh in 2011) are slightly below the full census populations. <b>2021, 2026, 2031 and 2036</b> are from the DIU population projection (Bayesian approach) used across Soochana; the district pyramids come from the same projection. See <a href="projections.html">Projecting the future</a> for how these are made.</p>
+    <p>Broad groups: children 0–14, working age 15–59, older people 60 and over. This follows the usual Indian convention; many international sources use 15–64 instead, which gives a different ratio. Dependency ratio = (0–14 + 60+) ÷ (15–59) × 100. Child ratio = (0–14) ÷ (15–59) × 100; old-age ratio = (60+) ÷ (15–59) × 100. The 100-people picture rounds each share with the largest-remainder method, so the three numbers always add to 100.</p>
+    <details class="ln-details">
+      <summary>Show the data table</summary>
+      <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
+    </details>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="life-expectancy.html"><small>Previous · M4</small><b>Life Expectancy</b></a>
+    <a href="projections.html"><small>Next · M6</small><b>Projecting the Future</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var AGES = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79', '80+'];
+  var YEARS = ['1991', '2011', '2021', '2026', '2031', '2036'];
+  var CENSUS = { '1991': true, '2011': true };
+  var GROUPS = ['child', 'work', 'old'];
+  var GNAME = { child: 'Children', work: 'Working age', old: 'Older people' };
+  var GSHORT = { child: 'Children', work: 'Working', old: 'Older' };
+  var GAGES = { child: '0–14', work: '15–59', old: '60+' };
+  var C = { child: SL.color('train'), work: SL.color('val'), old: SL.color('test'), ink: '#0f172a' };
+  var tip = SL.tooltip();
+  var NARROW = document.querySelector('.ln-wide').clientWidth < 600;
+
+  function grp(i) { return i < 3 ? 'child' : i < 12 ? 'work' : 'old'; }
+  function ageTxt(a) { return a.replace('-', '–'); }
+  function lakh(v, d) { return SL.fmt(v / 1e5, d == null ? 1 : d); }
+
+  /* Keep only the 17 five-year groups (the source rows also carry spreadsheet junk). */
+  function clean(rows) {
+    return AGES.map(function (a) {
+      var r = rows.filter(function (x) { return x.age === a; })[0];
+      var m = +r.male, f = +r.female;
+      return { age: a, male: m, female: f, total: m + f };
+    });
+  }
+  function summary(p) {
+    var s = { child: 0, work: 0, old: 0 };
+    p.forEach(function (r, i) { s[grp(i)] += r.total; });
+    s.total = s.child + s.work + s.old;
+    s.childR = 100 * s.child / s.work;
+    s.oldR = 100 * s.old / s.work;
+    s.dr = s.childR + s.oldR;
+    return s;
+  }
+  /* Largest-remainder rounding to whole people out of 100. */
+  function per100(s) {
+    var raw = GROUPS.map(function (g) { return 100 * s[g] / s.total; });
+    var fl = raw.map(Math.floor), left = 100 - SL.sum(fl);
+    raw.map(function (v, i) { return { i: i, r: v - fl[i] }; })
+      .sort(function (a, b) { return b.r - a.r; })
+      .slice(0, left).forEach(function (o) { fl[o.i] += 1; });
+    var out = {};
+    GROUPS.forEach(function (g, i) { out[g] = fl[i]; });
+    return out;
+  }
+
+  Promise.all([
+    fetch('../datasets/state_demographics.json').then(function (r) { if (!r.ok) throw new Error('state_demographics.json'); return r.json(); }),
+    fetch('../datasets/district_age_pyramids.json').then(function (r) { if (!r.ok) throw new Error('district_age_pyramids.json'); return r.json(); }),
+  ]).then(function (res) {
+    var P = {}, S = {};
+    YEARS.forEach(function (y) { P[y] = clean(res[0].pyramids[y]); S[y] = summary(P[y]); });
+    var DP = res[1], DNAMES = Object.keys(DP).sort();
+    var year = '2021';
+
+    /* ── fixed numbers in the prose ─────────────── */
+    var pc = function (y, g) { return per100(S[y])[g]; };
+    var V = {
+      drGist: SL.fmt(S['2021'].dr, 0),
+      child1991: pc('1991', 'child'), child2036: pc('2036', 'child'),
+      old1991: lakh(S['1991'].old), old2036: lakh(S['2036'].old),
+      dr1991: SL.fmt(S['1991'].dr, 0), dr2021: SL.fmt(S['2021'].dr, 0), dr2036: SL.fmt(S['2036'].dr, 0),
+      old2021r: SL.fmt(S['2021'].oldR, 0), old2036r: SL.fmt(S['2036'].oldR, 0),
+      work2021: SL.fmt(100 * S['2021'].work / S['2021'].total, 1),
+      tot1991: lakh(S['1991'].total), tot2011: lakh(S['2011'].total),
+      yearLabel: year,
+    };
+    function fillV() { document.querySelectorAll('[data-v]').forEach(function (el) { if (V[el.dataset.v] != null) el.textContent = V[el.dataset.v]; }); }
+    fillV();
+
+    /* ── gist panels ─────────────────────────────── */
+    (function () {
+      var g = d3.select('#gistPeople');
+      var ppl = [[12, 'child'], [17, 'child'], [24, 'child'], [34, 'work'], [37, 'work'], [37, 'work'], [36, 'work'], [34, 'old'], [31, 'old']];
+      ppl.forEach(function (p, i) {
+        var x = 34 + i * 21, h = p[0] * 2.4, base = 146;
+        g.append('rect').attr('x', x - 6).attr('y', base - h).attr('width', 12).attr('height', h - 9).attr('rx', 5).style('fill', C[p[1]]);
+        g.append('circle').attr('cx', x).attr('cy', base - h - 6).attr('r', Math.max(4, h / 11)).style('fill', C[p[1]]);
+      });
+      var p21 = P['2021'], svg = d3.select('#gistPyr'), mx = d3.max(p21, function (r) { return Math.max(r.male, r.female); });
+      var gx = d3.scaleLinear([0, mx], [0, 92]), rh = 140 / 17;
+      p21.forEach(function (r, i) {
+        var y = 160 - (i + 1) * rh;
+        svg.append('rect').attr('x', 116 - gx(r.male)).attr('y', y).attr('width', gx(r.male)).attr('height', rh - 1.2).style('fill', C[grp(i)]);
+        svg.append('rect').attr('x', 124).attr('y', y).attr('width', gx(r.female)).attr('height', rh - 1.2).style('fill', C[grp(i)]);
+      });
+      svg.append('text').attr('x', 18).attr('y', 26).style('font-size', '13px').style('font-weight', 600).style('fill', '#0f172a').text('Men');
+      svg.append('text').attr('x', 222).attr('y', 26).attr('text-anchor', 'end').style('font-size', '13px').style('font-weight', 600).style('fill', '#0f172a').text('Women');
+      svg.append('text').attr('x', 120).attr('y', 174).attr('text-anchor', 'middle').style('font-size', '11px').style('fill', '#475569').text('babies at the bottom');
+      var w = per100(S['2021']), d = d3.select('#gistDep'), hs = 1.25, base = 150;
+      d.append('rect').attr('x', 40).attr('y', base - w.work * hs).attr('width', 60).attr('height', w.work * hs).attr('rx', 4).style('fill', C.work);
+      d.append('rect').attr('x', 140).attr('y', base - w.old * hs).attr('width', 60).attr('height', w.old * hs).attr('rx', 4).style('fill', C.old);
+      d.append('rect').attr('x', 140).attr('y', base - (w.old + w.child) * hs).attr('width', 60).attr('height', w.child * hs - 2).attr('rx', 4).style('fill', C.child);
+      d.append('text').attr('x', 70).attr('y', base - w.work * hs - 8).attr('text-anchor', 'middle').style('font-size', '15px').style('font-weight', 600).style('fill', '#0f172a').text(w.work);
+      d.append('text').attr('x', 170).attr('y', base - (w.old + w.child) * hs - 8).attr('text-anchor', 'middle').style('font-size', '15px').style('font-weight', 600).style('fill', '#0f172a').text(w.child + ' + ' + w.old);
+      d.append('text').attr('x', 70).attr('y', 168).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('earners 15–59');
+      d.append('text').attr('x', 170).attr('y', 168).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('children + 60+');
+      d.append('line').attr('x1', 28).attr('x2', 212).attr('y1', base).attr('y2', base).style('stroke', '#0f172a').style('stroke-width', 1);
+    })();
+
+    /* ── year buttons (all sections share one year) ── */
+    document.querySelectorAll('[data-yearseg]').forEach(function (seg) {
+      seg.innerHTML = YEARS.map(function (y) {
+        return '<button type="button" data-year="' + y + '" aria-pressed="' + (y === year) + '">' + y + (CENSUS[y] ? '' : '*') + '</button>';
+      }).join('');
+      seg.addEventListener('click', function (e) {
+        var b = e.target.closest('button');
+        if (b) { stopPlay(); setYear(b.dataset.year); }
+      });
+    });
+    document.querySelectorAll('[data-yearseg]').forEach(function (seg) {
+      seg.insertAdjacentHTML('afterend', '<span style="font-size:12px;color:var(--ink-subtle)">* projected</span>');
+    });
+
+    /* ── main pyramid ────────────────────────────── */
+    var pW = NARROW ? 460 : 880, rowH = NARROW ? 23 : 24, pTop = 34, pBot = 44;
+    var pH = pTop + 17 * rowH + pBot;
+    var gutR = NARROW ? 92 : 178, gap = NARROW ? 50 : 56, padL = 6;
+    var half = (pW - padL - gutR - gap) / 2, cx = padL + half + gap / 2;
+    var XMAX = 23;
+    var px = d3.scaleLinear([0, XMAX], [0, half]);
+    function rowY(i) { return pTop + (16 - i) * rowH; }
+    var psvg = d3.select('#pyrSvg').attr('viewBox', [0, 0, pW, pH]);
+    var ticks = NARROW ? [0, 10, 20] : [0, 5, 10, 15, 20];
+    var axG = psvg.append('g');
+    ticks.forEach(function (t) {
+      [-1, 1].forEach(function (s) {
+        var x = s < 0 ? cx - gap / 2 - px(t) : cx + gap / 2 + px(t);
+        axG.append('line').attr('x1', x).attr('x2', x).attr('y1', pTop).attr('y2', pTop + 17 * rowH).style('stroke', 'var(--ln-grid)');
+        axG.append('text').attr('class', 'ln-axis-label').attr('x', x).attr('y', pTop + 17 * rowH + 16).attr('text-anchor', 'middle').text(t);
+      });
+    });
+    axG.append('text').attr('class', 'ln-axis-label').attr('x', cx).attr('y', pH - 6).attr('text-anchor', 'middle').text('lakh people');
+    psvg.append('text').attr('x', cx - gap / 2 - 4).attr('y', 18).attr('text-anchor', 'end').style('font-size', '14px').style('font-weight', 600).style('fill', 'var(--ink-heading)').text('← Men');
+    psvg.append('text').attr('x', cx + gap / 2 + 4).attr('y', 18).style('font-size', '14px').style('font-weight', 600).style('fill', 'var(--ink-heading)').text('Women →');
+    var bigYear = psvg.append('text').attr('x', padL + 2).attr('y', pTop + 30).style('font-size', NARROW ? '30px' : '38px').style('font-weight', 600).style('fill', 'var(--ink-heading)');
+    var bigKind = psvg.append('text').attr('class', 'ln-axis-label').attr('x', padL + 3).attr('y', pTop + 50);
+    var hiBand = psvg.append('rect').attr('x', padL).attr('y', rowY(4)).attr('width', pW - padL - gutR + 4).attr('height', rowH).style('fill', 'rgba(15,23,42,0.06)');
+    var mBars = psvg.append('g').selectAll('rect').data(AGES).join('rect').attr('rx', 2).attr('height', rowH - 4)
+      .attr('y', function (a, i) { return rowY(i) + 2; }).style('fill', function (a, i) { return C[grp(i)]; })
+      .attr('x', cx - gap / 2).attr('width', 0);
+    var fBars = psvg.append('g').selectAll('rect').data(AGES).join('rect').attr('rx', 2).attr('height', rowH - 4)
+      .attr('y', function (a, i) { return rowY(i) + 2; }).style('fill', function (a, i) { return C[grp(i)]; })
+      .attr('x', cx + gap / 2).attr('width', 0);
+    var ageLab = psvg.append('g').selectAll('text').data(AGES).join('text').attr('class', 'ln-axis-label')
+      .attr('x', cx).attr('y', function (a, i) { return rowY(i) + rowH / 2; }).attr('dy', '0.35em').attr('text-anchor', 'middle')
+      .text(function (a) { return ageTxt(a); });
+    function outline(p) {
+      var L = 'M' + (cx - gap / 2) + ',' + (rowY(0) + rowH), R = 'M' + (cx + gap / 2) + ',' + (rowY(0) + rowH);
+      p.forEach(function (r, i) {
+        var xl = cx - gap / 2 - px(r.male / 1e5), xr = cx + gap / 2 + px(r.female / 1e5);
+        L += 'L' + xl + ',' + (rowY(i) + rowH) + 'L' + xl + ',' + rowY(i);
+        R += 'L' + xr + ',' + (rowY(i) + rowH) + 'L' + xr + ',' + rowY(i);
+      });
+      return L + 'L' + (cx - gap / 2) + ',' + rowY(16) + R + 'L' + (cx + gap / 2) + ',' + rowY(16);
+    }
+    var ghost = psvg.append('path').attr('d', outline(P['1991']))
+      .style('fill', 'none').style('stroke', '#0f172a').style('stroke-width', '1.4px').style('stroke-dasharray', '4 3').style('opacity', 0.55);
+    var brG = psvg.append('g');
+    var bands = { child: [0, 2], work: [3, 11], old: [12, 16] };
+    GROUPS.forEach(function (g) {
+      var y0 = rowY(bands[g][1]) + 2, y1 = rowY(bands[g][0]) + rowH - 2, bx = pW - gutR + 12;
+      var gg = brG.append('g').attr('data-g', g);
+      gg.append('path').attr('d', 'M' + bx + ',' + y0 + 'h6V' + y1 + 'h-6').style('fill', 'none').style('stroke', C[g]).style('stroke-width', '2.5px');
+      var t = gg.append('text').attr('x', bx + 14).attr('y', (y0 + y1) / 2 - 12).style('font-size', NARROW ? '15px' : '13px').style('fill', 'var(--ink-heading)');
+      t.append('tspan').attr('x', bx + 14).style('font-weight', 600).text(NARROW ? GSHORT[g] : GNAME[g]);
+      t.append('tspan').attr('x', bx + 14).attr('dy', '1.25em').style('fill', 'var(--ink-subtle)').text(GAGES[g]);
+      t.append('tspan').attr('x', bx + 14).attr('dy', '1.25em').attr('class', 'ag-share').style('font-weight', 600).style('fill', C[g]);
+    });
+    psvg.append('g').selectAll('rect').data(AGES).join('rect').attr('class', 'ag-hover-row')
+      .attr('x', padL).attr('y', function (a, i) { return rowY(i); }).attr('width', pW - padL - gutR + 4).attr('height', rowH)
+      .on('pointermove', function (ev, a) {
+        var i = AGES.indexOf(a), r = P[year][i];
+        tip.show(ev, '<b>Aged ' + ageTxt(a) + ', ' + year + '</b><br>Men ' + lakh(r.male, 2) + ' lakh<br>Women ' + lakh(r.female, 2) + ' lakh<br><span class="muted">' + SL.fmt(100 * r.total / S[year].total, 1) + '% of all people · ' + GNAME[grp(i)].toLowerCase() + '</span>');
+      })
+      .on('pointerleave', function () { tip.hide(); });
+
+    function pyrNote(y) {
+      var s = S[y], p = P[y], big = 0;
+      p.forEach(function (r, i) { if (r.total > p[big].total) big = i; });
+      var k = per100(s), largest = 'The largest age group is <b>' + ageTxt(AGES[big]) + '</b> (highlighted).';
+      var t = {
+        '1991': '<b>A wide base.</b> ' + k.child + ' of every 100 people were children. Older groups are much smaller, so the shape is a true pyramid. ',
+        '2011': '<b>The base stops growing.</b> There were fewer babies (0–4) than 10–14-year-olds, because families had begun to have fewer children. Children fell to ' + k.child + ' in 100. ',
+        '2021': '<b>The base is now narrower than the middle.</b> A bulge of young adults has formed. Children are now ' + k.child + ' in 100. ',
+        '2026': '<b>The bulge moves up.</b> Young adults of 2021 are five years older. People aged 60+ are ' + k.old + ' in 100. ',
+        '2031': '<b>The bulge keeps moving up</b> and the top widens. People aged 60+ are ' + k.old + ' in 100. ',
+        '2036': '<b>A narrow base and a wide top.</b> People aged 60+ are ' + k.old + ' in 100, compared with ' + per100(S['1991']).old + ' in 1991. ',
+      }[y];
+      return t + largest;
+    }
+
+    var playTimer = null;
+    function stopPlay() { if (playTimer) { clearInterval(playTimer); playTimer = null; document.getElementById('pyrPlay').textContent = 'Play 1991 → 2036'; } }
+    document.getElementById('pyrPlay').addEventListener('click', function () {
+      if (playTimer) { stopPlay(); return; }
+      var k = 0;
+      this.textContent = 'Stop';
+      setYear(YEARS[0]);
+      playTimer = setInterval(function () {
+        k += 1;
+        if (k >= YEARS.length) { stopPlay(); return; }
+        setYear(YEARS[k]);
+      }, SL.dur(1600) || 1600);
+    });
+
+    /* The first draw sets the bars at once; later changes animate.
+       (A transition waits for the tab to be visible, so a first draw in
+       a background tab would otherwise stay empty until it is opened.) */
+    function anim(sel, t, first) { return first ? sel : sel.transition(t); }
+    var pyrDrawn = false;
+    function drawPyr(y) {
+      var p = P[y], t = d3.transition().duration(SL.dur(650)).ease(d3.easeCubicInOut), big = 0, first = !pyrDrawn;
+      pyrDrawn = true;
+      p.forEach(function (r, i) { if (r.total > p[big].total) big = i; });
+      anim(mBars.data(p), t, first).attr('x', function (r) { return cx - gap / 2 - px(r.male / 1e5); }).attr('width', function (r) { return px(r.male / 1e5); });
+      anim(fBars.data(p), t, first).attr('width', function (r) { return px(r.female / 1e5); });
+      anim(hiBand, t, first).attr('y', rowY(big));
+      ageLab.style('font-weight', function (a, i) { return i === big ? 700 : null; }).style('fill', function (a, i) { return i === big ? 'var(--ink-heading)' : null; });
+      ghost.style('display', y === '1991' ? 'none' : null);
+      bigYear.text(y);
+      bigKind.text(CENSUS[y] ? 'Census count' : 'Projection');
+      var k = per100(S[y]);
+      brG.selectAll('g').each(function () { var g = this.getAttribute('data-g'); d3.select(this).select('.ag-share').text(k[g] + ' in 100'); });
+      document.getElementById('pyrNote').innerHTML = pyrNote(y);
+    }
+
+    /* ── waffle ──────────────────────────────────── */
+    var waffle = document.getElementById('waffle');
+    waffle.innerHTML = new Array(101).join('<i></i>');
+    var cells = waffle.querySelectorAll('i');
+    function drawWaffle(y) {
+      var k = per100(S[y]);
+      for (var n = 0; n < 100; n++) cells[n].style.background = n < k.child ? C.child : n < k.child + k.work ? C.work : C.old;
+      waffle.setAttribute('aria-label', 'Out of 100 people in ' + y + ': ' + k.child + ' children, ' + k.work + ' of working age, ' + k.old + ' aged 60 and over');
+      document.getElementById('waffleKey').innerHTML = GROUPS.map(function (g) {
+        return '<div class="ag-key-row"><div class="ag-key-n" style="color:' + C[g] + '">' + k[g] + '</div><div class="ag-key-l"><b>' + GNAME[g] + ' (' + GAGES[g] + ')</b>' + lakh(S[y][g]) + ' lakh people in ' + y + '</div></div>';
+      }).join('');
+      var s = S['2021'], exact = GROUPS.map(function (g) { return 100 * s[g] / s.total; });
+      var key = [23.3, 65.6, 11.0], same = exact.every(function (v, i) { return Math.abs(v - key[i]) < 0.05; });
+      var k21 = per100(s);
+      document.getElementById('waffleText').innerHTML = (y === '1991'
+        ? 'In 1991, more than one in three people in Odisha was a child. '
+        : y === '2036' ? 'By 2036, the projection says only ' + k.child + ' in 100 will be children, and ' + k.old + ' in 100 will be aged 60 or over. '
+        : 'In ' + y + ', ' + k.child + ' in 100 people are children and ' + k.old + ' in 100 are aged 60 or over. ') +
+        'For 2021 the exact shares are ' + exact.map(function (v) { return SL.fmt(v, 1) + '%'; }).join(', ') + ', which rounds to ' + k21.child + ' / ' + k21.work + ' / ' + k21.old + ' people. ' +
+        (same ? 'These match the 2021 figures on Soochana’s key statistics (23.3%, 65.6% and 11.0%).'
+              : 'Soochana’s key statistics give 23.3%, 65.6% and 11.0%; the small difference comes from rounding.');
+    }
+
+    /* ── recipe + dependency chart ───────────────── */
+    var dW = NARROW ? 460 : 880, dH = NARROW ? 320 : 330, dM = { t: 26, r: NARROW ? 88 : 120, b: 36, l: 40 };
+    var dsvg = d3.select('#depSvg').attr('viewBox', [0, 0, dW, dH]);
+    var dx = d3.scaleLinear([1991, 2036], [dM.l, dW - dM.r]), dy = d3.scaleLinear([0, 80], [dH - dM.b, dM.t]);
+    dsvg.append('rect').attr('x', dx(2021)).attr('y', dM.t).attr('width', dx(2036) - dx(2021)).attr('height', dH - dM.t - dM.b).style('fill', 'var(--ln-soft)');
+    dsvg.append('text').attr('class', 'ln-axis-label').attr('x', dx(2021) + 6).attr('y', dM.t - 8).text('Projected');
+    dsvg.append('text').attr('class', 'ln-axis-label').attr('x', dM.l + 4).attr('y', dM.t - 8).text('Census');
+    dsvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + dM.l + ',0)').call(d3.axisLeft(dy).ticks(4).tickSize(-(dW - dM.l - dM.r)).tickFormat(''));
+    dsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (dH - dM.b) + ')').call(d3.axisBottom(dx).tickValues(NARROW ? [1991, 2011, 2021, 2036] : YEARS.map(Number)).tickFormat(d3.format('d')));
+    dsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + dM.l + ',0)').call(d3.axisLeft(dy).ticks(4));
+    var selLine = dsvg.append('line').attr('y1', dM.t).attr('y2', dH - dM.b).style('stroke', 'var(--ink-heading)').style('stroke-dasharray', '3 4');
+    var SER = [{ k: 'dr', c: C.ink, n: 'Total' }, { k: 'childR', c: C.child, n: 'Child' }, { k: 'oldR', c: C.old, n: 'Old-age' }];
+    SER.forEach(function (s) {
+      var pts = YEARS.map(function (y) { return [dx(+y), dy(S[y][s.k])]; });
+      dsvg.append('path').attr('d', d3.line()(pts)).style('fill', 'none').style('stroke', s.c).style('stroke-width', s.k === 'dr' ? '3px' : '2.2px');
+      dsvg.append('g').selectAll('circle').data(YEARS).join('circle').attr('class', 'ln-dot').attr('r', 5.5)
+        .attr('cx', function (y) { return dx(+y); }).attr('cy', function (y) { return dy(S[y][s.k]); }).attr('fill', s.c)
+        .on('pointerenter', function (ev, y) { tip.show(ev, '<b>' + y + (CENSUS[y] ? ' (Census)' : ' (projected)') + '</b><br>Total ' + SL.fmt(S[y].dr, 1) + '<br>Child ' + SL.fmt(S[y].childR, 1) + ' · Old-age ' + SL.fmt(S[y].oldR, 1) + '<br><span class="muted">per 100 people aged 15–59</span>'); })
+        .on('pointerleave', function () { tip.hide(); });
+      dsvg.append('text').attr('class', 'ln-dlabel').attr('x', dx(2036) + 9).attr('y', dy(S['2036'][s.k])).attr('dy', s.k === 'oldR' ? '0.9em' : s.k === 'childR' ? '-0.2em' : '0.35em')
+        .style('fill', s.c).style('font-weight', 600).text(s.n + ' ' + SL.fmt(S['2036'][s.k], 0));
+    });
+    function drawRecipe(y) {
+      var s = S[y];
+      document.getElementById('recC').textContent = lakh(s.child);
+      document.getElementById('recO').textContent = lakh(s.old);
+      document.getElementById('recW').textContent = lakh(s.work);
+      document.getElementById('recR').textContent = SL.fmt(s.dr, 0);
+      document.getElementById('recY').textContent = y;
+      selLine.transition().duration(SL.dur(400)).attr('x1', dx(+y)).attr('x2', dx(+y));
+    }
+
+    function setYear(y) {
+      year = y;
+      document.querySelectorAll('[data-yearseg] button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.year === y)); });
+      V.yearLabel = y; fillV();
+      drawPyr(y); drawWaffle(y); drawRecipe(y);
+    }
+    setYear(year);
+
+    /* ── districts ───────────────────────────────── */
+    var dYear = '2021', dist = 'Koraput';
+    var sel = document.getElementById('distSel');
+    sel.innerHTML = DNAMES.map(function (n) { return '<option' + (n === dist ? ' selected' : '') + '>' + n + '</option>'; }).join('');
+    function dClean(name, y) { return clean(DP[name][y]); }
+    function shares(p) { var t = SL.sum(p.map(function (r) { return r.total; })); return p.map(function (r) { return { male: 100 * r.male / t, female: 100 * r.female / t }; }); }
+    var SMAX = 0;
+    ['2011', '2021', '2036'].forEach(function (y) {
+      DNAMES.forEach(function (n) { shares(dClean(n, y)).forEach(function (r) { SMAX = Math.max(SMAX, r.male, r.female); }); });
+    });
+    SMAX = Math.ceil(SMAX);
+    var qW = 460, qRow = 20, qTop = 22, qH = qTop + 17 * qRow + 40, qGap = 50, qHalf = (qW - 12 - qGap) / 2, qcx = 6 + qHalf + qGap / 2;
+    var qx = d3.scaleLinear([0, SMAX], [0, qHalf]);
+    function qY(i) { return qTop + (16 - i) * qRow; }
+    var qsvg = d3.select('#distPyr').attr('viewBox', [0, 0, qW, qH]);
+    [0, 2, 4, 6].filter(function (t) { return t <= SMAX; }).forEach(function (t) {
+      [-1, 1].forEach(function (s) {
+        var x = s < 0 ? qcx - qGap / 2 - qx(t) : qcx + qGap / 2 + qx(t);
+        qsvg.append('line').attr('x1', x).attr('x2', x).attr('y1', qTop).attr('y2', qTop + 17 * qRow).style('stroke', 'var(--ln-grid)');
+        qsvg.append('text').attr('class', 'ln-axis-label').attr('x', x).attr('y', qTop + 17 * qRow + 16).attr('text-anchor', 'middle').text(t + '%');
+      });
+    });
+    qsvg.append('text').attr('x', qcx - qGap / 2 - 4).attr('y', 12).attr('text-anchor', 'end').style('font-size', '13px').style('font-weight', 600).style('fill', 'var(--ink-heading)').text('← Men');
+    qsvg.append('text').attr('x', qcx + qGap / 2 + 4).attr('y', 12).style('font-size', '13px').style('font-weight', 600).style('fill', 'var(--ink-heading)').text('Women →');
+    qsvg.append('text').attr('class', 'ln-axis-label').attr('x', qcx).attr('y', qH - 4).attr('text-anchor', 'middle').text('% of the district’s people');
+    var qm = qsvg.append('g').selectAll('rect').data(AGES).join('rect').attr('rx', 2).attr('height', qRow - 3).attr('y', function (a, i) { return qY(i) + 1.5; })
+      .style('fill', function (a, i) { return C[grp(i)]; }).attr('x', qcx - qGap / 2).attr('width', 0);
+    var qf = qsvg.append('g').selectAll('rect').data(AGES).join('rect').attr('rx', 2).attr('height', qRow - 3).attr('y', function (a, i) { return qY(i) + 1.5; })
+      .style('fill', function (a, i) { return C[grp(i)]; }).attr('x', qcx + qGap / 2).attr('width', 0);
+    qsvg.append('g').selectAll('text').data(AGES).join('text').attr('class', 'ln-axis-label').attr('x', qcx).attr('y', function (a, i) { return qY(i) + qRow / 2; })
+      .attr('dy', '0.35em').attr('text-anchor', 'middle').text(function (a, i) { return i % 2 === 0 || !NARROW ? ageTxt(a) : ''; });
+    var qOut = qsvg.append('path').style('fill', 'none').style('stroke', '#0f172a').style('stroke-width', '1.6px');
+    function qOutline(sh) {
+      var L = 'M' + (qcx - qGap / 2) + ',' + (qY(0) + qRow), R = 'M' + (qcx + qGap / 2) + ',' + (qY(0) + qRow);
+      sh.forEach(function (r, i) {
+        var xl = qcx - qGap / 2 - qx(r.male), xr = qcx + qGap / 2 + qx(r.female);
+        L += 'L' + xl + ',' + (qY(i) + qRow) + 'L' + xl + ',' + qY(i);
+        R += 'L' + xr + ',' + (qY(i) + qRow) + 'L' + xr + ',' + qY(i);
+      });
+      return L + 'L' + (qcx - qGap / 2) + ',' + qY(16) + R + 'L' + (qcx + qGap / 2) + ',' + qY(16);
+    }
+    qsvg.append('g').selectAll('rect').data(AGES).join('rect').attr('class', 'ag-hover-row')
+      .attr('x', 6).attr('y', function (a, i) { return qY(i); }).attr('width', qW - 12).attr('height', qRow)
+      .on('pointermove', function (ev, a) {
+        var i = AGES.indexOf(a), ds = shares(dClean(dist, dYear))[i], st = shares(P[dYear])[i];
+        tip.show(ev, '<b>Aged ' + ageTxt(a) + ', ' + dYear + '</b><br>' + dist + ': men ' + SL.fmt(ds.male, 1) + '%, women ' + SL.fmt(ds.female, 1) + '%<br><span class="muted">Odisha: men ' + SL.fmt(st.male, 1) + '%, women ' + SL.fmt(st.female, 1) + '%</span>');
+      })
+      .on('pointerleave', function () { tip.hide(); });
+
+    var rW = 460, rRow = NARROW ? 17 : 15, rTop = 8, rM = { l: NARROW ? 128 : 112, r: 50 }, rH = rTop + 30 * rRow + 30;
+    var rsvg = d3.select('#distRank').attr('viewBox', [0, 0, rW, rH]);
+    var rG = rsvg.append('g'), rRef = rsvg.append('g');
+    function oldShare(p) { var s = summary(p); return 100 * s.old / s.total; }
+
+    var distDrawn = false;
+    function drawDistrict() {
+      var p = dClean(dist, dYear), sh = shares(p), st = shares(P[dYear]), t = d3.transition().duration(SL.dur(500)), first = !distDrawn;
+      distDrawn = true;
+      anim(qm.data(sh), t, first).attr('x', function (r) { return qcx - qGap / 2 - qx(r.male); }).attr('width', function (r) { return qx(r.male); });
+      anim(qf.data(sh), t, first).attr('width', function (r) { return qx(r.female); });
+      qOut.attr('d', qOutline(st));
+      document.getElementById('distPyrT').textContent = dist + ' compared with Odisha, ' + dYear;
+      var ds = summary(p), ss = S[dYear];
+      document.getElementById('distStats').innerHTML = GROUPS.map(function (g) {
+        return '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(100 * ds[g] / ds.total, 1) + '%</div><div class="ln-stat-l"><i style="background:' + C[g] + '"></i>' + GNAME[g] + ' (' + GAGES[g] + ') in ' + dist + ' · Odisha ' + SL.fmt(100 * ss[g] / ss.total, 1) + '%</div></div>';
+      }).join('') + '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(ds.dr, 0) + '</div><div class="ln-stat-l">Dependency ratio · Odisha ' + SL.fmt(ss.dr, 0) + '</div></div>';
+
+      var rank = DNAMES.map(function (n) { return { n: n, v: oldShare(dClean(n, dYear)) }; }).sort(function (a, b) { return b.v - a.v; });
+      var rx = d3.scaleLinear([0, 16], [rM.l, rW - rM.r]);
+      var bars = rG.selectAll('g').data(rank, function (d) { return d.n; });
+      var en = bars.enter().append('g').attr('class', 'ag-bar').on('click', function (ev, d) { dist = d.n; sel.value = d.n; drawDistrict(); })
+        .on('pointerenter', function (ev, d) { tip.show(ev, '<b>' + d.n + '</b><br>' + SL.fmt(d.v, 1) + '% aged 60+ in ' + dYear); })
+        .on('pointerleave', function () { tip.hide(); });
+      en.append('text').attr('class', 'ln-axis-label').attr('x', rM.l - 6).attr('text-anchor', 'end').attr('dy', '0.35em');
+      en.append('rect').attr('x', rM.l).attr('rx', 2).attr('height', rRow - 4);
+      en.append('text').attr('class', 'ln-dlabel').attr('dy', '0.35em');
+      var all = en.merge(bars);
+      anim(all, t, first).attr('transform', function (d, i) { return 'translate(0,' + (rTop + i * rRow) + ')'; });
+      all.select('text.ln-axis-label').attr('y', rRow / 2 - 1).text(function (d) { return d.n; })
+        .style('font-weight', function (d) { return d.n === dist ? 700 : null; }).style('fill', function (d) { return d.n === dist ? 'var(--ink-heading)' : null; });
+      all.select('rect').attr('y', 1).attr('width', function (d) { return rx(d.v) - rM.l; })
+        .style('fill', C.old).style('opacity', function (d) { return d.n === dist ? 1 : 0.32; });
+      all.select('text.ln-dlabel').attr('y', rRow / 2 - 1).attr('x', function (d) { return rx(d.v) + 4; })
+        .text(function (d) { return d.n === dist ? SL.fmt(d.v, 1) + '%' : ''; });
+      var so = 100 * S[dYear].old / S[dYear].total;
+      rRef.selectAll('*').remove();
+      rRef.append('line').attr('x1', rx(so)).attr('x2', rx(so)).attr('y1', rTop - 4).attr('y2', rTop + 30 * rRow + 2).style('stroke', '#0f172a').style('stroke-dasharray', '4 3');
+      rRef.append('text').attr('class', 'ln-axis-label').attr('x', rx(so)).attr('y', rTop + 30 * rRow + 18).attr('text-anchor', 'middle').text('Odisha ' + SL.fmt(so, 1) + '%');
+
+      var kids = DNAMES.map(function (n) { var s = summary(dClean(n, dYear)); return { n: n, v: 100 * s.child / s.total }; }).sort(function (a, b) { return b.v - a.v; });
+      document.getElementById('distText').innerHTML = 'In ' + dYear + ', <b>' + rank[0].n + '</b> has the largest share of people aged 60 and over (' + SL.fmt(rank[0].v, 1) + '%). <b>' + rank[29].n + '</b> has the smallest (' + SL.fmt(rank[29].v, 1) + '%). ' +
+        'The districts with the most children are ' + kids.slice(0, 3).map(function (d) { return d.n; }).join(', ') + ' (' + SL.fmt(kids[0].v, 1) + '% in ' + kids[0].n + '). ' +
+        'A younger district needs more schools and child health services. An older district needs more care for the elderly and pensions.';
+    }
+    sel.addEventListener('change', function () { dist = sel.value; drawDistrict(); });
+    document.querySelectorAll('#distYear button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        dYear = b.dataset.dy;
+        document.querySelectorAll('#distYear button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        drawDistrict();
+      });
+    });
+    drawDistrict();
+
+    /* ── data table ──────────────────────────────── */
+    document.getElementById('dataTable').innerHTML = '<thead><tr><th>Age</th>' + YEARS.map(function (y) { return '<th>' + y + (CENSUS[y] ? '' : '*') + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      AGES.map(function (a, i) { return '<tr><td>' + ageTxt(a) + '</td>' + YEARS.map(function (y) { return '<td>' + lakh(P[y][i].total, 2) + '</td>'; }).join('') + '</tr>'; }).join('') +
+      '<tr><td><b>Dependency ratio</b></td>' + YEARS.map(function (y) { return '<td><b>' + SL.fmt(S[y].dr, 1) + '</b></td>'; }).join('') + '</tr></tbody>' +
+      '<caption style="caption-side:bottom;text-align:left;font-size:12px;padding-top:6px">People in lakh, men and women together. * projected.</caption>';
+  }).catch(function (err) {
+    console.error(err);
+    document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
+  });
+})();
+</script>
+<script src="../chatbot.js?v=20261005"></script>
+</body>
+</html>

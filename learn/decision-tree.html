@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20260928-6">
-<link rel="stylesheet" href="learn.css?v=20260929">
+<link rel="stylesheet" href="learn.css?v=20261005">
 <script src="../ui.js?v=20260925-2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="learn.js?v=20260929"></script>
@@ -42,6 +42,10 @@
   .ln-k-pos::before { border-radius: 2px; }
   .ln-legend i.sq { border-radius: 2px; }
   .ln-legend i.hollow { background: #fff !important; border: 1.5px solid var(--ink-subtle); width: 9px; height: 9px; }
+  /* "the idea in one picture" panel text */
+  .ln-gist svg text { font-family: var(--font-sans); font-size: 12px; font-weight: 500; fill: #0f172a; }
+  .ln-gist svg .g-b, .ln-gist svg .g-b text { font-weight: 600; }
+  .ln-gist svg .g-s, .ln-gist svg .g-s text { fill: #475569; }
   @media (max-width: 860px) {
     .dt-stage { width: 100%; }
     .dt-lower { aspect-ratio: 560 / 270; }
@@ -74,15 +78,111 @@
 
 <main>
   <section class="ln-hero">
-    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · 04</div>
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-ml">Machine learning</span> · 04</div>
     <h2 class="ln-title">Decision <em>Trees</em></h2>
-    <p class="ln-dek">A decision tree is a flowchart of yes-or-no questions learned from data. Here is how one grows, question by question, to sort Odisha's 30 districts by child mortality, and why letting it grow too far is a trap.</p>
+    <p class="ln-dek">A decision tree sorts districts by asking a short chain of yes-or-no questions that it learns from the data.</p>
     <div class="ln-byline">By <b>DIU Team</b> · Data: Census 2011 and NFHS-5 · Every number on this page is computed live in your browser</div>
   </section>
 
+  <section class="ln-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="All 30 districts are split by one question about female literacy. The yes group is mostly high child mortality, the no group mostly low.">
+            <rect x="40" y="6" width="160" height="42" rx="8" style="fill:#fff;stroke:#0f172a;stroke-width:1.5"/>
+            <text x="120" y="23" text-anchor="middle" class="g-b">Female literacy</text>
+            <text x="120" y="40" text-anchor="middle" class="g-b">≤ <tspan data-v="litThr">X%</tspan>?</text>
+            <line x1="92" y1="48" x2="60" y2="74" style="stroke:#64748b;stroke-width:1.5"/>
+            <line x1="148" y1="48" x2="180" y2="74" style="stroke:#64748b;stroke-width:1.5"/>
+            <text x="68" y="64" text-anchor="end" class="g-s">yes</text>
+            <text x="172" y="64" text-anchor="start" class="g-s">no</text>
+            <rect x="14" y="74" width="92" height="74" rx="8" style="fill:#fff;stroke:rgba(15,23,42,.14)"/>
+            <rect x="134" y="74" width="92" height="74" rx="8" style="fill:#fff;stroke:rgba(15,23,42,.14)"/>
+            <g style="fill:var(--ln-pos)">
+              <rect x="28" y="81" width="10" height="10"/><rect x="46" y="81" width="10" height="10"/><rect x="64" y="81" width="10" height="10"/><rect x="82" y="81" width="10" height="10"/>
+              <rect x="28" y="97" width="10" height="10"/><rect x="46" y="97" width="10" height="10"/><rect x="64" y="97" width="10" height="10"/><rect x="82" y="97" width="10" height="10"/>
+              <rect x="28" y="113" width="10" height="10"/><rect x="46" y="113" width="10" height="10"/><rect x="64" y="113" width="10" height="10"/><rect x="82" y="113" width="10" height="10"/>
+              <rect x="148" y="81" width="10" height="10"/><rect x="166" y="81" width="10" height="10"/><rect x="184" y="81" width="10" height="10"/>
+            </g>
+            <g style="fill:var(--ln-neg)">
+              <circle cx="33" cy="134" r="5.5"/><circle cx="51" cy="134" r="5.5"/>
+              <circle cx="207" cy="86" r="5.5"/>
+              <circle cx="153" cy="102" r="5.5"/><circle cx="171" cy="102" r="5.5"/><circle cx="189" cy="102" r="5.5"/><circle cx="207" cy="102" r="5.5"/>
+              <circle cx="153" cy="118" r="5.5"/><circle cx="171" cy="118" r="5.5"/><circle cx="189" cy="118" r="5.5"/><circle cx="207" cy="118" r="5.5"/>
+              <circle cx="153" cy="134" r="5.5"/><circle cx="171" cy="134" r="5.5"/><circle cx="189" cy="134" r="5.5"/><circle cx="207" cy="134" r="5.5"/>
+            </g>
+            <text x="60" y="168" text-anchor="middle" class="g-b" style="fill:var(--ln-pos)">mostly high</text>
+            <text x="180" y="168" text-anchor="middle" class="g-b" style="fill:var(--ln-neg)">mostly low</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">1</span>Ask the best first question</b>The tree looks for the one yes/no question that best separates high and low child-mortality districts. For Odisha it is <span data-v="q1">a question about female literacy</span></figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="Below the first question, each group gets its own new question about tribal share.">
+            <rect x="70" y="10" width="100" height="30" rx="7" style="fill:#fff;stroke:rgba(15,23,42,.35);stroke-width:1.2"/>
+            <text x="120" y="29" text-anchor="middle" class="g-s">Literacy low?</text>
+            <line x1="100" y1="40" x2="62" y2="66" style="stroke:#64748b;stroke-width:1.5"/>
+            <line x1="140" y1="40" x2="178" y2="66" style="stroke:#64748b;stroke-width:1.5"/>
+            <rect x="12" y="66" width="100" height="32" rx="7" style="fill:#fff;stroke:#0f172a;stroke-width:1.8"/>
+            <rect x="128" y="66" width="100" height="32" rx="7" style="fill:#fff;stroke:#0f172a;stroke-width:1.8"/>
+            <text x="62" y="86" text-anchor="middle" class="g-b">Tribal share?</text>
+            <text x="178" y="86" text-anchor="middle" class="g-b">Tribal share?</text>
+            <g style="stroke:rgba(15,23,42,.35);stroke-width:1.2">
+              <line x1="48" y1="98" x2="36" y2="124"/><line x1="76" y1="98" x2="88" y2="124"/>
+              <line x1="164" y1="98" x2="152" y2="124"/><line x1="192" y1="98" x2="204" y2="124"/>
+            </g>
+            <g style="fill:#fff;stroke:rgba(15,23,42,.35);stroke-width:1.2;stroke-dasharray:3 3">
+              <rect x="16" y="124" width="40" height="28" rx="6"/><rect x="68" y="124" width="40" height="28" rx="6"/>
+              <rect x="132" y="124" width="40" height="28" rx="6"/><rect x="184" y="124" width="40" height="28" rx="6"/>
+            </g>
+            <g class="g-s" text-anchor="middle"><text x="36" y="143">?</text><text x="88" y="143">?</text><text x="152" y="143">?</text><text x="204" y="143">?</text></g>
+            <text x="120" y="172" text-anchor="middle" class="g-s">a new question in each group</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Ask again inside each group</b>Inside each group, the tree searches again for the question that best tidies that group. Here both new questions are about tribal share.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg viewBox="0 0 240 180" role="img" aria-label="The finished tree. A district follows its answers down to an end box, a leaf, which predicts high or low.">
+            <g style="stroke:rgba(15,23,42,.25);stroke-width:1.5">
+              <line x1="120" y1="32" x2="184" y2="58"/>
+              <line x1="56" y1="82" x2="29" y2="118"/>
+              <line x1="184" y1="82" x2="157" y2="118"/><line x1="184" y1="82" x2="213" y2="118"/>
+            </g>
+            <g style="stroke:#0f172a;stroke-width:3">
+              <line x1="120" y1="32" x2="56" y2="58"/>
+              <line x1="56" y1="82" x2="85" y2="118"/>
+            </g>
+            <rect x="72" y="8" width="96" height="24" rx="6" style="fill:#fff;stroke:#0f172a;stroke-width:1.2"/>
+            <text x="120" y="24" text-anchor="middle">Literacy low?</text>
+            <rect x="8" y="58" width="96" height="24" rx="6" style="fill:#fff;stroke:#0f172a;stroke-width:1.2"/>
+            <text x="56" y="74" text-anchor="middle">Tribal share?</text>
+            <rect x="136" y="58" width="96" height="24" rx="6" style="fill:#fff;stroke:rgba(15,23,42,.35);stroke-width:1.2"/>
+            <text x="184" y="74" text-anchor="middle" class="g-s">Tribal share?</text>
+            <rect x="4" y="118" width="50" height="30" rx="6" style="fill:var(--ln-neg)"/>
+            <rect x="60" y="118" width="50" height="30" rx="6" style="fill:var(--ln-pos);stroke:#0f172a;stroke-width:2"/>
+            <rect x="132" y="118" width="50" height="30" rx="6" style="fill:var(--ln-neg)"/>
+            <rect x="188" y="118" width="50" height="30" rx="6" style="fill:var(--ln-neg)"/>
+            <g class="g-b" text-anchor="middle" style="fill:#fff"><text x="29" y="137" style="fill:#fff">Low</text><text x="85" y="137" style="fill:#fff">High</text><text x="157" y="137" style="fill:#fff">Low</text><text x="213" y="137" style="fill:#fff">Low</text></g>
+            <text x="120" y="172" text-anchor="middle" class="g-s">leaves: each end box gives an answer</text>
+          </svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>Each end box gives the answer</b>A district follows its yes/no answers down the tree to a <em>leaf</em> (an end box). The leaf predicts high or low.</figcaption>
+        </figure>
+      </div>
+      <p class="ln-gist-sum">A decision tree is a flowchart of yes/no questions: it learns which questions to ask from the data, and each end box gives a prediction.</p>
+      <dl class="ln-words">
+        <div><dt>Split</dt><dd>One yes/no question that divides a group of districts in two.</dd></div>
+        <div><dt>Node</dt><dd>A box in the tree that asks one question.</dd></div>
+        <div><dt>Leaf</dt><dd>An end box. It gives the prediction: high or low.</dd></div>
+        <div><dt>Depth</dt><dd>How many questions in a row the tree may ask.</dd></div>
+        <div><dt>Impurity (Gini)</dt><dd>How mixed a group is: 0 means all alike, 0.5 means half and half.</dd></div>
+      </dl>
+    </div>
+  </section>
+
   <div class="ln-prose">
-    <p><strong>Under-five mortality</strong> counts the children who die before their fifth birthday for every 1,000 born alive. In NFHS-5 (2019–21) it varies widely across Odisha's districts. Half of them sit above <b data-v="med"></b> per 1,000 and half at or below it.</p>
-    <p>Suppose we want a simple rule that sorts districts into the <span class="ln-k ln-k-pos"><span>high</span></span> half and the <span class="ln-k ln-k-neg"><span>low</span></span> half, using two things already known about each one: the share of women who could read in 2011, and the share of people from Scheduled Tribes. A <em>decision tree</em> finds such a rule by asking one yes-or-no question at a time.</p>
+    <p><strong>Under-five mortality</strong> is the number of children who die before their fifth birthday, out of every 1,000 born alive. NFHS-5 (2019–21) measured it in every district. Half of Odisha's districts are above <b data-v="med"></b> per 1,000. We call them <span class="ln-k ln-k-pos"><span>high</span></span>. The rest are <span class="ln-k ln-k-neg"><span>low</span></span>.</p>
+    <p>Can we sort the districts into high and low using two facts we already know? The facts are the share of women who could read in 2011 (<em>female literacy</em>) and the share of people from Scheduled Tribes (<em>tribal share</em>). A decision tree does this by asking one yes/no question at a time.</p>
+    <h2>How does a tree choose its questions?</h2>
+    <p>Scroll on. The chart changes with each step.</p>
   </div>
 
   <!-- ── scroll story ─────────────────────────────── -->
@@ -90,24 +190,26 @@
     <div class="ln-steps">
       <div class="ln-step"><div class="ln-card">
         <h3>Thirty districts</h3>
-        <p>Each mark is a district. Across: female literacy. Up: the share of people from Scheduled Tribes. <span class="ln-k ln-k-pos"><span>Orange squares</span></span> have under-five mortality above the median of <b data-v="med"></b> per 1,000; <span class="ln-k ln-k-neg"><span>teal circles</span></span> are at or below it.</p>
+        <p>Each mark is one district. Left to right: female literacy. Bottom to top: tribal share.</p>
+        <p><span class="ln-k ln-k-pos"><span>Orange squares</span></span> have under-five mortality above <b data-v="med"></b> per 1,000 (high). <span class="ln-k ln-k-neg"><span>Teal circles</span></span> are at or below it (low).</p>
         <p>High-mortality districts gather at the top left, where literacy is low and tribal share is high. But the two groups overlap.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
-        <h3>A game of twenty questions</h3>
-        <p>In the game <em>Twenty Questions</em>, a good question splits the possibilities as cleanly as possible. A decision tree plays the same game with data. It asks something like “Is female literacy at or below 60%?”, sends each district left (yes) or right (no), and then asks again inside each group.</p>
+        <h3>A game of yes/no questions</h3>
+        <p>Think of the game where you guess something by asking yes/no questions. A good question splits the possibilities cleanly.</p>
+        <p>A tree asks a question like “Is female literacy 60% or less?”. Districts that answer yes go left. Districts that answer no go right. Then it asks again inside each group.</p>
         <p>It starts with all <b data-v="n"></b> districts in one box: <b data-v="nPos"></b> high and <b data-v="nNeg"></b> low. Guessing “high” for every district would be right only <b data-v="base"></b> of the time.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
-        <h3>Scoring a question</h3>
-        <p>Which question is best? Slide a dividing line across female literacy, and at each position measure how mixed the two sides are.</p>
-        <p>The yardstick is <strong>Gini impurity</strong>: the chance that two districts drawn at random from a group (with replacement) carry different labels. A pure group scores 0; a 50–50 group scores 0.5. The two sides are averaged, weighted by size. Lower is better.</p>
-        <p>On this axis the best line sits at <b data-v="litThr"></b>, which brings the impurity down from <b data-v="rootImp"></b> to <b data-v="litImp"></b>.</p>
+        <h3>How do we score a question?</h3>
+        <p>Slide a line across female literacy. At each spot, check how mixed the two sides are.</p>
+        <p>We measure mixing with <strong>Gini impurity</strong>. A group that is all one kind scores 0. A half-and-half group scores 0.5. The two sides are averaged, giving bigger sides more weight. Lower is better.</p>
+        <p>The best line on this axis is at <b data-v="litThr"></b>. It cuts the mixing from <b data-v="rootImp"></b> to <b data-v="litImp"></b>.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
-        <h3>Try the other axis</h3>
-        <p>Now slide a line up the tribal-share axis. Its best position, <b data-v="triThr"></b>, only gets the impurity down to <b data-v="triImp"></b>.</p>
-        <p>Female literacy wins, so it becomes the tree's first question. <span data-v="entNote"></span></p>
+        <h3>Try the other fact</h3>
+        <p>Now slide a line up the tribal-share axis. Its best spot, <b data-v="triThr"></b>, only cuts the mixing to <b data-v="triImp"></b>.</p>
+        <p>Female literacy does better, so it becomes the tree's first question.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>The first split</h3>
@@ -117,23 +219,24 @@
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Ask again inside each box</h3>
-        <p>Now the tree repeats the same search separately inside each box. Each new question only applies to the districts that reached it, so the plot is cut into smaller rectangles.</p>
+        <p>Now the tree repeats the same search inside each box. A new question only applies to the districts in that box. So the chart is cut into smaller rectangles.</p>
         <p><span data-v="d2note"></span></p>
         <p>Districts sorted correctly: <b data-v="acc2"></b>.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Deeper still</h3>
-        <p>At depth 3 the tree has <b data-v="leaves3"></b> leaves (the boxes at the bottom, which make the predictions) and sorts <b data-v="acc3"></b> of the districts correctly.</p>
-        <p>An extra level can never lower the score on the districts the tree learned from. It can only keep it or raise it.</p>
+        <p>With three questions in a row (depth 3), the tree has <b data-v="leaves3"></b> leaves. Leaves are the end boxes that give the prediction. It sorts <b data-v="acc3"></b> of the districts correctly.</p>
+        <p>Adding a level never lowers the score on the districts the tree learned from. It can only keep it or raise it.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Grow until every box is pure</h3>
-        <p>Keep splitting until no box mixes high and low. That takes <b data-v="fullDepth"></b> levels and <b data-v="fullLeaves"></b> leaves, and the tree now sorts <b data-v="fullAcc"></b> of these districts correctly.</p>
-        <p>But look at the rules it needed. <span data-v="rule"></span> <b data-v="singles"></b> of its leaves hold a single district. The tree has not found a pattern. It has memorised a list.</p>
+        <p>Keep splitting until no box mixes high and low. That takes <b data-v="fullDepth"></b> levels and <b data-v="fullLeaves"></b> leaves. Now the tree sorts <b data-v="fullAcc"></b> of these districts correctly.</p>
+        <p>But look at the rules it needed. <span data-v="rule"></span> <b data-v="singles"></b> of its leaves hold just one district. The tree has not found a pattern. It has memorised a list.</p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
         <h3>Is it any good?</h3>
-        <p>Scoring a tree on the districts it grew from proves nothing (see <a href="train-test-validation.html">Train, Test and Validation</a>). So we use <strong>5-fold cross-validation</strong>: grow the tree on four-fifths of the districts, test it on the fifth it never saw, rotate, and repeat for <b data-v="reps"></b> different shuffles.</p>
+        <p>A tree tested on the districts it learned from will always look good (see <a href="train-test-validation.html">Train, Test and Validation</a>). So we test it on districts it has not seen.</p>
+        <p>We hide one-fifth of the districts, grow the tree on the rest, and test it on the hidden fifth. We do this five times, so every district is hidden once. This is called <strong>5-fold cross-validation</strong>. We repeat it with <b data-v="reps"></b> different shuffles.</p>
         <p><span data-v="cvNote"></span></p>
       </div></div>
       <div class="ln-step"><div class="ln-card">
@@ -163,8 +266,9 @@
   <!-- ── interactive 1: grow your own ─────────────── -->
   <div class="ln-prose">
     <h2>Try it: grow your own tree</h2>
-    <p>Pick the two features the tree may ask about, cap its depth, and set the fewest districts a leaf is allowed to hold. Hover a box in the tree to see which districts reach it; hover a district to see the path it takes.</p>
-    <p>Watch the chart on the right. The <span class="ln-k" style="color:var(--ln-fit)"><span>training</span></span> accuracy only climbs as the tree deepens. The <span class="ln-k ln-k-val"><span>cross-validated</span></span> accuracy, measured on districts each tree never saw, usually does not.</p>
+    <p>Pick the two facts the tree may ask about. Set how many questions it may ask in a row (<em>max depth</em>). Set the fewest districts an end box may hold. Hover a box in the tree to see which districts reach it. Hover a district to see the path it takes.</p>
+    <p>Watch the chart on the right. <span class="ln-k" style="color:var(--ln-fit)"><span>Training</span></span> accuracy (on the districts the tree learned from) only climbs as the tree grows deeper. <span class="ln-k ln-k-val"><span>Cross-validated</span></span> accuracy (on districts it never saw) usually does not.</p>
+    <p><em>Gini</em> and <em>Entropy</em> are two ways to measure how mixed a group is. They usually pick the same questions.</p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure">
@@ -183,11 +287,13 @@
       <div class="ln-grid2 dt-grid">
         <div>
           <p class="ln-figure-t">The tree's boxes</p>
+          <p class="ln-figure-s">Each shaded area is one leaf. Its colour is what the tree predicts there.</p>
           <div class="ln-legend" id="growLegend"></div>
           <svg id="growSvg" role="img" aria-label="The two chosen features for 30 districts, with the rectangles the tree carves out"></svg>
         </div>
         <div>
           <p class="ln-figure-t">Accuracy by maximum depth</p>
+          <p class="ln-figure-s">A growing gap between the two lines means the tree is memorising. Click a depth to try it.</p>
           <div class="ln-legend">
             <span><i class="line" style="background:var(--ln-fit)"></i>Training (districts it grew from)</span>
             <span><i class="line" style="background:var(--ln-val)"></i>Cross-validated (unseen districts)</span>
@@ -196,23 +302,27 @@
         </div>
       </div>
       <p class="ln-figure-t" style="margin-top:16px">The tree</p>
-      <p class="ln-figure-s">Left branch = yes, right = no. Each leaf shows its prediction and how many of its districts agree; the thin bar is the mix of high and low.<span class="dt-swipe"> Swipe sideways to see all of it.</span></p>
+      <p class="ln-figure-s">Left branch = yes, right = no. Each leaf shows its prediction and how many of its districts agree. The thin bar shows the mix of high and low.<span class="dt-swipe"> Swipe sideways to see all of it.</span></p>
       <div class="dt-treewrap"><svg id="growTree" role="img" aria-label="Diagram of the tree grown with the current settings"></svg></div>
       <div class="ln-stats" id="growStats"></div>
     </div>
   </div>
   <div class="ln-prose">
-    <p>Two simple brakes stop a tree from memorising. A <strong>maximum depth</strong> limits how many questions it may ask in a row. A <strong>minimum leaf size</strong> forbids answers based on one or two districts. Setting either is called <em>pruning</em> (strictly, pre-pruning), and the right setting is chosen the honest way: by cross-validation, not by training accuracy.</p>
+    <h3>How do we stop a tree from memorising?</h3>
+    <p>Two simple brakes help. A <strong>maximum depth</strong> limits how many questions the tree may ask in a row. A <strong>minimum leaf size</strong> stops it from making a rule for just one or two districts. Using limits like these is called <em>pruning</em>. Choose the setting by testing on unseen districts, not by training accuracy.</p>
     <p><span data-v="growNote"></span></p>
   </div>
 
   <!-- ── interactive 2: instability ───────────────── -->
   <div class="ln-prose">
-    <h2>One tree is a shaky witness</h2>
-    <p>A tree's first question decides everything beneath it, so a small change at the top can rearrange the whole tree. Below is the depth-3 tree grown on all 30 districts. <strong>Click any district</strong> to leave it out and regrow the tree, or press <em>Resample</em> to grow it on a <strong>bootstrap sample</strong>: 30 districts drawn at random with replacement, so some appear twice and others not at all.</p>
+    <h2>Can we trust one tree's rules?</h2>
+    <p>A tree's first question shapes everything below it. So a small change at the top can rearrange the whole tree.</p>
+    <p>Below is the depth-3 tree grown on all 30 districts. <strong>Click any district</strong> to leave it out and grow the tree again. Or press <em>Resample</em> to grow it on a <strong>bootstrap sample</strong>: 30 districts picked at random, where some can be picked twice and others not at all.</p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure">
+      <p class="ln-figure-t">Leave districts out, grow the tree again</p>
+      <p class="ln-figure-s">Shaded boxes: the new tree. Dashed lines: the tree grown on all 30. Hollow marks were left out.</p>
       <div class="ln-controls">
         <button class="ln-btn" id="bootBtn">Resample</button>
         <button class="ln-btn ghost" id="resetBtn">Use all 30</button>
@@ -234,16 +344,17 @@
   </div>
   <div class="ln-prose">
     <p id="instText"></p>
-    <p>This jumpiness is the reason <strong>random forests</strong> exist. Grow hundreds of trees, each on its own bootstrap sample and each allowed to consider only a random subset of features at every split, then let them vote. The quirks of individual trees tend to cancel out, and the vote is far steadier than any single tree.</p>
-    <div class="ln-callout">
-      <span class="ln-callout-t">Take-aways</span>
-      A decision tree learns a flowchart: at each step it picks the yes-or-no question that leaves the two groups least mixed. Its rules are easy to read and to explain, which is its great strength. Left alone it keeps splitting until it has memorised the data, so its training accuracy means nothing. Cap its depth or its leaf size, and choose the cap by cross-validation. And because one tree changes shape when a single district moves, treat any one tree's rules as a sketch, not a finding.
-    </div>
+    <p>This jumpiness is why <strong>random forests</strong> exist. A random forest grows hundreds of trees, each on its own bootstrap sample, and lets them vote. The quirks of single trees tend to cancel out. The vote is much steadier than any one tree.</p>
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>A decision tree is a flowchart of yes/no questions. At each step it picks the question that leaves the two groups least mixed. Its rules are easy to read.</li>
+      <li>Left alone, a tree keeps splitting until it memorises the data. Limit its depth or leaf size, and choose the limit by testing on unseen districts.</li>
+      <li>One tree can change shape when a single district moves. Treat its rules as a sketch, not a finding.</li>
+    </ol></div>
   </div>
 
   <section class="ln-notes">
     <h2>Data and method</h2>
-    <p>Under-five mortality (deaths before age five per 1,000 live births) is from the NFHS-5 district fact sheets (2019–21); a district counts as <em>high</em> if its rate is above the median of the 30 districts, computed live. Female literacy, Scheduled Tribe share, urban share and population density are from Census 2011; hover a column heading in the data table for each feature's source. Trees are grown with CART: every split is a single “feature ≤ threshold” question, thresholds sit halfway between neighbouring district values, and the split chosen is the one with the lowest size-weighted Gini impurity (or entropy, where selected). A leaf predicts its majority label; an even split is broken towards “high”. Cross-validated accuracy is the average of <span data-v="reps"></span> runs of 5-fold cross-validation with fixed seeds, so every reader sees the same numbers; bootstrap samples also use a fixed seed. District-level NFHS estimates of child deaths rest on relatively few births and carry wide margins of error. With 30 districts, these trees are teaching devices, not planning tools, and a split describes an association in the data, not a cause: literacy and tribal share stand in for many things that differ between districts.</p>
+    <p>Under-five mortality (deaths before age five per 1,000 live births) is from the NFHS-5 district fact sheets (2019–21); a district counts as <em>high</em> if its rate is above the median of the 30 districts, computed live. Female literacy, Scheduled Tribe share, urban share and population density are from Census 2011; hover a column heading in the data table for each feature's source. Trees are grown with CART: every split is a single “feature ≤ threshold” question, thresholds sit halfway between neighbouring district values, and the split chosen is the one with the lowest size-weighted Gini impurity (or entropy, where selected). Gini impurity is the chance that two districts drawn at random from a group, with replacement, carry different labels. <span data-v="entNote"></span> A leaf predicts its majority label; an even split is broken towards “high”. Cross-validated accuracy is the average of <span data-v="reps"></span> runs of 5-fold cross-validation with fixed seeds, so every reader sees the same numbers; bootstrap samples also use a fixed seed. Random forests also let each split consider only a random subset of features, which makes their trees differ more. District-level NFHS estimates of child deaths rest on relatively few births and carry wide margins of error. With 30 districts, these trees are teaching devices, not planning tools, and a split describes an association in the data, not a cause: literacy and tribal share stand in for many things that differ between districts.</p>
     <details class="ln-details">
       <summary>Show the data table</summary>
       <div class="ln-table-wrap"><table class="ln-table" id="dataTable"></table></div>
@@ -647,7 +758,7 @@
       if (!c || !c.left) return;
       var q = '“' + question(K2[c.feature], c.threshold) + '”', small = c.left.n <= c.right.n ? c.left : c.right;
       var side = c === T2.root.left ? 'On the yes side' : 'On the no side';
-      if (c.left.prediction === c.right.prediction) d2.push(side + ', ' + q + ' lowers the impurity, yet both new boxes still predict ' + CLS[c.left.prediction].toLowerCase() + ': a split can tidy the data without changing any answer.');
+      if (c.left.prediction === c.right.prediction) d2.push(side + ', ' + q + ' makes the boxes less mixed, yet both new boxes still predict ' + CLS[c.left.prediction].toLowerCase() + ': a split can tidy the data without changing any answer.');
       else if (small.n === 1) d2.push(side + ', ' + q + ' peels off a single district, ' + R[small.ridx[0]].name + ', into a box of its own.');
       else d2.push(side + ', ' + q + ' separates ' + small.n + ' districts (' + names(small.ridx) + ') from the rest.');
     });
@@ -682,8 +793,8 @@
       rootImp: SL.fmt(swX.parent, 2),
       litThr: fmtT(KX, swX.best.t), litImp: SL.fmt(swX.best.imp, 2), triThr: fmtT(KY, swY.best.t), triImp: SL.fmt(swY.best.imp, 2),
       entNote: (eAll.feature === gAll.feature && Math.abs(eAll.threshold - gAll.threshold) < 1e-9)
-        ? '(Entropy, another common yardstick of mixedness, picks exactly the same line.)'
-        : '(Entropy, another common yardstick of mixedness, would pick “' + question(K2[eAll.feature], eAll.threshold) + '” instead.)',
+        ? 'Entropy, another common measure of mixing, picks exactly the same first question.'
+        : 'Entropy, another common measure of mixing, would pick “' + question(K2[eAll.feature], eAll.threshold) + '” instead.',
       q1: '“' + question(K2[T1.root.feature], T1.root.threshold) + '”',
       s1: leafDesc(T1.root.left) + ' ' + leafDesc(T1.root.right),
       acc1: acc(T1), acc2: acc(T2), acc3: acc(T3), d2note: d2.join(' '),

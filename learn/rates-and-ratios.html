@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rates and Ratios · Soochana Learn</title>
+<meta name="description" content="Why Soochana says 28 per 1,000 and not just 28: how rates and ratios make big and small districts comparable. Infant mortality, maternal mortality, sex ratio and growth rate, explained with Odisha's data.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../style.css?v=20260928-6">
+<link rel="stylesheet" href="learn.css?v=20261005">
+<script src="../ui.js?v=20260925-2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="learn.js?v=20260929"></script>
+<style>
+  .rr-note { font-size: 13px; color: var(--ink-subtle); margin: 12px 0 0; }
+  .ln-recipe-box b.w { font-size: 16px; font-weight: 600; }
+  .rr-recipe-name { flex-basis: 100%; text-align: center; font-size: 14px; font-weight: 600; color: var(--ink-heading); margin-bottom: -2px; }
+  .rr-head { font-size: 19px; line-height: 1.45; color: var(--ink-heading); font-weight: 500; margin: 6px 0 12px; min-height: 2.9em; }
+  .rr-head b { color: var(--rr-c, var(--ln-test)); }
+  .rr-waffle { max-width: 600px; margin: 0 auto 8px; }
+  .rr-pick { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+  .ln-legend i.dash { width: 18px; height: 0; border-radius: 0; border-top: 2px dashed var(--ln-fit); background: none !important; }
+  .ln-legend i.ring { background: #fff !important; border: 2px solid var(--ln-train); width: 8px; height: 8px; }
+  .ln-legend i.sq { border-radius: 2px; }
+  @media (max-width: 600px) {
+    .rr-head { font-size: 17px; }
+    .rr-waffle { gap: 1px; }
+    .ln-seg { flex-wrap: wrap; border-radius: 14px; }
+  }
+</style>
+</head>
+<body class="ln-page">
+
+<header>
+  <div class="nav-group">
+    <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <div>
+        <h1 style="line-height: 1; margin: 0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap: 12px;">
+    <a href="../about.html" class="btn-elegant">About Us</a>
+    <a href="../themes.html" class="btn-elegant">Themes</a>
+    <a href="../repository.html" class="btn-elegant">Repository</a>
+    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
+  </div>
+</header>
+
+<main>
+  <section class="ln-hero">
+    <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M2</div>
+    <h2 class="ln-title">Rates <em>and</em> ratios</h2>
+    <p class="ln-dek">A big district always has more births and deaths, so we divide by its size to compare places fairly.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census of India, SRS, NFHS-5, DIU projections · Charts are computed live in your browser</div>
+  </section>
+
+  <section class="ln-gist" aria-label="The idea in one picture">
+    <div class="ln-gist-box">
+      <div class="ln-gist-k">The idea in one picture</div>
+      <div class="ln-gist-panels">
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gist1" viewBox="0 0 240 180" role="img" aria-label="A big group of 100 people with 5 deaths and a small group of 20 people with 3 deaths"></svg></div>
+          <figcaption><b><span class="ln-gist-n">1</span>Counts are unfair</b>The big place has more deaths, just because more people live there.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gist2" viewBox="0 0 240 180" role="img" aria-label="5 divided by 100 people and 3 divided by 20 people"></svg></div>
+          <figcaption><b><span class="ln-gist-n">2</span>Divide by the people</b>Divide the deaths by the number of people who live there.</figcaption>
+        </figure>
+        <figure class="ln-gist-p">
+          <div class="ln-gist-art"><svg id="gist3" viewBox="0 0 240 180" role="img" aria-label="Bars showing 50 per 1,000 for the big place and 150 per 1,000 for the small place"></svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>Multiply by 1,000</b>Now both are "out of every 1,000 people". The small place is worse off.</figcaption>
+        </figure>
+      </div>
+      <p class="ln-gist-sum">A rate tells you how often something happens out of every 1,000 people, so places of any size can be compared.</p>
+      <p class="rr-note">The pictures above are an illustration, not real data.</p>
+      <dl class="ln-words">
+        <div><dt>Rate</dt><dd>How often something happens, out of a fixed number of people.</dd></div>
+        <div><dt>Ratio</dt><dd>One number compared with another, like women compared with men.</dd></div>
+        <div><dt>Per 1,000</dt><dd>"Out of every 1,000". 28 per 1,000 is 2.8 out of 100.</dd></div>
+        <div><dt>IMR</dt><dd>Infant mortality rate: babies who die before age 1, per 1,000 born alive.</dd></div>
+        <div><dt>Sex ratio</dt><dd>Number of females for every 1,000 males.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ── section 1: why per 1,000 ─────────────────── -->
+  <div class="ln-prose">
+    <h2>Why per 1,000?</h2>
+    <p>Ganjam is Odisha's biggest district by population. Boudh is one of the smallest. If both had the same number of deaths in a year, would they be equally healthy? No.</p>
+    <p>The same number of deaths is a much bigger share of Boudh's people. To see this, divide the count by the population. Then multiply by 1,000, so the answer reads "out of every 1,000 people".</p>
+    <p>Pick two districts, then move the slider to choose a pretend number of deaths for both.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <p class="ln-figure-t">Same count, different rate</p>
+      <p class="ln-figure-s">Bars show each district's population in 2021 (projected). The death count is pretend; the populations are real.</p>
+      <div class="ln-controls">
+        <label>District A <select id="pdA" aria-label="First district"></select></label>
+        <label>District B <select id="pdB" aria-label="Second district"></select></label>
+        <label>Pretend deaths in each <input type="range" id="pdN" min="100" max="5000" step="100" value="1000" aria-label="Pretend number of deaths in each district"><output id="pdNOut">1,000</output></label>
+      </div>
+      <svg id="popSvg" role="img" aria-label="Population of the two chosen districts in 2021"></svg>
+      <div id="recipes"></div>
+      <div class="ln-source">Population 2021: DIU projection (Bayesian approach), from Census of India 1951–2011.</div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p id="perText"></p>
+    <p>Why 1,000 and not 100? Deaths and births are rare in a single year. "0.79 out of 100" is hard to say. "7.9 out of 1,000" is easier. For very rare events, like mothers dying in childbirth, we go further and use "per 1,00,000" (per lakh).</p>
+  </div>
+
+  <!-- ── section 2: IMR waffle ────────────────────── -->
+  <div class="ln-prose">
+    <h2>Infant mortality: 28 out of 1,000</h2>
+    <p>Odisha's <strong>infant mortality rate</strong> (IMR) is 28. It means that out of every 1,000 babies born alive, 28 die before their first birthday.</p>
+    <p>Below, each square is one baby. The orange squares are the 28 who do not reach age 1. Switch the picture to see other rates. Watch what each one is "per": people, or babies born alive.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <div class="ln-seg" role="group" aria-label="Choose a rate">
+          <button aria-pressed="false" data-k="birth">Birth rate 15.8</button>
+          <button aria-pressed="false" data-k="death">Death rate 7.9</button>
+          <button aria-pressed="true" data-k="imr">Infant mortality 28</button>
+          <button aria-pressed="false" data-k="mmr">Maternal mortality 124</button>
+        </div>
+      </div>
+      <p class="rr-head" id="rateHead" aria-live="polite"></p>
+      <p class="ln-figure-s" id="rateSub"></p>
+      <div class="ln-waffle rr-waffle" id="rateWaffle" style="grid-template-columns:repeat(40,1fr)" role="img" aria-label="1,000 squares with some filled in to show the chosen rate"></div>
+      <div id="rateRecipe"></div>
+      <div class="ln-source" id="rateSrc"></div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p>Districts differ. The chart below shows infant mortality for each district, estimated from the NFHS-5 survey. The orange line is the state figure from SRS.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <p class="ln-figure-t">Infant mortality rate by district (per 1,000 live births)</p>
+      <p class="ln-figure-s">Longer bar = more babies dying before age 1. Hover a bar for the NFHS-4 value too.</p>
+      <div class="ln-legend">
+        <span><i class="sq" style="background:var(--ln-train)"></i>District, NFHS-5 based estimate (2019–21)</span>
+        <span><i class="line" style="background:var(--ln-test)"></i>Odisha, SRS: 28</span>
+      </div>
+      <svg id="imrSvg" role="img" aria-label="Bar chart of infant mortality rate for 30 districts, sorted from highest to lowest, with the state SRS value as a reference line"></svg>
+      <div class="ln-source">Districts: NFHS-5 (2019–21) based estimates. State line: SRS Statistical Report 2024.</div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p id="imrText"></p>
+    <div class="ln-callout warn">
+      <span class="ln-callout-t">Two sources, two methods</span>
+      The district bars come from a sample survey (NFHS-5), which asks mothers about their babies born in the past few years. The state line comes from SRS, which records births and deaths as they happen. The methods and years differ, so do not read a bar above the line as an exact comparison. District survey numbers also wobble, as the lesson <a href="where-numbers-come-from.html">Where the numbers come from</a> shows.
+    </div>
+  </div>
+
+  <!-- ── section 3: sex ratio ─────────────────────── -->
+  <div class="ln-prose">
+    <h2>Sex ratio: females per 1,000 males</h2>
+    <p>The <strong>sex ratio</strong> is a ratio, not a rate. It compares two groups: the number of females for every 1,000 males. Exactly 1,000 means equal numbers. Below 1,000 means fewer females than males.</p>
+    <p id="sexText"></p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <p class="ln-figure-t">Odisha's sex ratio, 1901 to 2036</p>
+      <p class="ln-figure-s">Females for every 1,000 males. Above the dashed line, there are more females than males. Hover a dot for the year.</p>
+      <div class="ln-legend">
+        <span><i style="background:var(--ln-train)"></i>Census count</span>
+        <span><i class="ring"></i>Projection (2021 onwards)</span>
+        <span><i class="dash"></i>1,000 = equal numbers</span>
+      </div>
+      <svg id="sexSvg" role="img" aria-label="Line chart of Odisha's sex ratio from 1901 to 2036, with projected values after 2011 drawn dashed"></svg>
+      <div class="ln-stats" id="sexStats"></div>
+      <div class="ln-source">Census of India 1901–2011. 2021–2036: DIU projection (Bayesian approach).</div>
+    </div>
+  </div>
+
+  <!-- ── section 4: growth rate ───────────────────── -->
+  <div class="ln-prose">
+    <h2>Growth rate: how fast are we growing?</h2>
+    <p>The <strong>growth rate</strong> says how much the population grows in a year, as a percentage. 1% a year means about 1 more person for every 100 people, each year.</p>
+    <p id="growText"></p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <p class="ln-figure-t">Average yearly growth of Odisha's population, by period</p>
+      <p class="ln-figure-s">Each bar is one period between two counts. A bar below zero means the population shrank.</p>
+      <div class="ln-legend">
+        <span><i class="sq" style="background:var(--ln-train)"></i>Grew (Census)</span>
+        <span><i class="sq" style="background:var(--ln-test)"></i>Shrank</span>
+        <span><i class="sq" style="background:var(--ln-train);opacity:.4"></i>Projected</span>
+      </div>
+      <svg id="growSvg" role="img" aria-label="Bar chart of Odisha's average annual population growth rate for each period from 1901 to 2036"></svg>
+      <div class="ln-source">Census of India 1901–2011; DIU projection (Bayesian approach) 2021–2036. The last three bars are five-year periods.</div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <h3>Work it out yourself</h3>
+    <p>Pick any two Census years. The recipe below turns "how many times bigger" into a steady growth rate per year.</p>
+  </div>
+  <div class="ln-wide">
+    <div class="ln-figure">
+      <div class="ln-controls">
+        <label>From <select id="gFrom" aria-label="Starting Census year"></select></label>
+        <label>To <select id="gTo" aria-label="Ending Census year"></select></label>
+      </div>
+      <p class="rr-head" id="gHead" aria-live="polite" style="--rr-c:var(--ln-train)"></p>
+      <div id="gRecipe"></div>
+      <div class="ln-stats" id="gStats"></div>
+      <div class="ln-source">Population: Census of India. "ln" is the natural logarithm, a button on any scientific calculator (or =LN() in a spreadsheet).</div>
+    </div>
+  </div>
+  <div class="ln-prose">
+    <p>You do not need to understand "ln" to use it. Think of it as the tool that spreads growth evenly over the years, allowing for growth on top of growth (like interest in a bank).</p>
+
+    <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
+      <li>A rate divides a count by the number of people it could happen to. That makes big and small places comparable.</li>
+      <li>Always check "per what": per 1,000 people, per 1,000 babies born alive, or per 1,00,000 births.</li>
+      <li>Sex ratio compares females with males (1,000 = equal). Growth rate is the percentage added each year.</li>
+    </ol></div>
+  </div>
+
+  <section class="ln-notes">
+    <h2>Data and method</h2>
+    <p><b>State rates.</b> Birth rate 15.8 and death rate 7.9 per 1,000 people, and IMR 28 per 1,000 live births: SRS Statistical Report 2024. MMR 124 per 1,00,000 live births: SRS Special Bulletin on Maternal Mortality in India 2022–24. Birth and death rates divide by the mid-year population; IMR and MMR divide by live births in the same period.</p>
+    <p><b>District IMR.</b> Estimates based on NFHS-5 (2019–21) as compiled in the portal's mortality file. They come from mothers' birth histories in a sample survey, so they carry sampling error, and they cover a different period from SRS.</p>
+    <p><b>Population.</b> Census of India 1901–2011. District populations for 2021 and state figures for 2021–2036 are DIU projections (Bayesian approach). The 1936 row in the state file (a mid-decade estimate) is left out of the charts.</p>
+    <p><b>Growth.</b> The bars use the growth figures in the portal's state file, which divide each period's total growth by the number of years (simple average). The calculator uses the exponential rate, r = ln(P₂ ÷ P₁) ÷ T × 100, which allows for compounding, so it gives slightly smaller numbers for the same period. Doubling time is ln 2 ÷ r, about 69.3 ÷ r.</p>
+  </section>
+
+  <nav class="ln-next" aria-label="More explainers">
+    <a href="index.html"><small>All explainers</small><b>Soochana Learn</b></a>
+    <a href="where-numbers-come-from.html"><small>Previous · M1</small><b>Where the numbers come from</b></a>
+    <a href="fertility-rate.html"><small>Next · M3</small><b>Total Fertility Rate</b></a>
+  </nav>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
+  </div>
+  <div class="footer-meta">Data Sources: Census of India, SRS, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var C = { train: SL.color('train'), val: SL.color('val'), test: SL.color('test'), ink: '#0f172a', ghost: 'rgba(15,23,42,.14)' };
+  var tip = SL.tooltip();
+  var NARROW = document.querySelector('.ln-wide').clientWidth < 600;
+
+  function txt(svg, x, y, s, opts) {
+    opts = opts || {};
+    return svg.append('text').attr('x', x).attr('y', y).attr('text-anchor', opts.anchor || 'middle')
+      .style('font-size', (opts.size || 12) + 'px').style('font-weight', opts.weight || 500)
+      .style('fill', opts.fill || '#475569').text(s);
+  }
+  function box(b, small, cls) {
+    return '<span class="ln-recipe-box' + (cls ? ' ' + cls : '') + '"><b' + (/[a-z]/i.test(b) ? ' class="w"' : '') + '>' + b + '</b><small>' + small + '</small></span>';
+  }
+  function op(o) { return '<span class="ln-recipe-op">' + o + '</span>'; }
+  function crore(v) { return SL.fmt(v / 1e7, 2) + ' crore'; }
+
+  /* ── the idea in one picture (illustration) ───── */
+  (function drawGist() {
+    var s1 = d3.select('#gist1');
+    var bigDead = [13, 37, 52, 76, 88], smallDead = [3, 9, 16];
+    for (var k = 0; k < 100; k++) {
+      s1.append('circle').attr('cx', 22 + (k % 10) * 10.5).attr('cy', 24 + Math.floor(k / 10) * 10.5).attr('r', 3.7)
+        .style('fill', bigDead.indexOf(k) >= 0 ? C.test : C.ghost);
+    }
+    for (var m = 0; m < 20; m++) {
+      s1.append('circle').attr('cx', 162 + (m % 5) * 12).attr('cy', 52 + Math.floor(m / 5) * 12).attr('r', 4.4)
+        .style('fill', smallDead.indexOf(m) >= 0 ? C.test : C.ghost);
+    }
+    txt(s1, 69, 140, 'Big place', { weight: 600, fill: C.ink, size: 13 });
+    txt(s1, 69, 156, '5 deaths');
+    txt(s1, 186, 140, 'Small place', { weight: 600, fill: C.ink, size: 13 });
+    txt(s1, 186, 156, '3 deaths');
+
+    var s2 = d3.select('#gist2');
+    [[64, '5', '100 people', '= 0.05'], [180, '3', '20 people', '= 0.15']].forEach(function (f) {
+      txt(s2, f[0], 62, f[1], { size: 30, weight: 600, fill: C.test });
+      s2.append('line').attr('x1', f[0] - 40).attr('x2', f[0] + 40).attr('y1', 74).attr('y2', 74).style('stroke', C.ink).style('stroke-width', 2.5);
+      txt(s2, f[0], 96, f[2], { size: 14, weight: 600, fill: C.ink });
+      txt(s2, f[0], 130, f[3], { size: 15, weight: 600, fill: '#475569' });
+    });
+
+    var s3 = d3.select('#gist3');
+    [[46, 'Big place', 50], [112, 'Small place', 150]].forEach(function (b) {
+      txt(s3, 22, b[0], b[1] + ': ' + b[2] + ' per 1,000', { anchor: 'start', size: 13, weight: 600, fill: C.ink });
+      s3.append('rect').attr('x', 22).attr('y', b[0] + 10).attr('height', 26).attr('rx', 5).attr('width', 196 * b[2] / 150).style('fill', C.test);
+    });
+  })();
+
+  Promise.all([
+    fetch('../datasets/district_population_trends.json').then(function (r) { return r.json(); }),
+    fetch('../datasets/district_mortality.json').then(function (r) { return r.json(); }),
+    fetch('../datasets/state_demographics.json').then(function (r) { return r.json(); }),
+  ]).then(function (res) {
+    setupPer(res[0]);
+    setupWaffle();
+    setupIMR(res[1]);
+    var trend = res[2].population_trends.filter(function (d) {
+      return typeof d.total === 'number' && d.total > 1e6 && d.year !== 1936;
+    }).sort(function (a, b) { return a.year - b.year; });
+    setupSex(trend);
+    setupGrowth(trend);
+  }).catch(function (err) {
+    console.error(err);
+    document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
+  });
+
+  /* ── why per 1,000 ────────────────────────────── */
+  function setupPer(pop) {
+    var names = Object.keys(pop).filter(function (n) { return pop[n]['2021'] && pop[n]['2021'].total; }).sort();
+    var selA = document.getElementById('pdA'), selB = document.getElementById('pdB'), slider = document.getElementById('pdN');
+    [selA, selB].forEach(function (s) {
+      names.forEach(function (n) { var o = document.createElement('option'); o.value = n; o.textContent = n; s.appendChild(o); });
+    });
+    selA.value = names.indexOf('Ganjam') >= 0 ? 'Ganjam' : names[0];
+    selB.value = names.indexOf('Boudh') >= 0 ? 'Boudh' : names[1];
+
+    var W = NARROW ? 460 : 900, rowH = 44, M = { t: 8, r: NARROW ? 12 : 16, b: 8, l: NARROW ? 134 : 120 };
+    var H = M.t + rowH * 2 + M.b;
+    var svg = d3.select('#popSvg').attr('viewBox', [0, 0, W, H]);
+    var gBars = svg.append('g'), gLab = svg.append('g');
+
+    function update() {
+      var n = +slider.value, rows = [selA.value, selB.value].map(function (nm, i) {
+        var P = pop[nm]['2021'].total;
+        return { name: nm, P: P, rate: n / P * 1000, i: i };
+      });
+      document.getElementById('pdNOut').textContent = SL.fmt(n);
+      var maxP = d3.max(names, function (nm) { return pop[nm]['2021'].total; });
+      var x = d3.scaleLinear([0, maxP], [M.l, W - M.r]);
+      var t = d3.transition().duration(SL.dur(400));
+      gBars.selectAll('rect').data(rows).join(function (en) { return en.append('rect').attr('x', M.l).attr('width', 0); })
+        .attr('y', function (d) { return M.t + d.i * rowH + 8; }).attr('height', rowH - 16).attr('rx', 5)
+        .style('fill', function (d) { return d.i ? C.val : C.train; })
+        .transition(t).attr('width', function (d) { return Math.max(2, x(d.P) - M.l); });
+      gLab.selectAll('text.nm').data(rows).join('text').attr('class', 'ln-axis-label nm')
+        .attr('x', M.l - 10).attr('y', function (d) { return M.t + d.i * rowH + rowH / 2; }).attr('dy', '0.35em').attr('text-anchor', 'end')
+        .style('fill', 'var(--ink-heading)').text(function (d) { return d.name; });
+      gLab.selectAll('text.v').data(rows).join('text').attr('class', 'ln-dlabel v')
+        .attr('y', function (d) { return M.t + d.i * rowH + rowH / 2; }).attr('dy', '0.35em')
+        .attr('text-anchor', function (d) { return x(d.P) > W * 0.6 ? 'end' : 'start'; })
+        .attr('x', function (d) { return x(d.P) > W * 0.6 ? x(d.P) - 8 : x(d.P) + 8; })
+        /* inside a dark bar: plain white text, no halo */
+        .style('fill', function (d) { return x(d.P) > W * 0.6 ? '#fff' : null; })
+        .style('stroke', function (d) { return x(d.P) > W * 0.6 ? 'none' : null; })
+        .text(function (d) { return SL.fmt(d.P) + ' people'; });
+
+      document.getElementById('recipes').innerHTML = rows.map(function (d) {
+        return '<div class="ln-recipe"><span class="rr-recipe-name">' + d.name + '</span>' +
+          box(SL.fmt(n), 'deaths (pretend)') + op('÷') + box(SL.fmt(d.P), 'people in 2021') + op('×') +
+          box('1,000', 'to say "per 1,000"') + op('=') + box(SL.fmt(d.rate, 2), 'deaths per 1,000 people', 'is-result') + '</div>';
+      }).join('');
+
+      var a = rows[0], b = rows[1], big = a.P >= b.P ? a : b, small = big === a ? b : a;
+      var times = big.P / small.P;
+      document.getElementById('perText').innerHTML = a.name === b.name
+        ? 'You picked the same district twice. Pick two different districts to compare.'
+        : 'Both districts have the same ' + SL.fmt(n) + ' deaths. But ' + big.name + ' has about <b>' + SL.fmt(times, 1) + ' times</b> as many people as ' + small.name +
+          '. So ' + small.name + '’s death rate (<b>' + SL.fmt(small.rate, 2) + '</b> per 1,000) is about ' + SL.fmt(times, 1) + ' times ' + big.name + '’s (<b>' +
+          SL.fmt(big.rate, 2) + '</b>). The count looked equal. The rate shows the real difference.';
+    }
+    [selA, selB].forEach(function (s) { s.addEventListener('change', update); });
+    slider.addEventListener('input', update);
+    update();
+  }
+
+  /* ── the 1,000-square waffle ──────────────────── */
+  function setupWaffle() {
+    var MEAS = {
+      birth: { v: 15.8, per: 1000, c: C.train, src: 'SRS Statistical Report 2024',
+        head: 'Out of every <b>1,000 people</b> in Odisha, about <b>16 babies</b> are born in a year (15.8).',
+        sub: 'Each square is one person. 15.8 squares are filled.',
+        recipe: [['Babies born', 'in one year'], ['All people', 'in the middle of the year'], ['1,000', 'to say "per 1,000"'], ['15.8', 'births per 1,000 people']] },
+      death: { v: 7.9, per: 1000, c: C.val, src: 'SRS Statistical Report 2024',
+        head: 'Out of every <b>1,000 people</b> in Odisha, about <b>8 die</b> in a year (7.9).',
+        sub: 'Each square is one person. 7.9 squares are filled.',
+        recipe: [['Deaths', 'in one year'], ['All people', 'in the middle of the year'], ['1,000', 'to say "per 1,000"'], ['7.9', 'deaths per 1,000 people']] },
+      imr: { v: 28, per: 1000, c: C.test, src: 'SRS Statistical Report 2024',
+        head: 'Out of every <b>1,000 babies born alive</b>, <b>28</b> die before their first birthday.',
+        sub: 'Each square is one baby born alive. 28 squares are filled: not even one full row of 40.',
+        recipe: [['Babies who died', 'before age 1, in the year'], ['Babies born alive', 'in the same year'], ['1,000', 'to say "per 1,000"'], ['28', 'IMR']] },
+      mmr: { v: 124, per: 100000, c: C.test, src: 'SRS Special Bulletin on Maternal Mortality in India 2022–24',
+        head: 'Out of every <b>1,00,000 babies born alive</b>, <b>124 mothers</b> die from pregnancy or childbirth.',
+        sub: 'That is only 1.24 per 1,000, so just over one square here. Because it is so rare, MMR is counted per 1,00,000 (one lakh), not per 1,000.',
+        recipe: [['Mothers who died', 'from pregnancy or childbirth'], ['Babies born alive', 'in the same period'], ['1,00,000', 'to say "per lakh"'], ['124', 'MMR']] },
+    };
+    var waffle = document.getElementById('rateWaffle'), cells = [];
+    for (var i = 0; i < 1000; i++) { var el = document.createElement('i'); waffle.appendChild(el); cells.push(el); }
+
+    function show(k) {
+      var m = MEAS[k], per1000 = m.v * 1000 / m.per, full = Math.floor(per1000), part = per1000 - full;
+      cells.forEach(function (c, j) {
+        if (j < full) c.style.background = m.c;
+        else if (j === full && part > 0.001) c.style.background = 'linear-gradient(90deg,' + m.c + ' ' + SL.fmt(part * 100, 0) + '%, var(--ln-ghost) ' + SL.fmt(part * 100, 0) + '%)';
+        else c.style.background = '';
+      });
+      var head = document.getElementById('rateHead');
+      head.style.setProperty('--rr-c', m.c);
+      head.innerHTML = m.head;
+      document.getElementById('rateSub').textContent = m.sub;
+      document.getElementById('rateRecipe').innerHTML = '<div class="ln-recipe">' + box(m.recipe[0][0], m.recipe[0][1]) + op('÷') + box(m.recipe[1][0], m.recipe[1][1]) +
+        op('×') + box(m.recipe[2][0], m.recipe[2][1]) + op('=') + box(m.recipe[3][0], m.recipe[3][1], 'is-result') + '</div>';
+      document.getElementById('rateSrc').textContent = 'Odisha, ' + m.src + '.';
+    }
+    var btns = document.querySelectorAll('.ln-seg button[data-k]');
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener('click', function () {
+        Array.prototype.forEach.call(btns, function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        show(b.dataset.k);
+      });
+    });
+    show('imr');
+  }
+
+  /* ── district IMR bars ────────────────────────── */
+  function setupIMR(mort) {
+    var SRS = 28;
+    var rows = Object.keys(mort).map(function (n) {
+      var r = mort[n].infant_mortality_rate || {};
+      return { name: n, v: r.nfhs5, v4: r.nfhs4 };
+    }).filter(function (d) { return d.v != null && !isNaN(d.v); }).sort(function (a, b) { return b.v - a.v; });
+    var W = NARROW ? 460 : 900, rowH = NARROW ? 22 : 20, M = { t: 26, r: NARROW ? 40 : 46, b: 40, l: NARROW ? 134 : 130 };
+    var H = M.t + rowH * rows.length + M.b;
+    var svg = d3.select('#imrSvg').attr('viewBox', [0, 0, W, H]);
+    var x = d3.scaleLinear([0, Math.ceil(d3.max(rows, function (d) { return d.v; }) / 10) * 10], [M.l, W - M.r]);
+    function y(i) { return M.t + rowH * i; }
+    svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(0,' + (H - M.b) + ')')
+      .call(d3.axisBottom(x).ticks(NARROW ? 4 : 6).tickSize(-(H - M.b - M.t)).tickFormat(''));
+    svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')').call(d3.axisBottom(x).ticks(NARROW ? 4 : 6));
+    svg.append('text').attr('class', 'ln-axis-label').attr('x', W - M.r).attr('y', H - 6).attr('text-anchor', 'end').text('Babies dying before age 1, per 1,000 born alive →');
+    svg.append('g').selectAll('rect').data(rows).join('rect')
+      .attr('x', M.l).attr('y', function (d, i) { return y(i) + 3; }).attr('height', rowH - 6).attr('rx', 3)
+      .attr('width', function (d) { return x(d.v) - M.l; })
+      .style('fill', C.train)
+      .on('pointerenter pointermove', function (e, d) {
+        tip.show(e, '<b>' + d.name + '</b><br>IMR ' + SL.fmt(d.v, 1) + ' per 1,000 (NFHS-5 based)' + (d.v4 != null ? '<br><span class="muted">NFHS-4 based: ' + SL.fmt(d.v4, 1) + '</span>' : ''));
+      })
+      .on('pointerleave', function () { tip.hide(); });
+    svg.append('g').selectAll('text').data(rows).join('text').attr('class', 'ln-axis-label')
+      .attr('x', M.l - 10).attr('y', function (d, i) { return y(i) + rowH / 2; }).attr('dy', '0.35em').attr('text-anchor', 'end')
+      .style('fill', 'var(--ink-body)').text(function (d) { return d.name; });
+    svg.append('g').selectAll('text').data(rows).join('text').attr('class', 'ln-dlabel')
+      .attr('x', function (d) { return x(d.v) + 5; }).attr('y', function (d, i) { return y(i) + rowH / 2; }).attr('dy', '0.35em')
+      .text(function (d) { return SL.fmt(d.v, 0); });
+    svg.append('line').attr('x1', x(SRS)).attr('x2', x(SRS)).attr('y1', M.t - 6).attr('y2', H - M.b)
+      .style('stroke', C.test).style('stroke-width', 2.5).style('stroke-dasharray', '6 4');
+    svg.append('text').attr('class', 'ln-dlabel').attr('x', x(SRS)).attr('y', M.t - 10).attr('text-anchor', 'middle')
+      .style('fill', C.test).style('font-weight', 600).text('Odisha 28 (SRS)');
+
+    var hi = rows[0], lo = rows[rows.length - 1];
+    document.getElementById('imrText').innerHTML = 'The survey-based estimates range from about <b>' + SL.fmt(lo.v, 0) + '</b> per 1,000 in ' + lo.name +
+      ' to about <b>' + SL.fmt(hi.v, 0) + '</b> in ' + hi.name + '. Because every number is "per 1,000 babies born alive", a small district and a large one can sit on the same chart.';
+  }
+
+  /* ── sex ratio line ───────────────────────────── */
+  function setupSex(trend) {
+    var rows = trend.filter(function (d) { return d.sex_ratio != null; }).map(function (d) {
+      return { year: d.year, v: d.sex_ratio, proj: d.year > 2011 };
+    });
+    var W = NARROW ? 460 : 900, H = NARROW ? 360 : 340, M = { t: 30, r: NARROW ? 20 : 30, b: 40, l: 50 };
+    var svg = d3.select('#sexSvg').attr('viewBox', [0, 0, W, H]);
+    var x = d3.scaleLinear([1901, 2036], [M.l, W - M.r]);
+    var y = d3.scaleLinear([950, 1100], [H - M.b, M.t]);
+    svg.append('rect').attr('x', x(2011)).attr('y', M.t).attr('width', x(2036) - x(2011)).attr('height', H - M.b - M.t)
+      .style('fill', 'var(--ln-soft)');
+    svg.append('text').attr('class', 'ln-axis-label').attr('x', (x(2011) + x(2036)) / 2).attr('y', M.t + 14).attr('text-anchor', 'middle').text('Projected');
+    svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + M.l + ',0)')
+      .call(d3.axisLeft(y).ticks(6).tickSize(-(W - M.l - M.r)).tickFormat(''));
+    svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')')
+      .call(d3.axisBottom(x).tickValues(NARROW ? [1901, 1941, 1981, 2011, 2036] : [1901, 1921, 1941, 1961, 1981, 2001, 2011, 2021, 2036]).tickFormat(d3.format('d')));
+    svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + M.l + ',0)')
+      .call(d3.axisLeft(y).ticks(6).tickFormat(function (v) { return SL.fmt(v); }));
+    svg.append('line').attr('x1', M.l).attr('x2', W - M.r).attr('y1', y(1000)).attr('y2', y(1000))
+      .style('stroke', C.ink).style('stroke-width', 1.5).style('stroke-dasharray', '5 4');
+    svg.append('text').attr('class', 'ln-dlabel').attr('x', M.l + 8).attr('y', y(1000) + 18).text('1,000 = equal numbers');
+    var line = d3.line().x(function (d) { return x(d.year); }).y(function (d) { return y(d.v); });
+    var census = rows.filter(function (d) { return !d.proj; }), proj = rows.filter(function (d) { return d.year >= 2011; });
+    svg.append('path').attr('d', line(census)).style('fill', 'none').style('stroke', C.train).style('stroke-width', 2.5);
+    svg.append('path').attr('d', line(proj)).style('fill', 'none').style('stroke', C.train).style('stroke-width', 2.5).style('stroke-dasharray', '6 5');
+    svg.append('g').selectAll('circle').data(rows).join('circle').attr('r', NARROW ? 6 : 5)
+      .attr('cx', function (d) { return x(d.year); }).attr('cy', function (d) { return y(d.v); })
+      .style('fill', function (d) { return d.proj ? '#fff' : C.train; }).style('stroke', function (d) { return d.proj ? C.train : '#fff'; })
+      .style('stroke-width', 2)
+      .on('pointerenter pointermove', function (e, d) {
+        tip.show(e, '<b>' + d.year + (d.proj ? ' (projected)' : ' Census') + '</b><br>' + SL.fmt(d.v) + ' females per 1,000 males');
+      })
+      .on('pointerleave', function () { tip.hide(); });
+
+    var first = rows[0], last = rows[rows.length - 1];
+    var cen = census;
+    var peak = cen.reduce(function (a, b) { return b.v > a.v ? b : a; });
+    var low = cen.reduce(function (a, b) { return b.v < a.v ? b : a; });
+    var c2011 = cen.filter(function (d) { return d.year === 2011; })[0] || cen[cen.length - 1];
+    var below = cen.filter(function (d) { return d.v < 1000; })[0];
+    var marks = [[peak, 'Highest: ' + SL.fmt(peak.v), -12], [low, 'Lowest: ' + SL.fmt(low.v), 22], [last, SL.fmt(last.v), -12]];
+    if (first !== peak) marks.push([first, SL.fmt(first.v), 22]);
+    marks.forEach(function (mk) {
+      var d = mk[0], anchor = d === last ? 'end' : d === first ? 'start' : 'middle';
+      svg.append('text').attr('class', 'ln-dlabel').attr('x', x(d.year) + (anchor === 'end' ? 4 : anchor === 'start' ? -4 : 0)).attr('y', y(d.v) + mk[2])
+        .attr('text-anchor', anchor).text(mk[1]);
+    });
+
+    document.getElementById('sexText').innerHTML = 'In ' + first.year + ', Odisha had <b>' + SL.fmt(first.v) + '</b> females for every 1,000 males. The ratio was highest in ' + peak.year +
+      ' (<b>' + SL.fmt(peak.v) + '</b>). It fell below 1,000 by ' + (below ? below.year : '–') + ' and reached its lowest, <b>' + SL.fmt(low.v) + '</b>, in ' + low.year +
+      '. Since then it has risen again: <b>' + SL.fmt(c2011.v) + '</b> in the 2011 Census, and about <b>' + SL.fmt(last.v) + '</b> projected for ' + last.year + '.';
+    var p21 = rows.filter(function (d) { return d.year === 2021; })[0];
+    document.getElementById('sexStats').innerHTML =
+      '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(first.v) + '</div><div class="ln-stat-l">' + first.year + ' Census</div></div>' +
+      '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(c2011.v) + '</div><div class="ln-stat-l">' + c2011.year + ' Census</div></div>' +
+      (p21 ? '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(p21.v) + '</div><div class="ln-stat-l">2021, projected</div></div>' : '') +
+      '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(last.v) + '</div><div class="ln-stat-l">' + last.year + ', projected</div></div>';
+  }
+
+  /* ── growth bars and calculator ───────────────── */
+  function setupGrowth(trend) {
+    var bars = [];
+    for (var i = 1; i < trend.length; i++) {
+      if (trend[i].annual_growth_rate == null) continue;
+      var a = trend[i - 1].year, b = trend[i].year;
+      bars.push({ from: a, to: b, v: trend[i].annual_growth_rate, proj: b > 2011, label: a + '–' + String(b).slice(2) });
+    }
+    var W = NARROW ? 460 : 900, H = 300, M = { t: 26, r: 10, b: 46, l: 44 };
+    var svg = d3.select('#growSvg').attr('viewBox', [0, 0, W, H]);
+    var x = d3.scaleBand(bars.map(function (d) { return d.label; }), [M.l, W - M.r]).padding(0.22);
+    var y = d3.scaleLinear([Math.min(-0.5, d3.min(bars, function (d) { return d.v; }) - 0.2), Math.ceil(d3.max(bars, function (d) { return d.v; }) * 2 + 0.4) / 2], [H - M.b, M.t]);
+    svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + M.l + ',0)')
+      .call(d3.axisLeft(y).ticks(6).tickSize(-(W - M.l - M.r)).tickFormat(''));
+    svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + M.l + ',0)')
+      .call(d3.axisLeft(y).ticks(6).tickFormat(function (v) { return v + '%'; }));
+    svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (H - M.b) + ')')
+      .call(d3.axisBottom(x).tickSize(0).tickPadding(8).tickFormat(function (l, k) {
+        if (!NARROW) return l;
+        return k % 2 === 0 ? String(bars[k].from) : '';
+      }))
+      .call(function (g) { g.select('.domain').remove(); });
+    svg.append('line').attr('x1', M.l).attr('x2', W - M.r).attr('y1', y(0)).attr('y2', y(0)).style('stroke', C.ink).style('stroke-width', 1.5);
+    var firstProj = bars.filter(function (d) { return d.proj; })[0];
+    if (firstProj) {
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', x(firstProj.label)).attr('y', M.t - 10).text('Projected →');
+    }
+    svg.append('g').selectAll('rect').data(bars).join('rect')
+      .attr('x', function (d) { return x(d.label); }).attr('width', x.bandwidth()).attr('rx', 3)
+      .attr('y', function (d) { return y(Math.max(0, d.v)); })
+      .attr('height', function (d) { return Math.abs(y(d.v) - y(0)); })
+      .style('fill', function (d) { return d.v < 0 ? C.test : C.train; })
+      .style('opacity', function (d) { return d.proj ? 0.4 : 1; })
+      .on('pointerenter pointermove', function (e, d) {
+        tip.show(e, '<b>' + d.from + ' to ' + d.to + (d.proj ? ' (projected)' : '') + '</b><br>' + (d.v < 0 ? 'Shrank' : 'Grew') + ' about ' + SL.fmt(Math.abs(d.v), 2) + '% a year');
+      })
+      .on('pointerleave', function () { tip.hide(); });
+    svg.append('g').selectAll('text').data(bars.filter(function (d) { return !NARROW || d.v < 0; })).join('text').attr('class', 'ln-dlabel')
+      .attr('x', function (d) { return x(d.label) + x.bandwidth() / 2; })
+      .attr('y', function (d) { return d.v < 0 ? y(d.v) + 16 : y(d.v) - 6; }).attr('text-anchor', 'middle')
+      .text(function (d) { return (d.v < 0 ? '−' : '') + SL.fmt(Math.abs(d.v), 1); });
+    svg.append('text').attr('class', 'ln-axis-label').attr('x', M.l + 4).attr('y', M.t - 10).text('↑ Growth per year');
+
+    var neg = bars.filter(function (d) { return d.v < 0; })[0];
+    var peak = bars.reduce(function (p, q) { return q.v > p.v ? q : p; });
+    var lastB = bars[bars.length - 1];
+    document.getElementById('growText').innerHTML = 'Growth was fastest between <b>' + peak.from + ' and ' + peak.to + '</b>, about <b>' + SL.fmt(peak.v, 1) + '% a year</b>. It has been slowing ever since, and is projected to be about ' +
+      SL.fmt(lastB.v, 1) + '% a year by ' + lastB.to + '.' +
+      (neg ? ' Notice the dip below zero between <b>' + neg.from + ' and ' + neg.to + '</b>: the population shrank. That decade included the 1918 influenza epidemic, which killed millions of people across India.' : '');
+
+    /* calculator */
+    var census = trend.filter(function (d) { return d.year <= 2011; });
+    var gFrom = document.getElementById('gFrom'), gTo = document.getElementById('gTo');
+    census.forEach(function (d) {
+      [gFrom, gTo].forEach(function (s) { var o = document.createElement('option'); o.value = d.year; o.textContent = d.year; s.appendChild(o); });
+    });
+    gFrom.value = '1951'; gTo.value = '2011';
+    if (!gFrom.value) gFrom.selectedIndex = 0;
+    if (!gTo.value) gTo.selectedIndex = census.length - 1;
+    function find(yr) { return census.filter(function (d) { return d.year === +yr; })[0]; }
+    function calc() {
+      var p1 = find(gFrom.value), p2 = find(gTo.value);
+      if (!p1 || !p2 || p2.year <= p1.year) {
+        document.getElementById('gHead').textContent = 'Pick a "To" year that comes after the "From" year.';
+        document.getElementById('gRecipe').innerHTML = '';
+        document.getElementById('gStats').innerHTML = '';
+        return;
+      }
+      var T = p2.year - p1.year, f = p2.total / p1.total, L = Math.log(f), r = L / T * 100;
+      document.getElementById('gHead').innerHTML = 'Odisha went from <b>' + crore(p1.total) + '</b> people in ' + p1.year + ' to <b>' + crore(p2.total) + '</b> in ' + p2.year +
+        ', in ' + T + ' years. That is about <b>' + SL.fmt(r, 2) + '% a year</b>.';
+      document.getElementById('gRecipe').innerHTML =
+        '<div class="ln-recipe">' + box(SL.fmt(p2.total), 'people in ' + p2.year) + op('÷') + box(SL.fmt(p1.total), 'people in ' + p1.year) + op('=') +
+          box(SL.fmt(f, 2) + ' ×', 'times bigger', 'is-result') + '</div>' +
+        '<div class="ln-recipe">' + box('ln(' + SL.fmt(f, 2) + ') = ' + SL.fmt(L, 3), 'press "ln" on a calculator') + op('÷') + box(String(T), 'years') + op('×') +
+          box('100', 'to make a percentage') + op('=') + box(SL.fmt(r, 2) + '%', 'growth per year', 'is-result') + '</div>';
+      var dbl = Math.log(2) / (r / 100);
+      document.getElementById('gStats').innerHTML =
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt((f - 1) * 100, 0) + '%</div><div class="ln-stat-l">Total growth over ' + T + ' years</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(r, 2) + '%</div><div class="ln-stat-l">Steady growth per year</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + (r > 0 ? SL.fmt(dbl, 0) + ' years' : '–') + '</div><div class="ln-stat-l">Time to double at this pace</div></div>';
+    }
+    gFrom.addEventListener('change', calc);
+    gTo.addEventListener('change', calc);
+    calc();
+  }
+})();
+</script>
+<script src="../chatbot.js?v=20261005"></script>
+</body>
+</html>
