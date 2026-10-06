@@ -4,7 +4,7 @@
  *   1. restores the reader's saved text size before first paint
  *   2. injects the A / A+ / A++ control into the header
  *   3. injects the grain overlay
- *   4. reveals editorial bands; 5. draws the animated Soochana mark
+ *   4. reveals editorial bands; 5. draws the animated Soochana logo
  *
  * Load this in <head> (not deferred) so step 1 runs before the body
  * paints — otherwise enlarged text visibly snaps into place on load.
@@ -201,29 +201,83 @@
 
   window.SoochanaArt = { dir: ART_DIR, load: loadArt };
 
-  /* ── 5. the Soochana mark ──
-     Soochana means "information". The mark draws that in one breath: a
-     speech bubble (the narrative) holds three rising bars (the numbers);
-     a thread links their tops through small nodes (the intelligence that
-     connects them) and lands on the orange dot, the insight. It builds
-     once on load, then a spark runs the thread into the dot on a slow loop.
+  /* ── 5. the Soochana logo ──
+     Soochana means "information". Three dots, Numbers, Narratives and
+     Intelligence, sit in a row like a sentence still being written, then
+     run together into one orange circle (the old brand dot, grown up) and
+     SOOCHANA lands across it: dark where it hangs outside the circle,
+     knocked out to white where it crosses it. In the header a droplet
+     buds off the circle now and then and is drawn back in.
+
+     The merge is a "gooey" filter: blur everything, then crank the alpha
+     contrast so overlapping blurs read as one solid shape with a smooth
+     neck between them.
+
      Pages carry only <span class="soo-mark">; the drawing lives here so
-     there is one copy of it. Without JS, style.css shows the plain dot. */
-  var THREAD = 'M8 25C10.5 23.5 11.5 21 13.75 21S19.5 17 22.25 17S28 13 30.75 13S33.6 12 35.5 12';
-  var MARK =
-    '<svg class="soo-svg" viewBox="0 0 48 48" focusable="false" aria-hidden="true">' +
-      '<path class="soo-frame" pathLength="100" d="M14 5H34A10 10 0 0 1 44 15V27A10 10 0 0 1 34 37H21L12 44L14 37A10 10 0 0 1 4 27V15A10 10 0 0 1 14 5Z"/>' +
-      '<rect class="soo-bar soo-b1" x="11" y="25" width="5.5" height="7" rx="1.6"/>' +
-      '<rect class="soo-bar soo-b2" x="19.5" y="21" width="5.5" height="11" rx="1.6"/>' +
-      '<rect class="soo-bar soo-b3" x="28" y="17" width="5.5" height="15" rx="1.6"/>' +
-      '<path class="soo-thread" pathLength="100" d="' + THREAD + '"/>' +
-      '<path class="soo-spark" pathLength="100" d="' + THREAD + '"/>' +
-      '<circle class="soo-node soo-n1" cx="13.75" cy="21" r="1.6"/>' +
-      '<circle class="soo-node soo-n2" cx="22.25" cy="17" r="1.6"/>' +
-      '<circle class="soo-node soo-n3" cx="30.75" cy="13" r="1.6"/>' +
-      '<circle class="soo-ripple" cx="35.5" cy="12" r="3.2"/>' +
-      '<circle class="soo-dot" cx="35.5" cy="12" r="3.3"/>' +
+     there is one copy of it. Add soo-mark--hero for the large, labelled
+     version (the home page's welcome screen). Without JS, style.css shows
+     the plain orange dot and the page's own "Soochana" heading. */
+  var logoCount = 0;
+
+  /* geometry, in the SVG's own units: the circle and the word are shared;
+     the hero only differs in where the three dots start and in its labels */
+  var DISC = { x: 340, y: 86, r: 92 };
+  /* Whole letters take one colour each, SOOCH in ink and ANA knocked out,
+     with ANA sized to sit wholly inside the circle. Cutting glyphs at the
+     circle's edge looked bolder but read poorly at header size. */
+  var WORD = '<text x="40" y="136" textLength="372" lengthAdjust="spacing" transform="rotate(-8 225 104)">' +
+    '<tspan class="soo-ink">SOOCH</tspan><tspan class="soo-knock">ANA</tspan></text>';
+  var DOTS = {
+    header: { box: '30 -10 408 192', start: [-200, -100, 0], scale: 0.45 },
+    hero:   { box: '14 -14 440 200', start: [-256, -106, 44], scale: 1.4 }
+  };
+  var LABELS = ['Numbers', 'Narratives', 'Intelligence'];
+
+  function logoSVG(hero) {
+    var n = ++logoCount;
+    var g = hero ? DOTS.hero : DOTS.header;
+    var goo = 'sooGoo' + n;
+    var dots = g.start.map(function (dx, i) {
+      return '<circle class="soo-blob soo-bl' + (i + 1) + '" cx="' + DISC.x + '" cy="' + DISC.y + '" r="40"' +
+        ' style="--x:' + dx + 'px;--s:' + g.scale + '"/>';
+    }).join('');
+    var labels = hero ? '<g class="soo-labels">' + g.start.map(function (dx, i) {
+      return '<text class="soo-lb soo-lb' + (i + 1) + '" x="' + (DISC.x + dx) + '" y="' + (DISC.y + 6) + '">' + LABELS[i] + '</text>';
+    }).join('') + '</g>' : '';
+
+    return '<svg class="soo-svg" viewBox="' + g.box + '" focusable="false" aria-hidden="true">' +
+      '<defs>' +
+        '<filter id="' + goo + '" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">' +
+          '<feGaussianBlur in="SourceGraphic" stdDeviation="9" result="b"/>' +
+          '<feColorMatrix in="b" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 24 -11"/>' +
+        '</filter>' +
+      '</defs>' +
+      '<g class="soo-goo" filter="url(#' + goo + ')">' +
+        dots +
+        '<circle class="soo-bud soo-bud1" cx="' + DISC.x + '" cy="' + DISC.y + '" r="22"/>' +
+        '<circle class="soo-bud soo-bud2" cx="' + DISC.x + '" cy="' + DISC.y + '" r="18"/>' +
+        '<circle class="soo-disc" cx="' + DISC.x + '" cy="' + DISC.y + '" r="' + DISC.r + '"/>' +
+      '</g>' +
+      /* the finished circle again, outside the filter, so its edge is a
+         crisp vector rather than a blurred-and-thresholded bitmap */
+      '<circle class="soo-disc" cx="' + DISC.x + '" cy="' + DISC.y + '" r="' + DISC.r + '"/>' +
+      labels +
+      '<g class="soo-word">' + WORD + '</g>' +
     '</svg>';
+  }
+
+  /* The wordmark is set in Anton, which most pages do not load yet.
+     textLength above keeps its width fixed while the font arrives. */
+  function loadDisplayFont() {
+    var has = [].some.call(document.querySelectorAll('link[rel="stylesheet"]'), function (l) {
+      return /family=Anton/.test(l.href);
+    });
+    if (has) return;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Anton&display=swap';
+    document.head.appendChild(link);
+  }
 
   function play(mark) {
     mark.classList.remove('soo-play');
@@ -232,12 +286,17 @@
   }
 
   function drawMarks() {
-    document.querySelectorAll('.soo-mark').forEach(function (mark) {
-      if (!mark.firstChild) mark.innerHTML = MARK;
+    var marks = document.querySelectorAll('.soo-mark');
+    if (!marks.length) return;
+    loadDisplayFont();
+
+    marks.forEach(function (mark) {
+      if (!mark.firstChild) mark.innerHTML = logoSVG(mark.classList.contains('soo-mark--hero'));
       play(mark);
 
       var link = mark.closest('a');
       if (!link || link.classList.contains('soo-brand')) return;
+      /* the logo carries the name now; the heading stays for screen readers */
       link.classList.add('soo-brand');
 
       /* the tagline's two words underline in step with the drawing */

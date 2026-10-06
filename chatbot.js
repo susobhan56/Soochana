@@ -151,8 +151,8 @@
       bottom: 38px;
       background: var(--cb-navy);
       color: #ffffff;
-      font-size: calc(13px * var(--cb-scale));
-      font-weight: 600;
+      font-size: calc(14px * var(--cb-scale));
+      font-weight: 500;
       padding: 8px 14px;
       border-radius: 999px;
       box-shadow: 0 6px 18px rgba(7, 37, 63, 0.3);
@@ -186,7 +186,9 @@
       background: #d93a2b;
       color: #ffffff;
       border: 2px solid #ffffff;
-      font: 700 12px/18px system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 18px;
       text-align: center;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
       transform: scale(0);
