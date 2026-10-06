@@ -8,8 +8,9 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=20260928-6">
-<script src="ui.js?v=20260925-2"></script>
+<link rel="stylesheet" href="style.css?v=20261006">
+<script src="ui.js?v=20261006"></script>
+<script src="whatsnew.js?v=20261006" defer></script>
 <style>
     .theme-detail-container {
         max-width: 1200px;
@@ -140,7 +141,7 @@
 <header>
   <div class="nav-group">
     <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
-      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <span class="soo-mark" aria-hidden="true"></span>
       <div>
         <h1 style="line-height: 1; margin: 0;">Soochana</h1>
         <div class="brand-tag">from numbers to narrative</div>
@@ -259,6 +260,7 @@
                         <img src="${relThumbnail}" alt="${article.title}" class="article-img" loading="lazy"
                              onerror="this.onerror=null;this.src='images/dem1.png'">
                         <span class="article-badge">${article.type}</span>
+                        ${window.SoochanaNews && SoochanaNews.ribbon(article) ? `<span class="wn-corner">${SoochanaNews.ribbon(article)}</span>` : ''}
                     </div>
                     <div class="article-body">
                         <h4>${article.title}</h4>
@@ -276,6 +278,6 @@
         document.getElementById('articlesGrid').innerHTML = '<div class="no-content-msg">Failed to load content registry. Please try again.</div>';
     });
 </script>
-<script src="chatbot.js?v=20261005"></script>
+<script src="chatbot.js?v=20261006"></script>
 </body>
 </html>

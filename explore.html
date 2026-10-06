@@ -12,11 +12,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- tour type: Anton (display), Merriweather (reading), Hind (labels) -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=20260928-6">
+<link rel="stylesheet" href="style.css?v=20261006">
 <link rel="stylesheet" href="explore.css?v=20260930-2">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <!-- in <head> and not deferred, so the saved text size applies before first paint -->
-<script src="ui.js?v=20260925-2"></script>
+<script src="ui.js?v=20261006"></script>
+<script src="whatsnew.js?v=20261006" defer></script>
 <script src="soochana_live.js?v=20260925-2" defer></script>
 <script src="share_card.js?v=20260925-2" defer></script>
 <script src="explore.js?v=20260926-1" defer></script>
@@ -26,7 +27,7 @@
 <header>
   <div class="nav-group">
     <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
-      <div style="width:10px; height:10px; background:var(--orange); border-radius:50%;"></div>
+      <span class="soo-mark" aria-hidden="true"></span>
       <div>
         <h1 style="line-height:1; margin:0;">Soochana</h1>
         <div class="brand-tag">from numbers to narrative</div>
@@ -401,6 +402,6 @@
 </main>
 
 <script src="chart-download.js?v=20260928-2" defer></script>
-<script src="chatbot.js?v=20261005"></script>
+<script src="chatbot.js?v=20261006"></script>
 </body>
 </html>

@@ -8,8 +8,9 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=20260928-6">
-<script src="ui.js?v=20260925-2"></script>
+<link rel="stylesheet" href="style.css?v=20261006">
+<script src="ui.js?v=20261006"></script>
+<script src="whatsnew.js?v=20261006" defer></script>
 <style>
     /* Theme Cards Layout */
     .themes-container {
@@ -126,7 +127,7 @@
 <header>
   <div class="nav-group">
     <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
-      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <span class="soo-mark" aria-hidden="true"></span>
       <div>
         <h1 style="line-height: 1; margin: 0;">Soochana</h1>
         <div class="brand-tag">from numbers to narrative</div>
@@ -219,6 +220,21 @@
                 `;
             });
 
+            /* a theme with recent articles says how many, from the What's new feed */
+            if (window.SoochanaNews) {
+                SoochanaNews.ready.then(feed => {
+                    data.themes.forEach(theme => {
+                        const fresh = feed.filter(it => it.type === 'article' && it.theme === theme.slug && SoochanaNews.isRecent(it.date));
+                        const card = grid.querySelector(`a[href="theme_detail.html?theme=${encodeURIComponent(theme.slug)}"] .theme-media`);
+                        if (!fresh.length || !card) return;
+                        const tag = document.createElement('span');
+                        tag.className = 'wn-corner';
+                        tag.innerHTML = `<span class="wn-ribbon">${fresh.length} new</span>`;
+                        card.appendChild(tag);
+                    });
+                });
+            }
+
             /* Animated icon first. If one is missing, walk the editorial
                still's extensions, then the generic fallback. */
             grid.querySelectorAll('img[data-theme-id]').forEach(img => {
@@ -242,6 +258,6 @@
             document.getElementById('themesGrid').innerHTML = '<p class="error">Failed to load demographic sectors. Please ensure data files are accessible.</p>';
         });
 </script>
-<script src="chatbot.js?v=20261005"></script>
+<script src="chatbot.js?v=20261006"></script>
 </body>
 </html>

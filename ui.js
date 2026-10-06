@@ -4,6 +4,7 @@
  *   1. restores the reader's saved text size before first paint
  *   2. injects the A / A+ / A++ control into the header
  *   3. injects the grain overlay
+ *   4. reveals editorial bands; 5. draws the animated Soochana mark
  *
  * Load this in <head> (not deferred) so step 1 runs before the body
  * paints — otherwise enlarged text visibly snaps into place on load.
@@ -200,7 +201,63 @@
 
   window.SoochanaArt = { dir: ART_DIR, load: loadArt };
 
+  /* ── 5. the Soochana mark ──
+     Soochana means "information". The mark draws that in one breath: a
+     speech bubble (the narrative) holds three rising bars (the numbers);
+     a thread links their tops through small nodes (the intelligence that
+     connects them) and lands on the orange dot, the insight. It builds
+     once on load, then a spark runs the thread into the dot on a slow loop.
+     Pages carry only <span class="soo-mark">; the drawing lives here so
+     there is one copy of it. Without JS, style.css shows the plain dot. */
+  var THREAD = 'M8 25C10.5 23.5 11.5 21 13.75 21S19.5 17 22.25 17S28 13 30.75 13S33.6 12 35.5 12';
+  var MARK =
+    '<svg class="soo-svg" viewBox="0 0 48 48" focusable="false" aria-hidden="true">' +
+      '<path class="soo-frame" pathLength="100" d="M14 5H34A10 10 0 0 1 44 15V27A10 10 0 0 1 34 37H21L12 44L14 37A10 10 0 0 1 4 27V15A10 10 0 0 1 14 5Z"/>' +
+      '<rect class="soo-bar soo-b1" x="11" y="25" width="5.5" height="7" rx="1.6"/>' +
+      '<rect class="soo-bar soo-b2" x="19.5" y="21" width="5.5" height="11" rx="1.6"/>' +
+      '<rect class="soo-bar soo-b3" x="28" y="17" width="5.5" height="15" rx="1.6"/>' +
+      '<path class="soo-thread" pathLength="100" d="' + THREAD + '"/>' +
+      '<path class="soo-spark" pathLength="100" d="' + THREAD + '"/>' +
+      '<circle class="soo-node soo-n1" cx="13.75" cy="21" r="1.6"/>' +
+      '<circle class="soo-node soo-n2" cx="22.25" cy="17" r="1.6"/>' +
+      '<circle class="soo-node soo-n3" cx="30.75" cy="13" r="1.6"/>' +
+      '<circle class="soo-ripple" cx="35.5" cy="12" r="3.2"/>' +
+      '<circle class="soo-dot" cx="35.5" cy="12" r="3.3"/>' +
+    '</svg>';
+
+  function play(mark) {
+    mark.classList.remove('soo-play');
+    void mark.offsetWidth;                    /* restart the keyframes */
+    mark.classList.add('soo-play');
+  }
+
+  function drawMarks() {
+    document.querySelectorAll('.soo-mark').forEach(function (mark) {
+      if (!mark.firstChild) mark.innerHTML = MARK;
+      play(mark);
+
+      var link = mark.closest('a');
+      if (!link || link.classList.contains('soo-brand')) return;
+      link.classList.add('soo-brand');
+
+      /* the tagline's two words underline in step with the drawing */
+      var tag = link.querySelector('.brand-tag');
+      if (tag && tag.textContent.trim() === 'from numbers to narrative') {
+        tag.innerHTML = 'from <span class="soo-w soo-w1">numbers</span> to <span class="soo-w soo-w2">narrative</span>';
+      }
+
+      /* hover replays the build, at most once every few seconds */
+      var last = Date.now();
+      link.addEventListener('pointerenter', function () {
+        if (Date.now() - last < 4000) return;
+        last = Date.now();
+        play(mark);
+      });
+    });
+  }
+
   function init() {
+    drawMarks();
     build();
     guardFigures();
     revealBands();

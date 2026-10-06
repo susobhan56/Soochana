@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=20260928-6">
+<link rel="stylesheet" href="style.css?v=20261006">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js?v=20260925-2"></script>
@@ -17,7 +17,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="dotfield3d.js?v=20260930-3"></script>
 <!-- in <head> and not deferred, so the saved text size applies before first paint -->
-<script src="ui.js?v=20260925-2"></script>
+<script src="ui.js?v=20261006"></script>
+<script src="whatsnew.js?v=20261006" defer></script>
 <noscript><style>
   /* Without JS there is no intro and no staged reveal — show everything. */
   .intro { display: none !important; }
@@ -223,7 +224,7 @@
 <header>
   <div class="nav-group">
     <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
-      <div style="width:10px; height:10px; background:var(--orange); border-radius:50%;"></div>
+      <span class="soo-mark" aria-hidden="true"></span>
       <div>
         <h1 style="line-height:1; margin:0;">Soochana</h1>
         <div class="brand-tag">from numbers to narrative</div>
@@ -1287,7 +1288,7 @@ function startField() {
 
     document.querySelectorAll('.report-section-card').forEach(card => sectionObserver.observe(card));
 </script>
-<script src="chatbot.js?v=20261005"></script>
+<script src="chatbot.js?v=20261006"></script>
 <script src="chart-download.js?v=20260928-2" defer></script>
 </body>
 </html>

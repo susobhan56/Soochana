@@ -164,6 +164,54 @@
       pointer-events: none;
     }
     .cb-peek.show { opacity: 1; transform: none; }
+    /* a nudge makes the bubble a real control: clicking it opens the chat */
+    .cb-peek.cb-live { pointer-events: auto; cursor: pointer; }
+    .cb-peek-dots { display: none; gap: 4px; align-items: center; height: 16px; }
+    .cb-peek-dots i { width: 6px; height: 6px; border-radius: 50%; background: #ffffff; opacity: 0.4; animation: cbDots 1s infinite; }
+    .cb-peek-dots i:nth-child(2) { animation-delay: 0.15s; }
+    .cb-peek-dots i:nth-child(3) { animation-delay: 0.3s; }
+    .cb-peek.typing .cb-peek-dots { display: inline-flex; }
+    .cb-peek.typing .cb-peek-text { display: none; }
+    @keyframes cbDots { 0%, 100% { opacity: 0.3; transform: none; } 40% { opacity: 1; transform: translateY(-2px); } }
+
+    /* unread badge: until the visitor opens the assistant for the first time */
+    .cb-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: #d93a2b;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      font: 700 12px/18px system-ui, -apple-system, "Segoe UI", sans-serif;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+      transform: scale(0);
+      transition: transform 0.35s var(--cb-ease);
+      pointer-events: none;
+    }
+    #chatbot-trigger.cb-unread .cb-badge { transform: scale(1); animation: cbBadge 2.4s ease-in-out 1s infinite; }
+    @keyframes cbBadge { 0%, 70%, 100% { transform: scale(1); } 80% { transform: scale(1.22); } 90% { transform: scale(0.95); } }
+
+    /* the nudge: a wiggle and an orange flicker round the button */
+    #chatbot-trigger.cb-nudge { animation: cbWiggle 1.1s var(--cb-ease), cbFlicker 1.4s linear; }
+    @keyframes cbWiggle {
+      0%, 100% { transform: none; }
+      12% { transform: translateY(-6px) rotate(-10deg); }
+      26% { transform: translateY(-6px) rotate(9deg); }
+      40% { transform: translateY(-4px) rotate(-6deg); }
+      54% { transform: translateY(-2px) rotate(4deg); }
+      70% { transform: rotate(-1deg); }
+    }
+    @keyframes cbFlicker {
+      0%, 100% { box-shadow: 0 8px 24px rgba(7, 37, 63, 0.35), 0 0 0 1px rgba(7, 37, 63, 0.08); }
+      10%, 30%, 55% { box-shadow: 0 8px 24px rgba(7, 37, 63, 0.35), 0 0 0 6px rgba(217, 130, 43, 0.75), 0 0 28px 8px rgba(217, 130, 43, 0.45); }
+      20%, 42% { box-shadow: 0 8px 24px rgba(7, 37, 63, 0.35), 0 0 0 2px rgba(217, 130, 43, 0.25); }
+      75% { box-shadow: 0 8px 24px rgba(7, 37, 63, 0.35), 0 0 0 12px rgba(217, 130, 43, 0), 0 0 30px 10px rgba(217, 130, 43, 0); }
+    }
 
     /* window */
     #chatbot-drawer {
@@ -439,8 +487,8 @@
   const wrapper = document.createElement("div");
   wrapper.id = "soochana-chatbot";
   wrapper.innerHTML = `
-    <button id="chatbot-trigger" type="button" aria-label="Open the Soochana Assistant" aria-controls="chatbot-drawer" aria-expanded="false"></button>
-    <div class="cb-peek" aria-hidden="true">Ask me about any district</div>
+    <button id="chatbot-trigger" type="button" aria-label="Open the Soochana Assistant" aria-controls="chatbot-drawer" aria-expanded="false"><span class="cb-badge" aria-hidden="true">1</span></button>
+    <div class="cb-peek" aria-hidden="true"><span class="cb-peek-dots"><i></i><i></i><i></i></span><span class="cb-peek-text">Ask me about any district</span></div>
     <div id="chatbot-drawer" role="dialog" aria-label="Soochana Assistant">
       <div class="chatbot-header">
         <div class="cb-avatar" aria-hidden="true"></div>
@@ -483,6 +531,7 @@
 
   function openDrawer() {
     hidePeek();
+    markOpened();
     drawer.classList.add("open");
     triggerBtn.setAttribute("aria-expanded", "true");
     triggerBtn.setAttribute("aria-label", "Close the Soochana Assistant");
@@ -525,17 +574,67 @@
     ask(input.value);
   });
 
-  // A one-time hint beside the button on a visitor's first page.
-  try {
-    if (!localStorage.getItem("soochana-assistant-seen")) {
-      setTimeout(() => {
-        if (drawer.classList.contains("open")) return;
-        peek.classList.add("show");
-        setTimeout(hidePeek, 4500);
-      }, 2500);
-      localStorage.setItem("soochana-assistant-seen", "1");
+  // Until a visitor has opened the assistant once, it asks to be noticed:
+  // an unread badge on the button, and every so often a wiggle, an orange
+  // flicker and a "typing…" bubble that settles into a suggested question.
+  // A few nudges per page at most; none once the chat has been opened.
+  const OPENED_KEY = "soochana-assistant-opened";
+  const PROMPTS = [
+    "Hi! Ask me about any district",
+    "Try: which district is ageing fastest?",
+    "I can compare two districts for you",
+    "Ask about health, schools or jobs",
+  ];
+  let opened = false;
+  try { opened = localStorage.getItem(OPENED_KEY) === "1"; } catch (e) { opened = true; }
+  let nudges = 0;
+  let nudgeTimer = null;
+
+  function markOpened() {
+    if (opened) return;
+    opened = true;
+    clearTimeout(nudgeTimer);
+    triggerBtn.classList.remove("cb-unread");
+    peek.classList.remove("cb-live");
+    try { localStorage.setItem(OPENED_KEY, "1"); } catch (e) {}
+  }
+
+  // Nothing competes with the home page's welcome screen.
+  function screenClear() {
+    const intro = document.querySelector(".intro");
+    return !intro || intro.classList.contains("done") || getComputedStyle(intro).display === "none";
+  }
+
+  function nudge() {
+    if (opened || nudges >= 4) return;
+    if (document.hidden || drawer.classList.contains("open") || !screenClear()) {
+      nudgeTimer = setTimeout(nudge, 3000);
+      return;
     }
-  } catch (e) { /* storage blocked: skip the hint */ }
+    const text = PROMPTS[nudges % PROMPTS.length];
+    nudges += 1;
+    triggerBtn.classList.remove("cb-nudge");
+    void triggerBtn.offsetWidth;
+    triggerBtn.classList.add("cb-nudge");
+    peek.querySelector(".cb-peek-text").textContent = text;
+    peek.classList.add("show", "typing", "cb-live");
+    setTimeout(() => peek.classList.remove("typing"), 1100);
+    setTimeout(() => { if (!peek.matches(":hover")) hidePeek(); peek.classList.remove("cb-live"); }, 6500);
+    nudgeTimer = setTimeout(nudge, 28000);
+  }
+
+  if (!opened) {
+    triggerBtn.classList.add("cb-unread");
+    triggerBtn.setAttribute("aria-label", "Open the Soochana Assistant (1 new message)");
+    nudgeTimer = setTimeout(nudge, 3500);
+  }
+  triggerBtn.addEventListener("animationend", (e) => {
+    if (e.animationName === "cbWiggle") triggerBtn.classList.remove("cb-nudge");
+  });
+  peek.addEventListener("click", () => { if (peek.classList.contains("cb-live")) openDrawer(); });
+
+  // Other parts of the portal (the "What's new" feed) can open the chat.
+  window.SoochanaAssistant = { open: openDrawer };
 
   /* ── conversation ─────────────────────────────────────── */
 

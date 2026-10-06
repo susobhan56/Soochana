@@ -3338,3 +3338,388 @@ footer::before {
   .brand-partner img { height: 38px; padding: 2px 6px; }
   .brand-tag { font-size: calc(11.5px * var(--type-scale)); }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   THE SOOCHANA MARK — drawn by ui.js into <span class="soo-mark">
+   A speech bubble (narrative) around three rising bars (numbers), their
+   tops linked by a thread of nodes (intelligence) that lands on the
+   orange dot (the insight). .soo-play builds it once, then a spark runs
+   the thread into the dot every five seconds. The resting state is the
+   finished drawing, so reduced motion simply switches the keyframes off.
+   ═══════════════════════════════════════════════════════════════════ */
+.soo-brand,
+.soo-mark {
+  --soo-frame:  var(--teal);
+  --soo-bar:    var(--teal-lit);
+  --soo-thread: var(--blue-chart);
+  --soo-node:   var(--surface);
+  --soo-dot:    var(--orange-lit);
+  --soo-spark:  #ff9a4d;
+}
+.pm-home header :is(.soo-brand, .soo-mark),
+.ex-body header :is(.soo-brand, .soo-mark),
+.soo-mark--dark {
+  --soo-frame:  rgba(255, 255, 255, 0.88);
+  --soo-bar:    #9fd3f0;
+  --soo-thread: #ffffff;
+  --soo-node:   #0d2b45;
+  --soo-dot:    #f08a4b;
+  --soo-spark:  #f4c534;
+}
+
+.soo-mark {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  line-height: 0;
+}
+/* no JS: the original brand dot */
+.soo-mark:empty {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+.soo-mark svg { display: block; width: 100%; height: 100%; overflow: visible; }
+/* style.css strokes and animates every <path> for the maps; not these */
+.soo-mark path { cursor: inherit; transition: none; }
+.soo-mark path:hover { filter: none; }
+
+.soo-mark .soo-frame  { fill: none; stroke: var(--soo-frame); stroke-width: 2.2px; stroke-linejoin: round; stroke-linecap: round; }
+.soo-mark .soo-bar    { fill: var(--soo-bar); transform-box: fill-box; transform-origin: 50% 100%; }
+.soo-mark .soo-b1     { opacity: 0.45; }
+.soo-mark .soo-b2     { opacity: 0.7; }
+.soo-mark .soo-thread { fill: none; stroke: var(--soo-thread); stroke-width: 1.7px; stroke-linecap: round; }
+.soo-mark .soo-thread:hover { stroke: var(--soo-thread); stroke-width: 1.7px; }
+.soo-mark .soo-spark  { fill: none; stroke: var(--soo-spark); stroke-width: 2.6px; stroke-linecap: round; stroke-dasharray: 14 120; opacity: 0; }
+.soo-mark .soo-spark:hover { stroke: var(--soo-spark); stroke-width: 2.6px; }
+.soo-mark .soo-frame:hover { stroke: var(--soo-frame); stroke-width: 2.2px; }
+.soo-mark .soo-node   { fill: var(--soo-node); stroke: var(--soo-thread); stroke-width: 1.2px; transform-box: fill-box; transform-origin: center; }
+.soo-mark .soo-dot    { fill: var(--soo-dot); transform-box: fill-box; transform-origin: center; }
+.soo-mark .soo-ripple { fill: none; stroke: var(--soo-dot); stroke-width: 1.2px; opacity: 0; transform-box: fill-box; transform-origin: center; }
+
+/* build: frame → bars → thread → nodes → dot; then the idle loop */
+.soo-play .soo-frame  { stroke-dasharray: 100 102; animation: sooDraw 0.9s cubic-bezier(0.65, 0, 0.35, 1) both; }
+.soo-play .soo-b1     { animation: sooGrow 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s both, sooBreath 5s ease-in-out 2.4s infinite; }
+.soo-play .soo-b2     { animation: sooGrow 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both,  sooBreath 5s ease-in-out 2.55s infinite; }
+.soo-play .soo-b3     { animation: sooGrow 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.55s both, sooBreath 5s ease-in-out 2.7s infinite; }
+.soo-play .soo-thread { stroke-dasharray: 100 102; animation: sooDraw 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.95s both; }
+.soo-play .soo-n1     { animation: sooPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 1.1s both, sooHit 5s ease-out 2.81s infinite; }
+.soo-play .soo-n2     { animation: sooPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 1.3s both, sooHit 5s ease-out 3.36s infinite; }
+.soo-play .soo-n3     { animation: sooPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s both, sooHit 5s ease-out 3.93s infinite; }
+.soo-play .soo-dot    { animation: sooPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.65s both, sooFlare 5s ease-out 2.4s infinite; }
+.soo-play .soo-spark  { animation: sooSpark 5s linear 2.4s infinite; }
+.soo-play .soo-ripple { animation: sooRipple 5s ease-out 2.4s infinite; }
+
+@keyframes sooDraw   { from { stroke-dashoffset: 101; } to { stroke-dashoffset: 0; } }
+@keyframes sooGrow   { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes sooPop    { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes sooBreath { 0%, 14%, 100% { transform: scaleY(1); } 6% { transform: scaleY(1.12); } }
+@keyframes sooHit    { 0%, 12%, 100% { transform: scale(1); fill: var(--soo-node); } 3% { transform: scale(1.45); fill: var(--soo-spark); } }
+@keyframes sooSpark {
+  0%   { stroke-dashoffset: 14;   opacity: 0; }
+  3%   { opacity: 1; }
+  35%  { opacity: 1; }
+  38%  { stroke-dashoffset: -100; opacity: 0; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+@keyframes sooFlare  { 0%, 36%, 60%, 100% { transform: scale(1); } 42% { transform: scale(1.4); } }
+@keyframes sooRipple {
+  0%, 36% { transform: scale(1); opacity: 0; }
+  38%     { transform: scale(1); opacity: 0.8; }
+  75%     { transform: scale(3.2); opacity: 0; }
+  100%    { transform: scale(3.2); opacity: 0; }
+}
+
+/* the tagline's two words underline as their half of the mark draws */
+.soo-w {
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 2px;
+  padding-bottom: 1px;
+}
+.soo-w1 { background-image: linear-gradient(var(--soo-bar), var(--soo-bar)); }
+.soo-w2 { background-image: linear-gradient(var(--soo-dot), var(--soo-dot)); }
+.soo-brand:has(.soo-play) .soo-w1 { animation: sooUnderline 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.25s both; }
+.soo-brand:has(.soo-play) .soo-w2 { animation: sooUnderline 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.95s both; }
+@keyframes sooUnderline {
+  0%   { background-size: 0 2px;    background-position: 0 100%; }
+  45%  { background-size: 100% 2px; background-position: 0 100%; }
+  70%  { background-size: 100% 2px; background-position: 100% 100%; }
+  100% { background-size: 0 2px;    background-position: 100% 100%; }
+}
+
+/* the welcome screen: larger, and held until the screen itself starts */
+.soo-mark--welcome { width: 64px; height: 64px; }
+.intro:not(.go) .soo-mark--welcome * { animation-play-state: paused !important; }
+
+@media (max-width: 600px) {
+  .soo-mark { width: 34px; height: 34px; }
+  .soo-mark--welcome { width: 52px; height: 52px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soo-mark *, .soo-w { animation: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   WHAT'S NEW — whatsnew.js: the header bell and its panel, the pop-up,
+   the dot on a header link with something unread, and card ribbons
+   ═══════════════════════════════════════════════════════════════════ */
+.wn-bell {
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--ink-body);
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+.wn-bell:hover { border-color: var(--teal); color: var(--teal); background: rgba(0, 0, 0, 0.06); }
+.wn-bell:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+.wn-bell[aria-expanded="true"] { background: var(--teal); border-color: var(--teal); color: #ffffff; }
+.wn-bell-ic { width: 20px; height: 20px; transform-origin: 50% 12%; }
+.wn-bell-ic path { stroke: currentColor; stroke-width: 1.8px; fill: none; cursor: inherit; transition: none; }
+.wn-bell-ic path:hover { stroke: currentColor; stroke-width: 1.8px; filter: none; }
+
+.wn-count {
+  position: absolute;
+  top: -5px;
+  right: -6px;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #d93a2b;
+  color: #ffffff;
+  border: 2px solid var(--bg);
+  font: 700 11px/15px var(--font-sans);
+  text-align: center;
+  transform: scale(0);
+  transition: transform 0.35s var(--ease);
+}
+.wn-bell.wn-has .wn-count { transform: scale(1); }
+/* the bell rings a few times when there is something unread */
+.wn-bell.wn-ring.wn-has .wn-bell-ic { animation: wnRing 7s ease-in-out 1.2s 3; }
+@keyframes wnRing {
+  0%, 14%, 100% { transform: rotate(0); }
+  2%  { transform: rotate(16deg); }
+  4%  { transform: rotate(-14deg); }
+  6%  { transform: rotate(10deg); }
+  8%  { transform: rotate(-6deg); }
+  10% { transform: rotate(3deg); }
+}
+
+/* dark headers: home and the guided tour */
+:is(.pm-home, .ex-body) .wn-bell { color: #ffffff; border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); }
+:is(.pm-home, .ex-body) .wn-bell:hover { border-color: #ffffff; background: rgba(255, 255, 255, 0.14); color: #ffffff; }
+:is(.pm-home, .ex-body) .wn-bell[aria-expanded="true"] { background: #0f9dde; border-color: #0f9dde; }
+:is(.pm-home, .ex-body) .wn-count { border-color: #0d2b45; }
+
+/* a header link whose section holds something unread */
+.wn-navdot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 7px;
+  vertical-align: 2px;
+  border-radius: 50%;
+  background: #d93a2b;
+  box-shadow: 0 0 0 0 rgba(217, 58, 43, 0.5);
+  animation: wnDot 2.2s ease-out infinite;
+}
+@keyframes wnDot {
+  0%   { box-shadow: 0 0 0 0 rgba(217, 58, 43, 0.55); }
+  70%  { box-shadow: 0 0 0 7px rgba(217, 58, 43, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(217, 58, 43, 0); }
+}
+
+/* the panel */
+.wn-panel {
+  position: fixed;
+  z-index: 10002;
+  max-height: min(70vh, 560px);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: var(--ink-body);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22), 0 2px 8px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top right;
+  transition: opacity 0.2s ease, transform 0.3s var(--ease);
+  font-family: var(--font-sans);
+}
+.wn-panel[hidden] { display: none; }
+.wn-panel.in { opacity: 1; transform: none; }
+.wn-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.wn-kicker { font-size: var(--fs-label); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); }
+.wn-title { margin: 2px 0 0; font-size: calc(19px * var(--type-scale)); font-weight: 600; color: var(--ink-heading); }
+.wn-x {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.wn-x:hover { background: rgba(0, 0, 0, 0.06); color: var(--ink-heading); }
+.wn-x:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
+.wn-list { list-style: none; margin: 0; padding: 6px; overflow-y: auto; overscroll-behavior: contain; }
+.wn-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 12px 12px 12px 14px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+}
+.wn-item:hover { background: var(--panel); }
+.wn-item:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; }
+.wn-item.wn-unread { background: rgba(211, 84, 0, 0.06); }
+.wn-item.wn-unread::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--orange-lit);
+}
+.wn-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: var(--fs-label); color: var(--muted); }
+.wn-type {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: calc(11px * var(--type-scale));
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: var(--teal);
+}
+.wn-t-report  { background: var(--orange); }
+.wn-t-dataset { background: var(--green); }
+.wn-t-article { background: var(--purple); }
+.wn-t-learn   { background: #1f6fa6; }
+.wn-t-data    { background: var(--yellow-ink); }
+.wn-state { font-weight: 600; color: var(--orange); }
+.wn-udot { width: 8px; height: 8px; margin-left: auto; border-radius: 50%; background: #d93a2b; }
+.wn-item-title { font-size: calc(15px * var(--type-scale)); font-weight: 600; line-height: 1.35; color: var(--ink-heading); }
+.wn-item-text { font-size: var(--fs-caption); line-height: 1.45; color: var(--ink-body); }
+.wn-empty { padding: 28px 16px; text-align: center; color: var(--muted); font-size: var(--fs-caption); }
+.wn-foot { padding: 10px 18px 14px; border-top: 1px solid var(--border); font-size: var(--fs-label); color: var(--muted); }
+
+/* the pop-up: bottom left, clear of the assistant's button on the right */
+.wn-toast {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 10001;
+  width: min(360px, calc(100vw - 120px));
+  padding: 16px 44px 16px 18px;
+  background: #0d2b45;
+  background-image: linear-gradient(135deg, #0d2b45 0%, #16587d 100%);
+  color: rgba(255, 255, 255, 0.86);
+  border-radius: 16px;
+  box-shadow: 0 18px 48px rgba(13, 43, 69, 0.4);
+  font-family: var(--font-sans);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.35s ease, transform 0.45s var(--ease);
+}
+.wn-toast.in { opacity: 1; transform: none; }
+.wn-toast-k {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffc59e;
+}
+.wn-toast-k .wn-type { margin-left: 2px; background: rgba(255, 255, 255, 0.16); }
+.wn-pulse { width: 8px; height: 8px; border-radius: 50%; background: #f08a4b; animation: wnDot 1.8s ease-out infinite; }
+.wn-toast-t { margin-top: 8px; font-size: calc(16px * var(--type-scale)); font-weight: 600; line-height: 1.3; color: #ffffff; }
+.wn-toast-p { margin-top: 4px; font-size: var(--fs-caption); line-height: 1.45; }
+.wn-toast-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.wn-toast-row > * {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font: 600 var(--fs-caption) var(--font-sans);
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: #ffffff;
+}
+.wn-toast-row .wn-go { background: #f08a4b; border-color: #f08a4b; color: #0d2b45; }
+.wn-toast-row > *:hover { border-color: #ffffff; }
+.wn-toast-row > *:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }
+.wn-toast-x { position: absolute; top: 8px; right: 8px; color: rgba(255, 255, 255, 0.7); }
+.wn-toast-x:hover { background: rgba(255, 255, 255, 0.12); color: #ffffff; }
+
+/* "New" / "Updated" on a report, dataset or article card */
+.wn-ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #d93a2b;
+  color: #ffffff;
+  font: 700 calc(11px * var(--type-scale))/1.2 var(--font-sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(217, 58, 43, 0.3);
+  vertical-align: middle;
+}
+.wn-ribbon::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #ffffff; animation: wnBlink 1.6s ease-in-out infinite; }
+.wn-ribbon-upd { background: var(--teal); box-shadow: 0 2px 8px rgba(26, 83, 92, 0.3); }
+@keyframes wnBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+/* pinned to a card's corner */
+.wn-corner { position: absolute; top: 12px; left: 12px; z-index: 2; }
+
+@media (max-width: 600px) {
+  .wn-bell { width: 44px; height: 44px; }
+  .wn-toast { left: 12px; bottom: 12px; width: calc(100vw - 96px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wn-bell-ic, .wn-navdot, .wn-pulse, .wn-ribbon::before { animation: none !important; }
+  .wn-panel, .wn-toast { transition: none; }
+}

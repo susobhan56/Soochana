@@ -8,8 +8,9 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=20260928-6">
-<script src="ui.js?v=20260925-2"></script>
+<link rel="stylesheet" href="style.css?v=20261006">
+<script src="ui.js?v=20261006"></script>
+<script src="whatsnew.js?v=20261006" defer></script>
 <script src="data_loader.js?v=20260925-2"></script>
 <style>
     /* Repository Hub layout and tabs styles */
@@ -357,7 +358,7 @@
 <header>
   <div class="nav-group">
     <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
-      <div style="width: 10px; height: 10px; background: var(--orange); border-radius: 50%;"></div>
+      <span class="soo-mark" aria-hidden="true"></span>
       <div>
         <h1 style="line-height: 1; margin: 0;">Soochana</h1>
         <div class="brand-tag">from numbers to narrative</div>
@@ -526,8 +527,10 @@
                 ? `const a = document.createElement('a'); a.href='${targetUrl}'; a.download='${fileName}'; document.body.appendChild(a); a.click(); a.remove();`
                 : `if (window.DataLoader && window.DataLoader.triggerDirectDownload) { DataLoader.triggerDirectDownload('${rawUrl}'); } else { window.location.href='${targetUrl}'; }`;
             
+            const ribbon = window.SoochanaNews ? SoochanaNews.ribbon(d) : '';
             grid.innerHTML += `
                 <div class="dataset-card">
+                    ${ribbon ? `<div style="margin-bottom:10px">${ribbon}</div>` : ''}
                     <div class="dataset-header">
                         <h4>${d.name}</h4>
                         <div class="dataset-icon">${icon}</div>
@@ -567,9 +570,11 @@
             const relThumb = r.thumbnail.replace(/^\//, '');
             const viewUrl = r.file.startsWith('http') ? r.file : r.file.replace(/^\//, '');
             const downloadUrl = (window.DataLoader && window.DataLoader.toDirectDownloadUrl) ? window.DataLoader.toDirectDownloadUrl(viewUrl) : viewUrl;
+            const ribbon = window.SoochanaNews ? SoochanaNews.ribbon(r) : '';
             grid.innerHTML += `
                 <div class="report-card">
-                    <div class="report-img">
+                    <div class="report-img" style="position:relative">
+                        ${ribbon ? `<span class="wn-corner">${ribbon}</span>` : ''}
                         <img src="${relThumb}" alt="${r.name}" loading="lazy"
                              onerror="this.onerror=null;this.src='images/dem1.png'">
                     </div>
@@ -653,6 +658,6 @@
         `;
     });
 </script>
-<script src="chatbot.js?v=20261005"></script>
+<script src="chatbot.js?v=20261006"></script>
 </body>
 </html>
