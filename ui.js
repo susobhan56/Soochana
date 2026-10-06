@@ -1,46 +1,18 @@
 /**
  * ui.js
  * Shared chrome for every Soochana page:
- *   1. restores the reader's saved text size before first paint
- *   2. injects the A / A+ / A++ control into the header
- *   3. injects the grain overlay
- *   4. reveals editorial bands; 5. draws the animated Soochana logo
- *
- * Load this in <head> (not deferred) so step 1 runs before the body
- * paints — otherwise enlarged text visibly snaps into place on load.
+ *   1. injects the grain overlay
+ *   2. reveals editorial bands on scroll
+ *   3. resolves editorial artwork
+ *   4. draws the animated Soochana logo
  */
 (function () {
-  var KEY = 'soochana-text';
-  var SIZES = ['normal', 'large', 'xlarge'];
+  /* The header used to carry an A / A+ / A++ text-size control. It is gone,
+     so clear any size a reader saved with it; otherwise they would be left
+     with enlarged text and no way to change it back. */
+  try { localStorage.removeItem('soochana-text'); } catch (e) {}
 
-  /* ── 1. restore, immediately ───────────────────────────── */
-  var saved = 'normal';
-  try {
-    var v = localStorage.getItem(KEY);
-    if (v && SIZES.indexOf(v) !== -1) saved = v;
-  } catch (e) { /* private mode — fall back to normal */ }
-  if (saved !== 'normal') document.documentElement.setAttribute('data-text', saved);
-
-  function apply(size) {
-    var root = document.documentElement;
-    /* Suppress transitions for this frame, or every `transition: all` component
-       animates its font-size and the page appears to slide rather than snap. */
-    root.classList.add('type-switching');
-
-    if (size === 'normal') root.removeAttribute('data-text');
-    else root.setAttribute('data-text', size);
-    try { localStorage.setItem(KEY, size); } catch (e) {}
-    document.querySelectorAll('.type-ctl button').forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.dataset.size === size));
-    });
-
-    void root.offsetWidth;                    /* flush the restyle */
-    requestAnimationFrame(function () {
-      root.classList.remove('type-switching');
-    });
-  }
-
-  /* ── 2 + 3. build the chrome once the DOM exists ────────── */
+  /* ── 1. build the chrome once the DOM exists ───────────── */
   function build() {
     /* grain overlay */
     if (!document.querySelector('.grain')) {
@@ -49,32 +21,9 @@
       g.setAttribute('aria-hidden', 'true');
       document.body.insertBefore(g, document.body.firstChild);
     }
-
-    /* text-size control — into the header's last nav-group */
-    var header = document.querySelector('header');
-    if (!header || header.querySelector('.type-ctl')) return;
-    var groups = header.querySelectorAll('.nav-group');
-    var host = groups.length ? groups[groups.length - 1] : header;
-
-    var ctl = document.createElement('div');
-    ctl.className = 'type-ctl';
-    ctl.setAttribute('role', 'group');
-    ctl.setAttribute('aria-label', 'Text size');
-    ctl.innerHTML =
-      '<button type="button" data-size="normal" aria-pressed="false" title="Normal text size">A</button>' +
-      '<button type="button" data-size="large"  aria-pressed="false" title="Larger text">A</button>' +
-      '<button type="button" data-size="xlarge" aria-pressed="false" title="Largest text">A</button>';
-    host.appendChild(ctl);
-
-    ctl.addEventListener('click', function (e) {
-      var btn = e.target.closest('button[data-size]');
-      if (btn) apply(btn.dataset.size);
-    });
-
-    apply(saved);
   }
 
-  /* ── 4. editorial bands and the gallery reveal on scroll ── */
+  /* ── 2. editorial bands and the gallery reveal on scroll ── */
   function revealBands() {
     var targets = document.querySelectorAll('.editorial-band, .editorial-gallery');
     if (!targets.length) return;
@@ -140,7 +89,7 @@
     });
   }
 
-  /* ── editorial artwork loader ──
+  /* ── 3. editorial artwork loader ──
      An <img data-art="name"> is resolved against images/editorial/, trying
      each common extension in turn, so saving a .jpg where a .png was expected
      still works. When every candidate fails the figure removes itself: inside
@@ -201,7 +150,7 @@
 
   window.SoochanaArt = { dir: ART_DIR, load: loadArt };
 
-  /* ── 5. the Soochana logo ──
+  /* ── 4. the Soochana logo ──
      Soochana means "information". Three dots, Numbers, Narratives and
      Intelligence, sit in a row like a sentence still being written, then
      run together into one orange circle (the old brand dot, grown up) and

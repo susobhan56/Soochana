@@ -132,9 +132,6 @@
 .pm-home header .btn-elegant { color: #fff; background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.3); }
 .pm-home header .btn-elegant:hover { color: #fff; border-color: #fff; background: rgba(255, 255, 255, 0.14); }
 .pm-home header .btn-elegant[aria-current="page"] { background: var(--pm-sky); border-color: var(--pm-sky); box-shadow: none; }
-.pm-home .type-ctl { border-color: rgba(255, 255, 255, 0.3); }
-.pm-home .type-ctl button { color: #fff; border-color: rgba(255, 255, 255, 0.3); background: transparent; }
-.pm-home .type-ctl button[aria-pressed="true"] { background: var(--pm-sky); color: #fff; }
 
 /* ── buttons ──────────────────────────────────────────── */
 .pm-home .lander .btn-pill,

@@ -84,9 +84,6 @@
 
 .ex-body header .btn-elegant:hover { color: var(--pm-white); border-color: var(--pm-white); background: rgba(255, 255, 255, 0.14); }
 .ex-body header .btn-elegant[aria-current="page"] { background: var(--pm-sky); border-color: var(--pm-sky); }
-.ex-body .type-ctl { border-color: rgba(255, 255, 255, 0.3); }
-.ex-body .type-ctl button { color: var(--pm-white); border-color: rgba(255, 255, 255, 0.3); background: transparent; }
-.ex-body .type-ctl button[aria-pressed="true"] { background: var(--pm-sky); color: var(--pm-white); }
 
 /* ── stage ────────────────────────────────────────────── */
 .ex {

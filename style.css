@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════════════════════════════
    SOOCHANA — Design Tokens
    Editorial light theme. Type is centralised here: every size is a
-   token in rem, multiplied by --type-scale, which the A / A+ / A++
-   control in the header sets. Never hardcode px font sizes in pages.
+   token multiplied by --type-scale (fixed at 1). Never hardcode px
+   font sizes in pages.
    ═══════════════════════════════════════════════════════════════════ */
 :root {
   /* ── ground ── */
@@ -55,7 +55,7 @@
   --font-inter:      var(--font-sans);
 
   /* ── type scale ──
-     Fixed px per the spec, times --type-scale for the A / A+ / A++ control. */
+     Fixed px per the spec, times --type-scale: one knob for every size. */
   --type-scale: 1;
   --fs-h1:      calc(38px * var(--type-scale));  /* 600, -0.03em          */
   --fs-h2:      calc(26px * var(--type-scale));  /* 600, -0.015em         */
@@ -160,18 +160,6 @@
   50%  { transform: translateY(0); }
   75%  { transform: translateY(2px); }
   100% { transform: translateY(0); }
-}
-
-html[data-text="large"]  { --type-scale: 1.125; }
-html[data-text="xlarge"] { --type-scale: 1.28;  }
-
-/* Several components use `transition: all`, which includes font-size — so
-   changing the text-size setting would make the whole page slide instead of
-   snap. ui.js sets this class for the single frame of the switch. */
-html.type-switching *,
-html.type-switching *::before,
-html.type-switching *::after {
-  transition: none !important;
 }
 
 * { box-sizing: border-box; }
@@ -374,40 +362,6 @@ select option {
   display: flex;
   align-items: center;
   gap: 14px;
-}
-
-/* ─── TEXT SIZE CONTROL ──────────────────────────────────── */
-.type-ctl {
-  display: flex;
-  align-items: stretch;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.type-ctl button {
-  font-family: var(--serif);
-  font-weight: 500;
-  background: transparent;
-  border: 0;
-  border-right: 1px solid var(--border);
-  color: var(--muted);
-  cursor: pointer;
-  padding: 6px 13px;
-  line-height: 1;
-  transition: all 0.25s ease;
-}
-
-.type-ctl button:last-child { border-right: 0; }
-.type-ctl button:nth-child(1) { font-size: 0.9rem; }
-.type-ctl button:nth-child(2) { font-size: 1.1rem; }
-.type-ctl button:nth-child(3) { font-size: 1.32rem; }
-.type-ctl button:hover { background: rgba(0, 0, 0, 0.04); color: var(--teal); }
-
-.type-ctl button[aria-pressed="true"] {
-  background: var(--teal);
-  color: #ffffff;
 }
 
 /* ─── MAIN / MAP SHELL ───────────────────────────────────── */
@@ -2379,7 +2333,6 @@ footer::before {
   .btn-pill,
   .slide-tab-btn,
   .yr-btn,
-  .type-ctl button,
   .district-card,
   select {
     min-height: 44px;
@@ -2394,11 +2347,6 @@ footer::before {
   }
 
   .btn-pill { padding: 14px 22px; }
-  .type-ctl button { padding: 10px 15px; }
-
-  /* The text-size control is a convenience, not navigation: let it sit
-     after the links rather than competing with them for the first row. */
-  .type-ctl { flex: 0 0 auto; }
 
   /* Comfortable spacing between stacked tappable cards. */
   .districts-grid { gap: 10px; }
