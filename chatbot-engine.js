@@ -664,7 +664,7 @@
       map: { title: '🗺️ Odisha district map', url: 'index.html' },
       repo: { title: '📁 Data repository', url: 'repository.html' },
       themes: { title: '📊 All themes', url: 'themes.html' },
-      timeline: { title: '⌛ Policy milestones timeline', url: 'index.html#policyTimeline' }
+      timeline: { title: '⌛ Policy timelines', url: 'index.html#policyTimeline' }
     };
     function indLink(ind) {
       if (ind.periods.some(x => /nfhs/.test(x.id))) return LINK.health;
@@ -1211,7 +1211,7 @@
     }
 
     function policyAnswer(p) {
-      const a = contentAnswer(p, para('Odisha has rolled out major welfare milestones like the Mamata scheme (maternity cash benefits) and the Biju Swasthya Kalyan Yojana (BSKY, cashless health care). The timeline on the home page lists them.'));
+      const a = contentAnswer(p, para('Odisha has rolled out major welfare milestones like the Mamata scheme (maternity cash benefits) and the Biju Swasthya Kalyan Yojana (BSKY, cashless health care). The policy timelines on the home page trace them.'));
       a.links.unshift(LINK.timeline);
       a.intent = 'policy';
       return a;

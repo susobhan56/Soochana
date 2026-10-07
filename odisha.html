@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="style.css?v=20261006-3">
+<link rel="stylesheet" href="style.css?v=20261007-2">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 <script src="data_loader.js?v=20260925-2"></script>
@@ -420,33 +420,22 @@
 ═══════════════════════════════════════════════ -->
 <section class="timeline-section">
   <div class="label" style="color: var(--orange); margin-bottom: 16px;">Policy History</div>
-  <h2>Decades of Progress: Odisha's Welfare Milestones</h2>
+  <h2>From Family Planning to <span style="white-space: nowrap;">Old-Age</span> Care</h2>
 
-  <div class="policy-timeline" id="policyTimeline">
-    <div class="policy-item key">
-      <div class="policy-year">1985</div>
-      <div class="policy-title">Universal Immunization Expansion</div>
-      <div class="policy-desc">Odisha expands immunization coverage across rural belts, targeting infant mortality and establishing basic primary healthcare centers in remote blocks.</div>
+  <!-- Flourish timelines. Only the first loads with the page; the other gets
+       its src from data-src the first time its tab is opened. -->
+  <div class="policy-charts" id="policyTimeline">
+    <div class="policy-tabs" role="tablist" aria-label="Policy timelines">
+      <button type="button" class="policy-tab" role="tab" id="ptab-hfw" aria-controls="ppanel-hfw" aria-selected="true">Health &amp; Family Welfare Timeline</button>
+      <button type="button" class="policy-tab" role="tab" id="ptab-age" aria-controls="ppanel-age" aria-selected="false" tabindex="-1">Ageing Timeline</button>
     </div>
-    <div class="policy-item">
-      <div class="policy-year">1995</div>
-      <div class="policy-title">Primary Education Tribal Drives</div>
-      <div class="policy-desc">Establishment of tribal residential schools (Seva Ashrams) to drive literacy expansion in the southern and western tribal districts.</div>
+    <div class="policy-panel" role="tabpanel" id="ppanel-hfw" aria-labelledby="ptab-hfw">
+      <p class="policy-note">National and Odisha health and family welfare policies, from India's first family planning programme in 1952 to the merged AB-PMJAY and GJAY health scheme in 2025.</p>
+      <div class="flourish-figure"><iframe src="https://flo.uri.sh/visualisation/30361488/embed" loading="lazy" title="Health &amp; Family Welfare Timeline" class="flourish-embed-iframe" frameborder="0" scrolling="no" sandbox="allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"></iframe></div>
     </div>
-    <div class="policy-item key">
-      <div class="policy-year">2011</div>
-      <div class="policy-title">Mamata Scheme Maternity Benefit</div>
-      <div class="policy-desc">A direct conditional cash transfer scheme for pregnant and lactating women. It drastically improves institutional delivery rates and child nutrition, driving infant mortality down.</div>
-    </div>
-    <div class="policy-item key">
-      <div class="policy-year">2018</div>
-      <div class="policy-title">Biju Swasthya Kalyan Yojana (BSKY)</div>
-      <div class="policy-desc">BSKY launches universal healthcare coverage, providing cashless treatment to over 9.6 million families in state hospitals and empaneled private centers.</div>
-    </div>
-    <div class="policy-item">
-      <div class="policy-year">2023</div>
-      <div class="policy-title">Stabilization Milestone (TFR 1.8)</div>
-      <div class="policy-desc">State surveys confirm Odisha's TFR has declined to 1.8, well below the national average, indicating success in state welfare and family planning programs.</div>
+    <div class="policy-panel" role="tabpanel" id="ppanel-age" aria-labelledby="ptab-age" hidden>
+      <p class="policy-note">Pensions, care and health cover for older people, from Odisha's old age pension rules in 1989 to Ayushman Vaya Vandana for everyone over 70 in 2025.</p>
+      <div class="flourish-figure"><iframe data-src="https://flo.uri.sh/visualisation/30383327/embed" title="Ageing Timeline" class="flourish-embed-iframe" frameborder="0" scrolling="no" sandbox="allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"></iframe></div>
     </div>
   </div>
 </section>
@@ -954,16 +943,37 @@ function startField() {
       });
     });
 
-    // INTERSECTION OBSERVER FOR POLICY TIMELINE
-    const policyObs = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
+    // POLICY HISTORY CHART TABS
+    (function () {
+      const tabs = Array.from(document.querySelectorAll('#policyTimeline .policy-tab'));
+      function select(tab) {
+        tabs.forEach(t => {
+          const on = t === tab;
+          t.setAttribute('aria-selected', on);
+          t.tabIndex = on ? 0 : -1;
+          const panel = document.getElementById(t.getAttribute('aria-controls'));
+          panel.hidden = !on;
+          const frame = panel.querySelector('iframe[data-src]');
+          if (on && frame) {
+            frame.src = frame.dataset.src;
+            frame.removeAttribute('data-src');
+            // give the newly loaded chart its download bar (chart-download.js)
+            if (window.SoochanaDownload) window.SoochanaDownload.scan();
+          }
+        });
+      }
+      tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => select(tab));
+        tab.addEventListener('keydown', e => {
+          const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+          if (!step) return;
+          e.preventDefault();
+          const next = tabs[(i + step + tabs.length) % tabs.length];
+          select(next);
+          next.focus();
+        });
       });
-    }, { threshold: 0.3 });
-    
-    document.querySelectorAll('.policy-item').forEach(item => policyObs.observe(item));
+    })();
 
     // 11-SECTION DASHBOARD ENGINE WITH D3 ANIMATION
     const odishaSlideData = {
