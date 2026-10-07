@@ -2,9 +2,9 @@
    TECTONICS — the story engine, shared by every story page.
    A page loads its own tectonics-sN.js first (window.TK_STORY: the
    numbers and words), then this file, which draws whatever the page
-   has room for: the plates, guess-first islands, a slope chart, a
-   district map, a district scatter, search traces, the collision and
-   the season list.
+   has room for: the plates, guess-first islands, multiple-choice
+   guesses, a slope chart, an age pyramid, a district map, a district
+   scatter, search traces, the collision and the season list.
    Scenes move with the arrows, the chapter rail, the keyboard and the
    URL hash. The search traces read Google Trends CSV exports from
    data/tectonics/; until a file is there, its trace says so instead
@@ -33,7 +33,7 @@
   const SEASON = [
     { title: 'Online, but unprotected?', href: 'tectonics.html' },
     { title: 'When does youth want to marry?', href: 'tectonics-marriage.html' },
-    { title: 'The ageing aftershock' },
+    { title: 'The ageing aftershock', href: 'tectonics-ageing.html' },
     { title: 'Covered, but connected?' },
     { title: 'Leaving home' }
   ];
@@ -260,8 +260,12 @@
     const y = v => 410 - v * (360 / max);
     const step = max / 4;
     for (let v = 0; v <= max; v += step) el('line', { class: 'grid', x1: x1, x2: x2, y1: y(v), y2: y(v) }, svg);
-    svgText(svg, 4, 26, 'NFHS-5 · 2019–21', { class: 'axis-label' });
-    svgText(svg, x2, 26, 'NFHS-6 · 2023–24', { class: 'axis-label', 'text-anchor': 'middle' });
+    const axis = SLOPE.axis || ['NFHS-5 · 2019–21', 'NFHS-6 · 2023–24'];
+    const num = v => (SLOPE.decimals === 0 ? String(Math.round(v)) : fmt(v));
+    svgText(svg, 4, 26, axis[0], { class: 'axis-label' });
+    svgText(svg, x2, 26, axis[1], { class: 'axis-label', 'text-anchor': 'middle' });
+    /* every row starting from the same value (an index) gets one label */
+    if (SLOPE.sameStart) svgText(svg, x1 - 12, y(rows[0].was) + 5, num(rows[0].was), { class: 'val', 'text-anchor': 'end' });
 
     const leftY = dodge(rows.map(r => y(r.was)), 20);
     const rightY = dodge(rows.map(r => y(r.now)), 20);
@@ -272,8 +276,8 @@
       line.style.setProperty('--len', len.toFixed(1));
       el('circle', { cx: x1, cy: y(s.was), r: 5, fill: s.color }, g);
       el('circle', { class: 'val-r', cx: x2, cy: y(s.now), r: 5, fill: s.color }, g);
-      svgText(g, x1 - 12, leftY[i] + 5, fmt(s.was), { class: 'val', 'text-anchor': 'end' });
-      svgText(g, x2 + 12, rightY[i] + 5, fmt(s.now), { class: 'val val-r' });
+      if (!SLOPE.sameStart) svgText(g, x1 - 12, leftY[i] + 5, num(s.was), { class: 'val', 'text-anchor': 'end' });
+      svgText(g, x2 + 12, rightY[i] + 5, num(s.now), { class: 'val val-r' });
       svgText(g, x2 + 56, rightY[i] + 5, s.name, { class: 'name name-long' });
       svgText(g, x2 + 56, rightY[i] + 7, s.short, { class: 'name name-short' });
       g.addEventListener('mouseenter', () => { svg.classList.add('has-focus'); g.classList.add('is-focus'); });
@@ -620,7 +624,16 @@
       let items;
       if (!revealed) items = [['rgba(255,255,255,0.7)', 'Your pick'], ['rgba(255,255,255,0.12)', 'Other districts']];
       else if (view === 'now') items = cfg.bins.map(b => [b[1], b[2]]);
-      else items = [['#36b4ee', 'Fell ' + big + '+ points'], ['#9fd3f0', 'Fell a little'], ['#f6c58f', 'Rose a little'], ['#f08a4b', 'Rose ' + big + '+ points']];
+      else {
+        /* only the kinds of move that actually happened */
+        const moves = names.map(change);
+        items = [
+          ['#36b4ee', 'Fell ' + big + '+ points', moves.some(d => d <= -big)],
+          ['#9fd3f0', 'Fell a little', moves.some(d => d < 0 && d > -big)],
+          ['#f6c58f', 'Rose less than ' + big, moves.some(d => d >= 0 && d < big)],
+          ['#f08a4b', 'Rose ' + big + '+ points', moves.some(d => d >= big)]
+        ].filter(x => x[2]);
+      }
       items.forEach(([c, label]) => {
         const li = document.createElement('li');
         const sw = document.createElement('i');
@@ -636,7 +649,8 @@
       if (!revealed) { readout.textContent = n; return; }
       const [a, b] = cfg.values[n];
       const d = b - a;
-      readout.textContent = n + ': ' + fmt(a) + '% in 2019–21 → ' + fmt(b) + '% in 2023–24 (' + (d > 0 ? '+' : d < 0 ? '−' : '±') + fmt(Math.abs(d)) + ')';
+      const per = cfg.periods || ['2019–21', '2023–24'];
+      readout.textContent = n + ': ' + fmt(a) + '% in ' + per[0] + ' → ' + fmt(b) + '% in ' + per[1] + ' (' + (d > 0 ? '+' : d < 0 ? '−' : '±') + fmt(Math.abs(d)) + ')';
     }
 
     function choose(n) {
@@ -932,6 +946,115 @@
     tell(null);
   }
 
+  /* ═══ the age pyramid, scrubbed through the years ═══
+     cfg.male / cfg.female: { year: [lakh per 5-year group, youngest first] }.
+     Groups from cfg.highlightFrom up are coloured as the old. */
+  let setPyramidYear = null;
+
+  function setupPyramid(cfg) {
+    const svg = document.getElementById(cfg.svg);
+    const range = document.getElementById(cfg.range);
+    const out = document.getElementById(cfg.out);
+    const play = document.getElementById(cfg.play);
+    const readout = document.getElementById(cfg.readout);
+    if (!svg) return;
+
+    const n = cfg.groups.length;
+    const mid = 280, gap = 30, half = 228, top = 44, rowH = 400 / n;
+    let max = 0;
+    cfg.years.forEach(y => { max = Math.max(max, ...cfg.male[y], ...cfg.female[y]); });
+
+    svgText(svg, mid - gap, 26, 'Men', { class: 'pyr-head', 'text-anchor': 'end' });
+    svgText(svg, mid + gap, 26, 'Women', { class: 'pyr-head' });
+    const bars = [];
+    for (let i = 0; i < n; i++) {
+      const row = n - 1 - i;              /* oldest at the top */
+      const y = top + row * rowH;
+      const old = i >= cfg.highlightFrom;
+      const m = el('rect', { class: 'pyr-m' + (old ? ' is-old' : ''), x: mid - gap - half, y: y.toFixed(1), width: half, height: (rowH - 4).toFixed(1), rx: 2 }, svg);
+      const f = el('rect', { class: 'pyr-f' + (old ? ' is-old' : ''), x: mid + gap, y: y.toFixed(1), width: half, height: (rowH - 4).toFixed(1), rx: 2 }, svg);
+      if (i % 2 === 0 || i === n - 1) svgText(svg, mid, y + rowH / 2 + 2, cfg.groups[i], { class: 'pyr-age', 'text-anchor': 'middle' });
+      bars.push([m, f]);
+    }
+
+    const lakh = v => (Math.round(v * 10) / 10).toFixed(1);
+    function show(k) {
+      const year = cfg.years[k];
+      const m = cfg.male[year], f = cfg.female[year];
+      bars.forEach(([bm, bf], i) => {
+        bm.style.transform = 'scaleX(' + (m[i] / max).toFixed(4) + ')';
+        bf.style.transform = 'scaleX(' + (f[i] / max).toFixed(4) + ')';
+      });
+      const sum = (a, b) => m.slice(a, b).reduce((s, v) => s + v, 0) + f.slice(a, b).reduce((s, v) => s + v, 0);
+      const old = sum(cfg.highlightFrom, n);
+      const young = sum(0, 2);
+      range.value = k;
+      out.textContent = year + (year >= cfg.projectedFrom ? ' (projected)' : ' (Census)');
+      readout.innerHTML = '';
+      const a = document.createElement('span');
+      a.className = 'pyr-old';
+      a.textContent = 'Aged 60 and over: ' + lakh(old) + ' lakh';
+      const b = document.createElement('span');
+      b.textContent = 'Children under 10: ' + lakh(young) + ' lakh';
+      readout.append(a, b);
+    }
+    setPyramidYear = year => {
+      stop();
+      const k = cfg.years.indexOf(year);
+      if (k >= 0) show(k);
+    };
+
+    range.min = 0;
+    range.max = cfg.years.length - 1;
+    range.step = 1;
+    range.addEventListener('input', () => { stop(); show(+range.value); });
+
+    let timer = null;
+    function stop() {
+      if (timer) clearInterval(timer);
+      timer = null;
+      play.textContent = 'Play';
+      play.setAttribute('aria-pressed', 'false');
+    }
+    play.addEventListener('click', () => {
+      if (timer) { stop(); return; }
+      let k = +range.value >= cfg.years.length - 1 ? 0 : +range.value;
+      show(k);
+      play.textContent = 'Pause';
+      play.setAttribute('aria-pressed', 'true');
+      timer = setInterval(() => {
+        k++;
+        if (k >= cfg.years.length) { stop(); return; }
+        show(k);
+      }, reduceMotion ? 2000 : 1400);
+    });
+    show(cfg.start !== undefined ? cfg.years.indexOf(cfg.start) : 0);
+  }
+
+  /* ═══ a multiple-choice guess ═══════════════════
+     <div class="tk-guess tk-choice" data-choice="x" data-answer="v"> with
+     buttons carrying data-value; the panel [data-choice-for="x"] opens
+     after a pick. data-pyramid-year moves the pyramid there too. */
+  function setupChoices() {
+    document.querySelectorAll('.tk-choice').forEach(box => {
+      const name = box.dataset.choice;
+      const panel = document.querySelector('[data-choice-for="' + name + '"]');
+      box.querySelectorAll('button[data-value]').forEach(btn => {
+        btn.setAttribute('aria-pressed', 'false');
+        btn.addEventListener('click', () => {
+          const right = btn.dataset.value === box.dataset.answer;
+          const verdict = panel.querySelector('[data-verdict]');
+          verdict.textContent = right ? 'Right: ' + btn.textContent.toLowerCase() + '.' : 'Not quite. You picked “' + btn.textContent + '”.';
+          box.classList.add('is-done');
+          panel.hidden = false;
+          if (box.dataset.pyramidYear && setPyramidYear) setPyramidYear(+box.dataset.pyramidYear);
+          announce(verdict.textContent);
+          nudgeNext();
+        });
+      });
+    });
+  }
+
   /* ═══ the season list on the cover ══════════════ */
   function buildSeason() {
     document.querySelectorAll('[data-season]').forEach(ol => {
@@ -966,6 +1089,8 @@
   drawSlope();
   if (STORY.map) setupMap(STORY.map);
   if (STORY.scatter) setupScatter(STORY.scatter);
+  if (STORY.pyramid) setupPyramid(STORY.pyramid);
+  setupChoices();
   setupSeismo();
   setupCollision();
   buildRail();
