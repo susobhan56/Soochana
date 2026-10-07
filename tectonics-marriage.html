@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>When does youth want to marry? · Tectonics · Soochana</title>
+<meta name="description" content="Soochana Tectonics, story 2: marriage before 18 in Odisha and its 30 districts (NFHS-5 to NFHS-6), set against schooling, the internet and what young people search for.">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css?v=20261007">
+<link rel="stylesheet" href="tectonics.css?v=20261007-2">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="ui.js?v=20261006-3"></script>
+<script src="whatsnew.js?v=20261006" defer></script>
+<script src="tectonics-s2.js?v=20261007-2" defer></script>
+<script src="tectonics.js?v=20261007-2" defer></script>
+</head>
+<body class="tk-body" data-scene="cover">
+
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+      <span class="soo-mark" aria-hidden="true"></span>
+      <div>
+        <h1 style="line-height:1; margin:0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap:12px;">
+    <a href="about.html" class="btn-elegant">About Us</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="learn/index.html" class="btn-elegant">Learn</a>
+    <a href="tectonics.html" class="btn-elegant" aria-current="page">Tectonics</a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     TECTONICS · STORY 2 — when does youth want to marry?
+     Same engine as story 1 (tectonics.js); this page's
+     numbers live in tectonics-s2.js.
+═══════════════════════════════════════════════ -->
+<main class="tk" id="tk">
+
+  <!-- ── 0 · cover ─────────────────────────────── -->
+  <section class="tk-scene" id="cover" data-scene="cover" data-chapter="0" aria-labelledby="tkCoverTitle">
+    <div class="tk-visual">
+      <svg class="tk-plates" id="tkPlates" viewBox="0 0 600 420" role="img" aria-labelledby="tkPlatesT">
+        <title id="tkPlatesT">Two plates, the official record and online signals, push together and raise a ridge of new land between them.</title>
+      </svg>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Soochana Tectonics · Story 2</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkCoverTitle" tabindex="-1">When does youth want to marry?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Marriage sets the clock for much of what follows: how long a girl stays in school, whether she works, when her first child comes.</p>
+      <p class="tk-lead tk-rise" style="--i:3">In Odisha that clock is moving. But it moves slowly, it moves differently in each district, and in some places it is moving the wrong way.</p>
+      <div class="tk-actions tk-rise" style="--i:4">
+        <button type="button" class="btn-pill solid" data-go="next">Begin story 2</button>
+      </div>
+      <ol class="tk-season tk-rise" style="--i:5" data-season aria-label="Stories in this season"></ol>
+    </div>
+  </section>
+
+  <!-- ── 1 · the plate: brides ─────────────────── -->
+  <section class="tk-scene" id="brides" data-scene="online" data-chapter="1" aria-labelledby="tkBridesTitle">
+    <div class="tk-visual">
+      <svg class="tk-island" id="islandBrides" viewBox="0 0 500 500" role="img" aria-labelledby="islandBridesT">
+        <title id="islandBridesT">One hundred dots, one for every hundred women aged 20 to 24 in Odisha, coloured by whether they married before 18.</title>
+      </svg>
+      <ul class="tk-key" id="keyBrides" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkBridesTitle" tabindex="-1">How many young women married before 18?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Eighteen is the legal age for a woman to marry. In NFHS-5 (2019–21), <b>21 of every 100</b> women aged 20–24 had married before it. How many do you think it was in NFHS-6 (2023–24)?</p>
+      <div class="tk-guess tk-rise" style="--i:3" data-guess="brides">
+        <label class="tk-guess-label" for="guessBrides">Your guess</label>
+        <div class="tk-guess-row">
+          <input type="range" id="guessBrides" min="0" max="100" step="1" value="21">
+          <output for="guessBrides" class="tk-guess-out"><b>21</b> of 100</output>
+        </div>
+        <button type="button" class="btn-pill solid" data-reveal>Tell me</button>
+      </div>
+      <div class="tk-reveal" data-reveal-for="brides" hidden>
+        <p class="tk-big"><b>19</b> of 100</p>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead">Down by <b>only 2</b> in about four years, from 20.5% to 18.6%. In towns it is 14.7%, in villages 19.3%.</p>
+        <p class="tk-badge tk-badge--official">Official · NFHS-5 and NFHS-6, Odisha</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2 · the plate: grooms ─────────────────── -->
+  <section class="tk-scene" id="grooms" data-scene="methods" data-chapter="1" aria-labelledby="tkGroomsTitle">
+    <div class="tk-visual">
+      <svg class="tk-island" id="islandGrooms" viewBox="0 0 500 500" role="img" aria-labelledby="islandGroomsT">
+        <title id="islandGroomsT">One hundred dots, one for every hundred men aged 25 to 29 in Odisha, coloured by whether they married before 21.</title>
+      </svg>
+      <ul class="tk-key" id="keyGrooms" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkGroomsTitle" tabindex="-1">And young men, before 21?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">For men the legal age is 21. In NFHS-5, <b>13 of every 100</b> men aged 25–29 had married before it. Did that change?</p>
+      <div class="tk-guess tk-rise" style="--i:3" data-guess="grooms">
+        <label class="tk-guess-label" for="guessGrooms">Your guess</label>
+        <div class="tk-guess-row">
+          <input type="range" id="guessGrooms" min="0" max="100" step="1" value="13">
+          <output for="guessGrooms" class="tk-guess-out"><b>13</b> of 100</output>
+        </div>
+        <button type="button" class="btn-pill solid" data-reveal>Tell me</button>
+      </div>
+      <div class="tk-reveal" data-reveal-for="grooms" hidden>
+        <p class="tk-big"><b>13</b> of 100</p>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead"><b>Almost no change</b>: 13.3% then, 12.5% now. And a surprise: in towns it is <b>15.1%</b>, higher than in villages (12.1%). For women it is the other way round.</p>
+        <p class="tk-badge tk-badge--official">Official · NFHS-5 and NFHS-6, Odisha</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3 · the plate: the district map ───────── -->
+  <section class="tk-scene" id="districts" data-scene="apart" data-chapter="1" aria-labelledby="tkMapTitle">
+    <div class="tk-visual">
+      <svg class="tk-map" id="tkMap" viewBox="0 0 520 520" role="img" aria-labelledby="tkMapT">
+        <title id="tkMapT">Map of Odisha's 30 districts, coloured by the share of women aged 20 to 24 who married before 18.</title>
+      </svg>
+      <p class="tk-map-readout" id="mapReadout" aria-live="polite"></p>
+      <ul class="tk-key" id="mapKey" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkMapTitle" tabindex="-1">Where do girls marry youngest?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">The state is not one plate. It is thirty. Which district do you think has the highest share of women aged 20–24 who married before 18?</p>
+      <div class="tk-guess tk-rise" style="--i:3">
+        <label class="tk-guess-label" for="mapPick">Your pick</label>
+        <div class="tk-guess-row">
+          <select id="mapPick" class="tk-select"><option value="">Choose a district</option></select>
+        </div>
+        <button type="button" class="btn-pill solid" data-map-reveal disabled>Tell me</button>
+      </div>
+      <div class="tk-reveal" data-map-panel hidden>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead">Rayagada (34.0%) and Malkangiri (33.1%) lead, both in the south. Third is <b>Angul</b>, 30.2%: an industrial district, and it rose 5 points.</p>
+        <div class="tk-views" role="group" aria-label="Map view">
+          <button type="button" data-map-view="now" aria-pressed="true">2023–24</button>
+          <button type="button" data-map-view="change" aria-pressed="false">How far each moved</button>
+        </div>
+        <p class="tk-lead"><b>18 districts fell and 12 rose.</b> Koraput fell 14.6 points, Nabarangapur 12.3, Nayagarh 10.7. Bargarh rose 6.3.</p>
+        <p class="tk-note">Each district figure rests on a small sample, so a move of a few points can be chance. The arrows mark only moves of 5 points or more, and even those need the next survey round to confirm them.</p>
+        <p class="tk-badge tk-badge--official">Official · NFHS-5 and NFHS-6, districts</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 4 · the plate: fast and slow ──────────── -->
+  <section class="tk-scene" id="apart" data-scene="apart" data-chapter="1" aria-labelledby="tkApartTitle">
+    <div class="tk-visual">
+      <svg class="tk-slope" id="tkSlope" viewBox="0 0 640 440" role="img" aria-labelledby="tkSlopeT">
+        <title id="tkSlopeT">Slope chart from NFHS-5 to NFHS-6 for Odisha. Women who have used the internet rose from 24.9% to 51.8%. Women with 10 or more years of school rose from 33.0% to 43.9%. Women 20 to 24 married before 18 fell from 20.5% to 18.6%. Men 25 to 29 married before 21 fell from 13.3% to 12.5%. Girls 15 to 19 already mothers or pregnant fell from 7.5% to 6.5%.</title>
+      </svg>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkApartTitle" tabindex="-1">Fast plates, slow plates</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Some things moved fast. Women online doubled. Women with ten or more years of school rose 11 points.</p>
+      <p class="tk-lead tk-rise" style="--i:3">Marriage before 18 fell by only 2 points, and for men before 21 it barely moved. School and phones are changing young lives quickly. <b>The age at marriage is following slowly.</b></p>
+      <p class="tk-badge tk-badge--official tk-rise" style="--i:4">Official · NFHS-5 and NFHS-6, Odisha</p>
+    </div>
+  </section>
+
+  <!-- ── 5 · the tremor ────────────────────────── -->
+  <section class="tk-scene" id="tremor" data-scene="tremor" data-chapter="2" aria-labelledby="tkTremorTitle">
+    <div class="tk-visual tk-visual--wide">
+      <div class="tk-seismo" id="tkSeismo" role="group" aria-label="Search-interest traces for Odisha, 2019 to today"></div>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 2 · The tremor</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkTremorTitle" tabindex="-1">Who are they searching for?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Marriage has moved online too: matrimony sites, apps, lawyers for court marriages. We are tracing four groups of searches made in Odisha, in Odia and in English, from 2019 to today.</p>
+      <p class="tk-lead tk-rise" style="--i:3">Each trace is search interest from 0 to 100, relative to its own busiest week. The shaded bands are the two survey rounds.</p>
+      <p class="tk-badge tk-badge--signal tk-rise" style="--i:4">Behavioural · Google Trends, Odisha</p>
+      <p class="tk-note tk-rise" style="--i:5" id="tkSeismoStatus"></p>
+    </div>
+  </section>
+
+  <!-- ── 6 · the collision ─────────────────────── -->
+  <section class="tk-scene" id="collision" data-scene="collision" data-chapter="3" aria-labelledby="tkCollisionTitle">
+    <div class="tk-visual tk-visual--top">
+      <ul class="tk-quads" id="tkQuads" aria-label="The four kinds of collision"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 3 · The collision</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkCollisionTitle" tabindex="-1">Where will the plates meet?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">When the record and the signals meet, it ends in one of four ways: <b class="tk-c-record">blue</b> arrows are the survey, <b class="tk-c-signal">amber</b> arrows are searches. One call here is something no survey measures at all.</p>
+      <div class="tk-predict tk-rise" style="--i:3" id="tkPredict"></div>
+      <p class="tk-note tk-rise" style="--i:4">Your calls are kept on this device only. When the search data arrives, this page will show where the plates really met.</p>
+    </div>
+  </section>
+
+  <!-- ── 7 · the new land ──────────────────────── -->
+  <section class="tk-scene" id="newland" data-scene="newland" data-chapter="4" aria-labelledby="tkNewlandTitle">
+    <div class="tk-copy tk-copy--full">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 4 · The new land</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkNewlandTitle" tabindex="-1">Three questions rising from the fault</h2>
+      <p class="tk-lead tk-rise" style="--i:2">These are questions, not findings. Each says what would prove it and what would rule it out.</p>
+      <ol class="tk-questions">
+        <li class="tk-rise" style="--i:3">
+          <p class="tk-q-tag">Open question</p>
+          <h3>School first, marriage next?</h3>
+          <p>Women's schooling rose 11 points; marriage before 18 fell 2. Is school delaying marriage, or do girls marry soon after they leave?</p>
+          <p class="tk-q-test"><b>Holds if</b> the districts where schooling rose most are also where early marriage fell most. The NFHS district tables can already test this.</p>
+          <p class="tk-q-test"><b>Falls if</b> the two move independently across districts.</p>
+        </li>
+        <li class="tk-rise" style="--i:4">
+          <p class="tk-q-tag">Open question</p>
+          <h3>Where the plates split</h3>
+          <p>Koraput fell 14.6 points while Bargarh rose 6.3. What did the falling districts do differently?</p>
+          <p class="tk-q-test"><b>Holds if</b> the falling districts share something: programmes, schooling gains, or more searches about the legal age.</p>
+          <p class="tk-q-test"><b>Falls if</b> the moves vanish in the next round. Then they were sampling noise.</p>
+        </li>
+        <li class="tk-rise" style="--i:5">
+          <p class="tk-q-tag">Open question</p>
+          <h3>Choice before age</h3>
+          <p>Are more young people choosing their own partner, even while the age at marriage barely moves? No survey asks.</p>
+          <p class="tk-q-test"><b>Holds if</b> searches for love and court marriage rise faster than searches for matrimony sites.</p>
+          <p class="tk-q-test"><b>Falls if</b> they stay flat.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── 8 · the aftershock ────────────────────── -->
+  <section class="tk-scene" id="aftershock" data-scene="aftershock" data-chapter="5" aria-labelledby="tkAfterTitle">
+    <div class="tk-copy tk-copy--full">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 5 · The aftershock</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkAfterTitle" tabindex="-1">If the clock moves, what moves with it?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Marriage age is upstream of almost everything else in a young woman's life.</p>
+      <ul class="tk-shocks">
+        <li class="tk-rise" style="--i:3"><h3>Schools</h3><p>If school delays marriage, keeping girls in school past class 10 is a family-planning policy as much as an education one.</p></li>
+        <li class="tk-rise" style="--i:4"><h3>Health</h3><p>6.5% of girls aged 15–19 are already mothers or pregnant: 7.2% in villages, 2.8% in towns. Early marriage still sets the clock for early motherhood.</p></li>
+        <li class="tk-rise" style="--i:5"><h3>Districts</h3><p>A state figure of 18.6% hides districts above 30%. Plans need to follow the map, not the average.</p></li>
+        <li class="tk-rise" style="--i:6"><h3>Young men</h3><p>Men in towns marry before 21 more often than men in villages. Who they are, and why, is a question no one has asked yet.</p></li>
+      </ul>
+      <div class="tk-after-grid">
+        <div class="tk-needs tk-rise" style="--i:7">
+          <h3>This story still needs</h3>
+          <ul>
+            <li>Google Trends exports for the four search groups, Odisha, 2019 to today</li>
+            <li>The words people in Odisha actually use for marriage and matchmaking, in Odia and in English</li>
+            <li>District schooling set against district marriage, to test the first question with data already in hand</li>
+            <li>District records of child marriages stopped, the administrative layer</li>
+            <li>Young people's own accounts of choosing a partner</li>
+          </ul>
+        </div>
+        <div class="tk-legend tk-rise" style="--i:8">
+          <h3>How sure is each number?</h3>
+          <ul>
+            <li><span class="tk-badge tk-badge--official">Official</span> Census, NFHS, SRS: slow and reliable</li>
+            <li><span class="tk-badge tk-badge--admin">Administrative</span> HMIS, registrations: frequent, patchy</li>
+            <li><span class="tk-badge tk-badge--signal">Behavioural</span> Searches, markets: fast, biased</li>
+            <li><span class="tk-badge tk-badge--voice">Qualitative</span> Field voices: explain the why</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tk-actions tk-rise" style="--i:9">
+        <button type="button" class="btn-pill ghost" data-go="0">Back to the start</button>
+        <a class="btn-pill solid" href="tectonics.html">Story 1: online, but unprotected?</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="tk-rail" aria-label="Story chapters">
+  <button type="button" class="tk-arrow prev" data-go="prev" aria-label="Previous scene"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <ol class="tk-steps" id="tkSteps"></ol>
+  <button type="button" class="tk-arrow next" data-go="next" aria-label="Next scene"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+</nav>
+
+<p class="tk-live" id="tkLive" aria-live="polite"></p>
+
+<script src="chatbot.js?v=20261006-2"></script>
+</body>
+</html>

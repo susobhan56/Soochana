@@ -1,8 +1,9 @@
 # Tectonics — search data
 
-`tectonics.html` reads Google Trends exports from this folder. If a file is
-missing, its trace on the page says "No reading yet" and nothing is drawn. The
-page never shows made-up numbers.
+The Tectonics story pages (`tectonics.html`, `tectonics-marriage.html`) read
+Google Trends exports from this folder. If a file is missing, its trace on the
+page says "No reading yet" and nothing is drawn. The pages never show made-up
+numbers.
 
 ## Story 1, "Online, but unprotected?"
 
@@ -12,6 +13,15 @@ page never shows made-up numbers.
 | `s1-pregnancy-worries.csv` | Pregnancy worries | pregnancy test, period late |
 | `s1-side-effects.csv` | Side effects | Copper-T side effects, pill side effects |
 | `s1-delaying.csv` | Delaying a child | how to avoid pregnancy, gap between children |
+
+## Story 2, "When does youth want to marry?"
+
+| File name (exactly) | Search group | Example terms |
+|---|---|---|
+| `s2-matrimony.csv` | Finding a match | Odia matrimony, bride for marriage |
+| `s2-love-court.csv` | Love and court marriage | love marriage, court marriage |
+| `s2-legal-age.csv` | The legal age | marriage age for girls, child marriage |
+| `s2-wedding-costs.csv` | Paying for a wedding | marriage loan, wedding cost |
 
 The example terms are only a starting point. Replace them with the DIU team's
 list of the words people in Odisha actually use, in Odia and in English.

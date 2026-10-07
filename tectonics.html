@@ -13,10 +13,11 @@
 <!-- the guided tour's type: Anton (display), Merriweather (reading), Hind (labels) -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css?v=20261007">
-<link rel="stylesheet" href="tectonics.css?v=20261007">
+<link rel="stylesheet" href="tectonics.css?v=20261007-2">
 <script src="ui.js?v=20261006-3"></script>
 <script src="whatsnew.js?v=20261006" defer></script>
-<script src="tectonics.js?v=20261007" defer></script>
+<script src="tectonics-s1.js?v=20261007-2" defer></script>
+<script src="tectonics.js?v=20261007-2" defer></script>
 </head>
 <body class="tk-body" data-scene="cover">
 
@@ -65,13 +66,7 @@
       <div class="tk-actions tk-rise" style="--i:4">
         <button type="button" class="btn-pill solid" data-go="next">Begin story 1</button>
       </div>
-      <ol class="tk-season tk-rise" style="--i:5" aria-label="Stories in this season">
-        <li class="is-live"><span>1</span>Online, but unprotected?</li>
-        <li><span>2</span>When does youth want to marry? <em>coming</em></li>
-        <li><span>3</span>The ageing aftershock <em>coming</em></li>
-        <li><span>4</span>Covered, but connected? <em>coming</em></li>
-        <li><span>5</span>Leaving home <em>coming</em></li>
-      </ol>
+      <ol class="tk-season tk-rise" style="--i:5" data-season aria-label="Stories in this season"></ol>
     </div>
   </section>
 
@@ -252,7 +247,7 @@
       </div>
       <div class="tk-actions tk-rise" style="--i:9">
         <button type="button" class="btn-pill ghost" data-go="0">Back to the start</button>
-        <a class="btn-pill solid" href="district-health.html">See your district's NFHS</a>
+        <a class="btn-pill solid" href="tectonics-marriage.html">Next: when does youth want to marry?</a>
       </div>
     </div>
   </section>

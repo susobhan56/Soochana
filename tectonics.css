@@ -26,6 +26,8 @@
   --tk-signal-lo: #a8611a;
   --tk-land:      #8fd19e;  /* new land */
   --tk-lost:      #f08a4b;
+  --tk-concern:   #f08a4b;
+  --tk-worse:     #e5484d;
 
   --tk-ease: cubic-bezier(0.45, 0.05, 0.2, 1);
 
@@ -257,6 +259,8 @@
 }
 .tk-season .is-live { color: var(--tk-white); font-weight: 600; }
 .tk-season .is-live span { background: var(--tk-sky); border-color: var(--tk-sky); }
+.tk-season a { color: var(--tk-white); text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.4); text-underline-offset: 4px; }
+.tk-season a:hover { text-decoration-color: var(--tk-white); }
 .tk-season em { font-style: normal; font-size: calc(12px * var(--type-scale)); letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; }
 
 /* ── the island of a hundred ──────────────────────────── */
@@ -271,6 +275,8 @@
 .tk-island .dot.is-was   { fill: var(--tk-record); }
 .tk-island .dot.is-gain  { fill: var(--tk-land); }
 .tk-island .dot.is-lost  { fill: transparent; stroke: var(--tk-lost); }
+.tk-island .dot.is-concern { fill: var(--tk-concern); }
+.tk-island .dot.is-worse   { fill: var(--tk-worse); }
 .tk-island .dot.is-pop   { animation: tkPop 0.9s var(--tk-ease); }
 @keyframes tkPop { 0% { r: 3; } 60% { r: 15; } 100% { r: 11; } }
 
@@ -358,6 +364,47 @@
 .tk-beneath dt { color: var(--tk-soft); }
 .tk-beneath dd { margin: 0; font-weight: 600; color: var(--tk-white); white-space: nowrap; }
 .tk-beneath dd span { font-weight: 400; color: var(--tk-faint); margin-right: 4px; }
+
+/* ── district map ───────────────────────────────────── */
+.tk-map { width: 100%; max-width: 520px; max-height: calc(100dvh - 300px); }
+.tk-map .dist {
+  fill: rgba(255, 255, 255, 0.12);
+  stroke: rgba(255, 255, 255, 0.45);
+  stroke-width: 0.8px;
+  cursor: pointer;
+  transition: fill 0.9s var(--tk-ease), stroke 0.3s ease;
+}
+.tk-map .dist:hover { stroke: var(--tk-white); stroke-width: 2px; }
+.tk-map .dist.is-chosen { stroke: var(--tk-white); stroke-width: 2.5px; }
+.tk-map .map-arrows, .tk-map .map-tops { opacity: 0; transition: opacity 0.8s ease; pointer-events: none; }
+.tk-map .map-label { font-family: var(--tk-ui); font-size: 13px; font-weight: 600; fill: var(--tk-white); paint-order: stroke; stroke: rgba(13, 43, 69, 0.85); stroke-width: 4px; stroke-linejoin: round; }
+.tk-map-readout { margin: 8px 0 0; min-height: 1.5em; text-align: center; font-size: calc(15px * var(--type-scale)); color: var(--tk-white); }
+.tk .tk-select {
+  font-family: var(--tk-ui);
+  font-size: calc(15px * var(--type-scale));
+  color: #231f20;
+  background: var(--tk-white);
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 16px 7px;
+  max-width: 100%;
+}
+.tk .tk-select:focus-visible { outline: 3px solid var(--tk-sky-hi); outline-offset: 2px; }
+.tk .btn-pill:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.tk-views { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 6px; }
+.tk-views button {
+  font-family: var(--tk-ui);
+  font-size: calc(14px * var(--type-scale));
+  font-weight: 500;
+  color: var(--tk-white);
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  padding: 6px 14px 5px;
+  cursor: pointer;
+}
+.tk-views button[aria-pressed="true"] { background: var(--tk-white); color: #0d2b45; border-color: var(--tk-white); }
+.tk-views button:focus-visible { outline: 3px solid var(--tk-white); outline-offset: 2px; }
 
 /* ── seismograph ──────────────────────────────────────── */
 .tk-seismo { display: grid; gap: 14px; max-width: 680px; margin: 0 auto; }
@@ -509,6 +556,7 @@
     padding-bottom: 28px;
   }
   .tk-visual > svg { max-height: 40dvh; }
+  .tk-map { max-height: 46dvh; }
   .tk-copy { max-width: none; }
   .tk-steps button { font-size: calc(11.5px * var(--type-scale)); padding: 6px 4px 5px; letter-spacing: 0.03em; }
   .tk-steps button span { display: none; }

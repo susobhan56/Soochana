@@ -24,6 +24,14 @@
  */
 window.SOOCHANA_UPDATES = [
   {
+    id: 'tectonics-story-2',
+    date: '2026-10-07',
+    type: 'feature',
+    title: 'Tectonics: "When does youth want to marry?"',
+    text: 'Story 2 maps marriage before 18 across all 30 districts: guess the highest, then see which districts moved and which way.',
+    href: 'tectonics-marriage.html'
+  },
+  {
     id: 'tectonics-story-1',
     date: '2026-10-07',
     type: 'feature',

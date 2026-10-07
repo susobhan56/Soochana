@@ -1,10 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════════
-   TECTONICS — story 1, "Online, but unprotected?"
+   TECTONICS — the story engine, shared by every story page.
+   A page loads its own tectonics-sN.js first (window.TK_STORY: the
+   numbers and words), then this file, which draws whatever the page
+   has room for: the plates, guess-first islands, a slope chart, a
+   district map, search traces, the collision and the season list.
    Scenes move with the arrows, the chapter rail, the keyboard and the
-   URL hash. Every official number here is NFHS-5 → NFHS-6 for Odisha
-   (the same values as district-health.html). The search traces read
-   Google Trends CSV exports from data/tectonics/; until a file is
-   there, its trace says so instead of drawing anything.
+   URL hash. The search traces read Google Trends CSV exports from
+   data/tectonics/; until a file is there, its trace says so instead
+   of drawing anything.
    ═══════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -12,46 +15,26 @@
   const SVGNS = 'http://www.w3.org/2000/svg';
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ── the record: NFHS-5 (2019–21) → NFHS-6 (2023–24), Odisha ── */
-  const GUESSES = {
-    online: {
-      island: 'islandOnline', key: 'keyOnline', input: 'guessOnline',
-      was: 24.9, now: 51.8,
-      keyRevealed: [
-        ['var(--tk-record)', 'Online by 2019–21'],
-        ['var(--tk-land)', 'Came online by 2023–24'],
-        ['rgba(255,255,255,0.14)', 'Never online']
-      ]
-    },
-    methods: {
-      island: 'islandMethods', key: 'keyMethods', input: 'guessMethods',
-      was: 48.8, now: 40.8,
-      keyRevealed: [
-        ['var(--tk-record)', 'Using a modern method, 2023–24'],
-        ['var(--tk-lost)', 'Fewer users than in 2019–21'],
-        ['rgba(255,255,255,0.14)', 'No modern method']
-      ]
-    }
-  };
+  /* the story's numbers and words come from tectonics-sN.js */
+  const STORY = window.TK_STORY || {};
+  const GUESSES = STORY.guesses || {};
+  const SLOPE = STORY.slope || null;
+  const SIGNALS = STORY.signals || [];
+  const CALLS = STORY.calls || [];
+  const CALLS_KEY = STORY.callsKey || 'soochana-tectonics-calls';
 
-  const SLOPE = [
-    { name: 'Married women using any method', short: 'Any method', was: 74.1, now: 66.2, color: '#f9d5bf' },
-    { name: 'Women who have used the internet', short: 'Women online', was: 24.9, now: 51.8, color: '#9fd3f0' },
-    { name: 'Married women using a modern method', short: 'Modern method', was: 48.8, now: 40.8, color: '#f08a4b' },
-    { name: 'Women 20–24 married before 18', short: 'Married before 18', was: 20.5, now: 18.6, color: 'rgba(255,255,255,0.7)' },
-    { name: 'Unmet need for spacing', short: 'Unmet need, spacing', was: 2.6, now: 4.7, color: '#f4c534' }
-  ];
-
-  /* ── the signals: one Google Trends export per search group ── */
-  const SIGNALS = [
-    { name: 'Emergency pills', terms: 'such as “i-pill”, “unwanted 72”', file: 'data/tectonics/s1-emergency-pills.csv' },
-    { name: 'Pregnancy worries', terms: 'such as “pregnancy test”, “period late”', file: 'data/tectonics/s1-pregnancy-worries.csv' },
-    { name: 'Side effects', terms: 'such as “Copper-T side effects”', file: 'data/tectonics/s1-side-effects.csv' },
-    { name: 'Delaying a child', terms: 'such as “how to avoid pregnancy”', file: 'data/tectonics/s1-delaying.csv' }
-  ];
   const SURVEY_BANDS = [
     { label: 'NFHS-5', from: '2019-01-01', to: '2021-12-31' },
     { label: 'NFHS-6', from: '2023-01-01', to: '2024-12-31' }
+  ];
+
+  /* the season: every story, live or coming */
+  const SEASON = [
+    { title: 'Online, but unprotected?', href: 'tectonics.html' },
+    { title: 'When does youth want to marry?', href: 'tectonics-marriage.html' },
+    { title: 'The ageing aftershock' },
+    { title: 'Covered, but connected?' },
+    { title: 'Leaving home' }
   ];
 
   /* ── the four collisions; arrows are [record, signal] ── */
@@ -61,28 +44,6 @@
     { id: 'hidden', name: 'Hidden change', arrows: [1, 0], text: 'The survey moves, searches stay quiet. The change is happening offline, often among people the internet misses.' },
     { id: 'fault', name: 'Fault line', arrows: [-1, 1], text: 'They pull opposite ways. The survey may be missing something, or measuring it differently.' }
   ];
-
-  const CALLS = [
-    {
-      id: 'modern', name: 'Modern contraceptive use', survey: -1, surveyText: 'Survey: 48.8% → 40.8%',
-      q: 'Search interest in contraception will…',
-      says: {
-        '1': 'Interest rises while use falls. People may be looking for something they are not getting.',
-        '0': 'Use falls and no one searches. The change would be happening offline.',
-        '-1': 'Interest and use fall together. Contraception would be slipping out of mind.'
-      }
-    },
-    {
-      id: 'spacing', name: 'Unmet need for spacing', survey: 1, surveyText: 'Survey: 2.6% → 4.7%',
-      q: 'Searches about delaying a pregnancy will…',
-      says: {
-        '1': 'More women want to wait, and they go online to find out how.',
-        '0': 'The wish to wait grows quietly, away from search.',
-        '-1': 'The need rises while searches fall. The questions may be going elsewhere: friends, chemists, ASHAs.'
-      }
-    }
-  ];
-  const CALLS_KEY = 'soochana-tectonics-s1-calls';
 
   const CHAPTERS = [
     { short: 'Start', full: 'Start' },
@@ -201,17 +162,23 @@
     });
   }
 
-  function paintReveal(dots, was, now) {
+  /* tone 'concern': the share is something that should fall (child
+     marriage), so it is coloured as the concern and a fall as new land */
+  function paintReveal(dots, was, now, tone) {
     const a = Math.round(was);
     const b = Math.round(now);
     const keep = Math.min(a, b);
     const extra = Math.abs(b - a);
+    const concern = tone === 'concern';
+    const keptCls = concern ? ' is-concern' : ' is-was';
+    const extraCls = concern ? (b < a ? ' is-gain' : ' is-worse') : (b > a ? ' is-gain' : ' is-lost');
+    const pops = concern ? b < a : b > a;
     dots.forEach((d, i) => {
       let cls = 'dot';
-      if (i < keep) cls += ' is-was';
-      else if (i < keep + extra) cls += b > a ? ' is-gain' : ' is-lost';
+      if (i < keep) cls += keptCls;
+      else if (i < keep + extra) cls += extraCls;
       d.setAttribute('class', cls);
-      if (i >= keep && i < keep + extra && b > a && !reduceMotion) {
+      if (i >= keep && i < keep + extra && pops && !reduceMotion) {
         setTimeout(() => d.classList.add('is-pop'), (i - keep) * 45);
       }
     });
@@ -264,7 +231,7 @@
       reveal.querySelector('[data-verdict]').textContent = verdict(g, cfg.was, cfg.now);
       box.classList.add('is-done');
       reveal.hidden = false;
-      paintReveal(dots, cfg.was, cfg.now);
+      paintReveal(dots, cfg.was, cfg.now, cfg.tone);
       setKey(cfg.key, cfg.keyRevealed);
       announce(reveal.querySelector('.tk-big').textContent + '. ' + reveal.querySelector('[data-verdict]').textContent);
       nudgeNext();
@@ -272,25 +239,42 @@
   }
 
   /* ═══ the slope: two lines pulling apart ══════════ */
+  /* labels are nudged apart when two values sit close together */
+  function dodge(ys, gap) {
+    const order = ys.map((y, i) => i).sort((a, b) => ys[a] - ys[b]);
+    const out = ys.slice();
+    for (let k = 1; k < order.length; k++) {
+      const prev = out[order[k - 1]];
+      if (out[order[k]] - prev < gap) out[order[k]] = prev + gap;
+    }
+    return out;
+  }
+
   function drawSlope() {
     const svg = document.getElementById('tkSlope');
+    if (!svg || !SLOPE) return;
+    const rows = SLOPE.rows;
+    const max = SLOPE.max || 80;
     const x1 = 70, x2 = 300;
-    const y = v => 410 - v * (360 / 80);
-    [0, 20, 40, 60, 80].forEach(v => el('line', { class: 'grid', x1: x1, x2: x2, y1: y(v), y2: y(v) }, svg));
+    const y = v => 410 - v * (360 / max);
+    const step = max / 4;
+    for (let v = 0; v <= max; v += step) el('line', { class: 'grid', x1: x1, x2: x2, y1: y(v), y2: y(v) }, svg);
     svgText(svg, 4, 26, 'NFHS-5 · 2019–21', { class: 'axis-label' });
     svgText(svg, x2, 26, 'NFHS-6 · 2023–24', { class: 'axis-label', 'text-anchor': 'middle' });
 
-    SLOPE.forEach((s, i) => {
+    const leftY = dodge(rows.map(r => y(r.was)), 20);
+    const rightY = dodge(rows.map(r => y(r.now)), 20);
+    rows.forEach((s, i) => {
       const g = el('g', { class: 'series', style: '--i:' + i }, svg);
       const line = el('line', { class: 'line', x1: x1, y1: y(s.was), x2: x2, y2: y(s.now), stroke: s.color }, g);
       const len = Math.hypot(x2 - x1, y(s.now) - y(s.was));
       line.style.setProperty('--len', len.toFixed(1));
       el('circle', { cx: x1, cy: y(s.was), r: 5, fill: s.color }, g);
       el('circle', { class: 'val-r', cx: x2, cy: y(s.now), r: 5, fill: s.color }, g);
-      svgText(g, x1 - 12, y(s.was) + 5, fmt(s.was), { class: 'val', 'text-anchor': 'end' });
-      svgText(g, x2 + 12, y(s.now) + 5, fmt(s.now), { class: 'val val-r' });
-      svgText(g, x2 + 56, y(s.now) + 5, s.name, { class: 'name name-long' });
-      svgText(g, x2 + 56, y(s.now) + 7, s.short, { class: 'name name-short' });
+      svgText(g, x1 - 12, leftY[i] + 5, fmt(s.was), { class: 'val', 'text-anchor': 'end' });
+      svgText(g, x2 + 12, rightY[i] + 5, fmt(s.now), { class: 'val val-r' });
+      svgText(g, x2 + 56, rightY[i] + 5, s.name, { class: 'name name-long' });
+      svgText(g, x2 + 56, rightY[i] + 7, s.short, { class: 'name name-short' });
       g.addEventListener('mouseenter', () => { svg.classList.add('has-focus'); g.classList.add('is-focus'); });
       g.addEventListener('mouseleave', () => { svg.classList.remove('has-focus'); g.classList.remove('is-focus'); });
     });
@@ -360,6 +344,7 @@
   function setupSeismo() {
     const wrap = document.getElementById('tkSeismo');
     const status = document.getElementById('tkSeismoStatus');
+    if (!wrap) return;
     let loaded = 0;
     const jobs = SIGNALS.map(sig => {
       const row = document.createElement('div');
@@ -395,13 +380,17 @@
     return s;
   }
 
+  /* survey 0: the record does not measure it, so any move in search is
+     an early tremor, and no move at all is no collision */
   function collisionOf(survey, signal) {
+    if (survey === 0) return signal === 0 ? null : 'tremor';
     if (signal === 0) return 'hidden';
     return signal === survey ? 'confirmed' : 'fault';
   }
 
   function setupCollision() {
     const quads = document.getElementById('tkQuads');
+    if (!quads) return;
     const qEls = {};
     QUADS.forEach(q => {
       const li = document.createElement('li');
@@ -431,7 +420,7 @@
       CALLS.forEach(call => {
         if (saved[call.id] === undefined) return;
         const k = collisionOf(call.survey, saved[call.id]);
-        counts[k] = (counts[k] || 0) + 1;
+        if (k) counts[k] = (counts[k] || 0) + 1;
       });
       QUADS.forEach(q => {
         const n = counts[q.id] || 0;
@@ -457,7 +446,7 @@
         const q = QUADS.find(x => x.id === collisionOf(call.survey, v));
         result.innerHTML = '';
         const b = document.createElement('b');
-        b.textContent = q.name + '. ';
+        b.textContent = (q ? q.name : 'No collision') + '. ';
         result.append(b, call.says[String(v)]);
       };
 
@@ -571,11 +560,209 @@
     if (k >= 0) go(k, { noHash: true });
   });
 
+  /* ═══ the district map: guess, reveal, then see it move ═══
+     cfg.values is { district (as in Orissa.geojson): [NFHS-5, NFHS-6] }.
+     The reader picks a district on the map (or from the list), then
+     the map fills in, and can switch to how far each district moved. */
+  function setupMap(cfg) {
+    const svg = document.getElementById(cfg.svg);
+    const pick = document.getElementById(cfg.select);
+    const btn = document.querySelector('[data-map-reveal]');
+    const panel = document.querySelector('[data-map-panel]');
+    const readout = document.getElementById(cfg.readout);
+    const key = document.getElementById(cfg.key);
+    const views = document.querySelectorAll('[data-map-view]');
+    if (!svg) return;
+
+    const names = Object.keys(cfg.values).sort();
+    const ranked = names.slice().sort((a, b) => cfg.values[b][1] - cfg.values[a][1]);
+    const change = n => cfg.values[n][1] - cfg.values[n][0];
+    const big = cfg.bigMove || 5;
+    let chosen = null;
+    let revealed = false;
+    let view = 'now';
+    const paths = {};
+
+    names.forEach(n => {
+      const o = document.createElement('option');
+      o.value = n;
+      o.textContent = n;
+      pick.appendChild(o);
+    });
+
+    const binColor = v => {
+      const stops = cfg.bins;
+      for (let i = 0; i < stops.length; i++) if (v < stops[i][0]) return stops[i][1];
+      return stops[stops.length - 1][1];
+    };
+    const changeColor = d => (d <= -big ? '#36b4ee' : d < 0 ? '#9fd3f0' : d < big ? '#f6c58f' : '#f08a4b');
+
+    function paint() {
+      names.forEach(n => {
+        const p = paths[n];
+        if (!p) return;
+        let fill = 'rgba(255,255,255,0.12)';
+        if (revealed) fill = view === 'now' ? binColor(cfg.values[n][1]) : changeColor(change(n));
+        else if (n === chosen) fill = 'rgba(255,255,255,0.7)';
+        p.style.fill = fill;
+        p.classList.toggle('is-chosen', n === chosen);
+      });
+      const arrows = svg.querySelector('.map-arrows');
+      if (arrows) arrows.style.opacity = revealed && view === 'change' ? 1 : 0;
+      const tops = svg.querySelector('.map-tops');
+      if (tops) tops.style.opacity = revealed && view === 'now' ? 1 : 0;
+      paintKey();
+    }
+
+    function paintKey() {
+      key.innerHTML = '';
+      let items;
+      if (!revealed) items = [['rgba(255,255,255,0.7)', 'Your pick'], ['rgba(255,255,255,0.12)', 'Other districts']];
+      else if (view === 'now') items = cfg.bins.map(b => [b[1], b[2]]);
+      else items = [['#36b4ee', 'Fell ' + big + '+ points'], ['#9fd3f0', 'Fell a little'], ['#f6c58f', 'Rose a little'], ['#f08a4b', 'Rose ' + big + '+ points']];
+      items.forEach(([c, label]) => {
+        const li = document.createElement('li');
+        const sw = document.createElement('i');
+        sw.style.background = c;
+        sw.style.borderRadius = '3px';
+        li.append(sw, label);
+        key.appendChild(li);
+      });
+    }
+
+    function tell(n) {
+      if (!n) { readout.textContent = revealed ? cfg.hoverHint : cfg.pickHint; return; }
+      if (!revealed) { readout.textContent = n; return; }
+      const [a, b] = cfg.values[n];
+      const d = b - a;
+      readout.textContent = n + ': ' + fmt(a) + '% in 2019–21 → ' + fmt(b) + '% in 2023–24 (' + (d > 0 ? '+' : d < 0 ? '−' : '±') + fmt(Math.abs(d)) + ')';
+    }
+
+    function choose(n) {
+      if (revealed) { tell(n); return; }
+      chosen = n;
+      pick.value = n || '';
+      btn.disabled = !n;
+      tell(n);
+      paint();
+    }
+
+    pick.addEventListener('change', () => choose(pick.value || null));
+
+    btn.addEventListener('click', () => {
+      if (!chosen) return;
+      revealed = true;
+      const rank = ranked.indexOf(chosen) + 1;
+      const top = ranked[0];
+      const verdict = panel.querySelector('[data-verdict]');
+      verdict.textContent = rank === 1
+        ? 'Right first time: ' + top + ', at ' + fmt(cfg.values[top][1]) + '%.'
+        : 'You picked ' + chosen + ': ' + fmt(cfg.values[chosen][1]) + '%, number ' + rank + ' of ' + names.length + '. The highest is ' + top + ', at ' + fmt(cfg.values[top][1]) + '%.';
+      btn.closest('.tk-guess').classList.add('is-done');
+      panel.hidden = false;
+      paint();
+      tell(null);
+      announce(verdict.textContent);
+      nudgeNext();
+    });
+
+    views.forEach(b => b.addEventListener('click', () => {
+      view = b.dataset.mapView;
+      views.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      paint();
+    }));
+
+    paintKey();
+    if (!window.d3) { readout.textContent = 'The map could not load. The list still works.'; return; }
+    fetch(cfg.geo)
+      .then(r => r.json())
+      .then(geo => {
+        const W = 520, H = 520;
+        const proj = d3.geoMercator().fitExtent([[12, 12], [W - 12, H - 12]], geo);
+        const path = d3.geoPath(proj);
+        const land = el('g', { class: 'map-land' }, svg);
+        const centre = {};
+        geo.features.forEach(f => {
+          const n = f.properties[cfg.nameField];
+          if (!cfg.values[n]) return;
+          const p = el('path', { class: 'dist', d: path(f) }, land);
+          const t = el('title', {}, p);
+          t.textContent = n;
+          paths[n] = p;
+          centre[n] = path.centroid(f);
+          p.addEventListener('mouseenter', () => tell(n));
+          p.addEventListener('mouseleave', () => tell(chosen && !revealed ? chosen : null));
+          p.addEventListener('click', () => choose(n));
+        });
+
+        /* the movers: an arrow on each district that moved big+ points */
+        const arrows = el('g', { class: 'map-arrows' }, svg);
+        names.filter(n => Math.abs(change(n)) >= big && centre[n]).forEach(n => {
+          const [x, y0] = centre[n];
+          const d = change(n);
+          const len = Math.min(70, Math.abs(d) * 4);
+          const up = d > 0;
+          const col = up ? '#f08a4b' : '#36b4ee';
+          const yTip = up ? y0 - len / 2 : y0 + len / 2;
+          const yTail = up ? y0 + len / 2 : y0 - len / 2;
+          const h = up ? -1 : 1;
+          const shaft = 'M' + x + ' ' + yTail + 'V' + yTip;
+          const head = 'M' + (x - 7) + ' ' + (yTip - h * 8) + 'L' + x + ' ' + yTip + 'L' + (x + 7) + ' ' + (yTip - h * 8);
+          el('path', { d: shaft + head, stroke: '#0d2b45', 'stroke-width': 8, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' }, arrows);
+          el('path', { d: shaft + head, stroke: col, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' }, arrows);
+          svgText(arrows, x + 11, y0 + 4, n + ' ' + (up ? '+' : '−') + fmt(Math.abs(d)), { class: 'map-label' });
+        });
+
+        /* the three highest, named */
+        const tops = el('g', { class: 'map-tops' }, svg);
+        ranked.slice(0, 3).forEach(n => {
+          if (!centre[n]) return;
+          const [x, y] = centre[n];
+          el('circle', { cx: x, cy: y, r: 4, fill: '#ffffff' }, tops);
+          svgText(tops, x + 8, y + 4, n + ' ' + fmt(cfg.values[n][1]) + '%', { class: 'map-label' });
+        });
+        /* crop the frame to the state, with room on the right for labels */
+        const b = path.bounds(geo);
+        svg.setAttribute('viewBox', [b[0][0] - 8, b[0][1] - 8, b[1][0] - b[0][0] + 96, b[1][1] - b[0][1] + 16].map(v => v.toFixed(0)).join(' '));
+        paint();
+        tell(null);
+      })
+      .catch(() => { readout.textContent = 'The map could not load. The list still works.'; });
+  }
+
+  /* ═══ the season list on the cover ══════════════ */
+  function buildSeason() {
+    document.querySelectorAll('[data-season]').forEach(ol => {
+      SEASON.forEach((st, i) => {
+        const li = document.createElement('li');
+        const n = document.createElement('span');
+        n.textContent = i + 1;
+        li.appendChild(n);
+        if (i + 1 === STORY.number) {
+          li.className = 'is-live';
+          li.setAttribute('aria-current', 'page');
+          li.append(st.title);
+        } else if (st.href) {
+          const a = document.createElement('a');
+          a.href = st.href;
+          a.textContent = st.title;
+          li.appendChild(a);
+        } else {
+          const em = document.createElement('em');
+          em.textContent = 'coming';
+          li.append(st.title + ' ', em);
+        }
+        ol.appendChild(li);
+      });
+    });
+  }
+
   /* ── start ── */
   drawPlates();
-  setupGuess('online');
-  setupGuess('methods');
+  buildSeason();
+  Object.keys(GUESSES).forEach(setupGuess);
   drawSlope();
+  if (STORY.map) setupMap(STORY.map);
   setupSeismo();
   setupCollision();
   buildRail();
