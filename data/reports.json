@@ -287,6 +287,696 @@
       "thumbnail": "/images/dev3.jpg",
       "file": "https://drive.google.com/file/d/1zUfNVJ4HUbFXrZ8uKtdhQDd6ag9NYm6U/view?usp=sharing",
       "lastUpdated": "2025-04-20"
+    },
+    {
+      "id": "srs-bulletin-2024",
+      "name": "SRS Bulletin 2024 (Vol. 59, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/1DD96WWIIG8GhnicDpjDsNVRFKxqE75iN/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2023",
+      "name": "SRS Bulletin 2023 (Vol. 58, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/1nzM1I2_Qukjoq-TXe60ByprNB75c0qNN/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2022",
+      "name": "SRS Bulletin 2022 (Vol. 57, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/1REOrGSQmCTyvXFYGCVlDfpd0TEYKbY1p/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2021",
+      "name": "SRS Bulletin 2021 (Vol. 56, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/1y6GvOcXtSaVBSS_hk5QFvKG7jBq4ZDuu/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2020",
+      "name": "SRS Bulletin 2020 (Vol. 55, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/1dXIKyaiekwf-m1JO7mxFS3otqZVJrWgO/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2019",
+      "name": "SRS Bulletin 2019 (Vol. 54, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/17SStOdY45PHDciGizDuvju4Xp_WvOyVO/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2018",
+      "name": "SRS Bulletin 2018 (Vol. 53, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/14oSdGRXDpAy8c71zLbIr0zMQmG0fbHoH/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2017",
+      "name": "SRS Bulletin 2017 (Vol. 52, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/1W6CpMeWf9XwAjoAyRwb-JIqZscjfKgAT/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2016",
+      "name": "SRS Bulletin 2016 (Vol. 51, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/1dqILrIGBpYtCj44Cbq9zvbfRU8juMUhx/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2015",
+      "name": "SRS Bulletin 2015 (Vol. 50, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/1xzfl4HM2eIkTTs9ICk6ZTj3NIGHY0F9m/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2014",
+      "name": "SRS Bulletin 2014 (Vol. 50, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/17hDKPiJVKHLhJVQaBIqiLplDw5fXg21a/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2013",
+      "name": "SRS Bulletin 2013 (Vol. 49, No. 1)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/125a9Fiy4I6NA8e0K77Nd3Fo5CSn-b38K/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2012",
+      "name": "SRS Bulletin 2012 (Vol. 48, No. 2)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/1pE2l4vjKpihzJcLn2RtrnEaFtQ-U8o6T/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-bulletin-2011",
+      "name": "SRS Bulletin 2011 (Vol. 47, No. 2)",
+      "theme": "demography",
+      "description": "Sample Registration System bulletin with estimates of birth rate, death rate, natural growth rate and infant mortality rate for India and the States, ORGI.",
+      "thumbnail": "/images/srs-bulletin.svg",
+      "file": "https://drive.google.com/file/d/19iUW2MAInT2kBc5Xx3GRj0wfl8NCO6H5/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2024",
+      "name": "SRS Statistical Report 2024",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2024: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/1e9V4dYEasgC2FgnFJkpCiQaTY7wcs_le/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2023",
+      "name": "SRS Statistical Report 2023",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2023: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/181FQLJHrDK4PbdAMHjXmPwQTYPatlQPd/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2021",
+      "name": "SRS Statistical Report 2021",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2021: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/1g1oAyiXXxEhfNqQySrFKQr9LCLdOu9vu/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2020",
+      "name": "SRS Statistical Report 2020",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2020: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/19UZuvuhxblJqL0UQwZeExG_gjjPGWJOC/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2019",
+      "name": "SRS Statistical Report 2019",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2019: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/1WIpPVfVt0jnKjvpN1MRJZkHrAVVVoXT5/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2018",
+      "name": "SRS Statistical Report 2018",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2018: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/1GfUOCDYjIxcJH0RlykFA74L0OEd_4_zg/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2017",
+      "name": "SRS Statistical Report 2017",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2017: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/1ocU1dyLVkKatwQ5YAbLyYPBT8180S1ZQ/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2016",
+      "name": "SRS Statistical Report 2016",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2016: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/15hjNIVPtWX1cwhbysF5WYWtY7KMqZMkZ/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2015",
+      "name": "SRS Statistical Report 2015",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2015: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/1l6fRwRusW6YOOlBpokeynY5W6-r48h6y/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2014",
+      "name": "SRS Statistical Report 2014",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2014: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/1iQ1L7I5G1XwszxsK78I0Ry9ZraJQcgqW/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2013",
+      "name": "SRS Statistical Report 2013",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2013: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/1mA8I2jGvksd85OlqWRgqgCftXvYMnEqp/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2012",
+      "name": "SRS Statistical Report 2012",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2012: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/1HX9iderCZi5UumFRQobemkjtGzlyBLgu/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-stat-2011",
+      "name": "SRS Statistical Report 2011",
+      "theme": "demography",
+      "description": "Sample Registration System Statistical Report 2011: fertility, mortality and population composition estimates for India and the States, ORGI.",
+      "thumbnail": "/images/srs-stat.svg",
+      "file": "https://drive.google.com/file/d/1dhZNTVSaQEzLDz6HYMcrFcUox4ghfpSU/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-mmr-2022-2024",
+      "name": "SRS Special Bulletin on Maternal Mortality in India 2022-24",
+      "theme": "health",
+      "description": "Maternal mortality ratio (MMR), maternal mortality rate and lifetime risk for India and the States, 2022-2024, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-mmr.svg",
+      "file": "https://drive.google.com/file/d/1scbUG0O5OAGsUEOKgXzppowB_E0TXbSb/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-mmr-2021-2023",
+      "name": "SRS Special Bulletin on Maternal Mortality in India 2021-23",
+      "theme": "health",
+      "description": "Maternal mortality ratio (MMR), maternal mortality rate and lifetime risk for India and the States, 2021-2023, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-mmr.svg",
+      "file": "https://drive.google.com/file/d/1pRLac6XSLxxzpB26KEnI0KSLp2trPu7F/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-mmr-2020-2022",
+      "name": "SRS Special Bulletin on Maternal Mortality in India 2020-22",
+      "theme": "health",
+      "description": "Maternal mortality ratio (MMR), maternal mortality rate and lifetime risk for India and the States, 2020-2022, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-mmr.svg",
+      "file": "https://drive.google.com/file/d/1FebzyXNPyZ4wWVqPkgrBMzaCqVJl_FYC/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-mmr-2019-2021",
+      "name": "SRS Special Bulletin on Maternal Mortality in India 2019-21",
+      "theme": "health",
+      "description": "Maternal mortality ratio (MMR), maternal mortality rate and lifetime risk for India and the States, 2019-2021, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-mmr.svg",
+      "file": "https://drive.google.com/file/d/1SE5e9GKOYpyoFiw4Pn3scZrk5_PUhdC5/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-mmr-2018-2020",
+      "name": "SRS Special Bulletin on Maternal Mortality in India 2018-20",
+      "theme": "health",
+      "description": "Maternal mortality ratio (MMR), maternal mortality rate and lifetime risk for India and the States, 2018-2020, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-mmr.svg",
+      "file": "https://drive.google.com/file/d/1e6SdXxbqZ2_avGGVZ0bqUbFa8bRyBAMh/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-mmr-2017-2019",
+      "name": "SRS Special Bulletin on Maternal Mortality in India 2017-19",
+      "theme": "health",
+      "description": "Maternal mortality ratio (MMR), maternal mortality rate and lifetime risk for India and the States, 2017-2019, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-mmr.svg",
+      "file": "https://drive.google.com/file/d/1hXLu2oFw3bWw8ZqDRu-msad3ljDHAtSh/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-mmr-2016-2018",
+      "name": "SRS Special Bulletin on Maternal Mortality in India 2016-18",
+      "theme": "health",
+      "description": "Maternal mortality ratio (MMR), maternal mortality rate and lifetime risk for India and the States, 2016-2018, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-mmr.svg",
+      "file": "https://drive.google.com/file/d/1rau8Fz12k1cD0L8M1Lir2aQ8IItXA8ta/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-mmr-2015-2017",
+      "name": "SRS Special Bulletin on Maternal Mortality in India 2015-17",
+      "theme": "health",
+      "description": "Maternal mortality ratio (MMR), maternal mortality rate and lifetime risk for India and the States, 2015-2017, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-mmr.svg",
+      "file": "https://drive.google.com/file/d/1HjbRFZUaeSq_fvTjJ5o36wwhJTr2vyJ-/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-mmr-2014-2016",
+      "name": "SRS Special Bulletin on Maternal Mortality in India 2014-16",
+      "theme": "health",
+      "description": "Maternal mortality ratio (MMR), maternal mortality rate and lifetime risk for India and the States, 2014-2016, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-mmr.svg",
+      "file": "https://drive.google.com/file/d/1KHiq6cbr0FYPR_fhY5HfbQlzyrjZtZbq/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-life-tables-2020-2024",
+      "name": "SRS Abridged Life Tables 2020-2024",
+      "theme": "demography",
+      "description": "Life expectancy at birth and at selected ages, by sex and residence, for India and the States, 2020-2024, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-life-tables.svg",
+      "file": "https://drive.google.com/file/d/1Iio4HnxaCkP8ZSJ3j7p6RQwL_uqDyNmK/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-life-tables-2019-2023",
+      "name": "SRS Abridged Life Tables 2019-2023",
+      "theme": "demography",
+      "description": "Life expectancy at birth and at selected ages, by sex and residence, for India and the States, 2019-2023, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-life-tables.svg",
+      "file": "https://drive.google.com/file/d/13G0ToRTqjc-fx3fw_pXgQN6Hmx8Rlsw8/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-life-tables-2016-2020",
+      "name": "SRS Abridged Life Tables 2016-2020",
+      "theme": "demography",
+      "description": "Life expectancy at birth and at selected ages, by sex and residence, for India and the States, 2016-2020, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-life-tables.svg",
+      "file": "https://drive.google.com/file/d/1DGN7Ba8mwazYCZ4TvkEo4SfqBi8_KJVs/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-life-tables-2013-2017",
+      "name": "SRS Abridged Life Tables 2013-2017",
+      "theme": "demography",
+      "description": "Life expectancy at birth and at selected ages, by sex and residence, for India and the States, 2013-2017, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-life-tables.svg",
+      "file": "https://drive.google.com/file/d/1lEEDAApMuIFq0JSVyaToPornhwg7qBa0/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-life-tables-2011-2015",
+      "name": "SRS Abridged Life Tables 2011-2015",
+      "theme": "demography",
+      "description": "Life expectancy at birth and at selected ages, by sex and residence, for India and the States, 2011-2015, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-life-tables.svg",
+      "file": "https://drive.google.com/file/d/1a9hM5hiZDwzeLx7At_n9a-ISyjEpoHoT/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-life-tables-2009-2013",
+      "name": "SRS Abridged Life Tables 2009-2013",
+      "theme": "demography",
+      "description": "Life expectancy at birth and at selected ages, by sex and residence, for India and the States, 2009-2013, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-life-tables.svg",
+      "file": "https://drive.google.com/file/d/1U-F6oolYmzOHiCLBw-qVbrbL_etpGJyM/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-cod-2022-2024",
+      "name": "SRS Cause of Death Statistics 2022-2024",
+      "theme": "health",
+      "description": "Leading causes of death by age, sex and residence for India, 2022-2024, from the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-cod.svg",
+      "file": "https://drive.google.com/file/d/1QcRJRzn0v3SKPVq4-gHYAUrofrxSf6y8/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-compendium-1971-2013",
+      "name": "Compendium of India's Fertility and Mortality Indicators 1971-2013 (SRS)",
+      "theme": "demography",
+      "description": "Four decades of fertility and mortality indicators for India and the States, 1971-2013, based on the Sample Registration System, ORGI.",
+      "thumbnail": "/images/srs-compendium.svg",
+      "file": "https://drive.google.com/file/d/1aiY3D2epaMBQJCzm13vb50GmeL4rIBWR/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "srs-corrigendum",
+      "name": "Corrigendum to SRS Reports",
+      "theme": "demography",
+      "description": "Corrections issued by ORGI to published Sample Registration System reports.",
+      "thumbnail": "/images/srs-corrigendum.svg",
+      "file": "https://drive.google.com/file/d/1D9WGRvzLLURhpNd0IfENJfHfteTs29cZ/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-1-india",
+      "name": "NFHS-1 National Report, India (1992-93)",
+      "theme": "health",
+      "description": "National Family Health Survey 1992-93: fertility, family planning, maternal and child health and nutrition for India and the States, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/165T0MhrVPQ3RhVK97fv0mgAw3Ky5TDIk/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-2-india",
+      "name": "NFHS-2 National Report, India (1998-99)",
+      "theme": "health",
+      "description": "National Family Health Survey 1998-99: fertility, family planning, maternal and child health, nutrition and anaemia for India, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1Xf61F140fo2wXcNDc-PWMgBK5XmHkOsB/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-2-odisha",
+      "name": "NFHS-2 Odisha State Report (1998-99)",
+      "theme": "health",
+      "description": "National Family Health Survey 1998-99 state report for Odisha: fertility, family planning, maternal and child health and nutrition, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1ShslbsPrAYCmbP6HsaJb_tbLbRDjGoB3/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-3-india-vol-1",
+      "name": "NFHS-3 National Report, India, Volume I (2005-06)",
+      "theme": "health",
+      "description": "National Family Health Survey 2005-06, Volume I: fertility, family planning, maternal and child health and nutrition for India, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1oXqmw0jlTV-wL3Iv4h_88vklzqavcfMh/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-3-india-vol-2",
+      "name": "NFHS-3 National Report, India, Volume II (2005-06)",
+      "theme": "health",
+      "description": "National Family Health Survey 2005-06, Volume II: HIV prevalence, sexual behaviour, adult health and gender relations for India, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1Rv6NXiv-PBsVeN4KEoAJiIeIrSqNI0dS/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-3-odisha-report",
+      "name": "NFHS-3 Odisha State Report (2005-06)",
+      "theme": "health",
+      "description": "National Family Health Survey 2005-06 state report for Odisha: fertility, family planning, maternal and child health and nutrition, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1GhBGVLNPLJZmXTHh7gmGVwJh2JnhorFY/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-3-odisha-factsheet",
+      "name": "NFHS-3 Odisha Fact Sheet (2005-06)",
+      "theme": "health",
+      "description": "Key indicators for Odisha from the National Family Health Survey 2005-06, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/12WBZYfWtGDkgItwsRNt-rwbcv3Js3_EX/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-4-india-report",
+      "name": "NFHS-4 National Report, India (2015-16)",
+      "theme": "health",
+      "description": "National Family Health Survey 2015-16: population, health and nutrition indicators for India, the States and districts, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1Dfc1DjtaYGSwXGfceENxefeTqUU8DlXi/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-4-india-factsheet",
+      "name": "NFHS-4 India Fact Sheet (2015-16)",
+      "theme": "health",
+      "description": "Key indicators for India from the National Family Health Survey 2015-16, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1s44UQpkeyecJYx12rU2v-6X0VlmbXcg4/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-4-odisha-factsheet",
+      "name": "NFHS-4 Odisha Fact Sheet (2015-16)",
+      "theme": "health",
+      "description": "Key indicators for Odisha from the National Family Health Survey 2015-16, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1e2W7woIYpB6b3dC7t4X9eVtdZ74PYGQP/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-5-india-vol-1",
+      "name": "NFHS-5 National Report, India, Volume I (2019-21)",
+      "theme": "health",
+      "description": "National Family Health Survey 2019-21, Volume I: population, health and nutrition indicators for India and the States, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1p5oDrjNakurPyPXLJf8FPk3pnWzC1m1O/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-5-india-vol-2",
+      "name": "NFHS-5 National Report, India, Volume II (2019-21)",
+      "theme": "health",
+      "description": "National Family Health Survey 2019-21, Volume II: population, health and nutrition indicators for India and the States, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1nS4M-GaT-mlL7f0-T3rNxuMmzKpedVbS/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-5-india-factsheet",
+      "name": "NFHS-5 India Fact Sheet (2019-21)",
+      "theme": "health",
+      "description": "Key indicators for India from the National Family Health Survey 2019-21, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1PD36RiJlZMES4G2fcakGJyqaG2lQTgeX/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-5-odisha-report",
+      "name": "NFHS-5 Odisha State Report (2019-21)",
+      "theme": "health",
+      "description": "National Family Health Survey 2019-21 state report for Odisha: population, health and nutrition indicators, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1Rn7j3GdHWdHQwGDQBjstQho6ErHA4qhf/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-6-factsheets",
+      "name": "NFHS-6 Fact Sheets",
+      "theme": "health",
+      "description": "Fact sheets of key indicators from the sixth round of the National Family Health Survey, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1Us-3lduSAistq0ScSMaR1KnI7jsdjYRx/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "nfhs-6-odisha-factsheet",
+      "name": "NFHS-6 Odisha Fact Sheet",
+      "theme": "health",
+      "description": "Key indicators for Odisha from the sixth round of the National Family Health Survey, IIPS.",
+      "thumbnail": "/images/nfhs.svg",
+      "file": "https://drive.google.com/file/d/1j3byYtC8_M1DCS_J7KK1L7A6F2GyYWHO/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "odisha-economic-survey-2021-22",
+      "name": "Odisha Economic Survey 2021-22",
+      "theme": "employment",
+      "description": "Snapshot of Odisha's economy, growth and development.",
+      "thumbnail": "/images/economic-survey.svg",
+      "file": "https://drive.google.com/file/d/1BY8dFV0FEMZKx2kj0fDFDyXV-_IZJozt/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "oes-chapter-1",
+      "name": "Odisha Economic Survey, Chapter 1",
+      "theme": "employment",
+      "description": "Opening chapter of the Odisha Economic Survey.",
+      "thumbnail": "/images/economic-survey.svg",
+      "file": "https://drive.google.com/file/d/1W72TdE-XFxO6NS5MVMYDmWvdjLKaGtHN/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "economic-survey-1993-94-index",
+      "name": "Economic Survey 1993-94 (Index)",
+      "theme": "employment",
+      "description": "Index to the Economic Survey 1993-94.",
+      "thumbnail": "/images/economic-survey.svg",
+      "file": "https://drive.google.com/file/d/1FAzmxQ9Gdg5WHmTDt2mes4fXJAx1hvaz/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "jpa-2020-employment-growth-odisha",
+      "name": "Employment and Economic Growth Dynamics in Odisha (Journal of Public Affairs, 2020)",
+      "theme": "employment",
+      "description": "Journal article on the relationship between employment and economic growth in Odisha.",
+      "thumbnail": "/images/employment.svg",
+      "file": "https://drive.google.com/file/d/1aUNOmitAEl2WwaKH1Esyw1AgZIvCrDiK/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "skill-odisha-annual-2019-20",
+      "name": "Skill Odisha Annual Report 2019-20",
+      "theme": "employment",
+      "description": "Annual report of Skill Odisha on skill development and training, 2019-20.",
+      "thumbnail": "/images/employment.svg",
+      "file": "https://drive.google.com/file/d/1K-j9X2LuG8p7lphFBsDEm0T9JMp2kSkT/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "child-budget-2023-24",
+      "name": "Child Budget 2023-24",
+      "theme": "development",
+      "description": "Budget statement of allocations for child-focused schemes, 2023-24.",
+      "thumbnail": "/images/budget.svg",
+      "file": "https://drive.google.com/file/d/1FhVWMDzB8FyAUp7XPSdxq896PHtx3cKB/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "climate-budget-2023-24",
+      "name": "Climate Budget 2023-24",
+      "theme": "development",
+      "description": "Budget statement of climate-relevant allocations, 2023-24.",
+      "thumbnail": "/images/budget.svg",
+      "file": "https://drive.google.com/file/d/1DXMQ44dXcAihv3IMWSwUMwWct7owCWjH/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
+    },
+    {
+      "id": "gender-budget-2023-24",
+      "name": "Gender Budget 2023-24",
+      "theme": "development",
+      "description": "Budget statement of allocations for women and gender-focused schemes, 2023-24.",
+      "thumbnail": "/images/budget.svg",
+      "file": "https://drive.google.com/file/d/1qbUlF221VHQ0JfqG8SWmFg6LpJRQ6iUM/view?usp=sharing",
+      "added": "2026-10-07",
+      "lastUpdated": "2026-10-07"
     }
   ]
 }
