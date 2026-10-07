@@ -7,6 +7,75 @@
    (Angul = Anugul, Debagarh = Deogarh, Nabarangapur = Nabarangpur,
    Subarnapur = Sonepur).
    ═══════════════════════════════════════════════════════════════════ */
+/* women aged 20–24 married before 18, by district: [NFHS-5, NFHS-6] */
+const MARRIED_BEFORE_18 = {
+  'Angul': [25.0, 30.2],
+  'Balangir': [14.0, 14.8],
+  'Baleshwar': [26.4, 23.0],
+  'Bargarh': [8.6, 14.9],
+  'Bhadrak': [10.4, 13.1],
+  'Boudh': [25.3, 15.0],
+  'Cuttack': [14.2, 12.7],
+  'Debagarh': [19.2, 14.3],
+  'Dhenkanal': [23.7, 24.0],
+  'Gajapati': [28.1, 18.7],
+  'Ganjam': [22.3, 18.0],
+  'Jagatsinghapur': [12.0, 12.5],
+  'Jajapur': [11.4, 11.0],
+  'Jharsuguda': [8.5, 9.7],
+  'Kalahandi': [16.3, 13.6],
+  'Kandhamal': [20.0, 19.8],
+  'Kendrapara': [9.4, 11.6],
+  'Kendujhar': [29.0, 22.6],
+  'Khordha': [17.1, 13.2],
+  'Koraput': [35.5, 20.9],
+  'Malkangiri': [32.4, 33.1],
+  'Mayurbhanj': [31.3, 26.9],
+  'Nabarangapur': [39.4, 27.1],
+  'Nayagarh': [35.7, 25.0],
+  'Nuapada': [15.6, 12.5],
+  'Puri': [10.2, 12.1],
+  'Rayagada': [33.2, 34.0],
+  'Sambalpur': [7.4, 10.4],
+  'Subarnapur': [16.9, 12.3],
+  'Sundargarh': [12.9, 12.8]
+};
+
+/* women (15–49) with 10 or more years of schooling, by district:
+   [NFHS-5, NFHS-6], from the same NFHS district tables */
+const SCHOOLING = {
+  'Angul': [33.7, 46.3],
+  'Balangir': [31.4, 40.0],
+  'Baleshwar': [38.3, 50.5],
+  'Bargarh': [37.4, 40.1],
+  'Bhadrak': [37.0, 48.0],
+  'Boudh': [29.9, 39.6],
+  'Cuttack': [40.9, 54.4],
+  'Debagarh': [31.3, 43.3],
+  'Dhenkanal': [33.3, 48.4],
+  'Gajapati': [22.5, 36.4],
+  'Ganjam': [32.6, 37.9],
+  'Jagatsinghapur': [46.6, 52.8],
+  'Jajapur': [38.0, 53.4],
+  'Jharsuguda': [40.9, 54.1],
+  'Kalahandi': [26.5, 42.3],
+  'Kandhamal': [28.1, 35.5],
+  'Kendrapara': [42.5, 48.4],
+  'Kendujhar': [29.5, 41.2],
+  'Khordha': [43.2, 56.3],
+  'Koraput': [17.6, 26.8],
+  'Malkangiri': [14.0, 18.5],
+  'Mayurbhanj': [25.1, 42.3],
+  'Nabarangapur': [15.5, 23.0],
+  'Nayagarh': [27.1, 40.6],
+  'Nuapada': [27.3, 40.5],
+  'Puri': [38.1, 49.2],
+  'Rayagada': [19.1, 24.8],
+  'Sambalpur': [36.5, 42.3],
+  'Subarnapur': [37.8, 46.5],
+  'Sundargarh': [35.6, 50.3]
+};
+
 window.TK_STORY = {
   number: 2,
 
@@ -34,7 +103,7 @@ window.TK_STORY = {
     }
   },
 
-  /* women aged 20–24 married before 18, by district: [NFHS-5, NFHS-6] */
+  /* the district map: who married youngest, and who moved */
   map: {
     svg: 'tkMap', select: 'mapPick', readout: 'mapReadout', key: 'mapKey',
     geo: 'Orissa.geojson', nameField: 'Dist_Name',
@@ -49,37 +118,42 @@ window.TK_STORY = {
       [30, '#c9552a', '25–30%'],
       [Infinity, '#9c3320', '30% or more']
     ],
-    values: {
-      'Angul': [25.0, 30.2],
-      'Balangir': [14.0, 14.8],
-      'Baleshwar': [26.4, 23.0],
-      'Bargarh': [8.6, 14.9],
-      'Bhadrak': [10.4, 13.1],
-      'Boudh': [25.3, 15.0],
-      'Cuttack': [14.2, 12.7],
-      'Debagarh': [19.2, 14.3],
-      'Dhenkanal': [23.7, 24.0],
-      'Gajapati': [28.1, 18.7],
-      'Ganjam': [22.3, 18.0],
-      'Jagatsinghapur': [12.0, 12.5],
-      'Jajapur': [11.4, 11.0],
-      'Jharsuguda': [8.5, 9.7],
-      'Kalahandi': [16.3, 13.6],
-      'Kandhamal': [20.0, 19.8],
-      'Kendrapara': [9.4, 11.6],
-      'Kendujhar': [29.0, 22.6],
-      'Khordha': [17.1, 13.2],
-      'Koraput': [35.5, 20.9],
-      'Malkangiri': [32.4, 33.1],
-      'Mayurbhanj': [31.3, 26.9],
-      'Nabarangapur': [39.4, 27.1],
-      'Nayagarh': [35.7, 25.0],
-      'Nuapada': [15.6, 12.5],
-      'Puri': [10.2, 12.1],
-      'Rayagada': [33.2, 34.0],
-      'Sambalpur': [7.4, 10.4],
-      'Subarnapur': [16.9, 12.3],
-      'Sundargarh': [12.9, 12.8]
+    values: MARRIED_BEFORE_18
+  },
+
+  /* school first, marriage next? Each district's schooling set against
+     its marriage before 18; tectonics.js works out r and ρ from these
+     same values. Frames are [from, to, step]. */
+  scatter: {
+    svg: 'tkScatter', readout: 'scatterReadout', key: 'scatterKey',
+    x: { short: '10+ years of school', values: SCHOOLING },
+    y: { short: 'married before 18', values: MARRIED_BEFORE_18 },
+    pickHint: 'Schooling rose in all 30 districts. Point at or tap a dot.',
+    hoverHint: 'Point at a dot, or tap it, to see the district.',
+    views: {
+      change: {
+        x: [0, 20, 5], y: [-15, 10, 5],
+        xLabel: 'Rise in women with 10+ years of school (points)',
+        yLabel: 'Change in married before 18 (points)',
+        bins: [
+          [-5, '#36b4ee', 'Fell more than 5 points'],
+          [0, '#9fd3f0', 'Fell less than 5'],
+          [5, '#f6c58f', 'Rose less than 5'],
+          [Infinity, '#f08a4b', 'Rose 5+ points']
+        ],
+        labels: ['Koraput', 'Nabarangapur', 'Nayagarh', 'Mayurbhanj', 'Angul', 'Bargarh']
+      },
+      now: {
+        x: [10, 60, 10], y: [5, 35, 5],
+        xLabel: 'Women with 10+ years of school, 2023–24 (%)',
+        yLabel: 'Married before 18, 2023–24 (%)',
+        labels: ['Rayagada', 'Malkangiri', 'Nabarangapur', 'Jharsuguda', 'Angul']
+      }
+    },
+    says: {
+      strong: 'Not clearly. Across the 30 districts, the two moves barely line up.',
+      weak: 'That is about right. There is a link, but it is weak, and with 30 districts it could be chance.',
+      none: 'Nearly. The link is weak enough to be chance, though it leans the way you would expect.'
     }
   },
 
