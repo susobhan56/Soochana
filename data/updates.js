@@ -24,6 +24,14 @@
  */
 window.SOOCHANA_UPDATES = [
   {
+    id: 'tectonics-story-3',
+    date: '2026-10-07',
+    type: 'feature',
+    title: 'Tectonics: "The ageing aftershock"',
+    text: 'Story 3 plays Odisha’s age pyramid from 1991 to 2036 and maps which districts will grow old first.',
+    href: 'tectonics-ageing.html'
+  },
+  {
     id: 'tectonics-story-2',
     date: '2026-10-07',
     type: 'feature',

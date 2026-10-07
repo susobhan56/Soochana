@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The ageing aftershock · Tectonics · Soochana</title>
+<meta name="description" content="Soochana Tectonics, story 3: Odisha is growing older. The share aged 60 and over (NFHS), the age pyramid from 1991 to 2036, which districts age fastest, and what people search for when care is needed.">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css?v=20261007">
+<link rel="stylesheet" href="tectonics.css?v=20261007-3">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="ui.js?v=20261006-3"></script>
+<script src="whatsnew.js?v=20261006" defer></script>
+<script src="tectonics-s3.js?v=20261007-3" defer></script>
+<script src="tectonics.js?v=20261007-3" defer></script>
+</head>
+<body class="tk-body" data-scene="cover">
+
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+      <span class="soo-mark" aria-hidden="true"></span>
+      <div>
+        <h1 style="line-height:1; margin:0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap:12px;">
+    <a href="about.html" class="btn-elegant">About Us</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="learn/index.html" class="btn-elegant">Learn</a>
+    <a href="tectonics.html" class="btn-elegant" aria-current="page">Tectonics</a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     TECTONICS · STORY 3 — the ageing aftershock.
+     Same engine as stories 1 and 2 (tectonics.js); this
+     page's numbers live in tectonics-s3.js.
+═══════════════════════════════════════════════ -->
+<main class="tk" id="tk">
+
+  <!-- ── 0 · cover ─────────────────────────────── -->
+  <section class="tk-scene" id="cover" data-scene="cover" data-chapter="0" aria-labelledby="tkCoverTitle">
+    <div class="tk-visual">
+      <svg class="tk-plates" id="tkPlates" viewBox="0 0 600 420" role="img" aria-labelledby="tkPlatesT">
+        <title id="tkPlatesT">Two plates, the official record and online signals, push together and raise a ridge of new land between them.</title>
+      </svg>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Soochana Tectonics · Story 3</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkCoverTitle" tabindex="-1">The ageing aftershock</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Fewer children are being born, and people are living longer. The result builds slowly, and then arrives all at once: a state that is growing old.</p>
+      <p class="tk-lead tk-rise" style="--i:3">By 2036 Odisha is projected to have <b>twice as many people aged 60 and over</b> as it had in 2011. Who will care for them, and who will pay?</p>
+      <div class="tk-actions tk-rise" style="--i:4">
+        <button type="button" class="btn-pill solid" data-go="next">Begin story 3</button>
+      </div>
+      <ol class="tk-season tk-rise" style="--i:5" data-season aria-label="Stories in this season"></ol>
+    </div>
+  </section>
+
+  <!-- ── 1 · the plate: elders ─────────────────── -->
+  <section class="tk-scene" id="elders" data-scene="online" data-chapter="1" aria-labelledby="tkEldersTitle">
+    <div class="tk-visual">
+      <svg class="tk-island" id="islandElders" viewBox="0 0 500 500" role="img" aria-labelledby="islandEldersT">
+        <title id="islandEldersT">One hundred dots, one for every hundred people in Odisha's households, coloured by whether they are aged 60 or over.</title>
+      </svg>
+      <ul class="tk-key" id="keyElders" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 3 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkEldersTitle" tabindex="-1">How many people in Odisha are 60 or older?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">In NFHS-5 (2019–21), <b>13 of every 100</b> people in the households surveyed were 60 or older. How many do you think it was in NFHS-6 (2023–24)?</p>
+      <div class="tk-guess tk-rise" style="--i:3" data-guess="elders">
+        <label class="tk-guess-label" for="guessElders">Your guess</label>
+        <div class="tk-guess-row">
+          <input type="range" id="guessElders" min="0" max="100" step="1" value="13">
+          <output for="guessElders" class="tk-guess-out"><b>13</b> of 100</output>
+        </div>
+        <button type="button" class="btn-pill solid" data-reveal>Tell me</button>
+      </div>
+      <div class="tk-reveal" data-reveal-for="elders" hidden>
+        <p class="tk-big"><b>16</b> of 100</p>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead">Up from 13.4% to 15.6% in about four years. And <b>villages are older than towns</b>: 15.9% against 13.9%.</p>
+        <p class="tk-note">NFHS counts the people living in the homes it visits. Population projections, which count everyone, put the share lower, at about 12% for 2026. Part of the gap may be young people living away from home.</p>
+        <p class="tk-badge tk-badge--official">Official · NFHS-5 and NFHS-6, Odisha</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2 · the plate: the pyramid ────────────── -->
+  <section class="tk-scene" id="pillar" data-scene="methods" data-chapter="1" aria-labelledby="tkPillarTitle">
+    <div class="tk-visual">
+      <svg class="tk-pyr" id="tkPyramid" viewBox="0 0 560 450" role="img" aria-labelledby="tkPyramidT">
+        <title id="tkPyramidT">Odisha's population by five-year age group and sex, from the 1991 Census to the 2036 projection. Groups aged 60 and over are highlighted.</title>
+      </svg>
+      <div class="tk-pyr-controls">
+        <button type="button" id="pyrPlay" aria-pressed="false">Play</button>
+        <input type="range" id="pyrYear" aria-label="Year">
+        <output id="pyrYearOut" for="pyrYear"></output>
+      </div>
+      <p class="tk-pyr-readout" id="pyrReadout" aria-live="polite"></p>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 3 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkPillarTitle" tabindex="-1">The pyramid becomes a pillar</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Press play. In 1991 Odisha was a pyramid: many children, few elders. Watch the yellow bars, the people aged 60 and over, as the years pass.</p>
+      <div class="tk-guess tk-choice tk-rise" style="--i:3" data-choice="cross" data-answer="2036" data-pyramid-year="2036">
+        <p class="tk-guess-label">When will people aged 60+ outnumber children under 10?</p>
+        <div class="tk-call-opts">
+          <button type="button" data-value="2021">By 2021</button>
+          <button type="button" data-value="2026">By 2026</button>
+          <button type="button" data-value="2031">By 2031</button>
+          <button type="button" data-value="2036">By 2036</button>
+        </div>
+      </div>
+      <div class="tk-reveal" data-choice-for="cross" hidden>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead">It happens <b>between 2031 and 2036</b>. In 2031 children under 10 still lead, 73.2 lakh to 70.2 lakh. By 2036 it is 81.9 lakh people aged 60 and over against 69.2 lakh children.</p>
+        <p class="tk-lead">For every 100 people of working age there will be <b>25 aged 60 and over</b>, up from 15 in 2011.</p>
+        <p class="tk-badge tk-badge--official">Official · Census 1991, 2011</p>
+        <p class="tk-badge tk-badge--model">Projection · 2021–2036</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3 · the plate: who grows ──────────────── -->
+  <section class="tk-scene" id="apart" data-scene="apart" data-chapter="1" aria-labelledby="tkApartTitle">
+    <div class="tk-visual">
+      <svg class="tk-slope" id="tkSlope" viewBox="0 0 640 440" role="img" aria-labelledby="tkSlopeT">
+        <title id="tkSlopeT">Each age group's size in 2036 compared with 2011, where 2011 equals 100. Aged 80 and over: 230. Aged 60 to 79: 203. Working age, 15 to 59: 127. Children, 0 to 14: 88.</title>
+      </svg>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 3 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkApartTitle" tabindex="-1">Who grows, who shrinks</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Set every age group to 100 in 2011 and follow it to 2036. Children shrink to 88. The working age grows to 127. People aged 60–79 double.</p>
+      <p class="tk-lead tk-rise" style="--i:3">The oldest grow fastest of all: <b>80 and over, from 4.0 lakh to 9.2 lakh</b>. And most of them will be women: 4.9 lakh women against 4.2 lakh men.</p>
+      <p class="tk-badge tk-badge--official tk-rise" style="--i:4">Official · Census 2011</p>
+      <p class="tk-badge tk-badge--model tk-rise" style="--i:5">Projection · 2036</p>
+    </div>
+  </section>
+
+  <!-- ── 4 · the plate: districts ──────────────── -->
+  <section class="tk-scene" id="districts" data-scene="apart" data-chapter="1" aria-labelledby="tkMapTitle">
+    <div class="tk-visual">
+      <svg class="tk-map" id="tkMap" viewBox="0 0 520 520" role="img" aria-labelledby="tkMapT">
+        <title id="tkMapT">Map of Odisha's 30 districts, coloured by the projected share of people aged 60 and over in 2036.</title>
+      </svg>
+      <p class="tk-map-readout" id="mapReadout" aria-live="polite"></p>
+      <ul class="tk-key" id="mapKey" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 3 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkMapTitle" tabindex="-1">Where will Odisha grow old first?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">In 2011 no district had more than 12 people aged 60+ in every 100. Which district do you think will be the oldest in 2036?</p>
+      <div class="tk-guess tk-rise" style="--i:3">
+        <label class="tk-guess-label" for="mapPick">Your pick</label>
+        <div class="tk-guess-row">
+          <select id="mapPick" class="tk-select"><option value="">Choose a district</option></select>
+        </div>
+        <button type="button" class="btn-pill solid" data-map-reveal disabled>Tell me</button>
+      </div>
+      <div class="tk-reveal" data-map-panel hidden>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead">Jagatsinghapur (17.9%), Puri and Cuttack (both 17.5%): the coastal heartland.</p>
+        <div class="tk-views" role="group" aria-label="Map view">
+          <button type="button" data-map-view="now" aria-pressed="true">2036</button>
+          <button type="button" data-map-view="change" aria-pressed="false">How much older than in 2011</button>
+        </div>
+        <p class="tk-lead">Every district gets older. The fastest is <b>Khordha</b>, home to Bhubaneswar: from 9.1% to 17.3%. Next come Sundargarh, Sambalpur, Jharsuguda and Kendujhar, the industrial and mining belt.</p>
+        <p class="tk-note">These are projections, not counts. They assume today's trends in births, deaths and migration carry on.</p>
+        <p class="tk-badge tk-badge--model">Projection · DIU Bayesian projections, districts</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5 · the tremor ────────────────────────── -->
+  <section class="tk-scene" id="tremor" data-scene="tremor" data-chapter="2" aria-labelledby="tkTremorTitle">
+    <div class="tk-visual tk-visual--wide">
+      <div class="tk-seismo" id="tkSeismo" role="group" aria-label="Search-interest traces for Odisha, 2019 to today"></div>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 3 · Chapter 2 · The tremor</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkTremorTitle" tabindex="-1">Who is searching for care?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Ageing shows up in a household long before it shows up in a census: a search for a home nurse, a knee operation, a pension form. We are tracing four groups of searches made in Odisha, in Odia and in English, from 2019 to today.</p>
+      <p class="tk-lead tk-rise" style="--i:3">Each trace is search interest from 0 to 100, relative to its own busiest week. The shaded bands are the two survey rounds.</p>
+      <p class="tk-badge tk-badge--signal tk-rise" style="--i:4">Behavioural · Google Trends, Odisha</p>
+      <p class="tk-note tk-rise" style="--i:5" id="tkSeismoStatus"></p>
+    </div>
+  </section>
+
+  <!-- ── 6 · the collision ─────────────────────── -->
+  <section class="tk-scene" id="collision" data-scene="collision" data-chapter="3" aria-labelledby="tkCollisionTitle">
+    <div class="tk-visual tk-visual--top">
+      <ul class="tk-quads" id="tkQuads" aria-label="The four kinds of collision"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 3 · Chapter 3 · The collision</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkCollisionTitle" tabindex="-1">Where will the plates meet?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">When the record and the signals meet, it ends in one of four ways: <b class="tk-c-record">blue</b> arrows are the survey, <b class="tk-c-signal">amber</b> arrows are searches. NFHS does not report one of these at all.</p>
+      <div class="tk-predict tk-rise" style="--i:3" id="tkPredict"></div>
+      <p class="tk-note tk-rise" style="--i:4">Your calls are kept on this device only. When the search data arrives, this page will show where the plates really met.</p>
+    </div>
+  </section>
+
+  <!-- ── 7 · the new land ──────────────────────── -->
+  <section class="tk-scene" id="newland" data-scene="newland" data-chapter="4" aria-labelledby="tkNewlandTitle">
+    <div class="tk-copy tk-copy--full">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 3 · Chapter 4 · The new land</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkNewlandTitle" tabindex="-1">Three questions rising from the fault</h2>
+      <p class="tk-lead tk-rise" style="--i:2">These are questions, not findings. Each says what would prove it and what would rule it out.</p>
+      <ol class="tk-questions">
+        <li class="tk-rise" style="--i:3">
+          <p class="tk-q-tag">Open question</p>
+          <h3>Care becomes a market</h3>
+          <p>Is looking after parents moving from something families do to something they buy?</p>
+          <p class="tk-q-test"><b>Holds if</b> searches for home nurses and old-age homes rise faster than the number of older people.</p>
+          <p class="tk-q-test"><b>Falls if</b> they stay flat while the old population grows.</p>
+        </li>
+        <li class="tk-rise" style="--i:4">
+          <p class="tk-q-tag">Open question</p>
+          <h3>The boom towns grow old</h3>
+          <p>Khordha and the industrial belt age fastest. Are the people who came there for work growing old far from the families they left?</p>
+          <p class="tk-q-test"><b>Holds if</b> the districts that drew the most migrants in past decades are the ones ageing fastest now.</p>
+          <p class="tk-q-test"><b>Falls if</b> ageing speed has nothing to do with past migration.</p>
+        </li>
+        <li class="tk-rise" style="--i:5">
+          <p class="tk-q-tag">Open question</p>
+          <h3>Old age is a woman's story</h3>
+          <p>By 2036 women will outnumber men among people aged 80 and over. Many will be widows. Are pensions and care reaching them?</p>
+          <p class="tk-q-test"><b>Holds if</b> pension records and pension searches lean towards women, and grow with the oldest group.</p>
+          <p class="tk-q-test"><b>Falls if</b> women are under-represented among those claiming support.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── 8 · the aftershock ────────────────────── -->
+  <section class="tk-scene" id="aftershock" data-scene="aftershock" data-chapter="5" aria-labelledby="tkAfterTitle">
+    <div class="tk-copy tk-copy--full">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 3 · Chapter 5 · The aftershock</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkAfterTitle" tabindex="-1">When a state grows old, what shakes?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Ageing is not only a number in a projection. It arrives in hospitals, in homes and in household budgets.</p>
+      <ul class="tk-shocks">
+        <li class="tk-rise" style="--i:3"><h3>Health</h3><p>Health cover now reaches 82.7% of households, up from 47.9% (NFHS). Does it cover what old age needs: long illness, care at home?</p></li>
+        <li class="tk-rise" style="--i:4"><h3>Families</h3><p>When the young move away for work, who looks after the old who stay behind in the villages?</p></li>
+        <li class="tk-rise" style="--i:5"><h3>Money</h3><p>By 2036 there will be 25 people aged 60+ for every 100 of working age, up from 15 in 2011. Pensions and savings will have to stretch further.</p></li>
+        <li class="tk-rise" style="--i:6"><h3>Towns</h3><p>Ramps, buses, clinics and homes built for the young will need rethinking, first along the coast and in the industrial belt.</p></li>
+      </ul>
+      <div class="tk-after-grid">
+        <div class="tk-needs tk-rise" style="--i:7">
+          <h3>This story still needs</h3>
+          <ul>
+            <li>Google Trends exports for the four search groups, Odisha, 2019 to today</li>
+            <li>The words people in Odisha actually use for care and old age, in Odia and in English</li>
+            <li>Odisha's figures from LASI, India's ageing survey, on who older people live with</li>
+            <li>Pension records by district, split by women and men</li>
+            <li>Voices of older people and of the people who care for them</li>
+          </ul>
+        </div>
+        <div class="tk-legend tk-rise" style="--i:8">
+          <h3>How sure is each number?</h3>
+          <ul>
+            <li><span class="tk-badge tk-badge--official">Official</span> Census, NFHS, SRS: slow and reliable</li>
+            <li><span class="tk-badge tk-badge--model">Projection</span> Modelled futures: assume today's trends</li>
+            <li><span class="tk-badge tk-badge--admin">Administrative</span> HMIS, pensions: frequent, patchy</li>
+            <li><span class="tk-badge tk-badge--signal">Behavioural</span> Searches, markets: fast, biased</li>
+            <li><span class="tk-badge tk-badge--voice">Qualitative</span> Field voices: explain the why</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tk-actions tk-rise" style="--i:9">
+        <button type="button" class="btn-pill ghost" data-go="0">Back to the start</button>
+        <a class="btn-pill solid" href="tectonics-marriage.html">Story 2: when does youth want to marry?</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="tk-rail" aria-label="Story chapters">
+  <button type="button" class="tk-arrow prev" data-go="prev" aria-label="Previous scene"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <ol class="tk-steps" id="tkSteps"></ol>
+  <button type="button" class="tk-arrow next" data-go="next" aria-label="Next scene"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+</nav>
+
+<p class="tk-live" id="tkLive" aria-live="polite"></p>
+
+<script src="chatbot.js?v=20261006-2"></script>
+</body>
+</html>

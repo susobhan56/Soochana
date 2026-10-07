@@ -1,7 +1,7 @@
 # Tectonics — search data
 
-The Tectonics story pages (`tectonics.html`, `tectonics-marriage.html`) read
-Google Trends exports from this folder. If a file is missing, its trace on the
+The Tectonics story pages (`tectonics.html`, `tectonics-marriage.html`,
+`tectonics-ageing.html`) read Google Trends exports from this folder. If a file is missing, its trace on the
 page says "No reading yet" and nothing is drawn. The pages never show made-up
 numbers.
 
@@ -22,6 +22,15 @@ numbers.
 | `s2-love-court.csv` | Love and court marriage | love marriage, court marriage |
 | `s2-legal-age.csv` | The legal age | marriage age for girls, child marriage |
 | `s2-wedding-costs.csv` | Paying for a wedding | marriage loan, wedding cost |
+
+## Story 3, "The ageing aftershock"
+
+| File name (exactly) | Search group | Example terms |
+|---|---|---|
+| `s3-care-at-home.csv` | Care at home | home nurse, caretaker for elderly |
+| `s3-old-age-homes.csv` | Old-age homes | old age home, briddhashram |
+| `s3-pensions.csv` | Pensions | Madhu Babu pension, old age pension |
+| `s3-ailments.csv` | Ailments of age | knee replacement, dementia |
 
 The example terms are only a starting point. Replace them with the DIU team's
 list of the words people in Odisha actually use, in Odia and in English.
