@@ -3244,10 +3244,10 @@ footer::before {
 .brand-partner:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 8px; }
 
 /* the dark headers: home (home_pm.css) and the guided tour (explore.css) */
-:is(.pm-home, .ex-body) .brand-partner { border-left-color: rgba(255, 255, 255, 0.25); }
-:is(.pm-home, .ex-body) .brand-partner-k { color: rgba(255, 255, 255, 0.72); }
-:is(.pm-home, .ex-body) .brand-partner img { border-color: transparent; }
-:is(.pm-home, .ex-body) .brand-partner:focus-visible { outline-color: #ffffff; }
+:is(.pm-home, .ex-body, .tk-body) .brand-partner { border-left-color: rgba(255, 255, 255, 0.25); }
+:is(.pm-home, .ex-body, .tk-body) .brand-partner-k { color: rgba(255, 255, 255, 0.72); }
+:is(.pm-home, .ex-body, .tk-body) .brand-partner img { border-color: transparent; }
+:is(.pm-home, .ex-body, .tk-body) .brand-partner:focus-visible { outline-color: #ffffff; }
 
 /* phones: the words go, the logo stays, and the header keeps one band */
 @media (max-width: 600px) {
@@ -3279,6 +3279,7 @@ footer::before {
 }
 .pm-home header :is(.soo-brand, .soo-mark),
 .ex-body header :is(.soo-brand, .soo-mark),
+.tk-body header :is(.soo-brand, .soo-mark),
 .soo-mark--dark {
   --soo-disc:  #f08a4b;
   --soo-ink:   #ffffff;
@@ -3474,10 +3475,10 @@ footer::before {
 }
 
 /* dark headers: home and the guided tour */
-:is(.pm-home, .ex-body) .wn-bell { color: #ffffff; border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); }
-:is(.pm-home, .ex-body) .wn-bell:hover { border-color: #ffffff; background: rgba(255, 255, 255, 0.14); color: #ffffff; }
-:is(.pm-home, .ex-body) .wn-bell[aria-expanded="true"] { background: #0f9dde; border-color: #0f9dde; }
-:is(.pm-home, .ex-body) .wn-count { border-color: #0d2b45; }
+:is(.pm-home, .ex-body, .tk-body) .wn-bell { color: #ffffff; border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); }
+:is(.pm-home, .ex-body, .tk-body) .wn-bell:hover { border-color: #ffffff; background: rgba(255, 255, 255, 0.14); color: #ffffff; }
+:is(.pm-home, .ex-body, .tk-body) .wn-bell[aria-expanded="true"] { background: #0f9dde; border-color: #0f9dde; }
+:is(.pm-home, .ex-body, .tk-body) .wn-count { border-color: #0d2b45; }
 
 /* a header link whose section holds something unread */
 .wn-navdot {

@@ -1,0 +1,535 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TECTONICS — the story segment (tectonics.html)
+   Same family as the guided tour (explore.css): Anton for display,
+   Merriweather for reading, Hind for labels, white type on deep
+   painted grounds. Two plate colours carry the whole segment:
+   blue for the official record, amber for online signals.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.tk-body {
+  --tk-display: 'Anton', 'Oswald', 'Arial Narrow', Impact, sans-serif;
+  --tk-read:    'Merriweather', Georgia, 'Times New Roman', serif;
+  --tk-ui:      'Hind', 'Outfit', system-ui, sans-serif;
+
+  --tk-white:  #ffffff;
+  --tk-soft:   rgba(255, 255, 255, 0.86);
+  --tk-faint:  rgba(255, 255, 255, 0.68);
+  --tk-line:   rgba(255, 255, 255, 0.24);
+  --tk-ghost:  rgba(255, 255, 255, 0.12);
+  --tk-sky:    #0f9dde;
+  --tk-sky-hi: #36b4ee;
+
+  /* the two plates */
+  --tk-record:    #5fb6ec;  /* official record */
+  --tk-record-lo: #1f6fa6;
+  --tk-signal:    #f4a63a;  /* online signals */
+  --tk-signal-lo: #a8611a;
+  --tk-land:      #8fd19e;  /* new land */
+  --tk-lost:      #f08a4b;
+
+  --tk-ease: cubic-bezier(0.45, 0.05, 0.2, 1);
+
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--tk-white);
+  font-family: var(--tk-ui);
+  background-color: #1d2430;
+  background-image:
+    var(--pm-wash), var(--pm-paper),
+    radial-gradient(ellipse 80% 60% at 18% 8%, rgba(255, 255, 255, 0.10), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 85% 100%, rgba(0, 0, 0, 0.30), transparent 65%);
+  background-size: cover, 220px 220px, auto, auto;
+  background-blend-mode: soft-light, soft-light, normal, normal;
+  transition: background-color 1.4s var(--tk-ease);
+}
+
+/* one ground per scene: basalt, the record's blues, the signal's
+   ochre, magma at the collision, green new land, deep night after */
+.tk-body[data-scene="cover"]      { background-color: #1d2430; }
+.tk-body[data-scene="online"]     { background-color: #16587d; }
+.tk-body[data-scene="methods"]    { background-color: #1a4d6e; }
+.tk-body[data-scene="apart"]      { background-color: #12405e; }
+.tk-body[data-scene="tremor"]     { background-color: #6b3d12; }
+.tk-body[data-scene="collision"]  { background-color: #5a2433; }
+.tk-body[data-scene="newland"]    { background-color: #245e48; }
+.tk-body[data-scene="aftershock"] { background-color: #0d2b45; }
+
+/* style.css gives every <path> a map outline and hover glow; none of
+   that belongs here. :where() keeps these at the global rule's weight,
+   so the class rules below still win. */
+:where(.tk-body) path { stroke: none; stroke-width: 1px; transition: none; cursor: inherit; }
+:where(.tk-body) path:hover { stroke: none; stroke-width: 1px; filter: none; }
+
+/* ── header, over the ground ──────────────────────────── */
+.tk-body header,
+.tk-body header:hover {
+  background: transparent;
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.tk-body header h1 { color: var(--tk-white); }
+.tk-body header .nav-group a > div > div { color: var(--tk-faint) !important; }
+.tk-body header .btn-elegant {
+  font-family: var(--tk-ui);
+  color: var(--tk-white);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.tk-body header .btn-elegant:hover { color: var(--tk-white); border-color: var(--tk-white); background: rgba(255, 255, 255, 0.14); }
+.tk-body header .btn-elegant[aria-current="page"] { background: var(--tk-sky); border-color: var(--tk-sky); }
+
+/* ── stage ────────────────────────────────────────────── */
+.tk {
+  --gutter: clamp(16px, 5vw, 80px);
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  overflow: clip; /* hidden can still be scrolled by focus; the off-stage scenes sit 64px to the side */
+  isolation: isolate;
+}
+
+.tk-scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  align-items: center;
+  gap: clamp(20px, 4vw, 64px);
+  padding: clamp(16px, 3vw, 36px) var(--gutter) 28px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(64px);
+  transition: opacity 1s var(--tk-ease), transform 1.4s var(--tk-ease), visibility 0s linear 1.4s;
+}
+.tk-scene.is-before { transform: translateX(-64px); }
+.tk-scene.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0.25s, 0.25s, 0s;
+}
+.tk-scene h2:focus { outline: none; }
+
+.tk-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  max-height: 100%;
+}
+.tk-visual > svg { width: 100%; max-width: 560px; max-height: calc(100dvh - 240px); }
+.tk-visual--wide > * { width: 100%; }
+.tk-visual--top { align-self: center; }
+
+.tk-copy { max-width: 520px; min-width: 0; }
+.tk-copy--full {
+  grid-column: 1 / -1;
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  align-self: start;
+}
+
+/* children rise in one after another as a scene arrives */
+.tk-rise {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 1.1s var(--tk-ease), transform 1.3s var(--tk-ease);
+}
+.is-active .tk-rise {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(0.45s + var(--i, 0) * 0.12s);
+}
+
+/* ── type ─────────────────────────────────────────────── */
+.tk-display {
+  font-family: var(--tk-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.06;
+  color: var(--tk-white);
+  font-size: calc(clamp(30px, 3.6vw, 52px) * var(--type-scale));
+  margin: 0 0 18px;
+}
+.tk-kicker {
+  margin: 0 0 10px;
+  font-size: calc(13px * var(--type-scale));
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tk-faint);
+}
+.tk-lead {
+  font-family: var(--tk-read);
+  font-weight: 300;
+  font-size: calc(16px * var(--type-scale));
+  line-height: 1.7;
+  color: var(--tk-soft);
+  margin: 0 0 14px;
+}
+.tk-lead b { font-weight: 700; color: var(--tk-white); }
+.tk-c-record { color: var(--tk-record) !important; }
+.tk-c-signal { color: var(--tk-signal) !important; }
+.tk-note {
+  font-size: calc(13px * var(--type-scale));
+  color: var(--tk-faint);
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+.tk-big {
+  font-family: var(--tk-display);
+  font-size: calc(clamp(40px, 5vw, 68px) * var(--type-scale));
+  line-height: 1;
+  margin: 0 0 12px;
+  color: var(--tk-faint);
+}
+.tk-big b { font-weight: 400; color: var(--tk-white); }
+
+/* ── buttons ──────────────────────────────────────────── */
+.tk .btn-pill {
+  display: inline-block;
+  font-family: var(--tk-display);
+  font-weight: 400;
+  font-size: calc(18px * var(--type-scale));
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1.1;
+  padding: 11px 26px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.5s var(--tk-ease), transform 0.5s var(--tk-ease), border-color 0.5s var(--tk-ease);
+}
+.tk .btn-pill::before { display: none; }
+.tk .btn-pill.solid { background: var(--tk-sky); border: 2px solid var(--tk-sky); color: var(--tk-white); }
+.tk .btn-pill.solid:hover { background: var(--tk-sky-hi); border-color: var(--tk-sky-hi); transform: translateY(-2px); }
+.tk .btn-pill.ghost { background: transparent; border: 2px solid rgba(255, 255, 255, 0.7); color: var(--tk-white); }
+.tk .btn-pill.ghost:hover { border-color: var(--tk-white); background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+.tk .btn-pill:focus-visible { outline: 3px solid var(--tk-white); outline-offset: 3px; }
+.tk-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 0; }
+
+/* ── cover: the plates and the season ─────────────────── */
+.tk-plates .plate { transition: transform 2.6s var(--tk-ease); }
+.tk-plates .plate-l { transform: translateX(-70px); }
+.tk-plates .plate-r { transform: translateX(70px); }
+.tk-plates .ridge   { transform: scaleY(0); transform-origin: 300px 262px; transform-box: view-box; transition: transform 2s var(--tk-ease) 1.6s; }
+.tk-plates .ridge-label { opacity: 0; transition: opacity 1s ease 3.2s; }
+.tk-plates .town { opacity: 0; transform: translateY(8px); transform-box: fill-box; transition: opacity 0.8s ease, transform 0.8s var(--tk-ease); }
+.is-active .tk-plates .plate { transform: none; }
+.is-active .tk-plates .ridge { transform: scaleY(1); }
+.is-active .tk-plates .ridge-label { opacity: 1; }
+.is-active .tk-plates .town { opacity: 1; transform: none; transition-delay: calc(2.4s + var(--i, 0) * 0.15s); }
+.tk-plates text { font-family: var(--tk-ui); fill: var(--tk-white); }
+.tk-plates .plate-name { font-size: 15px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.tk-plates .plate-sub  { font-size: 13px; fill: var(--tk-faint); }
+
+.tk-season {
+  list-style: none;
+  margin: 26px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--tk-line);
+  display: grid;
+  gap: 6px;
+  font-size: calc(14px * var(--type-scale));
+  color: var(--tk-faint);
+}
+.tk-season li { display: flex; align-items: baseline; gap: 10px; }
+.tk-season span {
+  display: inline-grid;
+  place-items: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--tk-line);
+  font-size: calc(12px * var(--type-scale));
+  flex-shrink: 0;
+}
+.tk-season .is-live { color: var(--tk-white); font-weight: 600; }
+.tk-season .is-live span { background: var(--tk-sky); border-color: var(--tk-sky); }
+.tk-season em { font-style: normal; font-size: calc(12px * var(--type-scale)); letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; }
+
+/* ── the island of a hundred ──────────────────────────── */
+.tk-island .shore { fill: rgba(255, 255, 255, 0.07); stroke: rgba(255, 255, 255, 0.16); stroke-width: 1.5; }
+.tk-island .dot {
+  fill: rgba(255, 255, 255, 0.14);
+  stroke: transparent;
+  stroke-width: 2;
+  transition: fill 0.7s var(--tk-ease), stroke 0.7s var(--tk-ease), r 0.5s var(--tk-ease);
+}
+.tk-island .dot.is-guess { fill: rgba(255, 255, 255, 0.55); }
+.tk-island .dot.is-was   { fill: var(--tk-record); }
+.tk-island .dot.is-gain  { fill: var(--tk-land); }
+.tk-island .dot.is-lost  { fill: transparent; stroke: var(--tk-lost); }
+.tk-island .dot.is-pop   { animation: tkPop 0.9s var(--tk-ease); }
+@keyframes tkPop { 0% { r: 3; } 60% { r: 15; } 100% { r: 11; } }
+
+.tk-key {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+  margin: 10px 0 0;
+  padding: 0;
+  font-size: calc(13px * var(--type-scale));
+  color: var(--tk-soft);
+  min-height: 20px;
+}
+.tk-key li { display: inline-flex; align-items: center; gap: 7px; }
+.tk-key i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+/* ── guess-first slider ───────────────────────────────── */
+.tk-guess { margin: 18px 0 0; }
+.tk-guess-label { display: block; font-size: calc(13px * var(--type-scale)); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tk-faint); margin-bottom: 6px; }
+.tk-guess-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.tk-guess-out { min-width: 96px; font-size: calc(15px * var(--type-scale)); color: var(--tk-soft); }
+.tk-guess-out b { font-family: var(--tk-display); font-weight: 400; font-size: calc(26px * var(--type-scale)); color: var(--tk-white); margin-right: 4px; }
+.tk-guess input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.35);
+  outline: none;
+}
+.tk-guess input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--tk-white);
+  border: 0;
+  cursor: grab;
+}
+.tk-guess input[type="range"]::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: var(--tk-white); border: 0; cursor: grab; }
+.tk-guess input[type="range"]:focus-visible { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5); }
+.tk-guess.is-done { display: none; }
+
+.tk-reveal { animation: tkIn 1s var(--tk-ease); }
+@keyframes tkIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ── evidence badges ──────────────────────────────────── */
+.tk-badge {
+  display: inline-block;
+  margin: 8px 0 0;
+  padding: 4px 11px 3px;
+  border-radius: 999px;
+  font-size: calc(12px * var(--type-scale));
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid;
+}
+.tk-badge--official { color: #cfe8f8; border-color: var(--tk-record); background: rgba(95, 182, 236, 0.16); }
+.tk-badge--admin    { color: #e3dcf5; border-color: #b9a5e6; background: rgba(185, 165, 230, 0.16); }
+.tk-badge--signal   { color: #fde3bd; border-color: var(--tk-signal); background: rgba(244, 166, 58, 0.16); }
+.tk-badge--voice    { color: #d4f0da; border-color: var(--tk-land); background: rgba(143, 209, 158, 0.16); }
+
+/* ── slope chart ──────────────────────────────────────── */
+.tk-slope text { font-family: var(--tk-ui); fill: var(--tk-white); }
+.tk-slope .axis-label { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; fill: var(--tk-faint); }
+.tk-slope .grid { stroke: rgba(255, 255, 255, 0.1); }
+.tk-slope .val { font-size: 14px; font-weight: 600; }
+.tk-slope .name { font-size: 13px; fill: var(--tk-soft); }
+.tk-slope .name-short { display: none; }
+.tk-slope .line { fill: none; stroke-width: 3.5; stroke-linecap: round; }
+.tk-slope .series { transition: opacity 0.4s ease; cursor: default; }
+.tk-slope.has-focus .series:not(.is-focus) { opacity: 0.25; }
+.tk-slope .series .line { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); }
+.tk-slope .series .val-r, .tk-slope .series .name { opacity: 0; transition: opacity 0.8s ease; }
+.is-active .tk-slope .series .line { stroke-dashoffset: 0; transition: stroke-dashoffset 1.6s var(--tk-ease) calc(0.6s + var(--i) * 0.2s); }
+.is-active .tk-slope .series .val-r,
+.is-active .tk-slope .series .name { opacity: 1; transition-delay: calc(1.8s + var(--i) * 0.2s); }
+
+.tk-beneath { margin: 18px 0 6px; padding: 14px 16px; border: 1px solid var(--tk-line); border-radius: 12px; background: rgba(0, 0, 0, 0.12); }
+.tk-beneath-h { margin: 0 0 8px; font-size: calc(12px * var(--type-scale)); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tk-faint); }
+.tk-beneath dl { margin: 0; display: grid; gap: 8px; }
+.tk-beneath dl > div { display: grid; grid-template-columns: 1fr auto auto; gap: 14px; align-items: baseline; font-size: calc(14px * var(--type-scale)); }
+.tk-beneath dt { color: var(--tk-soft); }
+.tk-beneath dd { margin: 0; font-weight: 600; color: var(--tk-white); white-space: nowrap; }
+.tk-beneath dd span { font-weight: 400; color: var(--tk-faint); margin-right: 4px; }
+
+/* ── seismograph ──────────────────────────────────────── */
+.tk-seismo { display: grid; gap: 14px; max-width: 680px; margin: 0 auto; }
+.tk-trace { border-top: 1px solid var(--tk-line); padding-top: 10px; }
+.tk-trace-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.tk-trace-name { font-size: calc(16px * var(--type-scale)); font-weight: 600; color: var(--tk-white); }
+.tk-trace-terms { font-size: calc(13px * var(--type-scale)); color: var(--tk-faint); }
+.tk-trace-state { font-size: calc(12px * var(--type-scale)); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tk-signal); }
+.tk-trace svg { display: block; width: 100%; height: auto; }
+.tk-trace .band { fill: rgba(95, 182, 236, 0.18); }
+.tk-trace .band-label { font-size: 11px; fill: #cfe8f8; font-family: var(--tk-ui); }
+.tk-trace .baseline { stroke: rgba(255, 255, 255, 0.35); stroke-dasharray: 3 6; }
+.tk-trace .wait { font-size: 12px; fill: var(--tk-faint); font-family: var(--tk-ui); }
+.tk-trace .year { font-size: 11px; fill: var(--tk-faint); font-family: var(--tk-ui); }
+.tk-trace .signal { fill: none; stroke: var(--tk-signal); stroke-width: 2; stroke-linejoin: round; }
+.tk-trace .signal-area { fill: rgba(244, 166, 58, 0.18); }
+
+/* ── collision: four kinds, and your call ─────────────── */
+.tk-quads { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: 100%; max-width: 560px; }
+.tk-quad {
+  border: 1px solid var(--tk-line);
+  border-radius: 14px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.14);
+  transition: border-color 0.5s ease, background 0.5s ease, transform 0.5s var(--tk-ease);
+}
+.tk-quad.is-hit { border-color: var(--tk-white); background: rgba(255, 255, 255, 0.12); transform: translateY(-3px); }
+.tk-quad-arrows { display: flex; gap: 10px; margin-bottom: 10px; height: 36px; align-items: center; }
+.tk-quad-arrows svg { width: 30px; height: 36px; }
+.tk-quad h3 { margin: 0 0 4px; font-family: var(--tk-display); font-weight: 400; font-size: calc(21px * var(--type-scale)); letter-spacing: 0.02em; text-transform: uppercase; color: var(--tk-white); }
+.tk-quad p { margin: 0; font-size: calc(14px * var(--type-scale)); line-height: 1.5; color: var(--tk-soft); }
+.tk-quad .tk-quad-count { margin-top: 8px; font-size: calc(12px * var(--type-scale)); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tk-white); min-height: 1em; }
+
+.tk-predict { display: grid; gap: 14px; margin-top: 8px; }
+.tk-call { border: 1px solid var(--tk-line); border-radius: 12px; padding: 12px 14px; background: rgba(0, 0, 0, 0.12); }
+.tk-call-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+.tk-call-name { font-weight: 600; font-size: calc(15px * var(--type-scale)); }
+.tk-call-survey { font-size: calc(13px * var(--type-scale)); color: #cfe8f8; }
+.tk-call-q { margin: 6px 0 8px; font-size: calc(14px * var(--type-scale)); color: var(--tk-soft); }
+.tk-call-opts { display: flex; gap: 8px; flex-wrap: wrap; }
+.tk-call-opts button {
+  font-family: var(--tk-ui);
+  font-size: calc(14px * var(--type-scale));
+  font-weight: 500;
+  color: var(--tk-white);
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  padding: 6px 14px 5px;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+.tk-call-opts button:hover { border-color: var(--tk-white); background: rgba(255, 255, 255, 0.1); }
+.tk-call-opts button[aria-pressed="true"] { background: var(--tk-signal); border-color: var(--tk-signal); color: #2a1604; }
+.tk-call-opts button:focus-visible { outline: 3px solid var(--tk-white); outline-offset: 2px; }
+.tk-call-result { margin: 8px 0 0; font-size: calc(14px * var(--type-scale)); color: var(--tk-white); min-height: 1.2em; }
+.tk-call-result b { font-family: var(--tk-display); font-weight: 400; letter-spacing: 0.03em; text-transform: uppercase; }
+
+/* ── new land: questions ──────────────────────────────── */
+.tk-questions { list-style: none; margin: 22px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.tk-questions li { border: 1px solid var(--tk-line); border-radius: 14px; padding: 18px 18px 14px; background: rgba(0, 0, 0, 0.14); }
+.tk-questions .tk-q-tag { display: inline-block; font-family: var(--tk-ui); line-height: 1.4; margin: 0 0 8px; font-size: calc(12px * var(--type-scale)); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tk-land); }
+.tk-questions h3, .tk-shocks h3, .tk-needs h3, .tk-legend h3 {
+  margin: 0 0 8px;
+  font-family: var(--tk-display);
+  font-weight: 400;
+  font-size: calc(22px * var(--type-scale));
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--tk-white);
+}
+.tk-questions p { margin: 0 0 10px; font-family: var(--tk-read); font-weight: 300; font-size: calc(14.5px * var(--type-scale)); line-height: 1.65; color: var(--tk-soft); }
+.tk-questions .tk-q-test { font-family: var(--tk-ui); font-weight: 400; font-size: calc(14px * var(--type-scale)); line-height: 1.5; padding-left: 12px; border-left: 2px solid var(--tk-line); }
+.tk-questions .tk-q-test b { color: var(--tk-white); font-weight: 600; }
+
+/* ── aftershock ───────────────────────────────────────── */
+.tk-shocks { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.tk-shocks li { border-top: 3px solid var(--tk-record); padding: 12px 2px 0; }
+.tk-shocks li:nth-child(2) { border-top-color: var(--tk-land); }
+.tk-shocks li:nth-child(3) { border-top-color: var(--tk-signal); }
+.tk-shocks li:nth-child(4) { border-top-color: #b9a5e6; }
+.tk-shocks p { margin: 0; font-family: var(--tk-read); font-weight: 300; font-size: calc(14.5px * var(--type-scale)); line-height: 1.65; color: var(--tk-soft); }
+.tk-after-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 24px; }
+.tk-needs, .tk-legend { border: 1px solid var(--tk-line); border-radius: 14px; padding: 16px 18px; background: rgba(0, 0, 0, 0.14); }
+.tk-needs ul, .tk-legend ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: calc(14px * var(--type-scale)); color: var(--tk-soft); line-height: 1.5; }
+.tk-needs li { padding-left: 18px; position: relative; }
+.tk-needs li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 9px; height: 9px; border: 1.5px solid var(--tk-signal); border-radius: 2px; }
+.tk-legend .tk-badge { margin: 0 8px 0 0; }
+
+/* ── rail: arrows and chapters ────────────────────────── */
+.tk-rail {
+  position: relative;
+  z-index: 5;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 10px clamp(16px, 5vw, 80px) 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.tk-arrow {
+  width: 48px; height: 48px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  background: rgba(0, 0, 0, 0.12);
+  color: var(--tk-white);
+  cursor: pointer;
+  transition: background 0.4s ease, color 0.4s ease, transform 0.4s var(--tk-ease), opacity 0.4s ease;
+}
+.tk-arrow svg { width: 20px; height: 20px; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.tk-arrow svg path { stroke: currentColor; stroke-width: 2.4px; }
+.tk-arrow:hover { background: var(--tk-white); color: #0d2b45; }
+.tk-arrow:focus-visible { outline: 3px solid var(--tk-white); outline-offset: 3px; }
+.tk-arrow:disabled { opacity: 0; pointer-events: none; }
+.tk-arrow.is-nudging { animation: tkNudge 2.2s ease-in-out 3; }
+@keyframes tkNudge { 0%, 100% { transform: none; } 50% { transform: translateX(5px); } }
+
+.tk-steps { list-style: none; display: flex; gap: 6px; margin: 0; padding: 0; }
+.tk-steps button {
+  font-family: var(--tk-ui);
+  font-size: calc(13px * var(--type-scale));
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tk-faint);
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 8px 5px;
+  cursor: pointer;
+  transition: color 0.4s ease, border-color 0.4s ease;
+}
+.tk-steps button:hover { color: var(--tk-white); }
+.tk-steps button[aria-current="step"] { color: var(--tk-white); border-bottom-color: var(--tk-white); }
+.tk-steps button.is-past { border-bottom-color: rgba(255, 255, 255, 0.55); }
+.tk-steps button:focus-visible { outline: 2px solid var(--tk-white); outline-offset: 2px; }
+
+.tk-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── smaller screens: picture above, words below ──────── */
+@media (max-width: 900px) {
+  .tk-scene {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    align-content: start;
+    gap: 14px;
+    padding-bottom: 28px;
+  }
+  .tk-visual > svg { max-height: 40dvh; }
+  .tk-copy { max-width: none; }
+  .tk-steps button { font-size: calc(11.5px * var(--type-scale)); padding: 6px 4px 5px; letter-spacing: 0.03em; }
+  .tk-steps button span { display: none; }
+  .tk-quads { max-width: none; }
+}
+@media (max-width: 560px) {
+  .tk-rail { gap: 8px; }
+  .tk-arrow { width: 42px; height: 42px; }
+  .tk-steps button { width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.2); font-size: 0; }
+  .tk-steps button[aria-current="step"] { background: var(--tk-white); }
+  .tk-steps button.is-past { background: rgba(255, 255, 255, 0.55); }
+  .tk-quads { grid-template-columns: minmax(0, 1fr); }
+  .tk-beneath dl > div { grid-template-columns: 1fr; gap: 2px; }
+  /* the slope chart shrinks to about half size: bigger type, short names */
+  .tk-slope .name-long { display: none; }
+  .tk-slope .name-short { display: inline; font-size: 21px; }
+  .tk-slope .val { font-size: 21px; }
+  .tk-slope .axis-label { font-size: 19px; letter-spacing: 0.04em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tk-body, .tk-scene, .tk-rise, .tk-plates *, .tk-island .dot, .tk-slope *, .tk-quad { transition: none !important; animation: none !important; }
+  .tk-slope .series .line { stroke-dasharray: none; }
+}

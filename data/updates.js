@@ -24,6 +24,14 @@
  */
 window.SOOCHANA_UPDATES = [
   {
+    id: 'tectonics-story-1',
+    date: '2026-10-07',
+    type: 'feature',
+    title: 'Tectonics: "Online, but unprotected?"',
+    text: 'A new story segment that sets the NFHS record against what people search for. Story 1: women online, contraception and unmet need in Odisha.',
+    href: 'tectonics.html'
+  },
+  {
     id: 'learn-how-we-measure',
     date: '2026-10-05',
     type: 'learn',
