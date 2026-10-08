@@ -34,7 +34,7 @@
     { title: 'Online, but unprotected?', href: 'tectonics.html' },
     { title: 'When does youth want to marry?', href: 'tectonics-marriage.html' },
     { title: 'The ageing aftershock', href: 'tectonics-ageing.html' },
-    { title: 'Covered, but connected?' },
+    { title: 'Covered, but connected?', href: 'tectonics-health.html' },
     { title: 'Leaving home' }
   ];
 
@@ -580,7 +580,13 @@
     if (!svg) return;
 
     const names = Object.keys(cfg.values).sort();
-    const ranked = names.slice().sort((a, b) => cfg.values[b][1] - cfg.values[a][1]);
+    /* rank 'low': the reader hunts for the lowest district instead */
+    const low = cfg.rank === 'low';
+    const ranked = names.slice().sort((a, b) => (low ? 1 : -1) * (cfg.values[a][1] - cfg.values[b][1]));
+    const extreme = low ? 'lowest' : 'highest';
+    /* cfg.layers: other indicators the reader can lay over the same map,
+       { view: { label, values: { district: v }, bins } } */
+    const layers = cfg.layers || {};
     const change = n => cfg.values[n][1] - cfg.values[n][0];
     const big = cfg.bigMove || 5;
     let chosen = null;
@@ -595,8 +601,8 @@
       pick.appendChild(o);
     });
 
-    const binColor = v => {
-      const stops = cfg.bins;
+    const binColor = (v, bins) => {
+      const stops = bins || cfg.bins;
       for (let i = 0; i < stops.length; i++) if (v < stops[i][0]) return stops[i][1];
       return stops[stops.length - 1][1];
     };
@@ -607,7 +613,10 @@
         const p = paths[n];
         if (!p) return;
         let fill = 'rgba(255,255,255,0.12)';
-        if (revealed) fill = view === 'now' ? binColor(cfg.values[n][1]) : changeColor(change(n));
+        if (revealed) {
+          if (layers[view]) fill = binColor(layers[view].values[n], layers[view].bins);
+          else fill = view === 'now' ? binColor(cfg.values[n][1]) : changeColor(change(n));
+        }
         else if (n === chosen) fill = 'rgba(255,255,255,0.7)';
         p.style.fill = fill;
         p.classList.toggle('is-chosen', n === chosen);
@@ -623,6 +632,7 @@
       key.innerHTML = '';
       let items;
       if (!revealed) items = [['rgba(255,255,255,0.7)', 'Your pick'], ['rgba(255,255,255,0.12)', 'Other districts']];
+      else if (layers[view]) items = layers[view].bins.map(b => [b[1], b[2]]);
       else if (view === 'now') items = cfg.bins.map(b => [b[1], b[2]]);
       else {
         /* only the kinds of move that actually happened */
@@ -647,6 +657,7 @@
     function tell(n) {
       if (!n) { readout.textContent = revealed ? cfg.hoverHint : cfg.pickHint; return; }
       if (!revealed) { readout.textContent = n; return; }
+      if (layers[view]) { readout.textContent = n + ': ' + fmt(layers[view].values[n]) + '% ' + layers[view].label; return; }
       const [a, b] = cfg.values[n];
       const d = b - a;
       const per = cfg.periods || ['2019–21', '2023–24'];
@@ -672,7 +683,7 @@
       const verdict = panel.querySelector('[data-verdict]');
       verdict.textContent = rank === 1
         ? 'Right first time: ' + top + ', at ' + fmt(cfg.values[top][1]) + '%.'
-        : 'You picked ' + chosen + ': ' + fmt(cfg.values[chosen][1]) + '%, number ' + rank + ' of ' + names.length + '. The highest is ' + top + ', at ' + fmt(cfg.values[top][1]) + '%.';
+        : 'You picked ' + chosen + ': ' + fmt(cfg.values[chosen][1]) + '%, ranked ' + rank + ' of ' + names.length + ', counting from the ' + extreme + '. The ' + extreme + ' is ' + top + ', at ' + fmt(cfg.values[top][1]) + '%.';
       btn.closest('.tk-guess').classList.add('is-done');
       panel.hidden = false;
       paint();
@@ -715,7 +726,7 @@
         names.filter(n => Math.abs(change(n)) >= big && centre[n]).forEach(n => {
           const [x, y0] = centre[n];
           const d = change(n);
-          const len = Math.min(70, Math.abs(d) * 4);
+          const len = Math.min(70, Math.abs(d) * (cfg.arrowScale || 4));
           const up = d > 0;
           const col = up ? '#f08a4b' : '#36b4ee';
           const yTip = up ? y0 - len / 2 : y0 + len / 2;
@@ -728,7 +739,7 @@
           svgText(arrows, x + 11, y0 + 4, n + ' ' + (up ? '+' : '−') + fmt(Math.abs(d)), { class: 'map-label' });
         });
 
-        /* the three highest, named */
+        /* the three at the extreme the reader was hunting for, named */
         const tops = el('g', { class: 'map-tops' }, svg);
         ranked.slice(0, 3).forEach(n => {
           if (!centre[n]) return;

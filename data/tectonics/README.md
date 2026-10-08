@@ -1,7 +1,8 @@
 # Tectonics — search data
 
 The Tectonics story pages (`tectonics.html`, `tectonics-marriage.html`,
-`tectonics-ageing.html`) read Google Trends exports from this folder. If a file is missing, its trace on the
+`tectonics-ageing.html`, `tectonics-health.html`) read Google Trends exports
+from this folder. If a file is missing, its trace on the
 page says "No reading yet" and nothing is drawn. The pages never show made-up
 numbers.
 
@@ -31,6 +32,15 @@ numbers.
 | `s3-old-age-homes.csv` | Old-age homes | old age home, briddhashram |
 | `s3-pensions.csv` | Pensions | Madhu Babu pension, old age pension |
 | `s3-ailments.csv` | Ailments of age | knee replacement, dementia |
+
+## Story 4, "Covered, but connected?"
+
+| File name (exactly) | Search group | Example terms |
+|---|---|---|
+| `s4-health-card.csv` | Using the card | BSKY card, Ayushman card hospital list |
+| `s4-private-hospitals.csv` | Private hospitals | best hospital in Bhubaneswar, hospital near me |
+| `s4-diabetes.csv` | Diabetes | sugar test, diabetes diet |
+| `s4-caesarean.csv` | Caesarean births | caesarean delivery cost, normal delivery hospital |
 
 The example terms are only a starting point. Replace them with the DIU team's
 list of the words people in Odisha actually use, in Odia and in English.

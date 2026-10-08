@@ -24,6 +24,14 @@
  */
 window.SOOCHANA_UPDATES = [
   {
+    id: 'tectonics-story-4',
+    date: '2026-10-07',
+    type: 'feature',
+    title: 'Tectonics: "Covered, but connected?"',
+    text: 'Story 4: health cover jumped to 83% of households, yet it is thinnest exactly where diabetes is highest. Flip the district map to see it.',
+    href: 'tectonics-health.html'
+  },
+  {
     id: 'tectonics-story-3',
     date: '2026-10-07',
     type: 'feature',

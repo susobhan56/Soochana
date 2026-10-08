@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Covered, but connected? · Tectonics · Soochana</title>
+<meta name="description" content="Soochana Tectonics, story 4: health cover in Odisha jumped from 48% to 83% of households. Is it connected to the care people now need, as diabetes rises and births move to private hospitals?">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css?v=20261007">
+<link rel="stylesheet" href="tectonics.css?v=20261007-4">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="ui.js?v=20261006-3"></script>
+<script src="whatsnew.js?v=20261006" defer></script>
+<script src="tectonics-s4.js?v=20261007-4" defer></script>
+<script src="tectonics.js?v=20261007-4" defer></script>
+</head>
+<body class="tk-body" data-scene="cover">
+
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+      <span class="soo-mark" aria-hidden="true"></span>
+      <div>
+        <h1 style="line-height:1; margin:0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap:12px;">
+    <a href="about.html" class="btn-elegant">About Us</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="learn/index.html" class="btn-elegant">Learn</a>
+    <a href="tectonics.html" class="btn-elegant" aria-current="page">Tectonics</a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     TECTONICS · STORY 4 — covered, but connected?
+     Same engine as the other stories (tectonics.js); this
+     page's numbers live in tectonics-s4.js.
+═══════════════════════════════════════════════ -->
+<main class="tk" id="tk">
+
+  <!-- ── 0 · cover ─────────────────────────────── -->
+  <section class="tk-scene" id="cover" data-scene="cover" data-chapter="0" aria-labelledby="tkCoverTitle">
+    <div class="tk-visual">
+      <svg class="tk-plates" id="tkPlates" viewBox="0 0 600 420" role="img" aria-labelledby="tkPlatesT">
+        <title id="tkPlatesT">Two plates, the official record and online signals, push together and raise a ridge of new land between them.</title>
+      </svg>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Soochana Tectonics · Story 4</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkCoverTitle" tabindex="-1">Covered, but connected?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">In four years, health cover in Odisha jumped further than anything else the national health survey measures. Most households now hold a card.</p>
+      <p class="tk-lead tk-rise" style="--i:3">But a card is a promise, and the illnesses are changing. Does the cover reach the care people now need?</p>
+      <div class="tk-actions tk-rise" style="--i:4">
+        <button type="button" class="btn-pill solid" data-go="next">Begin story 4</button>
+      </div>
+      <ol class="tk-season tk-rise" style="--i:5" data-season aria-label="Stories in this season"></ol>
+    </div>
+  </section>
+
+  <!-- ── 1 · the plate: cover ──────────────────── -->
+  <section class="tk-scene" id="cover-share" data-scene="online" data-chapter="1" aria-labelledby="tkCoverShareTitle">
+    <div class="tk-visual">
+      <svg class="tk-island" id="islandCover" viewBox="0 0 500 500" role="img" aria-labelledby="islandCoverT">
+        <title id="islandCoverT">One hundred dots, one for every hundred households in Odisha, coloured by whether any member is covered by a health insurance or financing scheme.</title>
+      </svg>
+      <ul class="tk-key" id="keyCover" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 4 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkCoverShareTitle" tabindex="-1">How many households have health cover?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">In NFHS-5 (2019–21), <b>48 of every 100</b> households had at least one member covered by a health insurance or financing scheme. How many do you think it was in NFHS-6 (2023–24)?</p>
+      <div class="tk-guess tk-rise" style="--i:3" data-guess="cover">
+        <label class="tk-guess-label" for="guessCover">Your guess</label>
+        <div class="tk-guess-row">
+          <input type="range" id="guessCover" min="0" max="100" step="1" value="48">
+          <output for="guessCover" class="tk-guess-out"><b>48</b> of 100</output>
+        </div>
+        <button type="button" class="btn-pill solid" data-reveal>Tell me</button>
+      </div>
+      <div class="tk-reveal" data-reveal-for="cover" hidden>
+        <p class="tk-big"><b>83</b> of 100</p>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead">Up from 47.9% to 82.7%: <b>the biggest jump of all 102 things</b> the survey measures in Odisha. And villages are ahead of towns, 86.0% against 65.2%.</p>
+        <p class="tk-badge tk-badge--official">Official · NFHS-5 and NFHS-6, Odisha</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2 · the plate: blood sugar ────────────── -->
+  <section class="tk-scene" id="sugar" data-scene="methods" data-chapter="1" aria-labelledby="tkSugarTitle">
+    <div class="tk-visual">
+      <svg class="tk-island" id="islandSugar" viewBox="0 0 500 500" role="img" aria-labelledby="islandSugarT">
+        <title id="islandSugarT">One hundred dots, one for every hundred men aged 15 and over in Odisha, coloured by whether they have high blood sugar or take medicine for it.</title>
+      </svg>
+      <ul class="tk-key" id="keySugar" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 4 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkSugarTitle" tabindex="-1">Meanwhile, how many men have high blood sugar?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">The survey tests blood sugar with a finger prick. In NFHS-5, <b>17 of every 100</b> men aged 15 and over had high blood sugar or were taking medicine for it. Four years later?</p>
+      <div class="tk-guess tk-rise" style="--i:3" data-guess="sugar">
+        <label class="tk-guess-label" for="guessSugar">Your guess</label>
+        <div class="tk-guess-row">
+          <input type="range" id="guessSugar" min="0" max="100" step="1" value="17">
+          <output for="guessSugar" class="tk-guess-out"><b>17</b> of 100</output>
+        </div>
+        <button type="button" class="btn-pill solid" data-reveal>Tell me</button>
+      </div>
+      <div class="tk-reveal" data-reveal-for="sugar" hidden>
+        <p class="tk-big"><b>27</b> of 100</p>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead">Up from 17.0% to 26.6% in about four years. For women, 14.0% to 21.7%. In towns it is <b>30.0% of men</b>.</p>
+        <p class="tk-badge tk-badge--official">Official · NFHS-5 and NFHS-6, Odisha</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3 · the plate: where care goes ────────── -->
+  <section class="tk-scene" id="apart" data-scene="apart" data-chapter="1" aria-labelledby="tkApartTitle">
+    <div class="tk-visual">
+      <svg class="tk-slope" id="tkSlope" viewBox="0 0 640 440" role="img" aria-labelledby="tkSlopeT">
+        <title id="tkSlopeT">Slope chart from NFHS-5 to NFHS-6 for Odisha. Households with health cover rose from 47.9% to 82.7%. Births in a public facility fell from 78.7% to 75.0%. Births by caesarean section rose from 21.6% to 29.4%. Women overweight or obese rose from 23.0% to 29.7%. Men with high blood sugar rose from 17.0% to 26.6%.</title>
+      </svg>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 4 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkApartTitle" tabindex="-1">Where the care goes</h2>
+      <p class="tk-lead tk-rise" style="--i:2">As cover rose, births by caesarean section rose too, from 21.6% to 29.4%. In private hospitals, <b>76.8% of births</b> are now by caesarean. The share of births in public facilities fell, from 78.7% to 75.0%.</p>
+      <p class="tk-lead tk-rise" style="--i:3">And the illnesses are changing: more people overweight, more diabetes. These are illnesses of years, not of a single hospital stay.</p>
+      <p class="tk-badge tk-badge--official tk-rise" style="--i:4">Official · NFHS-5 and NFHS-6, Odisha</p>
+    </div>
+  </section>
+
+  <!-- ── 4 · the plate: districts ──────────────── -->
+  <section class="tk-scene" id="districts" data-scene="apart" data-chapter="1" aria-labelledby="tkMapTitle">
+    <div class="tk-visual">
+      <svg class="tk-map" id="tkMap" viewBox="0 0 520 520" role="img" aria-labelledby="tkMapT">
+        <title id="tkMapT">Map of Odisha's 30 districts, coloured by the share of households with health cover in 2023–24, with a view of women's high blood sugar.</title>
+      </svg>
+      <p class="tk-map-readout" id="mapReadout" aria-live="polite"></p>
+      <ul class="tk-key" id="mapKey" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 4 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkMapTitle" tabindex="-1">Where is cover thinnest?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Every district gained cover. Which one do you think has the <b>least</b>?</p>
+      <div class="tk-guess tk-rise" style="--i:3">
+        <label class="tk-guess-label" for="mapPick">Your pick</label>
+        <div class="tk-guess-row">
+          <select id="mapPick" class="tk-select"><option value="">Choose a district</option></select>
+        </div>
+        <button type="button" class="btn-pill solid" data-map-reveal disabled>Tell me</button>
+      </div>
+      <div class="tk-reveal" data-map-panel hidden>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead"><b>Khordha</b>, home to Bhubaneswar, at 71.9%. Then Jharsuguda, Cuttack, Sundargarh and Sambalpur: the cities and the industrial belt. The best covered are in the south and west, led by Nabarangapur at 89.6%.</p>
+        <div class="tk-views" role="group" aria-label="Map view">
+          <button type="button" data-map-view="now" aria-pressed="true">Cover, 2023–24</button>
+          <button type="button" data-map-view="change" aria-pressed="false">How far it rose</button>
+          <button type="button" data-map-view="sugar" aria-pressed="false">Women's blood sugar</button>
+        </div>
+        <p class="tk-lead">Now switch to blood sugar, and the map flips. In the five least-covered districts, <b>24.6% of women</b> have high blood sugar; in the five best covered, 16.7%. Across all 30 districts: the more cover, the less diabetes.</p>
+        <p class="tk-note">This does not mean cover prevents diabetes. Towns have both less cover and more diabetes, so the link may run through town life, not through the card. District figures rest on small samples.</p>
+        <p class="tk-badge tk-badge--official">Official · NFHS-5 and NFHS-6, districts</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5 · the tremor ────────────────────────── -->
+  <section class="tk-scene" id="tremor" data-scene="tremor" data-chapter="2" aria-labelledby="tkTremorTitle">
+    <div class="tk-visual tk-visual--wide">
+      <div class="tk-seismo" id="tkSeismo" role="group" aria-label="Search-interest traces for Odisha, 2019 to today"></div>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 4 · Chapter 2 · The tremor</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkTremorTitle" tabindex="-1">What do people ask before they see a doctor?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Before a hospital visit there is usually a search: which hospital takes the card, what a sugar reading means, what a caesarean costs. We are tracing four groups of searches made in Odisha, in Odia and in English, from 2019 to today.</p>
+      <p class="tk-lead tk-rise" style="--i:3">Each trace is search interest from 0 to 100, relative to its own busiest week. The shaded bands are the two survey rounds.</p>
+      <p class="tk-badge tk-badge--signal tk-rise" style="--i:4">Behavioural · Google Trends, Odisha</p>
+      <p class="tk-note tk-rise" style="--i:5" id="tkSeismoStatus"></p>
+    </div>
+  </section>
+
+  <!-- ── 6 · the collision ─────────────────────── -->
+  <section class="tk-scene" id="collision" data-scene="collision" data-chapter="3" aria-labelledby="tkCollisionTitle">
+    <div class="tk-visual tk-visual--top">
+      <ul class="tk-quads" id="tkQuads" aria-label="The four kinds of collision"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 4 · Chapter 3 · The collision</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkCollisionTitle" tabindex="-1">Where will the plates meet?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">When the record and the signals meet, it ends in one of four ways: <b class="tk-c-record">blue</b> arrows are the survey, <b class="tk-c-signal">amber</b> arrows are searches. Make your call before the search data lands.</p>
+      <div class="tk-predict tk-rise" style="--i:3" id="tkPredict"></div>
+      <p class="tk-note tk-rise" style="--i:4">Your calls are kept on this device only. When the search data arrives, this page will show where the plates really met.</p>
+    </div>
+  </section>
+
+  <!-- ── 7 · the new land ──────────────────────── -->
+  <section class="tk-scene" id="newland" data-scene="newland" data-chapter="4" aria-labelledby="tkNewlandTitle">
+    <div class="tk-copy tk-copy--full">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 4 · Chapter 4 · The new land</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkNewlandTitle" tabindex="-1">Three questions rising from the fault</h2>
+      <p class="tk-lead tk-rise" style="--i:2">These are questions, not findings. Each says what would prove it and what would rule it out.</p>
+      <ol class="tk-questions">
+        <li class="tk-rise" style="--i:3">
+          <p class="tk-q-tag">Open question</p>
+          <h3>The card and the private hospital</h3>
+          <p>Cover jumped while births moved away from public facilities and caesareans rose. Is the card pulling people towards private hospitals?</p>
+          <p class="tk-q-test"><b>Holds if</b> the districts where cover rose most are where public-facility births fell most, and searches for private hospitals rise.</p>
+          <p class="tk-q-test"><b>Falls if</b> the two move independently across districts.</p>
+        </li>
+        <li class="tk-rise" style="--i:4">
+          <p class="tk-q-tag">Open question</p>
+          <h3>Covered for the wrong illness?</h3>
+          <p>Schemes pay for hospital stays. Diabetes needs years of tests and medicine outside hospital. Is the cover built for yesterday's illnesses?</p>
+          <p class="tk-q-test"><b>Holds if</b> diabetes searches lean towards the cost of tests and medicine.</p>
+          <p class="tk-q-test"><b>Falls if</b> people find what they need within the scheme.</p>
+        </li>
+        <li class="tk-rise" style="--i:5">
+          <p class="tk-q-tag">Open question</p>
+          <h3>The cities left out</h3>
+          <p>Cover is thinnest in Khordha and the industrial belt, exactly where diabetes is highest. Who are the townspeople without a card?</p>
+          <p class="tk-q-test"><b>Holds if</b> searches about getting a card come mostly from the cities.</p>
+          <p class="tk-q-test"><b>Falls if</b> the uncovered in towns turn out to have private insurance instead.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── 8 · the aftershock ────────────────────── -->
+  <section class="tk-scene" id="aftershock" data-scene="aftershock" data-chapter="5" aria-labelledby="tkAfterTitle">
+    <div class="tk-copy tk-copy--full">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 4 · Chapter 5 · The aftershock</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkAfterTitle" tabindex="-1">If the card is not the cure, what shakes?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Cover is a door. What matters is where it leads.</p>
+      <ul class="tk-shocks">
+        <li class="tk-rise" style="--i:3"><h3>Primary care</h3><p>A finger-prick test in the village costs less than a hospital stay years later. Screening for sugar and blood pressure may matter more than the next card.</p></li>
+        <li class="tk-rise" style="--i:4"><h3>Hospitals</h3><p>If cover pulls births to private hospitals, caesarean rates there, now 76.8% of their births, become a public question.</p></li>
+        <li class="tk-rise" style="--i:5"><h3>Cities</h3><p>Cover is thinnest where diabetes is highest. The urban poor and informal workers may be the next people to reach.</p></li>
+        <li class="tk-rise" style="--i:6"><h3>Schemes</h3><p>Long illnesses need tests and medicine, month after month. Cover that pays only for hospital stays may miss most of the cost.</p></li>
+      </ul>
+      <div class="tk-after-grid">
+        <div class="tk-needs tk-rise" style="--i:7">
+          <h3>This story still needs</h3>
+          <ul>
+            <li>Google Trends exports for the four search groups, Odisha, 2019 to today</li>
+            <li>The words people in Odisha actually use for hospitals, cards and illness, in Odia and in English</li>
+            <li>Claims under the state health scheme by district, the administrative layer</li>
+            <li>District cover set against district public-facility births, to test the first question</li>
+            <li>Voices of patients on what the card did and did not pay for</li>
+          </ul>
+        </div>
+        <div class="tk-legend tk-rise" style="--i:8">
+          <h3>How sure is each number?</h3>
+          <ul>
+            <li><span class="tk-badge tk-badge--official">Official</span> Census, NFHS, SRS: slow and reliable</li>
+            <li><span class="tk-badge tk-badge--model">Projection</span> Modelled futures: assume today's trends</li>
+            <li><span class="tk-badge tk-badge--admin">Administrative</span> HMIS, claims: frequent, patchy</li>
+            <li><span class="tk-badge tk-badge--signal">Behavioural</span> Searches, markets: fast, biased</li>
+            <li><span class="tk-badge tk-badge--voice">Qualitative</span> Field voices: explain the why</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tk-actions tk-rise" style="--i:9">
+        <button type="button" class="btn-pill ghost" data-go="0">Back to the start</button>
+        <a class="btn-pill solid" href="tectonics-ageing.html">Story 3: the ageing aftershock</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="tk-rail" aria-label="Story chapters">
+  <button type="button" class="tk-arrow prev" data-go="prev" aria-label="Previous scene"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <ol class="tk-steps" id="tkSteps"></ol>
+  <button type="button" class="tk-arrow next" data-go="next" aria-label="Next scene"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+</nav>
+
+<p class="tk-live" id="tkLive" aria-live="polite"></p>
+
+<script src="chatbot.js?v=20261006-2"></script>
+</body>
+</html>
