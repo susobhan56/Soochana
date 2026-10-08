@@ -407,6 +407,35 @@
 .tk-views button[aria-pressed="true"] { background: var(--tk-white); color: #0d2b45; border-color: var(--tk-white); }
 .tk-views button:focus-visible { outline: 3px solid var(--tk-white); outline-offset: 2px; }
 
+/* ── district scatter ─────────────────────────────────── */
+.tk-scatter { width: 100%; max-width: 540px; max-height: calc(100dvh - 300px); overflow: visible; }
+.tk-scatter text { font-family: var(--tk-ui); fill: var(--tk-white); }
+.tk-scatter .grid { stroke: rgba(255, 255, 255, 0.1); }
+.tk-scatter .grid.zero { stroke: rgba(255, 255, 255, 0.55); stroke-dasharray: 4 5; }
+.tk-scatter .tick { font-size: 12px; fill: var(--tk-faint); }
+.tk-scatter .axis-label { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; fill: var(--tk-faint); }
+.tk-scatter .sc-dot {
+  stroke: rgba(13, 43, 69, 0.85);
+  stroke-width: 1.5px;
+  cursor: pointer;
+  transition: transform 1.3s var(--tk-ease), fill 0.8s ease;
+  transition-delay: calc(var(--i, 0) * 30ms), 0s;
+}
+.tk-scatter .sc-dot:hover, .tk-scatter .sc-dot.is-focus { stroke: var(--tk-white); stroke-width: 2.5px; }
+.tk-scatter .sc-label {
+  font-size: 13px; font-weight: 600; pointer-events: none;
+  paint-order: stroke; stroke: rgba(13, 43, 69, 0.85); stroke-width: 4px; stroke-linejoin: round;
+  opacity: 0; transition: opacity 0.6s ease;
+}
+.tk-scatter .sc-label.is-on { opacity: 1; transition-delay: 1.3s; }
+.tk-scatter .sc-fit { stroke: var(--tk-land); stroke-width: 2.5px; stroke-dasharray: 7 6; }
+.tk-scatter .sc-stat { font-size: 14px; font-weight: 600; fill: var(--tk-land); }
+.tk-scatter .sc-trend, .tk-scatter .sc-stat { opacity: 0; transition: opacity 0.8s ease; }
+.tk-scatter.is-revealed .sc-trend, .tk-scatter.is-revealed .sc-stat { opacity: 1; transition-delay: 1.4s; }
+.tk-key .sc-key-line { width: 18px; height: 0; border-radius: 0; border-top: 2.5px dashed var(--tk-land); }
+.tk-guess .tk-call-opts button:disabled { cursor: default; }
+.tk-guess .tk-call-opts button:disabled:not([aria-pressed="true"]) { opacity: 0.5; }
+
 /* ── age pyramid ──────────────────────────────────────── */
 .tk-pyr { width: 100%; max-width: 560px; }
 .tk-pyr rect { transform-box: fill-box; transition: transform 0.9s var(--tk-ease); }
@@ -580,7 +609,7 @@
     padding-bottom: 28px;
   }
   .tk-visual > svg { max-height: 40dvh; }
-  .tk-map { max-height: 46dvh; }
+  .tk-map, .tk-scatter { max-height: 46dvh; }
   .tk-copy { max-width: none; }
   .tk-steps button { font-size: calc(11.5px * var(--type-scale)); padding: 6px 4px 5px; letter-spacing: 0.03em; }
   .tk-steps button span { display: none; }
@@ -599,9 +628,15 @@
   .tk-slope .name-short { display: inline; font-size: 21px; }
   .tk-slope .val { font-size: 21px; }
   .tk-slope .axis-label { font-size: 19px; letter-spacing: 0.04em; }
+  /* the scatter shrinks to about 70%: bigger type and dots */
+  .tk-scatter .tick { font-size: 16px; }
+  .tk-scatter .axis-label { font-size: 15px; letter-spacing: 0; }
+  .tk-scatter .sc-label { font-size: 16px; }
+  .tk-scatter .sc-stat { font-size: 17px; }
+  .tk-scatter .sc-dot { r: 9px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tk-body, .tk-scene, .tk-rise, .tk-plates *, .tk-island .dot, .tk-slope *, .tk-quad { transition: none !important; animation: none !important; }
+  .tk-body, .tk-scene, .tk-rise, .tk-plates *, .tk-island .dot, .tk-slope *, .tk-scatter *, .tk-quad { transition: none !important; animation: none !important; }
   .tk-slope .series .line { stroke-dasharray: none; }
 }

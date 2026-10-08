@@ -3,8 +3,8 @@
    A page loads its own tectonics-sN.js first (window.TK_STORY: the
    numbers and words), then this file, which draws whatever the page
    has room for: the plates, guess-first islands, multiple-choice
-   guesses, a slope chart, an age pyramid, a district map, search
-   traces, the collision and the season list.
+   guesses, a slope chart, an age pyramid, a district map, a district
+   scatter, search traces, the collision and the season list.
    Scenes move with the arrows, the chapter rail, the keyboard and the
    URL hash. The search traces read Google Trends CSV exports from
    data/tectonics/; until a file is there, its trace says so instead
@@ -756,6 +756,207 @@
       .catch(() => { readout.textContent = 'The map could not load. The list still works.'; });
   }
 
+  /* ═══ the scatter: does one move go with another? ═══
+     cfg.x.values and cfg.y.values are { district: [NFHS-5, NFHS-6] }.
+     First each district sits on the line, placed only by how far x
+     moved; the reader says how strongly they expect y to follow, then
+     the dots drop into place. View 'change' plots how far each moved,
+     view 'now' where each stands. r and ρ are worked out here, from the
+     same numbers the dots are drawn with. */
+  function pearson(xs, ys) {
+    const n = xs.length;
+    const mx = xs.reduce((a, v) => a + v, 0) / n;
+    const my = ys.reduce((a, v) => a + v, 0) / n;
+    let sxy = 0, sxx = 0, syy = 0;
+    xs.forEach((x, i) => { sxy += (x - mx) * (ys[i] - my); sxx += (x - mx) ** 2; syy += (ys[i] - my) ** 2; });
+    return { r: sxy / Math.sqrt(sxx * syy), slope: sxy / sxx, mx: mx, my: my };
+  }
+  /* ranks for Spearman's ρ; tied values share their average rank */
+  function ranks(v) {
+    const order = v.map((x, i) => i).sort((a, b) => v[a] - v[b]);
+    const out = [];
+    for (let i = 0; i < order.length;) {
+      let j = i;
+      while (j + 1 < order.length && v[order[j + 1]] === v[order[i]]) j++;
+      for (let k = i; k <= j; k++) out[order[k]] = (i + j) / 2 + 1;
+      i = j + 1;
+    }
+    return out;
+  }
+  const signed = v => (v > 0 ? '+' : v < 0 ? '−' : '±') + fmt(Math.abs(v));
+  const coef = v => (v < 0 ? '−' : '') + Math.abs(v).toFixed(2);
+
+  function setupScatter(cfg) {
+    const svg = document.getElementById(cfg.svg);
+    if (!svg) return;
+    const readout = document.getElementById(cfg.readout);
+    const key = document.getElementById(cfg.key);
+    const panel = document.querySelector('[data-scatter-panel]');
+    const guesses = document.querySelectorAll('[data-scatter-guess]');
+    const views = document.querySelectorAll('[data-scatter-view]');
+    const X = cfg.x.values, Y = cfg.y.values;
+    const names = Object.keys(Y).filter(n => X[n]).sort();
+    const per = cfg.periods || ['2019–21', '2023–24'];
+    const L = 40, R = 466, T = 34, B = 346;
+    let revealed = false;
+    let view = 'change';
+    let focus = null;
+
+    /* changes are rounded to the data's one decimal, so equal moves tie
+       (46.3 − 33.7 is 12.599… in floating point) */
+    const move = p => Math.round((p[1] - p[0]) * 10) / 10;
+    const at = (n, v) => (v === 'change' ? [move(X[n]), move(Y[n])] : [X[n][1], Y[n][1]]);
+    /* the frame comes from the story, widened if any value falls outside it */
+    const domain = (axis, v, k) => {
+      const [lo, hi, step] = cfg.views[v][axis];
+      const vals = names.map(n => at(n, v)[k]);
+      return [Math.min(lo, Math.floor(Math.min.apply(null, vals) / step) * step),
+        Math.max(hi, Math.ceil(Math.max.apply(null, vals) / step) * step), step];
+    };
+    const stats = {};
+    ['change', 'now'].forEach(v => {
+      const xs = names.map(n => at(n, v)[0]);
+      const ys = names.map(n => at(n, v)[1]);
+      const p = pearson(xs, ys);
+      stats[v] = { r: p.r, rho: pearson(ranks(xs), ranks(ys)).r, slope: p.slope, mx: p.mx, my: p.my };
+    });
+
+    const defs = el('defs', {}, svg);
+    const clip = el('clipPath', { id: cfg.svg + 'Clip' }, defs);
+    el('rect', { x: L, y: T, width: R - L, height: B - T }, clip);
+    const frame = el('g', { class: 'sc-frame' }, svg);
+    const trend = el('g', { class: 'sc-trend', 'clip-path': 'url(#' + cfg.svg + 'Clip)' }, svg);
+    const dotsG = el('g', { class: 'sc-dots' }, svg);
+    const labelsG = el('g', { class: 'sc-labels' }, svg);
+
+    const dots = {};
+    const labels = {};
+    names.forEach((n, i) => {
+      const c = el('circle', { class: 'sc-dot', r: 7, cx: 0, cy: 0, style: '--i:' + i }, dotsG);
+      const t = el('title', {}, c);
+      t.textContent = n;
+      c.addEventListener('mouseenter', () => tell(n));
+      c.addEventListener('mouseleave', () => tell(focus));
+      c.addEventListener('click', () => { focus = focus === n ? null : n; tell(focus); paint(); });
+      dots[n] = c;
+      labels[n] = svgText(labelsG, 0, 0, n, { class: 'sc-label' });
+    });
+
+    let sx, sy;
+    function drawFrame() {
+      frame.innerHTML = '';
+      trend.innerHTML = '';
+      const V = cfg.views[view];
+      const [x0, x1, xs] = domain('x', view, 0);
+      const [y0, y1, ys] = domain('y', view, 1);
+      sx = v => L + ((v - x0) / (x1 - x0)) * (R - L);
+      sy = v => B - ((v - y0) / (y1 - y0)) * (B - T);
+      for (let v = y0; v <= y1 + 1e-9; v += ys) {
+        el('line', { class: 'grid' + (v === 0 ? ' zero' : ''), x1: L, x2: R, y1: sy(v), y2: sy(v) }, frame);
+        svgText(frame, L - 8, sy(v) + 4, (v > 0 && view === 'change' ? '+' : '') + String(v).replace('-', '−'), { class: 'tick', 'text-anchor': 'end' });
+      }
+      for (let v = x0; v <= x1 + 1e-9; v += xs) {
+        el('line', { class: 'grid', x1: sx(v), x2: sx(v), y1: T, y2: B }, frame);
+        svgText(frame, sx(v), B + 18, (v > 0 && view === 'change' ? '+' : '') + v, { class: 'tick', 'text-anchor': 'middle' });
+      }
+      if (view === 'change' && y0 < 0 && y1 > 0) svgText(frame, R - 4, sy(0) + 20, 'No change', { class: 'tick zero-label', 'text-anchor': 'end' });
+      svgText(frame, L - 30, T - 16, '↑ ' + V.yLabel, { class: 'axis-label' });
+      svgText(frame, R, B + 42, V.xLabel + ' →', { class: 'axis-label', 'text-anchor': 'end' });
+
+      /* the least-squares line, and the two coefficients */
+      const s = stats[view];
+      const fy = x => s.my + s.slope * (x - s.mx);
+      el('line', { class: 'sc-fit', x1: sx(x0), y1: sy(fy(x0)), x2: sx(x1), y2: sy(fy(x1)) }, trend);
+      svgText(frame, R - 4, T + 18, 'Pearson r ' + coef(s.r), { class: 'sc-stat', 'text-anchor': 'end' });
+      svgText(frame, R - 4, T + 38, 'Spearman ρ ' + coef(s.rho), { class: 'sc-stat', 'text-anchor': 'end' });
+    }
+
+    function colorOf(n) {
+      const bins = cfg.views[view].bins;
+      if (!bins) return '#ffffff';
+      const v = at(n, view)[1];
+      for (let i = 0; i < bins.length; i++) if (v < bins[i][0]) return bins[i][1];
+      return bins[bins.length - 1][1];
+    }
+
+    function paint() {
+      svg.classList.toggle('is-revealed', revealed);
+      const named = cfg.views[view].labels || [];
+      names.forEach(n => {
+        const [vx, vy] = at(n, view);
+        const px = sx(vx);
+        /* before the reveal every district waits on the no-change line */
+        const py = revealed ? sy(vy) : sy(0);
+        const d = dots[n];
+        d.style.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px)';
+        d.style.fill = revealed ? colorOf(n) : 'rgba(255,255,255,0.6)';
+        d.classList.toggle('is-focus', n === focus);
+        const t = labels[n];
+        const right = px > R - 90;
+        t.setAttribute('text-anchor', right ? 'end' : 'start');
+        t.style.transform = 'translate(' + (px + (right ? -11 : 11)).toFixed(1) + 'px,' + (py + 4).toFixed(1) + 'px)';
+        t.classList.toggle('is-on', revealed && (named.includes(n) || n === focus));
+      });
+      paintKey();
+    }
+
+    function paintKey() {
+      key.innerHTML = '';
+      let items;
+      if (!revealed) items = [['rgba(255,255,255,0.6)', 'A district, placed by how far its schooling rose']];
+      else {
+        const bins = cfg.views[view].bins;
+        items = bins ? bins.map(b => [b[1], b[2]]) : [['#ffffff', 'A district']];
+        items.push(['line', 'Straight-line fit']);
+      }
+      items.forEach(([c, label]) => {
+        const li = document.createElement('li');
+        const sw = document.createElement('i');
+        if (c === 'line') sw.className = 'sc-key-line';
+        else sw.style.background = c;
+        li.append(sw, label);
+        key.appendChild(li);
+      });
+    }
+
+    function tell(n) {
+      if (!n) { readout.textContent = revealed ? cfg.hoverHint : cfg.pickHint; return; }
+      const [xa, xb] = X[n];
+      const [ya, yb] = Y[n];
+      if (!revealed) { readout.textContent = n + ': ' + cfg.x.short + ' ' + fmt(xa) + '% → ' + fmt(xb) + '% (' + signed(xb - xa) + ')'; return; }
+      readout.textContent = view === 'change'
+        ? n + ': ' + cfg.x.short + ' ' + signed(xb - xa) + ' points, ' + cfg.y.short + ' ' + signed(yb - ya) + ' (' + fmt(ya) + '% → ' + fmt(yb) + '%)'
+        : n + ', ' + per[1] + ': ' + fmt(xb) + '% ' + cfg.x.short + ', ' + fmt(yb) + '% ' + cfg.y.short;
+    }
+
+    guesses.forEach(b => b.addEventListener('click', () => {
+      guesses.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      if (revealed) return;
+      revealed = true;
+      const verdict = panel.querySelector('[data-verdict]');
+      verdict.textContent = cfg.says[b.dataset.scatterGuess] || '';
+      panel.hidden = false;
+      guesses.forEach(x => { x.disabled = true; });
+      paint();
+      tell(focus);
+      announce(verdict.textContent + ' Pearson r ' + coef(stats.change.r) + ', Spearman ρ ' + coef(stats.change.rho) + '.');
+      nudgeNext();
+    }));
+
+    views.forEach(b => b.addEventListener('click', () => {
+      view = b.dataset.scatterView;
+      views.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      document.querySelectorAll('[data-scatter-text]').forEach(p => { p.hidden = p.dataset.scatterText !== view; });
+      drawFrame();
+      paint();
+      tell(focus);
+    }));
+
+    drawFrame();
+    paint();
+    tell(null);
+  }
+
   /* ═══ the age pyramid, scrubbed through the years ═══
      cfg.male / cfg.female: { year: [lakh per 5-year group, youngest first] }.
      Groups from cfg.highlightFrom up are coloured as the old. */
@@ -898,6 +1099,7 @@
   Object.keys(GUESSES).forEach(setupGuess);
   drawSlope();
   if (STORY.map) setupMap(STORY.map);
+  if (STORY.scatter) setupScatter(STORY.scatter);
   if (STORY.pyramid) setupPyramid(STORY.pyramid);
   setupChoices();
   setupSeismo();

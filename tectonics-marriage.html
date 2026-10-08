@@ -12,12 +12,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css?v=20261007">
-<link rel="stylesheet" href="tectonics.css?v=20261007-4">
+<link rel="stylesheet" href="tectonics.css?v=20261008-1">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="ui.js?v=20261006-3"></script>
 <script src="whatsnew.js?v=20261006" defer></script>
-<script src="tectonics-s2.js?v=20261007-4" defer></script>
-<script src="tectonics.js?v=20261007-4" defer></script>
+<script src="tectonics-s2.js?v=20261008-1" defer></script>
+<script src="tectonics.js?v=20261008-1" defer></script>
 </head>
 <body class="tk-body" data-scene="cover">
 
@@ -162,7 +162,42 @@
     </div>
   </section>
 
-  <!-- ── 4 · the plate: fast and slow ──────────── -->
+  <!-- ── 4 · the plate: school and marriage ────── -->
+  <section class="tk-scene" id="school" data-scene="apart" data-chapter="1" aria-labelledby="tkSchoolTitle">
+    <div class="tk-visual">
+      <svg class="tk-scatter" id="tkScatter" viewBox="0 0 480 400" role="img" aria-labelledby="tkScatterT">
+        <title id="tkScatterT">Scatter plot of Odisha's 30 districts. Across the districts, the rise in women with 10 or more years of school barely lines up with the change in women aged 20 to 24 married before 18 (Pearson r −0.21, Spearman rho −0.29). In 2023–24 levels, districts with more schooling have less early marriage (Pearson r −0.65, Spearman rho −0.61).</title>
+      </svg>
+      <p class="tk-map-readout" id="scatterReadout" aria-live="polite"></p>
+      <ul class="tk-key" id="scatterKey" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkSchoolTitle" tabindex="-1">School first, marriage next?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Schooling rose in all 30 districts; across Odisha, women with ten or more years of school went from 33.0% to 43.9%. If school holds marriage back, marriage before 18 should have fallen most where schooling rose most.</p>
+      <div class="tk-guess tk-rise" style="--i:3">
+        <p class="tk-guess-label" id="scatterAsk">Do you think more schooling went with less early marriage?</p>
+        <div class="tk-call-opts tk-guess-row" role="group" aria-labelledby="scatterAsk">
+          <button type="button" data-scatter-guess="strong" aria-pressed="false">Yes, clearly</button>
+          <button type="button" data-scatter-guess="weak" aria-pressed="false">A little</button>
+          <button type="button" data-scatter-guess="none" aria-pressed="false">No link</button>
+        </div>
+      </div>
+      <div class="tk-reveal" data-scatter-panel hidden>
+        <p class="tk-lead" data-verdict></p>
+        <div class="tk-views" role="group" aria-label="Scatter view">
+          <button type="button" data-scatter-view="change" aria-pressed="true">How far each moved</button>
+          <button type="button" data-scatter-view="now" aria-pressed="false">Where each stands, 2023–24</button>
+        </div>
+        <p class="tk-lead" data-scatter-text="change"><b>The moves barely line up</b> (Pearson r = −0.21, Spearman ρ = −0.29), weak enough to be chance across 30 districts. The biggest falls came in the three districts where early marriage started highest: Nabarangapur, Nayagarh, Koraput. Mayurbhanj gained the most school (+17.2 points); its early marriage fell 4.4. In Angul schooling rose 12.6 points and early marriage <b>rose</b> 5.2.</p>
+        <p class="tk-lead" data-scatter-text="now" hidden><b>Where districts stand, the link is strong</b> (r = −0.65, ρ = −0.61): more schooling, fewer married before 18. The two go together. These numbers cannot say which drives which, or whether both follow something else, such as income.</p>
+        <p class="tk-note">Correlation is not cause. District figures rest on small samples, and schooling counts all women aged 15–49, not only those aged 20–24.</p>
+        <p class="tk-badge tk-badge--official">Official · NFHS-5 and NFHS-6, districts · our calculation</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5 · the plate: fast and slow ──────────── -->
   <section class="tk-scene" id="apart" data-scene="apart" data-chapter="1" aria-labelledby="tkApartTitle">
     <div class="tk-visual">
       <svg class="tk-slope" id="tkSlope" viewBox="0 0 640 440" role="img" aria-labelledby="tkSlopeT">
@@ -178,7 +213,7 @@
     </div>
   </section>
 
-  <!-- ── 5 · the tremor ────────────────────────── -->
+  <!-- ── 6 · the tremor ────────────────────────── -->
   <section class="tk-scene" id="tremor" data-scene="tremor" data-chapter="2" aria-labelledby="tkTremorTitle">
     <div class="tk-visual tk-visual--wide">
       <div class="tk-seismo" id="tkSeismo" role="group" aria-label="Search-interest traces for Odisha, 2019 to today"></div>
@@ -193,7 +228,7 @@
     </div>
   </section>
 
-  <!-- ── 6 · the collision ─────────────────────── -->
+  <!-- ── 7 · the collision ─────────────────────── -->
   <section class="tk-scene" id="collision" data-scene="collision" data-chapter="3" aria-labelledby="tkCollisionTitle">
     <div class="tk-visual tk-visual--top">
       <ul class="tk-quads" id="tkQuads" aria-label="The four kinds of collision"></ul>
@@ -207,19 +242,19 @@
     </div>
   </section>
 
-  <!-- ── 7 · the new land ──────────────────────── -->
+  <!-- ── 8 · the new land ──────────────────────── -->
   <section class="tk-scene" id="newland" data-scene="newland" data-chapter="4" aria-labelledby="tkNewlandTitle">
     <div class="tk-copy tk-copy--full">
       <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 4 · The new land</p>
       <h2 class="tk-display tk-rise" style="--i:1" id="tkNewlandTitle" tabindex="-1">Three questions rising from the fault</h2>
-      <p class="tk-lead tk-rise" style="--i:2">These are questions, not findings. Each says what would prove it and what would rule it out.</p>
+      <p class="tk-lead tk-rise" style="--i:2">These are questions, not findings. Each says what would prove it and what would rule it out. The first has had a first test.</p>
       <ol class="tk-questions">
         <li class="tk-rise" style="--i:3">
-          <p class="tk-q-tag">Open question</p>
+          <p class="tk-q-tag">Tested · not settled</p>
           <h3>School first, marriage next?</h3>
           <p>Women's schooling rose 11 points; marriage before 18 fell 2. Is school delaying marriage, or do girls marry soon after they leave?</p>
-          <p class="tk-q-test"><b>Holds if</b> the districts where schooling rose most are also where early marriage fell most. The NFHS district tables can already test this.</p>
-          <p class="tk-q-test"><b>Falls if</b> the two move independently across districts.</p>
+          <p class="tk-q-test"><b>Holds if</b> the districts where schooling rose most are also where early marriage fell most. <b>Barely:</b> across the 30 districts the two moves line up weakly (r = −0.21), weak enough to be chance.</p>
+          <p class="tk-q-test"><b>But</b> where districts stand, the link is strong: more schooling, less early marriage (r = −0.65). The levels go together; the recent moves do not yet. Neither shows which causes which.</p>
         </li>
         <li class="tk-rise" style="--i:4">
           <p class="tk-q-tag">Open question</p>
@@ -239,7 +274,7 @@
     </div>
   </section>
 
-  <!-- ── 8 · the aftershock ────────────────────── -->
+  <!-- ── 9 · the aftershock ────────────────────── -->
   <section class="tk-scene" id="aftershock" data-scene="aftershock" data-chapter="5" aria-labelledby="tkAfterTitle">
     <div class="tk-copy tk-copy--full">
       <p class="tk-kicker tk-rise" style="--i:0">Story 2 · Chapter 5 · The aftershock</p>
@@ -257,7 +292,6 @@
           <ul>
             <li>Google Trends exports for the four search groups, Odisha, 2019 to today</li>
             <li>The words people in Odisha actually use for marriage and matchmaking, in Odia and in English</li>
-            <li>District schooling set against district marriage, to test the first question with data already in hand</li>
             <li>District records of child marriages stopped, the administrative layer</li>
             <li>Young people's own accounts of choosing a partner</li>
           </ul>
