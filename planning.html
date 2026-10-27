@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>District Planning Lens · Soochana</title>
+<meta name="description" content="How many infants, anganwadi-age children, school children, young people, eligible women and older people each Odisha district will plan for in 2021 and 2026, from UNFPA's district population projections.">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css?v=20261006-3">
+<link rel="stylesheet" href="planning.css?v=20261023-2">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="ui.js?v=20261006-3"></script>
+<script src="planning.js?v=20261023-2" defer></script>
+</head>
+<body class="pl-body">
+
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+      <span class="soo-mark" aria-hidden="true"></span>
+      <div>
+        <h1 style="line-height:1; margin:0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap:12px;">
+    <a href="about.html" class="btn-elegant">About Us</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="learn/index.html" class="btn-elegant">Learn</a>
+    <a href="tectonics.html" class="btn-elegant">Tectonics</a>
+    <a href="explore.html" class="btn-elegant">Explore</a>
+    <a href="planning.html" class="btn-elegant" aria-current="page">Planning</a>
+  </div>
+</header>
+
+<main class="pl" id="pl">
+
+  <!-- ── 1 · who, where ── -->
+  <section class="pl-intro" aria-labelledby="plHead">
+    <p class="pl-kicker">District Planning Lens</p>
+    <h2 class="pl-title" id="plHead">Who will <span id="plPlaceHead">Odisha</span> plan for?</h2>
+    <p class="pl-lead">Schools, anganwadis, health centres and pensions are planned for people of a certain age. This page counts them, district by district, for 2021 and 2026.</p>
+    <div class="pl-controls">
+      <label class="pl-field">
+        <span class="pl-field-k">Place</span>
+        <select id="plPlace" aria-describedby="plPlaceNote"></select>
+      </label>
+      <p class="pl-field-note" id="plPlaceNote">Or pick a district on the map further down.</p>
+    </div>
+    <p class="pl-status" id="plStatus" role="status">Loading the projections…</p>
+  </section>
+
+  <!-- ── 2 · the six planning groups ── -->
+  <section class="pl-block" aria-labelledby="plTilesHead">
+    <div class="pl-block-head">
+      <h3 id="plTilesHead">Six groups to plan for, 2021 to 2026</h3>
+      <p class="pl-sub">The large number is the 2026 projection. The change is against 2021.</p>
+    </div>
+    <div class="pl-tiles" id="plTiles"></div>
+  </section>
+
+  <!-- ── 3 · cohort pipeline ── -->
+  <section class="pl-block" aria-labelledby="plPipeHead">
+    <div class="pl-block-head">
+      <h3 id="plPipeHead">Children by single year of age</h3>
+      <p class="pl-insight" id="plPipeInsight"></p>
+    </div>
+    <figure class="pl-fig">
+      <div class="pl-legend" aria-hidden="true">
+        <span><i class="sw sw-y21"></i>2021</span>
+        <span><i class="sw sw-y26"></i>2026</span>
+        <span class="pl-legend-hint">Point at an age to follow its children five years back.</span>
+      </div>
+      <div class="pl-chart" id="plPipe" data-download data-download-title="#plPipeHead,#plPlaceHead"
+           role="img" aria-label="Dot chart of the number of children at each age from 0 to 14, in 2021 and 2026"></div>
+      <figcaption class="pl-src">UNFPA, District Level Population Projections in Selected States of India – 2021 &amp; 2026 (2022). School stages follow the usual entry ages: class 1 at 6, class 6 at 11, class 9 at 14.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ── 4 · need-gap map ── -->
+  <section class="pl-block" aria-labelledby="plMapHead">
+    <div class="pl-block-head">
+      <h3 id="plMapHead">Where needs grow and where they shrink</h3>
+      <p class="pl-sub">Change from 2021 to 2026 in each district. Choose a group:</p>
+    </div>
+    <div class="pl-seg" id="plMetric" role="radiogroup" aria-label="Group shown on the map"></div>
+    <div class="pl-mapgrid">
+      <figure class="pl-fig pl-mapfig">
+        <div class="pl-chart pl-map" id="plMap" data-download data-download-title="#plMapHead,#plMetricName"
+             role="img" aria-label="Map of Odisha's districts coloured by change from 2021 to 2026"></div>
+        <div class="pl-ramp" id="plRamp" aria-hidden="true"></div>
+      </figure>
+      <div class="pl-rank">
+        <p class="pl-rank-head"><span id="plMetricName"></span>, change 2021–2026</p>
+        <ol class="pl-rank-list" id="plRank" aria-label="Districts ranked by change"></ol>
+      </div>
+    </div>
+    <p class="pl-src">UNFPA district projections, 2021 and 2026. Colour shows the change; orange is fewer people, teal is more, grey is little change.</p>
+  </section>
+
+  <!-- ── 5 · every number ── -->
+  <section class="pl-block" aria-labelledby="plTableHead">
+    <div class="pl-block-head pl-block-head--row">
+      <div>
+        <h3 id="plTableHead">All the numbers for <span id="plPlaceTable">Odisha</span></h3>
+        <p class="pl-sub">People, by age group. Totals may differ by a few people from the sum of the groups because of rounding in the source.</p>
+      </div>
+      <button type="button" class="btn-pill ghost" id="plCsv">Download CSV</button>
+    </div>
+    <div class="pl-tablewrap">
+      <table class="pl-table" id="plTable">
+        <thead><tr><th scope="col">Group</th><th scope="col">2021</th><th scope="col">2026</th><th scope="col">Change</th><th scope="col">Change %</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── 6 · notes ── -->
+  <section class="pl-block pl-notes" aria-labelledby="plNotesHead">
+    <h3 id="plNotesHead">About these numbers</h3>
+    <ul>
+      <li><b>Source.</b> UNFPA, <i>District Level Population Projections in Selected States of India – 2021 &amp; 2026</i>, published 2022. These are projections, not counts: they assume recent trends in births, deaths and migration carry on.</li>
+      <li><b>Odisha.</b> The state figures on this page add up the 30 districts. They differ from ORGI's state projection by under 1,000 people because the two use different methods.</li>
+      <li><b>Eligible women</b> is UNFPA's estimate of women aged 15–49 who form the base for family-planning services (the eligible couples). It is smaller than all women aged 15–49, which the table also shows.</li>
+      <li><b>Anganwadi age</b> counts children under 6 (ages 0 to 5), who are served by anganwadi centres under ICDS. <b>School age</b> is 6 to 14, the ages covered by the Right to Education Act.</li>
+      <li><b>Following the children.</b> A child aged 8 in 2026 was aged 3 in 2021. The difference between the two counts is mostly migration and, for the youngest, deaths.</li>
+      <li>The age structure on Soochana's other district pages for 2031 and 2036 grows these 2026 figures at ORGI's state growth rate. See the <a href="repository.html">repository</a> for the data files.</li>
+    </ul>
+  </section>
+
+  <div class="pl-tip" id="plTip" role="tooltip" hidden></div>
+</main>
+
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="color:var(--muted); margin-top:8px; font-size: var(--fs-caption);">Soochana · District Planning Lens</div>
+  </div>
+  <div class="footer-meta">Data source: UNFPA district population projections, 2021 &amp; 2026 (published 2022).</div>
+</footer>
+
+<script src="chart-download.js?v=20260928-2" defer></script>
+<script src="chatbot.js?v=20261006-2"></script>
+</body>
+</html>

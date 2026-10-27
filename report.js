@@ -483,7 +483,7 @@
     /* 5. sources */
     var s5 = section('sources', '5', 'Notes and sources');
     [
-      'Population 1901–2011: Census of India. 2021–2036: DIU population projection (Bayesian approach), with ORGI projections for the state comparisons.',
+      'Population 1901–2011: Census of India. 2021–2036: DIU population projection (Bayesian approach), with ORGI projections for the state comparisons. Districts: UNFPA district projections for 2021 and 2026 (published 2022), grown to 2031 and 2036 at the ORGI state rate.',
       'Age structure: DIU population projection by five-year age group, 2011–2036.',
       'Fertility: NFHS-5 (2019–21) for the state; DIU district projections (Bayesian approach) for 2020–2036. The district file’s NFHS-4 column was not used: it lists Cuttack as the highest district (2.84), which does not match published NFHS-4 figures.',
       'District indicators (literacy, urban and tribal shares): Census of India 2011.',

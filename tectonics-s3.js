@@ -5,8 +5,9 @@
    - Age pyramid: Census 1991 and 2011, projections 2021–2036, from
      datasets/Age_wise_Odisha_population_1951-2036.xlsx as listed in the
      portal data book (state age–sex pyramids), in lakh.
-   - Districts: share aged 60+, Census 2011 and DIU's Bayesian projection
-     for 2036 (datasets/district_age_pyramids.json, via hero_data.js).
+   - Districts: share aged 60+, Census 2011 and the 2036 projection
+     (datasets/district_age_pyramids.json: UNFPA 2026 grown at the ORGI
+     state rate, age shape from DIU's Bayesian projection).
    ═══════════════════════════════════════════════════════════════════ */
 window.TK_STORY = {
   number: 3,
@@ -78,18 +79,18 @@ window.TK_STORY = {
       [Infinity, '#c47d1e', '17% or more']
     ],
     values: {
-      'Angul': [9.02, 15.93],
+      'Angul': [9.02, 15.92],
       'Balangir': [10.7, 16.11],
       'Baleshwar': [9.2, 15.61],
-      'Bargarh': [10.49, 17.15],
-      'Bhadrak': [9.53, 15.36],
+      'Bargarh': [10.49, 17.14],
+      'Bhadrak': [9.53, 15.35],
       'Boudh': [9.41, 14.89],
-      'Cuttack': [10.66, 17.49],
-      'Debagarh': [9.23, 15.5],
+      'Cuttack': [10.66, 17.48],
+      'Debagarh': [9.23, 15.49],
       'Dhenkanal': [10.27, 16.72],
-      'Gajapati': [7.7, 14.15],
+      'Gajapati': [7.7, 14.16],
       'Ganjam': [9.68, 15.58],
-      'Jagatsinghapur': [11.99, 17.94],
+      'Jagatsinghapur': [11.99, 17.93],
       'Jajapur': [10.18, 15.79],
       'Jharsuguda': [9.03, 16.2],
       'Kalahandi': [9.52, 15.88],
@@ -102,9 +103,9 @@ window.TK_STORY = {
       'Mayurbhanj': [8.47, 15.33],
       'Nabarangapur': [7.38, 13.5],
       'Nayagarh': [11.83, 17.43],
-      'Nuapada': [10.6, 16.11],
+      'Nuapada': [10.6, 16.12],
       'Puri': [10.95, 17.51],
-      'Rayagada': [7.53, 14.38],
+      'Rayagada': [7.53, 14.4],
       'Sambalpur': [9.51, 16.68],
       'Subarnapur': [10.66, 15.31],
       'Sundargarh': [7.86, 15.73]

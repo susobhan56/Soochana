@@ -32,6 +32,23 @@ One document of the whole home page: Odisha at a glance, the six-chapter story (
 
 - `report.js` builds it from the same data files, reusing the figures from `story.js` and `dossier.js`, so nothing in it is typed in by hand. `report.css` holds the screen and A4 print styles.
 
+## District Planning Lens (`planning.html`)
+
+Who each district plans for in 2021 and 2026: six planning groups (infants, anganwadi age 0–5, school age 6–14, young people 15–24, eligible women 15–49, people aged 60+), a dot chart of single-year ages 0–14 that follows each cohort five years back, a map and ranking of the change in each group, and a table with a CSV download. Pick Odisha or a district; the choice and the map's group are kept in the address (`planning.html#place=Khordha&group=e60`).
+
+- `planning.js` draws everything from `datasets/unfpa_district_projections.json` and `Orissa.geojson`. `planning.css` holds the styles. Odisha is the 30 districts added up.
+- Colours: 2021 → 2026 is one teal ramp; fewer → more is orange → grey → teal. Both were checked for colour-blind readers.
+
+## UNFPA district projections
+
+The district figures for 2021 onwards come from UNFPA, *District Level Population Projections in Selected States of India – 2021 & 2026* (2022), delivered as an Excel workbook.
+
+1. `python tools/build_unfpa_projections.py "path/to/workbook.xlsx"` writes `datasets/unfpa_district_projections.json`: portal district spellings, clean age labels, and checks that every district's ages add up to its total. The workbook's 1991 male/female swap and its "0–1" row (part of 0–4) are handled there.
+2. `python tools/apply_unfpa_projections.py` writes the UNFPA figures into `district_population_trends.json` and `district_age_pyramids.json`: UNFPA as published for 2021 and 2026; 2031 and 2036 grow UNFPA 2026 at ORGI's state growth rate for each sex, keeping the DIU Bayesian age shape; 2016 is the geometric midpoint of Census 2011 and UNFPA 2021; UNFPA's 75+ is split into 75–79 and 80+ in the Bayesian ratio. Running it again gives the same files.
+3. Then rebuild `hero_data.js` (`python tools/build_hero_data.py`) and `learn/data/districts.json` (`python learn/tools/build_learn_data.py`), and run the tests.
+
+State figures (`state_demographics.json`) are unchanged.
+
 ## Soochana Learn
 
 Simple, visual lessons in two tracks, built on the portal's own data. Linked from every page header as **Learn**; start at `learn/index.html`.

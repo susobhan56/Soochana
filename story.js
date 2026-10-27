@@ -247,8 +247,9 @@
     put('litMin', l.one(l.lo), 'Lowest literacy', 'Census of India 2011');
     put('litGap', String(Math.round(l.hi.f.literacy - l.lo.f.literacy)));
     var o = ends('elderly_pct_2036', 1);
-    put('oldMax', o.one(o.hi), 'Oldest district, ' + F.ageB.year + ' (share aged 60+)', SRC_AGE);
-    put('oldMin', o.one(o.lo), 'Youngest district, ' + F.ageB.year + ' (share aged 60+)', SRC_AGE);
+    var SRC_DIST_AGE = 'UNFPA district projections, grown from 2026 at the ORGI state rate';
+    put('oldMax', o.one(o.hi), 'Oldest district, ' + F.ageB.year + ' (share aged 60+)', SRC_DIST_AGE);
+    put('oldMin', o.one(o.lo), 'Youngest district, ' + F.ageB.year + ' (share aged 60+)', SRC_DIST_AGE);
 
     F.T = T; F.rows = rows;
     return F;
