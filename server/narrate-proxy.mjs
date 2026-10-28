@@ -9,6 +9,10 @@
 //        PORT                       default 8787
 //        ALLOWED_ORIGINS            comma-separated, e.g. https://soochana.example.org
 //        SOOCHANA_NARRATOR_MODEL    default claude-opus-5
+//        NARRATE_HOURLY_CAP         uncached API calls allowed per hour, default 120
+//
+// The portal's Content-Security-Policy (the <meta> at the top of each page)
+// must list the proxy's address under connect-src, or browsers block the call.
 //
 // Then point the portal at it before the storyteller scripts load:
 //   <script>window.SOOCHANA_STORYTELLER_CONFIG = { llmEndpoint: 'https://…/api/narrate' };</script>
@@ -25,6 +29,7 @@ const ALLOWED = (process.env.ALLOWED_ORIGINS || 'http://localhost:8777')
 const MAX_BODY = 64 * 1024;
 const CACHE_MAX = 1000;
 const RATE = { windowMs: 60_000, max: 30 };
+const HOURLY_CAP = Number(process.env.NARRATE_HOURLY_CAP || 120);
 
 const cache = new Map();      // cacheKey|mode|promptVersion → validated narration
 const inflight = new Map();   // same key → pending promise (request de-duplication)
@@ -41,6 +46,16 @@ function limited(ip) {
   if (!h || now > h.reset) { hits.set(ip, { count: 1, reset: now + RATE.windowMs }); return false; }
   h.count += 1;
   return h.count > RATE.max;
+}
+
+// The Origin header can be forged outside a browser, so the API spend also has
+// a ceiling for the whole server: at most HOURLY_CAP uncached calls an hour.
+let budget = { count: 0, reset: 0 };
+function overBudget() {
+  const now = Date.now();
+  if (now > budget.reset) budget = { count: 0, reset: now + 3_600_000 };
+  budget.count += 1;
+  return budget.count > HOURLY_CAP;
 }
 
 function send(res, status, body, origin) {
@@ -89,7 +104,8 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (req.method !== 'POST' || req.url !== '/api/narrate') { send(res, 404, { error: 'not found' }, origin); return; }
-  if (origin && !ALLOWED.includes(origin)) { send(res, 403, { error: 'origin not allowed' }); return; }
+  // Browsers always send Origin on a cross-site POST; a request without one is a script, not the portal.
+  if (!origin || !ALLOWED.includes(origin)) { send(res, 403, { error: 'origin not allowed' }); return; }
 
   const ip = req.socket.remoteAddress || 'unknown';
   if (limited(ip)) { send(res, 429, { error: 'rate limited' }, origin); return; }
@@ -110,6 +126,7 @@ const server = http.createServer(async (req, res) => {
   const key = `${cacheKey}|${m}|${PROMPT_VERSION}`;
 
   if (cache.has(key)) { send(res, 200, cache.get(key), origin); return; }
+  if (!inflight.has(key) && overBudget()) { send(res, 503, { error: 'narration unavailable' }, origin); return; }
 
   try {
     if (!inflight.has(key)) inflight.set(key, generateNarration(evidence, m).finally(() => inflight.delete(key)));

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://public.flourish.studio; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.fontshare.com; img-src 'self' data: blob: https://public.flourish.studio; connect-src 'self' https://public.flourish.studio https://fonts.googleapis.com https://fonts.gstatic.com https://api.fontshare.com https://cdn.fontshare.com; frame-src 'self' https://flo.uri.sh https://public.flourish.studio https://app.flourish.studio; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="copyright" content="© 2026 CYSD. All rights reserved.">
+<script src="guard.js?v=20261028"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaving home · Tectonics · Soochana</title>
+<meta name="description" content="Soochana Tectonics, story 5: who leaves Odisha, who comes home, and how much seasonal migration the official record misses.">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css?v=20261007">
+<link rel="stylesheet" href="tectonics.css?v=20261008-2">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="ui.js?v=20261006-3"></script>
+<script src="whatsnew.js?v=20261006" defer></script>
+<script src="tectonics-s5.js?v=20261008-2" defer></script>
+<script src="tectonics.js?v=20261008-2" defer></script>
+</head>
+<body class="tk-body" data-scene="cover">
+
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+      <span class="soo-mark" aria-hidden="true"></span>
+      <div>
+        <h1 style="line-height:1; margin:0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <div class="nav-group flex-wrap" style="gap:12px;">
+    <a href="about.html" class="btn-elegant">About Us</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <a href="learn/index.html" class="btn-elegant">Learn</a>
+    <a href="tectonics.html" class="btn-elegant" aria-current="page">Tectonics</a>
+    <a href="planning.html" class="btn-elegant">Planning</a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     TECTONICS · STORY 5 — leaving home.
+     Same engine as the other stories (tectonics.js); this
+     page's numbers live in tectonics-s5.js.
+═══════════════════════════════════════════════ -->
+<main class="tk" id="tk">
+
+  <!-- ── 0 · cover ─────────────────────────────── -->
+  <section class="tk-scene" id="cover" data-scene="cover" data-chapter="0" aria-labelledby="tkCoverTitle">
+    <div class="tk-visual">
+      <svg class="tk-plates" id="tkPlates" viewBox="0 0 600 420" role="img" aria-labelledby="tkPlatesT">
+        <title id="tkPlatesT">Two plates, the official record and online signals, push together and raise a ridge of new land between them.</title>
+      </svg>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Soochana Tectonics · Story 5</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkCoverTitle" tabindex="-1">Leaving home</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Every season, people leave Odisha's villages for brick kilns, building sites and factories far away. Many come back. Some leave again.</p>
+      <p class="tk-lead tk-rise" style="--i:3">Migration is the plate that moves fastest, and the one the official record sees least clearly.</p>
+      <div class="tk-actions tk-rise" style="--i:4">
+        <button type="button" class="btn-pill solid" data-go="next">Begin story 5</button>
+      </div>
+      <ol class="tk-season tk-rise" style="--i:5" data-season aria-label="Stories in this season"></ol>
+    </div>
+  </section>
+
+  <!-- ── 1 · the plate: coming home ────────────── -->
+  <section class="tk-scene" id="returning" data-scene="online" data-chapter="1" aria-labelledby="tkReturnTitle">
+    <div class="tk-visual">
+      <svg class="tk-island" id="islandReturn" viewBox="0 0 500 500" role="img" aria-labelledby="islandReturnT">
+        <title id="islandReturnT">One hundred dots, one for every hundred people who moved into Odisha from another state, coloured by whether they were Odias coming home.</title>
+      </svg>
+      <ul class="tk-key" id="keyReturn" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 5 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkReturnTitle" tabindex="-1">Who is moving into Odisha?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">In 2007–08, of every 100 people who had moved into Odisha from another state, <b>24</b> were Odias coming home. How many do you think it was in 2020–21?</p>
+      <div class="tk-guess tk-rise" style="--i:3" data-guess="returning">
+        <label class="tk-guess-label" for="guessReturn">Your guess</label>
+        <div class="tk-guess-row">
+          <input type="range" id="guessReturn" min="0" max="100" step="1" value="24">
+          <output for="guessReturn" class="tk-guess-out"><b>24</b> of 100</output>
+        </div>
+        <button type="button" class="btn-pill solid" data-reveal>Tell me</button>
+      </div>
+      <div class="tk-reveal" data-reveal-for="returning" hidden>
+        <p class="tk-big"><b>67</b> of 100</p>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead">Up from 24.3% to 66.5%. Into villages it is <b>83.4%</b>. Odisha has turned from a state people leave into one more people enter, and most of those entering are its own people coming back.</p>
+        <p class="tk-note">2020–21 includes the return during COVID-19. Before 2020, DIU estimates the share at 60.1%, still the highest in India.</p>
+        <p class="tk-badge tk-badge--official">Official · NSS 2007–08 and PLFS 2020–21, DIU estimates</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2 · the plate: the uncounted ──────────── -->
+  <section class="tk-scene" id="uncounted" data-scene="methods" data-chapter="1" aria-labelledby="tkUncountedTitle">
+    <div class="tk-visual">
+      <svg class="tk-choice-art" viewBox="0 0 560 400" role="img" aria-labelledby="tkUncountedArtT">
+        <title id="tkUncountedArtT">Two circles sized by number of people. Short-term migrants counted for all of Odisha by the official survey in 2007–08: about 4.8 lakh. Seasonal migrants found in coastal and western Odisha by a field survey in 2014: about 15.3 lakh.</title>
+        <circle class="art-known" cx="150" cy="190" r="84"></circle>
+        <text class="art-big" x="150" y="204" text-anchor="middle">4.8 lakh</text>
+        <text class="art-label" x="150" y="304" text-anchor="middle">Counted, whole state</text>
+        <text class="art-note" x="150" y="324" text-anchor="middle">Official survey, NSS 2007–08</text>
+        <circle class="art-ghost" cx="400" cy="190" r="150"></circle>
+        <text class="art-big" x="400" y="204" text-anchor="middle" data-choice-hide="seasonal">?</text>
+        <g data-choice-show="seasonal">
+          <circle class="art-found" cx="400" cy="190" r="150"></circle>
+          <text class="art-big" x="400" y="204" text-anchor="middle">15.3 lakh</text>
+        </g>
+        <text class="art-label" x="400" y="370" text-anchor="middle">Found, coastal and western Odisha</text>
+        <text class="art-note" x="400" y="390" text-anchor="middle">Field survey, 2014</text>
+      </svg>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 5 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkUncountedTitle" tabindex="-1">How many leave for the season?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">The last official count of short-term migrants, in 2007–08, found about <b>4.8 lakh</b> across the whole state: 1.2% of its people. Then a field survey visited 99,523 rural households in coastal and western Odisha.</p>
+      <div class="tk-guess tk-choice tk-rise" style="--i:3" data-choice="seasonal" data-answer="third">
+        <p class="tk-guess-label">How many households had someone away for the season?</p>
+        <div class="tk-call-opts">
+          <button type="button" data-value="fiftieth">About 1 in 50</button>
+          <button type="button" data-value="tenth">About 1 in 10</button>
+          <button type="button" data-value="third">About 1 in 3</button>
+          <button type="button" data-value="half">About half</button>
+        </div>
+      </div>
+      <div class="tk-reveal" data-choice-for="seasonal" hidden>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead"><b>30.8%</b>, nearly one household in three. Scaled up, that is about <b>15.3 lakh</b> seasonal migrants in those two regions alone, three times the official count for the whole state.</p>
+        <p class="tk-note">The two use different methods and years, so they cannot be matched exactly. But a gap this wide says the official record sees only part of the movement.</p>
+        <p class="tk-badge tk-badge--official">Official · NSS 2007–08</p>
+        <p class="tk-badge tk-badge--voice">Field survey · CMLS and Aajeevika Bureau, 2014</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3 · the plate: who leaves now ─────────── -->
+  <section class="tk-scene" id="apart" data-scene="apart" data-chapter="1" aria-labelledby="tkApartTitle">
+    <div class="tk-visual">
+      <svg class="tk-slope" id="tkSlope" viewBox="0 0 640 440" role="img" aria-labelledby="tkSlopeT">
+        <title id="tkSlopeT">Slope chart from 2007–08 to 2020–21. Returning Odias among in-migrants to villages rose from 44.3% to 83.4%. Male out-migrants in salaried jobs rose from 56.4% to 70.9%. Returning Odias among all in-migrants rose from 24.3% to 66.5%. Out-migrants from towns with a degree rose from 25.9% to 40.3%. The share of Odisha's people living in another state fell from 2.9% to 2.2%.</title>
+      </svg>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 5 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkApartTitle" tabindex="-1">From outflow to inflow</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Odisha's net migration rate turned from <b>−1.6% to +0.74%</b>: more people now arrive than leave. The share of Odias living in another state fell, from 2.9% to 2.2%.</p>
+      <p class="tk-lead tk-rise" style="--i:3">Those who still leave are changing. From the towns, <b>40.3% have a degree</b>, up from 25.9%. Most men who leave now hold salaried jobs. The poorest still leave too, but for a season, and the record barely sees them.</p>
+      <p class="tk-badge tk-badge--official tk-rise" style="--i:4">Official · NSS 2007–08 and PLFS 2020–21, DIU estimates</p>
+    </div>
+  </section>
+
+  <!-- ── 4 · the plate: districts ──────────────── -->
+  <section class="tk-scene" id="districts" data-scene="apart" data-chapter="1" aria-labelledby="tkMapTitle">
+    <div class="tk-visual">
+      <svg class="tk-map" id="tkMap" viewBox="0 0 520 520" role="img" aria-labelledby="tkMapT">
+        <title id="tkMapT">Map of Odisha's 30 districts, coloured by the share of people living in towns in 2011, with a view of whether towns grew faster than villages from 2001 to 2011.</title>
+      </svg>
+      <p class="tk-map-readout" id="mapReadout" aria-live="polite"></p>
+      <ul class="tk-key" id="mapKey" aria-hidden="true"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 5 · Chapter 1 · The plate</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkMapTitle" tabindex="-1">Where is there no town to go to?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">People leave when there is nowhere nearby to go. In 2011, 16.7% of Odisha lived in towns, against 31.1% for India. Which district do you think is the <b>least</b> urban?</p>
+      <div class="tk-guess tk-rise" style="--i:3">
+        <label class="tk-guess-label" for="mapPick">Your pick</label>
+        <div class="tk-guess-row">
+          <select id="mapPick" class="tk-select"><option value="">Choose a district</option></select>
+        </div>
+        <button type="button" class="btn-pill solid" data-map-reveal disabled>Tell me</button>
+      </div>
+      <div class="tk-reveal" data-map-panel hidden>
+        <p class="tk-lead" data-verdict></p>
+        <p class="tk-lead"><b>Boudh</b>, where 4.6% live in towns. Then Nuapada (5.6%) and Kendrapara (5.8%). Khordha is the most urban, at 48.2%.</p>
+        <div class="tk-views" role="group" aria-label="Map view">
+          <button type="button" data-map-view="now" aria-pressed="true">Living in towns, 2011</button>
+          <button type="button" data-map-view="urgd" aria-pressed="false">Are towns growing?</button>
+        </div>
+        <p class="tk-lead">Now ask whether towns are growing. In four districts, Boudh, Debagarh, Koraput and Nuapada, <b>towns grew more slowly than villages</b> from 2001 to 2011. DIU's notes single out Boudh and Nuapada as among the districts most prone to people leaving.</p>
+        <p class="tk-note">By 2036 Odisha is projected to be 21.5% urban, against 39.6% for India.</p>
+        <p class="tk-badge tk-badge--official">Official · Census 2001 and 2011</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5 · the tremor ────────────────────────── -->
+  <section class="tk-scene" id="tremor" data-scene="tremor" data-chapter="2" aria-labelledby="tkTremorTitle">
+    <div class="tk-visual tk-visual--wide">
+      <div class="tk-seismo" id="tkSeismo" role="group" aria-label="Search-interest traces for Odisha, 2019 to today"></div>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 5 · Chapter 2 · The tremor</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkTremorTitle" tabindex="-1">What do people search before they leave?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">A departure starts with a question: where is the work, who is the contractor, which train. We are tracing four groups of searches made in Odisha, in Odia and in English, from 2019 to today.</p>
+      <p class="tk-lead tk-rise" style="--i:3">Each trace is search interest from 0 to 100, relative to its own busiest week. Watch for a yearly rhythm: departures after the harvest would show as peaks at the same time each year.</p>
+      <p class="tk-badge tk-badge--signal tk-rise" style="--i:4">Behavioural · Google Trends, Odisha</p>
+      <p class="tk-note tk-rise" style="--i:5" id="tkSeismoStatus"></p>
+    </div>
+  </section>
+
+  <!-- ── 6 · the collision ─────────────────────── -->
+  <section class="tk-scene" id="collision" data-scene="collision" data-chapter="3" aria-labelledby="tkCollisionTitle">
+    <div class="tk-visual tk-visual--top">
+      <ul class="tk-quads" id="tkQuads" aria-label="The four kinds of collision"></ul>
+    </div>
+    <div class="tk-copy">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 5 · Chapter 3 · The collision</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkCollisionTitle" tabindex="-1">Where will the plates meet?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">When the record and the signals meet, it ends in one of four ways: <b class="tk-c-record">blue</b> arrows are the survey, <b class="tk-c-signal">amber</b> arrows are searches. Seasonal leaving has had no official count since 2007–08.</p>
+      <div class="tk-predict tk-rise" style="--i:3" id="tkPredict"></div>
+      <p class="tk-note tk-rise" style="--i:4">Your calls are kept on this device only. When the search data arrives, this page will show where the plates really met.</p>
+    </div>
+  </section>
+
+  <!-- ── 7 · the new land ──────────────────────── -->
+  <section class="tk-scene" id="newland" data-scene="newland" data-chapter="4" aria-labelledby="tkNewlandTitle">
+    <div class="tk-copy tk-copy--full">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 5 · Chapter 4 · The new land</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkNewlandTitle" tabindex="-1">Three questions rising from the fault</h2>
+      <p class="tk-lead tk-rise" style="--i:2">These are questions, not findings. Each says what would prove it and what would rule it out.</p>
+      <ol class="tk-questions">
+        <li class="tk-rise" style="--i:3">
+          <p class="tk-q-tag">Open question</p>
+          <h3>The calendar of leaving</h3>
+          <p>Do people leave on a calendar, after the harvest each year, in numbers no survey has counted since 2007–08?</p>
+          <p class="tk-q-test"><b>Holds if</b> searches for distant jobs, contractors and trains peak at the same time every year.</p>
+          <p class="tk-q-test"><b>Falls if</b> the traces show no yearly rhythm.</p>
+        </li>
+        <li class="tk-rise" style="--i:4">
+          <p class="tk-q-tag">Open question</p>
+          <h3>Home, but for how long?</h3>
+          <p>Two in three people moving into Odisha from other states are Odias coming back. Is it a homecoming, or a pause before leaving again?</p>
+          <p class="tk-q-test"><b>Holds if</b> searches for jobs inside Odisha rise and stay up.</p>
+          <p class="tk-q-test"><b>Falls if</b> searches for jobs far away climb back within a year or two.</p>
+        </li>
+        <li class="tk-rise" style="--i:5">
+          <p class="tk-q-tag">Open question</p>
+          <h3>Villages left to the old</h3>
+          <p>Story 3 found villages older than towns. Is that the young leaving?</p>
+          <p class="tk-q-test"><b>Holds if</b> the districts that lose the most people each season have the oldest households.</p>
+          <p class="tk-q-test"><b>Falls if</b> there is no link between leaving and ageing across districts.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── 8 · the aftershock ────────────────────── -->
+  <section class="tk-scene" id="aftershock" data-scene="aftershock" data-chapter="5" aria-labelledby="tkAfterTitle">
+    <div class="tk-copy tk-copy--full">
+      <p class="tk-kicker tk-rise" style="--i:0">Story 5 · Chapter 5 · The aftershock</p>
+      <h2 class="tk-display tk-rise" style="--i:1" id="tkAfterTitle" tabindex="-1">When people move, what moves with them?</h2>
+      <p class="tk-lead tk-rise" style="--i:2">Migration carries money home, takes workers away, and leaves gaps in families and villages.</p>
+      <ul class="tk-shocks">
+        <li class="tk-rise" style="--i:3"><h3>Counting</h3><p>Seasonal leaving has had no official count since 2007–08. A state that cannot count its movers cannot plan for them.</p></li>
+        <li class="tk-rise" style="--i:4"><h3>Towns</h3><p>Where towns are not growing, people go further. Small towns that can absorb work nearby may keep families together.</p></li>
+        <li class="tk-rise" style="--i:5"><h3>Families</h3><p>Children and the old stay behind. Schools, health workers and pensions in the villages carry the load.</p></li>
+        <li class="tk-rise" style="--i:6"><h3>Return</h3><p>Two in three arrivals are Odias coming home. Work and skills for those who return decide whether they stay.</p></li>
+      </ul>
+      <div class="tk-after-grid">
+        <div class="tk-needs tk-rise" style="--i:7">
+          <h3>This story still needs</h3>
+          <ul>
+            <li>Google Trends exports for the four search groups, Odisha, 2019 to today</li>
+            <li>The words people actually use, such as “dadan”, in Odia and in English</li>
+            <li>Registrations of inter-state migrant workers by district, the administrative layer</li>
+            <li>Train bookings on routes out of western Odisha, month by month</li>
+            <li>Voices of people who leave each season, and of the families who stay</li>
+          </ul>
+        </div>
+        <div class="tk-legend tk-rise" style="--i:8">
+          <h3>How sure is each number?</h3>
+          <ul>
+            <li><span class="tk-badge tk-badge--official">Official</span> Census, NSS, PLFS: slow and reliable</li>
+            <li><span class="tk-badge tk-badge--model">Projection</span> Modelled futures: assume today's trends</li>
+            <li><span class="tk-badge tk-badge--admin">Administrative</span> Registrations, bookings: frequent, patchy</li>
+            <li><span class="tk-badge tk-badge--signal">Behavioural</span> Searches, markets: fast, biased</li>
+            <li><span class="tk-badge tk-badge--voice">Field</span> Surveys and voices: explain the why</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tk-actions tk-rise" style="--i:9">
+        <button type="button" class="btn-pill ghost" data-go="0">Back to the start</button>
+        <a class="btn-pill solid" href="tectonics.html">Start the season again</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="tk-rail" aria-label="Story chapters">
+  <button type="button" class="tk-arrow prev" data-go="prev" aria-label="Previous scene"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <ol class="tk-steps" id="tkSteps"></ol>
+  <button type="button" class="tk-arrow next" data-go="next" aria-label="Next scene"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+</nav>
+
+<p class="tk-live" id="tkLive" aria-live="polite"></p>
+
+<script src="chatbot.js?v=20261006-2"></script>
+</body>
+</html>

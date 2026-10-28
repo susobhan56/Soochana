@@ -459,6 +459,20 @@
 .tk-pyr-readout .pyr-old { color: #f9dd7f; font-weight: 600; }
 .tk-choice .tk-call-opts { margin-bottom: 4px; }
 
+/* ── art that waits for a multiple-choice answer ────────── */
+.tk-choice-art { width: 100%; max-width: 560px; }
+.tk-choice-art text { font-family: var(--tk-ui); fill: var(--tk-white); }
+.tk-choice-art .art-big { font-family: var(--tk-display); font-size: 40px; }
+.tk-choice-art .art-label { font-size: 15px; fill: var(--tk-soft); }
+.tk-choice-art .art-note { font-size: 13px; fill: var(--tk-faint); }
+.tk-choice-art .art-known { fill: rgba(95, 182, 236, 0.85); }
+.tk-choice-art .art-found { fill: rgba(244, 166, 58, 0.9); }
+.tk-choice-art .art-ghost { fill: none; stroke: rgba(255, 255, 255, 0.45); stroke-width: 2px; stroke-dasharray: 6 6; }
+.tk-choice-art [data-choice-show] { opacity: 0; transform: scale(0.6); transform-box: fill-box; transform-origin: center; transition: opacity 1s var(--tk-ease), transform 1.4s var(--tk-ease); }
+.tk-choice-art [data-choice-show].is-shown { opacity: 1; transform: none; }
+.tk-choice-art [data-choice-hide] { transition: opacity 0.6s ease; }
+.tk-choice-art [data-choice-hide].is-gone { opacity: 0; }
+
 /* ── seismograph ──────────────────────────────────────── */
 .tk-seismo { display: grid; gap: 14px; max-width: 680px; margin: 0 auto; }
 .tk-trace { border-top: 1px solid var(--tk-line); padding-top: 10px; }

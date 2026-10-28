@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://public.flourish.studio; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.fontshare.com; img-src 'self' data: blob: https://public.flourish.studio; connect-src 'self' https://public.flourish.studio https://fonts.googleapis.com https://fonts.gstatic.com https://api.fontshare.com https://cdn.fontshare.com; frame-src 'self' https://flo.uri.sh https://public.flourish.studio https://app.flourish.studio; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="copyright" content="© 2026 CYSD. All rights reserved.">
+<script src="guard.js?v=20261028"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Odisha demographic report · Soochana</title>
 <meta name="description" content="A printable report of the Soochana home page: Odisha at a glance, the population story in six chapters, the 20-module state dossier and all 30 districts.">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap">
 <link rel="stylesheet" href="report.css?v=20261005-3">
-<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="data_loader.js?v=20260925-2"></script>
 <script src="data/key_stats.js?v=20260925-2"></script>
 <!-- the story's and the dossier's figures; on this page they only compute -->

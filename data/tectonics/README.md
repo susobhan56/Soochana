@@ -1,8 +1,8 @@
 # Tectonics — search data
 
 The Tectonics story pages (`tectonics.html`, `tectonics-marriage.html`,
-`tectonics-ageing.html`, `tectonics-health.html`) read Google Trends exports
-from this folder. If a file is missing, its trace on the
+`tectonics-ageing.html`, `tectonics-health.html`, `tectonics-migration.html`)
+read Google Trends exports from this folder. If a file is missing, its trace on the
 page says "No reading yet" and nothing is drawn. The pages never show made-up
 numbers.
 
@@ -41,6 +41,15 @@ numbers.
 | `s4-private-hospitals.csv` | Private hospitals | best hospital in Bhubaneswar, hospital near me |
 | `s4-diabetes.csv` | Diabetes | sugar test, diabetes diet |
 | `s4-caesarean.csv` | Caesarean births | caesarean delivery cost, normal delivery hospital |
+
+## Story 5, "Leaving home"
+
+| File name (exactly) | Search group | Example terms |
+|---|---|---|
+| `s5-jobs-away.csv` | Jobs far away | jobs in Surat, Kerala job |
+| `s5-dadan.csv` | Advances and contractors | dadan, labour contractor |
+| `s5-trains.csv` | Trains out | train to Surat, tatkal ticket |
+| `s5-jobs-home.csv` | Jobs at home | jobs in Bhubaneswar, Odisha job |
 
 The example terms are only a starting point. Replace them with the DIU team's
 list of the words people in Odisha actually use, in Odia and in English.

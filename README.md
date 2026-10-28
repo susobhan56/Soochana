@@ -6,6 +6,15 @@ Every page loads its own stylesheets and scripts with a version tag, e.g. `style
 
 GitHub Pages still lets a browser reuse a page itself for up to 10 minutes, so right after a push someone who visited recently may see the old version briefly. Ctrl + F5 loads the new one.
 
+## Security and copyright
+
+Every page starts its `<head>` with the same four lines: a Content-Security-Policy `<meta>`, a referrer policy, a copyright `<meta>` and `guard.js`.
+
+- **Content-Security-Policy**: the browser only runs scripts, styles, fonts, frames and data requests from the portal itself and the outside sites listed there (cdnjs, Flourish, Google Fonts, Fontshare). A new outside source, for example a new CDN library or the narration proxy's address, has to be added to that line on every page (one find-and-replace), or the browser blocks it.
+- **Outside scripts** are pinned to an exact version with an `integrity` hash, so the browser refuses a file that has been altered. To upgrade one, change the version and its hash together (cdnjs shows the hash next to each file). Flourish's `embed.js` is the exception: Flourish updates it in place, so it cannot carry a hash.
+- **`guard.js`**: if another website shows a page inside a frame, the page breaks out to its own window, or shows only a link where the browser blocks that. It also adds the copyright line to the page footer. GitHub Pages cannot send security headers, which is why this is done in the page.
+- **`LICENSE`**: all rights reserved by CYSD.
+
 ## Home page story ("Odisha, told in 100 people")
 
 The scroll story under the home page hero. One sticky picture of 100 dots; the cards scroll over it, and each card re-forms the same dots: a waffle of 100 people, the population line 1901–2036, the growth-rate bars, the 30 districts by fertility, the age split in 2021 and 2036, the district maps.

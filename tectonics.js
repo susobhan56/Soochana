@@ -35,7 +35,7 @@
     { title: 'When does youth want to marry?', href: 'tectonics-marriage.html' },
     { title: 'The ageing aftershock', href: 'tectonics-ageing.html' },
     { title: 'Covered, but connected?', href: 'tectonics-health.html' },
-    { title: 'Leaving home' }
+    { title: 'Leaving home', href: 'tectonics-migration.html' }
   ];
 
   /* ── the four collisions; arrows are [record, signal] ── */
@@ -657,10 +657,17 @@
     function tell(n) {
       if (!n) { readout.textContent = revealed ? cfg.hoverHint : cfg.pickHint; return; }
       if (!revealed) { readout.textContent = n; return; }
-      if (layers[view]) { readout.textContent = n + ': ' + fmt(layers[view].values[n]) + '% ' + layers[view].label; return; }
+      if (layers[view]) {
+        const L = layers[view];
+        const v = L.values[n];
+        readout.textContent = n + ': ' + (v > 0 && L.signed ? '+' : v < 0 ? '−' : '') + fmt(Math.abs(v)) + (L.unit === undefined ? '%' : L.unit) + ' ' + L.label;
+        return;
+      }
       const [a, b] = cfg.values[n];
       const d = b - a;
       const per = cfg.periods || ['2019–21', '2023–24'];
+      /* cfg.single: one figure per district, so no "from → to" */
+      if (cfg.single) { readout.textContent = n + ': ' + fmt(b) + '% in ' + per[1]; return; }
       readout.textContent = n + ': ' + fmt(a) + '% in ' + per[0] + ' → ' + fmt(b) + '% in ' + per[1] + ' (' + (d > 0 ? '+' : d < 0 ? '−' : '±') + fmt(Math.abs(d)) + ')';
     }
 
@@ -1045,7 +1052,8 @@
   /* ═══ a multiple-choice guess ═══════════════════
      <div class="tk-guess tk-choice" data-choice="x" data-answer="v"> with
      buttons carrying data-value; the panel [data-choice-for="x"] opens
-     after a pick. data-pyramid-year moves the pyramid there too. */
+     after a pick, and anything marked data-choice-show="x" appears.
+     data-pyramid-year moves the pyramid there too. */
   function setupChoices() {
     document.querySelectorAll('.tk-choice').forEach(box => {
       const name = box.dataset.choice;
@@ -1058,6 +1066,8 @@
           verdict.textContent = right ? 'Right: ' + btn.textContent.toLowerCase() + '.' : 'Not quite. You picked “' + btn.textContent + '”.';
           box.classList.add('is-done');
           panel.hidden = false;
+          document.querySelectorAll('[data-choice-show="' + name + '"]').forEach(x => x.classList.add('is-shown'));
+          document.querySelectorAll('[data-choice-hide="' + name + '"]').forEach(x => x.classList.add('is-gone'));
           if (box.dataset.pyramidYear && setPyramidYear) setPyramidYear(+box.dataset.pyramidYear);
           announce(verdict.textContent);
           nudgeNext();

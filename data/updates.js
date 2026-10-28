@@ -24,6 +24,14 @@
  */
 window.SOOCHANA_UPDATES = [
   {
+    id: 'tectonics-story-5',
+    date: '2026-10-08',
+    type: 'feature',
+    title: 'Tectonics: "Leaving home"',
+    text: 'Story 5 closes the season: two in three people moving into Odisha are Odias coming home, and seasonal leaving runs far beyond the official count.',
+    href: 'tectonics-migration.html'
+  },
+  {
     id: 'tectonics-story-4',
     date: '2026-10-07',
     type: 'feature',
