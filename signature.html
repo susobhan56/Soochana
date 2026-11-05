@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gmail signature – Susavan Behera</title>
+<style>
+  :root {
+    --bg: #f3f5f8; --panel: #ffffff; --ink: #1b2a4a; --muted: #5b6474;
+    --line: #dde2ea; --accent: #f7941d; --accent-ink: #1b2a4a; --field: #ffffff;
+    --warn-bg: #fff4e5; --warn-ink: #7a4a00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --bg: #12161d; --panel: #1b212b; --ink: #e8ecf2; --muted: #a2abba;
+      --line: #2f3846; --accent: #f7a440; --accent-ink: #12161d; --field: #232a35;
+      --warn-bg: #3a2a12; --warn-ink: #ffd59a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 20px 56px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  p.lead { color: var(--muted); margin: 0 0 28px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+  h2 { font-size: 1.05rem; margin: 0 0 14px; }
+  label { display: block; font-size: .9rem; color: var(--muted); margin: 12px 0 4px; }
+  input { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 6px;
+          background: var(--field); color: var(--ink); font: inherit; }
+  input:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .preview { background: #ffffff; border-radius: 6px; padding: 18px; overflow-x: auto; border: 1px solid var(--line); }
+  .actions { display: flex; gap: 12px; align-items: center; margin-top: 16px; flex-wrap: wrap; }
+  button { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 6px;
+           padding: 10px 18px; font: 600 1rem system-ui, sans-serif; cursor: pointer; }
+  #status { color: var(--muted); font-size: .9rem; }
+  .warn { background: var(--warn-bg); color: var(--warn-ink); border-radius: 6px; padding: 10px 12px; font-size: .9rem; margin-top: 12px; display: none; }
+  ol { padding-left: 1.2rem; margin: 0; }
+  li { margin-bottom: 8px; }
+  code { background: var(--field); border: 1px solid var(--line); padding: 1px 5px; border-radius: 4px; font-size: .85em; word-break: break-all; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Your animated Gmail signature</h1>
+  <p class="lead">Fill in your links, check the preview, then copy it into Gmail.</p>
+
+  <section class="panel">
+    <h2>Your details</h2>
+    <label for="email">Email address</label>
+    <input id="email" type="email" placeholder="you@example.com">
+    <label for="linkedin">LinkedIn profile URL</label>
+    <input id="linkedin" type="url" placeholder="https://www.linkedin.com/in/your-profile">
+    <label for="github">GitHub profile URL</label>
+    <input id="github" type="url" value="https://github.com/susobhan56">
+    <label for="portal">Soochana portal</label>
+    <input id="portal" type="url" value="https://susobhan56.github.io/Soochana/index.html">
+    <label for="img">Where signature.gif is hosted (public link)</label>
+    <input id="img" type="url" value="https://susobhan56.github.io/Soochana/signature.gif">
+  </section>
+
+  <section class="panel">
+    <h2>Preview</h2>
+    <div class="preview" id="preview"></div>
+    <div class="warn" id="imgwarn">The GIF isn’t online at that link yet, so the preview shows your local copy. Upload <code>signature.gif</code> to that address before pasting into Gmail, or the image won’t show for recipients.</div>
+    <div class="actions">
+      <button id="copy" type="button">Copy signature</button>
+      <span id="status" role="status"></span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Add it to Gmail</h2>
+    <ol>
+      <li>Put <code>signature.gif</code> in the root of your <code>Soochana</code> GitHub repo and push. It will be live at <code>https://susobhan56.github.io/Soochana/signature.gif</code> within a minute or two.</li>
+      <li>Open this page, fill in your email and LinkedIn, and press <strong>Copy signature</strong>.</li>
+      <li>In Gmail, open Settings (gear icon) › See all settings › General › Signature › Create new.</li>
+      <li>Click in the signature box, paste (Ctrl+V / Cmd+V), then scroll down and press <strong>Save changes</strong>.</li>
+      <li>Send yourself a test email to see the animation play.</li>
+    </ol>
+  </section>
+</main>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const fields = ["email", "linkedin", "github", "portal", "img"];
+  let imgSrc = "";
+
+  function signatureHTML(src) {
+    const v = Object.fromEntries(fields.map(f => [f, $(f).value.trim()]));
+    const link = (href, text) => `<a href="${esc(href)}" style="color:#1B2A4A;text-decoration:none;font-weight:bold;">${text}</a>`;
+    const sep = `<span style="color:#C9CED6;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>`;
+    const parts = [];
+    if (v.email) parts.push(link("mailto:" + v.email, esc(v.email)));
+    if (v.linkedin) parts.push(link(v.linkedin, "LinkedIn"));
+    if (v.github) parts.push(link(v.github, "GitHub"));
+    if (v.portal) parts.push(link(v.portal, "Soochana"));
+    return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;">
+<tr><td style="padding:0;"><a href="${esc(v.portal || "#")}" style="text-decoration:none;"><img src="${esc(src)}" width="460" height="120" alt="Susavan Behera – Data Visualisation &amp; Communication Expert, Demographic Intelligence Unit, CYSD, UNFPA" style="display:block;border:0;width:460px;height:120px;"></a></td></tr>
+<tr><td style="padding:6px 0 0 125px;font-size:13px;line-height:18px;color:#1B2A4A;">${parts.join(sep)}</td></tr>
+</table>`;
+  }
+
+  function render() {
+    const remote = $("img").value.trim();
+    const probe = new Image();
+    probe.onload = () => { imgSrc = remote; $("imgwarn").style.display = "none"; draw(); };
+    probe.onerror = () => { imgSrc = "signature.gif"; $("imgwarn").style.display = remote ? "block" : "none"; draw(); };
+    probe.src = remote;
+    draw();
+  }
+  function draw() { $("preview").innerHTML = signatureHTML(imgSrc || $("img").value.trim()); }
+
+  fields.forEach(f => $(f).addEventListener("input", render));
+
+  $("copy").addEventListener("click", () => {
+    // Always copy with the public image link, never the local file
+    const holder = document.createElement("div");
+    holder.innerHTML = signatureHTML($("img").value.trim());
+    holder.style.position = "fixed"; holder.style.left = "-9999px";
+    document.body.appendChild(holder);
+    const range = document.createRange(); range.selectNodeContents(holder);
+    const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) {}
+    sel.removeAllRanges(); holder.remove();
+    $("status").textContent = ok ? "Copied. Paste it into Gmail’s signature box." : "Copy didn’t work here. Select the preview with your mouse and copy it instead.";
+  });
+
+  render();
+</script>
+</body>
+</html>
