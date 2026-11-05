@@ -1308,8 +1308,9 @@
     </div>
   </section>
 
-  <!-- 4, 5, 6. INSTITUTIONAL FOUNDATIONS -->
-  <section class="section-wrap alt-bg" id="partners" data-index="Partners">
+  <!-- 4, 5, 6. INSTITUTIONAL FOUNDATIONS
+       Hidden for now; remove the hidden attribute to show it again. -->
+  <section class="section-wrap alt-bg" id="partners" data-index="Partners" hidden>
     <div class="content-container">
       <div class="section-header" data-reveal>
         <div class="kicker">Institutional Foundations</div>
@@ -1389,8 +1390,9 @@
     </div>
   </section>
 
-  <!-- 7. MEET THE TEAM — 1-BY-1 SEQUENTIAL AUTOPLAY THEN ALL-AT-ONCE GRID REVEAL -->
-  <section class="section-wrap" id="teamSection" data-index="The team">
+  <!-- 7. MEET THE TEAM — 1-BY-1 SEQUENTIAL AUTOPLAY THEN ALL-AT-ONCE GRID REVEAL
+       Hidden for now; remove the hidden attribute to show it again. -->
+  <section class="section-wrap" id="teamSection" data-index="The team" hidden>
     <div class="content-container">
       <div class="section-header team-header" data-reveal>
         <h2>Meet the Team</h2>
@@ -1715,14 +1717,14 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     renderAllTeamGrid();
-    startSequentialIntro();
+    if (!document.getElementById('teamSection').hidden) startSequentialIntro();
     initScrollReveals();
 
     document.getElementById('skipToAllBtn').addEventListener('click', revealAllMembersGrid);
     document.getElementById('replayBtn').addEventListener('click', startSequentialIntro);
   });
 </script>
-<script src="chapter-index.js?v=20260928-2"></script>
+<script src="chapter-index.js?v=20261105-1"></script>
 <script src="chatbot.js?v=20261006-2"></script>
 </body>
 </html>

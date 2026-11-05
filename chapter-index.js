@@ -21,7 +21,7 @@
 
   function build() {
     var chapters = [].slice.call(document.querySelectorAll('[data-index]'))
-      .filter(function (el) { return !el.closest('.chapter-index'); });
+      .filter(function (el) { return !el.closest('.chapter-index') && !el.closest('[hidden]'); });
     if (chapters.length < 2) return;
 
     chapters.forEach(function (c) { if (!c.id) c.id = slug(c.getAttribute('data-index')); });
