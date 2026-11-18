@@ -1,0 +1,145 @@
+/* ═══════════════════════════════════════════════════════════════════
+   district-home.css — the district profile (district.html) in the
+   home page's look. Loaded after the page's own styles, so it only
+   restyles: warm paper with a soft grain, Anton capitals for headings
+   and figures, Merriweather for reading, Hind for labels, handwritten
+   notes in Caveat, ink-bordered cards with a coloured offset shadow,
+   and the home palette (sky, turmeric, leaf, plum on indigo ink).
+   The charts follow through the colour variables they already use.
+   ═══════════════════════════════════════════════════════════════════ */
+body.dp-page {
+  --paper: #f6f3ec;
+  --card: #fffdf8;
+  --ink: #10133a;
+  --soft: #474b6e;
+  --hair: #d8d2c4;
+  --sky: #0879ad;
+  --turmeric: #f4c534;
+  --turmeric-ink: #a8700a;
+  --leaf: #0b6b50;
+  --plum: #5b2a6e;
+  --display: 'Anton', 'Oswald', 'Arial Narrow', Impact, sans-serif;
+  --read: 'Merriweather', Georgia, serif;
+  --ui: 'Hind', system-ui, sans-serif;
+  --hand: 'Caveat', cursive;
+  /* the names the page and its charts already use */
+  --teal: var(--sky);
+  --accent: var(--sky);
+  --orange: var(--turmeric-ink);
+  --purple: var(--plum);
+  --red: var(--plum);
+  --green: var(--leaf);
+  --blue: var(--ink);
+  --muted: var(--soft);
+  --border: var(--hair);
+  --pm-read: var(--read);
+  --pm-ink: var(--ink);
+  --pm-navy: var(--ink);
+  --pm-display: var(--display);
+  --pm-ui: var(--ui);
+  --pm-line: var(--hair);
+  --pm-sky: var(--sky);
+  --pm-sky-ink: var(--sky);
+  --pm-paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0.46 0 0 0 0.27  0.46 0 0 0 0.27  0.46 0 0 0 0.27  0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23p)'/%3E%3C/svg%3E");
+  --pm-wash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='w' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0032' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0.84 0 0 0 0.064  0.84 0 0 0 0.064  0.84 0 0 0 0.064  0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='900' height='900' filter='url(%23w)'/%3E%3C/svg%3E");
+  background-color: var(--paper) !important;
+  background-image: var(--pm-wash), var(--pm-paper) !important;
+  background-size: 900px 900px, 220px 220px !important;
+  background-blend-mode: soft-light;
+  color: var(--ink);
+}
+
+/* ── hero ── */
+body.dp-page .hero-editorial.dp-hero { background: transparent; border-bottom: 2px solid var(--ink); padding: clamp(40px, 7vh, 72px) 0 clamp(36px, 6vh, 56px); }
+body.dp-page .dp-hero .kicker {
+  font: 700 26px/1.1 var(--hand) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--sky) !important;
+}
+body.dp-page .dp-hero h1#dist-title {
+  font: 400 clamp(46px, 6.4vw, 92px)/0.98 var(--display) !important; text-transform: uppercase; letter-spacing: 0.01em; color: var(--ink);
+}
+body.dp-page .dp-tagline { font: 300 17px/1.7 var(--read) !important; font-style: normal !important; color: var(--soft); }
+body.dp-page .dp-pick label { font: 600 12px var(--ui); letter-spacing: 0.14em; color: var(--sky); }
+body.dp-page .dp-pick select {
+  appearance: none; -webkit-appearance: none; cursor: pointer; min-width: 260px;
+  font: 400 26px/1.1 var(--display); text-transform: uppercase; color: var(--ink);
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%2310133a' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 4px center / 22px;
+  border: 0; border-bottom: 3px solid var(--sky); border-radius: 0; padding: 4px 36px 6px 0;
+}
+body.dp-page .dp-pick select:focus-visible { outline: 3px solid var(--turmeric); outline-offset: 3px; }
+body.dp-page .dp-hero .hero-meta { gap: clamp(14px, 2vw, 24px); margin-top: 36px; }
+body.dp-page .dp-hero .meta-item {
+  --c: var(--sky);
+  background: var(--card); border: 2px solid var(--ink) !important; border-radius: 18px;
+  box-shadow: 8px 8px 0 var(--c); padding: 20px 22px;
+}
+body.dp-page .dp-hero .meta-item:nth-child(2) { --c: var(--turmeric); }
+body.dp-page .dp-hero .meta-item:nth-child(3) { --c: var(--leaf); }
+body.dp-page .dp-hero .meta-item::after { display: none; }
+body.dp-page .dp-hero .meta-val { font: 400 clamp(32px, 3.2vw, 46px)/1 var(--display) !important; color: var(--ink) !important; }
+body.dp-page .dp-hero .meta-label { font: 500 13.5px/1.5 var(--ui); color: var(--soft); }
+body.dp-page .dp-hero .meta-item:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0 var(--c); }
+
+/* ── the scroll story ── */
+body.dp-page .scrolly-container { background: transparent !important; }
+body.dp-page .visual-sticky {
+  background: var(--card) !important; border-right: 2px solid var(--ink) !important;
+  background-image: var(--pm-wash), var(--pm-paper) !important; background-size: 900px 900px, 220px 220px !important; background-blend-mode: soft-light;
+}
+body.dp-page .chart-title-hud {
+  font: 700 24px/1.1 var(--hand) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--sky) !important;
+}
+body.dp-page .chart-title-hud::after { background: var(--turmeric); height: 3px; width: 56px; }
+body.dp-page .axis-custom line, body.dp-page .axis-custom path { stroke: var(--hair); }
+body.dp-page .axis-custom text { fill: var(--soft); font-family: var(--ui); }
+body.dp-page .story-step { border-bottom: 1px solid var(--hair); }
+body.dp-page .story-step .step-idx { font: 700 24px/1.1 var(--hand) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--sky); }
+body.dp-page .story-step h2 {
+  font: 400 clamp(32px, 3vw, 46px)/1.02 var(--display) !important; text-transform: uppercase; letter-spacing: 0.01em; color: var(--ink) !important;
+}
+body.dp-page .story-step p { font: 300 16.5px/1.75 var(--read); color: var(--soft); }
+body.dp-page .story-step .big-num { font: 400 clamp(40px, 4vw, 60px)/1 var(--display) !important; margin-top: 18px; }
+body.dp-page .story-step .big-num-label { font: 500 13.5px/1.5 var(--ui); color: var(--soft); }
+
+/* ── the dossier ── */
+body.dp-page #district-pptx-dossier.full-section { background: transparent !important; border-top: 2px solid var(--ink) !important; }
+body.dp-page .dp-dossier-head .label { font: 700 26px/1.1 var(--hand) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--sky) !important; }
+body.dp-page .dp-dossier-head h2 { font: 400 clamp(32px, 3.6vw, 52px)/1.02 var(--display) !important; text-transform: uppercase; letter-spacing: 0.01em; color: var(--ink) !important; }
+body.dp-page .dp-dossier-head p { font: 300 16.5px/1.75 var(--read); color: var(--soft) !important; }
+body.dp-page .dp-card {
+  --c: var(--sky);
+  background: var(--card); border: 2px solid var(--ink); border-radius: 18px;
+  box-shadow: 7px 7px 0 var(--c);
+}
+body.dp-page .dp-card:nth-child(4n + 2) { --c: var(--turmeric); }
+body.dp-page .dp-card:nth-child(4n + 3) { --c: var(--leaf); }
+body.dp-page .dp-card:nth-child(4n + 4) { --c: var(--plum); }
+body.dp-page .dp-card:hover { box-shadow: 10px 10px 0 var(--c); border-color: var(--ink); transform: translate(-2px, -2px); }
+body.dp-page .dp-card { transition: box-shadow 0.25s ease, transform 0.25s ease; }
+body.dp-page .dp-card .kicker { font: 700 21px/1.1 var(--hand) !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--c) !important; }
+body.dp-page .dp-card:nth-child(4n + 2) .kicker { color: var(--turmeric-ink) !important; }
+body.dp-page .dp-card h3 { font: 400 clamp(22px, 2vw, 30px)/1.06 var(--display) !important; text-transform: uppercase; letter-spacing: 0.01em; color: var(--ink) !important; }
+body.dp-page .dp-card .dp-text { font: 300 16px/1.8 var(--read); color: var(--soft); }
+body.dp-page .dp-card .dossier-stat { background: var(--paper) !important; border: 1px solid var(--hair) !important; border-radius: 12px !important; font-family: var(--display) !important; font-weight: 400 !important; color: var(--ink) !important; }
+body.dp-page .dp-card .dossier-stat strong { font: 500 13px/1.35 var(--ui) !important; color: var(--soft) !important; }
+
+/* ── footer, as on the home page ── */
+body.dp-page .dp-foot {
+  background: #141c57 !important; color: rgba(255, 255, 255, 0.86); border-top: 0 !important;
+  background-image: var(--pm-wash), var(--pm-paper) !important; background-size: 900px 900px, 220px 220px !important; background-blend-mode: soft-light;
+}
+body.dp-page .dp-foot .kicker { font: 400 26px/1 var(--display) !important; letter-spacing: 0.01em !important; text-transform: uppercase !important; color: #fff !important; }
+body.dp-page .dp-foot p { color: rgba(255, 255, 255, 0.82) !important; font: 400 14.5px/1.6 var(--ui); max-width: 90ch; }
+body.dp-page .dp-foot .btn-elegant { background: var(--turmeric) !important; color: #10133a !important; border: 2px solid var(--turmeric) !important; border-radius: 999px; font: 600 15px var(--ui); padding: 10px 22px; }
+body.dp-page .dp-foot .btn-elegant:hover { background: #fff !important; border-color: #fff !important; }
+
+/* the index rail floats on paper too */
+@media (min-width: 1101px) {
+  body.dp-page .chapter-index:is(:hover, :focus-within, .is-open) .ci-list { background: rgba(255, 253, 248, 0.97); border: 2px solid var(--ink); }
+}
+@media (max-width: 900px) {
+  body.dp-page .visual-sticky { border-right: 0 !important; border-bottom: 2px solid var(--ink) !important; }
+  body.dp-page .dp-pick select { min-width: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.dp-page .dp-card, body.dp-page .dp-hero .meta-item { transition: none; }
+}
