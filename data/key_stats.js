@@ -26,21 +26,21 @@ window.SOOCHANA_KEY_STATS = {
     {
       title: 'People',
       tiles: [
-        { value: '4.6 Cr', label: '2021', note: '',
-          source: 'Census of India, Population Projection using the Bayesian Approach', color: 'teal' },
-        { value: '1.8',    label: 'Total Fertility Rate (TFR)', note: '',
-          source: 'NFHS-5 (2019-21)', color: 'orange' },
+        { value: '4.57 Cr', label: '2021', note: 'projected',
+          source: 'Population Projections for India and States 2011–2036, Technical Group on Population Projections (National Commission on Population, MoHFW, July 2020)', color: 'teal' },
+        { value: '1.7',    label: 'Total Fertility Rate (TFR)', note: '1.8 in NFHS-5 (2019–21)',
+          source: 'NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026', color: 'orange' },
         { parts: [
-            { value: '23.3%', label: '0–14 years' },
-            { value: '65.6%', label: '15–59 years' },
-            { value: '11.0%', label: '60+ years' }
+            { value: '23.6%', label: '0–14 years' },
+            { value: '64.9%', label: '15–59 years' },
+            { value: '11.5%', label: '60+ years' }
           ],
-          label: 'Population by age group', note: '',
-          source: 'Census of India, Population Projection using the Bayesian Approach', color: 'purple', wide: true },
+          label: 'Population by age group, 2021', note: 'projected',
+          source: 'Population Projections for India and States 2011–2036, Technical Group on Population Projections (National Commission on Population, MoHFW, July 2020)', color: 'purple', wide: true },
         { value: '72.9%',  label: 'Literacy Rate', note: 'Census 2011',
           source: 'Census of India 2011', color: 'orange' },
-        { value: '988',    label: 'Females per 1,000 males, 2021', note: '',
-          source: 'Census of India, Population Projection using the Bayesian Approach', color: 'purple' }
+        { value: '987',    label: 'Females per 1,000 males, 2021', note: 'projected',
+          source: 'Population Projections for India and States 2011–2036, Technical Group on Population Projections (National Commission on Population, MoHFW, July 2020)', color: 'purple' }
       ]
     },
     {

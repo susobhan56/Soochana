@@ -48,14 +48,16 @@
       script,
       json("learn/data/districts.json"),
       json("datasets/district_population_trends.json"),
-      json("datasets/district_fertility_trends.json"),
+      json("datasets/nfhs_district_rounds.json"),
       json("datasets/national_comparisons.json"),
       json("data/contents.json", d => d.recentContent),
       json("data/reports.json", d => d.reports),
-      json("data/datasets.json", d => d.datasets)
-    ]).then(([, districts, population, fertility, national, contents, reports, datasets]) => {
+      json("data/datasets.json", d => d.datasets),
+      json("datasets/nfhs6_state_factsheet.json"),
+      json("datasets/orgi_state_projection.json")
+    ]).then(([, districts, population, nfhs, national, contents, reports, datasets, nfhsState, orgi]) => {
       if (!districts) throw new Error("district table did not load");
-      return window.SoochanaChat.createEngine({ districts, population, fertility, national, contents, reports, datasets });
+      return window.SoochanaChat.createEngine({ districts, population, nfhs, national, contents, reports, datasets, nfhsState, orgi });
     });
     enginePromise.catch(() => { enginePromise = null; });
     return enginePromise;

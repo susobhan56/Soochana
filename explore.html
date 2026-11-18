@@ -19,11 +19,12 @@
 <link rel="stylesheet" href="style.css?v=20261006-3">
 <link rel="stylesheet" href="explore.css?v=20261006">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="ui.js?v=20261006-3"></script>
+<script src="ui.js?v=20261116-2"></script>
 <script src="whatsnew.js?v=20261006" defer></script>
 <script src="soochana_live.js?v=20260925-2" defer></script>
 <script src="share_card.js?v=20260925-2" defer></script>
-<script src="explore.js?v=20260926-1" defer></script>
+<script src="explore.js?v=20261115-1" defer></script>
+<link rel="stylesheet" href="nav.css?v=20261116-5">
 </head>
 <body class="ex-body" data-scene="start">
 
@@ -41,15 +42,20 @@
       <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap:12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="about.html" class="btn-elegant">About Us</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant">Repository</a>
-    <a href="learn/index.html" class="btn-elegant">Learn</a>
-    <a href="tectonics.html" class="btn-elegant">Tectonics</a>
-    <a href="explore.html" class="btn-elegant" aria-current="page">Explore</a>
-    <a href="planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu is-current">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="learn/index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      <a href="explore.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18 M12 5h7l-2 3 2 3h-7 M12 9H5l2 3-2 3h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Guided tour<small>Eight short scenes with quizzes</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <!-- ═══════════════════════════════════════════════
@@ -236,7 +242,7 @@
     <div class="ex-guess">
       <div class="ex-guess-copy">
         <p class="ex-kicker ex-rise">Guess the number</p>
-        <p class="ex-lead ex-rise" style="--i:1">In 2021, <b>11 of every 100</b> people in Odisha were aged 60 or over.</p>
+        <p class="ex-lead ex-rise" style="--i:1">In 2021, <b>11.5 of every 100</b> people in Odisha were aged 60 or over.</p>
         <h2 class="ex-display ex-rise" style="--i:2" id="exAgeHead" tabindex="-1">How many of every 100 will be 60 or over by 2036?</h2>
 
         <div class="ex-guess-ctl ex-rise" style="--i:3" id="exAgeCtl">
@@ -246,7 +252,7 @@
         </div>
 
         <div class="ex-result" id="exAgeResult" aria-live="polite" hidden>
-          <p class="ex-result-big"><b>15.9 of every 100</b>, nearly one in six.</p>
+          <p class="ex-result-big"><b>17 of every 100</b>, about one in six.</p>
           <p id="exAgeVerdict"></p>
           <p id="exAgeWhy"></p>
           <p class="ex-result-links">
@@ -262,7 +268,7 @@
         <p class="ex-people-key" id="exPeopleKey"><span><i class="k-guess"></i>Your guess</span></p>
       </div>
     </div>
-    <p class="ex-source">Source: Population Projections for India and States 2011–2036 (Bayesian approach), ORGI.</p>
+    <p class="ex-source">Source: Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020).</p>
   </section>
 
   <!-- 5 · Watch it happen: the age pyramid -->
@@ -291,7 +297,7 @@
         <p class="ex-pyr-key" aria-hidden="true"><span><i class="k-men"></i>Men</span><span><i class="k-women"></i>Women</span><span><i class="k-old"></i>60 and over</span></p>
       </div>
     </div>
-    <p class="ex-source">Source: district population by five-year age group and sex, 2011–2036, from Soochana's district age dataset.</p>
+    <p class="ex-source">Source: Census of India 2011; UNFPA district projections (2022) for 2021 and 2026; 2031 and 2036 carried forward with the ORGI state projection. State: ORGI Technical Group projections (2020).</p>
   </section>
 
   <!-- 6 · Guess: fastest growth -->
@@ -310,7 +316,7 @@
         </p>
       </div>
     </div>
-    <p class="ex-source">Source: Census of India 1951–2011 and district population projections to 2036, from Soochana's district population dataset.</p>
+    <p class="ex-source">Source: Census of India 1951–2011; UNFPA district projections (2022) for 2021 and 2026; 2031 and 2036 carried forward with the ORGI state projection.</p>
   </section>
 
   <!-- 7 · Find your district -->
@@ -355,7 +361,7 @@
         </div>
       </div>
     </div>
-    <p class="ex-source">Sources: Soochana's district datasets — population 1951–2036, age and sex 2011–2036, fertility (NFHS-4 and projections), life expectancy (NFHS-5).</p>
+    <p class="ex-source">Sources: Census of India; UNFPA India, District Level Population Projections in Selected States of India, 2021 &amp; 2026 (2022), with 2031 and 2036 carried forward with the ORGI state projection; NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026; NFHS-5 (2019–21), IIPS and MoHFW. Life expectancy is computed from NFHS-5 (2019–21); the NFHS-6 fact sheets do not carry it.</p>
   </section>
 
   <!-- 8 · Keep exploring -->
@@ -407,6 +413,6 @@
 </main>
 
 <script src="chart-download.js?v=20260928-2" defer></script>
-<script src="chatbot.js?v=20261006-2"></script>
+<script src="chatbot.js?v=20261116-1"></script>
 </body>
 </html>

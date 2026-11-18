@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://public.flourish.studio; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.fontshare.com; img-src 'self' data: blob: https://public.flourish.studio; connect-src 'self' https://public.flourish.studio https://fonts.googleapis.com https://fonts.gstatic.com https://api.fontshare.com https://cdn.fontshare.com; frame-src 'self' https://flo.uri.sh https://public.flourish.studio https://app.flourish.studio; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="copyright" content="© 2026 CYSD. All rights reserved.">
+<script src="guard.js?v=20261028"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odisha in depth · Soochana</title>
+<meta name="description" content="Forty-six million people, one shifting age structure. Explore Odisha's demographics across thirty districts and seven decades. Maps, briefs, datasets and reports.">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
+<!-- Outfit for the site; Anton, Merriweather and Hind for the welcome screen -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css?v=20261007-2">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://public.flourish.studio/resources/embed.js"></script>
+<script src="data_loader.js?v=20260925-2"></script>
+<!-- Headline figures for the band and "Odisha in numbers": edit data/key_stats.js -->
+<script src="data/key_stats.js?v=20260925-2"></script>
+<script src="ui.js?v=20261116-2"></script>
+<script src="whatsnew.js?v=20261006" defer></script>
+<noscript><style>
+  /* Without JS there is no intro and no staged reveal — show everything. */
+  .intro { display: none !important; }
+  .reveal > * { transform: none !important; }
+  .lander-kicker, .lander-sub, .lander-cta, .lander-readout { opacity: 1 !important; transform: none !important; }
+</style></noscript>
+<style>
+    .stat-cell { padding: 24px 20px; }
+    .stat-hub { border-bottom: 1px solid var(--border); background: var(--surface); }
+    .stat-hub .stat-strip { border-bottom: 1px solid var(--border); }
+    .stat-hub-title {
+      padding: 16px clamp(20px, 2.4vw, 28px) 10px;
+      font-size: var(--fs-label); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); background: var(--surface);
+    }
+    /* Rows wrap and stretch on their own: tiles share a row equally, and
+       a wrapped last line widens to fill, so there are never empty slots.
+       The 1px gap over the border colour draws the grid lines. */
+    .stat-hub .stat-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1px;
+      background: var(--border);
+      border-top: 1px solid var(--border);
+    }
+    .stat-hub .stat-cell { flex: 1 1 210px; border: 0; background: var(--surface); }
+    /* a tile whose value is a list (e.g. age-group shares) gets double width */
+    .stat-hub .stat-cell-wide { flex: 2 1 420px; }
+    .stat-parts { display: flex; align-items: flex-start; }
+    .stat-part { flex: 1 1 0; min-width: 0; padding: 0 14px; border-left: 1px solid var(--border); }
+    .stat-part:first-child { padding-left: 0; border-left: 0; }
+    .stat-part:last-child { padding-right: 0; }
+    .stat-part-label { margin-top: 2px; font-size: var(--fs-label); color: var(--muted); white-space: nowrap; }
+    .stat-parts + .stat-label { margin-top: 10px; }
+    .stat-source { margin-top: 6px; font-size: 11.5px; line-height: 1.4; color: var(--muted); opacity: 0.85; }
+    @media (max-width: 480px) { .stat-hub .stat-cell { flex-basis: 100%; } }
+    body { overflow-y: scroll; height: auto; }
+
+    .stat-value {
+      font-size: 1.65rem !important;
+      font-weight: 700 !important;
+    }
+    .stat-label {
+      font-size: 0.82rem !important;
+      line-height: 1.4 !important;
+      font-weight: 500 !important;
+    }
+</style>
+<!-- the Population Matters look, home page only; after the block above so it wins -->
+<link rel="stylesheet" href="home_pm.css?v=20261007-2">
+<!-- the state dossier as a scroll story -->
+<link rel="stylesheet" href="dossier.css?v=20261115-3">
+<link rel="stylesheet" href="site.css?v=20261116-2">
+<link rel="stylesheet" href="nav.css?v=20261116-5">
+</head>
+<body class="pm-home site">
+
+
+<!-- ═══════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════ -->
+<header>
+  <div class="nav-group">
+    <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:12px;">
+      <span class="soo-mark" aria-hidden="true"></span>
+      <div>
+        <h1 style="line-height:1; margin:0;">Soochana</h1>
+        <div class="brand-tag">from numbers to narrative</div>
+      </div>
+    </a>
+    <a class="brand-partner" href="https://odishavikashinitiative.org/" target="_blank" rel="noopener noreferrer" aria-label="Part of the Odisha Development Initiative (opens in a new tab)">
+      <span class="brand-partner-k">Part of</span>
+      <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
+    </a>
+  </div>
+  <nav class="nav-group nav-main" aria-label="Main">
+    <a href="about.html" class="btn-elegant">About Us</a>
+    <a href="themes.html" class="btn-elegant">Themes</a>
+    <a href="repository.html" class="btn-elegant">Repository</a>
+    <details class="nav-menu">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="learn/index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+    <div class="nav-end">
+    <a href="index.html" class="btn-elegant">Home</a>
+    <a href="report.html" class="btn-elegant btn-report"><svg class="click-tip-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5H7.2a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2V8.3z"/><path d="M14 3.5v4.8h4.8"/><path d="M8.6 12.6h6.8M8.6 16h4.6"/></svg>Download report</a>
+    </div>
+  </nav>
+</header>
+
+
+
+<section class="state-head" data-index="Overview" style="padding:56px max(20px,4vw) 28px;background:var(--surface);border-bottom:1px solid var(--border);">
+  <a href="index.html" style="font-size:14px;color:var(--teal);text-decoration:none;">&larr; Back to the home page</a>
+  <h2 style="font-family:var(--serif);font-size:clamp(30px,4vw,48px);margin:14px 0 10px;color:var(--blue);">Odisha in depth</h2>
+  <p style="max-width:60ch;line-height:1.6;color:var(--muted);margin:0;">The state's headline figures, its policy milestones since 1952, and twenty modules on land, governance, people, health, schools and infrastructure.</p>
+</section>
+<!-- ═══════════════════════════════════════════════
+     ODISHA IN NUMBERS
+     Drawn from data/key_stats.js: change a value, label, note or source
+     there, not here. Rows lay themselves out, so tiles can be added or
+     deleted in that file without touching this page.
+═══════════════════════════════════════════════ -->
+<section class="stat-hub" id="state-stats" aria-label="Odisha in numbers" data-index="Odisha in numbers"></section>
+
+<script>
+(function () {
+  var data = window.SOOCHANA_KEY_STATS;
+  if (!data) return;
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function source(tile, cls) {
+    return tile.source ? el('div', cls, 'Source: ' + tile.source) : null;
+  }
+
+  var hub = document.getElementById('state-stats');
+  (data.groups || []).forEach(function (g, gi) {
+    if (!g.tiles || !g.tiles.length) return;   /* an emptied group disappears */
+    var id = 'hub-group-' + gi;
+    var title = el('div', 'stat-hub-title', g.title);
+    title.id = id;
+    hub.appendChild(title);
+    var row = el('div', 'stat-strip');
+    row.setAttribute('role', 'group');
+    row.setAttribute('aria-labelledby', id);
+    (g.tiles || []).forEach(function (t) {
+      var cell = el('div', 'stat-cell' + (t.wide ? ' stat-cell-wide' : ''));
+      if (t.parts && t.parts.length) {
+        /* several figures side by side, each with its own small label */
+        var set = el('div', 'stat-parts');
+        t.parts.forEach(function (pt) {
+          var part = el('div', 'stat-part');
+          part.appendChild(el('div', 'stat-value ' + (t.color || 'teal'), pt.value));
+          if (pt.label) part.appendChild(el('div', 'stat-part-label', pt.label));
+          set.appendChild(part);
+        });
+        cell.appendChild(set);
+      } else {
+        var val = el('div', 'stat-value ' + (t.color || 'teal'), t.value === 'auto' ? '--' : t.value);
+        /* 'auto' tiles are filled from the data by the page script below */
+        if (t.value === 'auto' && /sex ratio/i.test(t.label)) val.id = 'stat-sexratio';
+        cell.appendChild(val);
+      }
+      /* label and note are each optional; only the ones given are shown */
+      var lines = [t.label, t.note].filter(function (x) { return x; });
+      if (lines.length) {
+        var lbl = el('div', 'stat-label');
+        lines.forEach(function (line, i) {
+          if (i) lbl.appendChild(document.createElement('br'));
+          lbl.appendChild(document.createTextNode(line));
+        });
+        cell.appendChild(lbl);
+      }
+      var src = source(t, 'stat-source');
+      if (src) cell.appendChild(src);
+      row.appendChild(cell);
+    });
+    hub.appendChild(row);
+  });
+})();
+</script>
+
+<script>
+/* "Odisha in numbers": each figure counts up, gently, the first time it
+   scrolls into view. The text from data/key_stats.js is put back exactly
+   at the end, so '₹9.88L Cr' or '155,707 km²' reads just as written; only
+   the motion is added. Figures without a number (and the sex-ratio tile,
+   which fills itself later) are left alone. */
+(function () {
+  var cells = [].slice.call(document.querySelectorAll('#state-stats .stat-value'));
+  if (!cells.length || !('IntersectionObserver' in window)) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var NUM = /^(\D*?)(\d[\d,]*(?:\.\d+)?)(.*)$/;
+  var MS = 2400;
+  function ease(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
+
+  function parse(el) {
+    if (el.id === 'stat-sexratio') return null;
+    var text = el.textContent, m = text.match(NUM);
+    if (!m) return null;
+    var raw = m[2];
+    return {
+      el: el, text: text, pre: m[1], suf: m[3],
+      val: parseFloat(raw.replace(/,/g, '')),
+      dec: (raw.split('.')[1] || '').length,
+      grouped: raw.indexOf(',') !== -1,
+      locale: /\d,\d\d,\d{3}/.test(raw) ? 'en-IN' : 'en-US'
+    };
+  }
+
+  function show(p, v) {
+    var n = p.grouped
+      ? v.toLocaleString(p.locale, { minimumFractionDigits: p.dec, maximumFractionDigits: p.dec })
+      : v.toFixed(p.dec);
+    p.el.textContent = p.pre + n + p.suf;
+  }
+
+  function run(p, delay) {
+    show(p, 0);
+    setTimeout(function () {
+      var start = null;
+      function frame(ts) {
+        if (start === null) start = ts;
+        var t = Math.min(1, (ts - start) / MS);
+        if (t < 1) { show(p, p.val * ease(t)); requestAnimationFrame(frame); }
+        else p.el.textContent = p.text;
+      }
+      requestAnimationFrame(frame);
+    }, delay);
+  }
+
+  var items = cells.map(parse).filter(Boolean);
+  var pending = items.slice();
+
+  function start(p) {
+    var i = pending.indexOf(p);
+    if (i === -1) return;
+    pending.splice(i, 1);
+    obs.unobserve(p.el);
+    /* tiles in one row follow each other, left to right */
+    var row = p.el.closest('.stat-strip');
+    var k = row ? [].indexOf.call(row.querySelectorAll('.stat-value'), p.el) : 0;
+    run(p, k * 140);
+  }
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      items.forEach(function (p) { if (p.el === e.target) start(p); });
+    });
+  }, { threshold: 0.35 });
+
+  /* Each figure keeps its real value until it is seen, so if the observer
+     never fires (a jump past it, an old browser) nothing is left at zero. */
+  items.forEach(function (p) { obs.observe(p.el); });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════
+     THEMATIC GALLERY — the forces behind the numbers
+═══════════════════════════════════════════════ -->
+<section class="editorial-gallery" id="thematicGallery" aria-labelledby="eg-head" data-index="Eight frames">
+  <div class="editorial-gallery-head">
+    <div class="label" style="color: var(--teal);">The forces behind the numbers</div>
+    <h2 id="eg-head">Eight frames on a changing state</h2>
+    <p>
+      Every figure on this page is the trace of something happening to real households:
+      a birth deferred, a clinic reached, a train taken out of the district. These are the
+      forces the data is measuring.
+    </p>
+  </div>
+
+  <div class="editorial-gallery-grid">
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="population-aerial" alt="Aerial view of a dispersed crowd casting long shadows" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--blue);">Scale</div>
+      <p class="editorial-frame-text"><b>4.57 Cr</b> projected population 2021, rising to 4.90 Cr by 2036 (ORGI Technical Group projections, 2020). India's eleventh most populous state, spread across thirty districts.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="fertility-conception" alt="Overlapping discs with a single sperm" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--orange);">Births and deaths</div>
+      <p class="editorial-frame-text">A birth rate of <b>15.8</b> against a death rate of <b>7.9</b> per thousand. Natural increase remains positive and is easing gradually each decade.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="health-infrastructure" alt="An intravenous drip stand hung with hospital buildings in place of bags" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--teal);">Health systems</div>
+      <p class="editorial-frame-text">Biju Swasthya Kalyan Yojana reaches <b>96 Lakhs Families</b>. Infant mortality has fallen to <b>28</b> per thousand live births.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="nutrition-strength" alt="A flexed arm composed of fruit and vegetables" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--green);">Nutrition</div>
+      <p class="editorial-frame-text">Stunting among children under five came down to <b>26.8%</b> in NFHS-6 (2023–24, published May 2026), from 31.0% in NFHS-5 (2019–21). Life expectancy now averages <b>70.4</b> years.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="education-classroom" alt="A teacher at a window beside pupils at desks" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--yellow-ink);">Education</div>
+      <p class="editorial-frame-text">Literacy stands at <b>72.9%</b> statewide (Census 2011), and Khordha leads at <b>86.9%</b>. Women with ten or more years of schooling rose to <b>43.9%</b> in NFHS-6 (2023–24, published May 2026), from 33.0% in NFHS-5 (2019–21).</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="employment-cycle" alt="A figure running inside a wheel set into a clock face" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--red);">Work</div>
+      <p class="editorial-frame-text">The working-age share peaks within this decade. Skills and jobs created now will carry the state through the decades that follow.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="urbanization-build" alt="Hands drawing a city plan around a construction crane" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--purple);">Urbanisation</div>
+      <p class="editorial-frame-text"><b>18.5%</b> urban today. The Bhubaneswar–Cuttack corridor is where most of the urban growth is taking place.</p>
+    </article>
+
+    <article class="editorial-frame">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="density-crowd" alt="A tangled ball of figures of many ages pressed together" decoding="async">
+      </figure>
+      <div class="editorial-frame-label" style="color: var(--orange);">Dependency</div>
+      <p class="editorial-frame-text">The over-sixty share rises from 11.5% in 2021 to <b>17.0%</b> by 2036 (ORGI Technical Group projections, 2020). That gives the state time to plan pensions, health and care.</p>
+    </article>
+
+    <article class="editorial-frame is-wide">
+      <figure class="editorial-figure" style="margin:0;">
+        <img data-art="data-collective" alt="People assembling oversized charts and bars" decoding="async">
+      </figure>
+      <div class="editorial-frame-body">
+        <div class="editorial-frame-label">How this was built</div>
+        <p class="editorial-frame-text">Compiled from the Census of India, the ORGI Technical Group projections (2020), NFHS-6 (2023–24, published May 2026) beside NFHS-5 (2019–21), SRS, PLFS and UDISE+. Every figure on this portal names its source.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     POLICY TIMELINE
+═══════════════════════════════════════════════ -->
+<section class="timeline-section" id="milestones" data-index="Welfare milestones">
+  <div class="label" style="color: var(--orange); margin-bottom: 16px;">Policy History</div>
+  <h2>From Family Planning to <span style="white-space: nowrap;">Old-Age</span> Care</h2>
+
+  <!-- Flourish timelines. Only the first loads with the page; the other gets
+       its src from data-src the first time its tab is opened. -->
+  <div class="policy-charts" id="policyTimeline">
+    <div class="policy-tabs" role="tablist" aria-label="Policy timelines">
+      <button type="button" class="policy-tab" role="tab" id="ptab-hfw" aria-controls="ppanel-hfw" aria-selected="true">Health &amp; Family Welfare Timeline</button>
+      <button type="button" class="policy-tab" role="tab" id="ptab-age" aria-controls="ppanel-age" aria-selected="false" tabindex="-1">Ageing Timeline</button>
+    </div>
+    <div class="policy-panel" role="tabpanel" id="ppanel-hfw" aria-labelledby="ptab-hfw">
+      <p class="policy-note">National and Odisha health and family welfare policies, from India's first family planning programme in 1952 to the merged AB-PMJAY and GJAY health scheme in 2025.</p>
+      <div class="flourish-figure"><iframe src="https://flo.uri.sh/visualisation/30361488/embed" loading="lazy" title="Health &amp; Family Welfare Timeline" class="flourish-embed-iframe" frameborder="0" scrolling="no" sandbox="allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"></iframe></div>
+    </div>
+    <div class="policy-panel" role="tabpanel" id="ppanel-age" aria-labelledby="ptab-age" hidden>
+      <p class="policy-note">Pensions, care and health cover for older people, from Odisha's old age pension rules in 1989 to Ayushman Vaya Vandana for everyone over 70 in 2025.</p>
+      <div class="flourish-figure"><iframe data-src="https://flo.uri.sh/visualisation/30383327/embed" title="Ageing Timeline" class="flourish-embed-iframe" frameborder="0" scrolling="no" sandbox="allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"></iframe></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     STATE DOSSIER — the twenty modules of state_details.json as a
+     scroll story (dossier.js, dossier.css). Cards and the index bar are
+     built from the data; every module's picture sits in the sticky
+     panel and appears as its card reaches the middle of the screen.
+═══════════════════════════════════════════════ -->
+<section class="pm-dash dz" id="dashboard" data-index="State dashboard" style="width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--panel); padding: 40px max(20px, 4vw); box-sizing: border-box;">
+  <div class="dz-head">
+    <div class="label" style="color: var(--teal); margin-bottom: 12px;">The state dossier</div>
+    <h2 style="font-family: var(--serif); font-size: var(--fs-h2); color: var(--blue); margin: 4px 0 0;">Odisha, module by module</h2>
+    <p style="font-size: var(--fs-caption); color: var(--muted); font-family: var(--mono); margin-top: 6px; max-width: 54em; line-height: 1.5;">
+      Twenty modules on the state's land, governance, people, health, schools and infrastructure, read in seven chapters.
+      Scroll through them, or use the index to jump to one.
+    </p>
+    <p class="dz-report"><a href="report.html"><svg class="click-tip-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5H7.2a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2V8.3z"/><path d="M14 3.5v4.8h4.8"/><path d="M8.6 12.6h6.8M8.6 16h4.6"/></svg>Get all twenty modules, the story and every district in one printable report</a></p>
+  </div>
+
+  <nav class="dz-index" aria-label="Analytics index and quick module jump"></nav>
+
+  <div class="dz-scroller">
+    <div class="dz-stage"><div class="dz-panel"></div></div>
+    <div class="dz-steps"></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════ -->
+<footer>
+  <div>
+    <div class="footer-brand">Demographic <span>Insights</span></div>
+    <div style="font-size:var(--fs-micro); color:var(--muted); margin-top:10px; font-family:var(--mono);">
+      Soochana · Odisha Demographic Intelligence Unit, CYSD
+    </div>
+  </div>
+  <div class="footer-meta">
+    Data sources: Census of India, ORGI Technical Group projections (2020), NFHS-6 (2023–24, published May 2026), NFHS-5 (2019–21), PLFS, UDISE+, SRS &amp; LASI.<br>
+    Background: Odisha age structure 1991–2036 · one dot ≈ 123,000 people.
+  </div>
+</footer>
+
+<script src="chapter-index.js?v=20261105-1" defer></script>
+
+<script>
+    // STATE STAT STRIP & LEADERBOARD DYNAMIC LOADING
+    Promise.all([
+      DataLoader.getDistrictPopulationTrends(),
+      DataLoader.getNationalComparisons(),
+      DataLoader.getStateDemographics()
+    ]).then(([popData, nationalData, stateData]) => {
+      /* Headline tiles come from data/key_stats.js. A tile whose value is
+         'auto' is filled here: the sex ratio reads the 2021 projection row,
+         the same row as the projected population in the band. (1063, used
+         earlier, was the NFHS-5 survey figure, not this projection.) */
+      const row2021 = (stateData && stateData.population_trends || [])
+        .find(d => d.year === 2021 && d.total);
+      d3.select("#stat-sexratio").text(row2021 ? Math.round(row2021.sex_ratio) : "987");
+
+    });
+
+    // POLICY HISTORY CHART TABS
+    (function () {
+      const tabs = Array.from(document.querySelectorAll('#policyTimeline .policy-tab'));
+      function select(tab) {
+        tabs.forEach(t => {
+          const on = t === tab;
+          t.setAttribute('aria-selected', on);
+          t.tabIndex = on ? 0 : -1;
+          const panel = document.getElementById(t.getAttribute('aria-controls'));
+          panel.hidden = !on;
+          const frame = panel.querySelector('iframe[data-src]');
+          if (on && frame) {
+            frame.src = frame.dataset.src;
+            frame.removeAttribute('data-src');
+            // give the newly loaded chart its download bar (chart-download.js)
+            if (window.SoochanaDownload) window.SoochanaDownload.scan();
+          }
+        });
+      }
+      tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => select(tab));
+        tab.addEventListener('keydown', e => {
+          const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+          if (!step) return;
+          e.preventDefault();
+          const next = tabs[(i + step + tabs.length) % tabs.length];
+          select(next);
+          next.focus();
+        });
+      });
+    })();
+
+</script>
+<script src="icons.js?v=20261005-2"></script>
+<script src="dossier.js?v=20261115-5"></script>
+<script src="chatbot.js?v=20261116-1"></script>
+<script src="chart-download.js?v=20260928-2" defer></script>
+</body>
+</html>

@@ -675,3 +675,24 @@
 .dz-report a:hover { background: rgba(20, 32, 46, 0.06); }
 .dz-report .click-tip-ic { width: 18px; height: 18px; flex: none; color: #9a3412; }
 .dz-report .click-tip-ic :is(path, circle, rect) { fill: none; stroke: currentColor; stroke-width: 1.7px; }
+
+/* A chart taller than the panel scrolls inside it instead of being cut
+   (dossier.js sets the frame's height from what Flourish reports). */
+.dz-scene.is-chart .dz-scene-b { overflow: hidden auto; scrollbar-width: thin; }
+.dz-scene.is-chart .dz-scene-b.is-tall::after {
+  content: 'Scroll inside the chart to see all of it';
+  position: sticky; bottom: 0; display: block; flex: none;
+  margin: -34px 0 0; padding: 14px 10px 6px; text-align: center;
+  font: 600 12.5px/1.2 var(--pm-ui, system-ui, sans-serif); color: #14202e;
+  background: linear-gradient(rgba(255, 255, 255, 0), #fff 55%);
+  pointer-events: none;
+}
+.dz-scene.is-chart .dz-scene-b.is-fit { overflow: hidden; }
+.dz-scene.is-chart .dz-scene-b.is-fit iframe { position: absolute; top: 0; left: 0; max-width: none; transform-origin: 0 0; }
+/* Flourish charts carry their own title, so the panel's heading above
+   them is hidden. It stays for screen readers and for the frame's title. */
+.dz-scene.is-chart .dz-scene-k {
+  position: absolute; width: 1px; height: 1px; margin: 0; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+.dz-scene.is-chart { padding-top: 10px; }

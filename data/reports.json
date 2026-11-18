@@ -880,7 +880,7 @@
     },
     {
       "id": "nfhs-6-factsheets",
-      "name": "NFHS-6 Fact Sheets",
+      "name": "NFHS-6 Fact Sheets, India and States (2023-24; published May 2026)",
       "theme": "health",
       "description": "Fact sheets of key indicators from the sixth round of the National Family Health Survey, IIPS.",
       "thumbnail": "/images/nfhs.svg",
@@ -890,7 +890,7 @@
     },
     {
       "id": "nfhs-6-odisha-factsheet",
-      "name": "NFHS-6 Odisha Fact Sheet",
+      "name": "NFHS-6 Odisha Fact Sheet (2023-24; published May 2026)",
       "theme": "health",
       "description": "Key indicators for Odisha from the sixth round of the National Family Health Survey, IIPS.",
       "thumbnail": "/images/nfhs.svg",

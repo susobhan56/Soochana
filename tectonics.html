@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://public.flourish.studio; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.fontshare.com; img-src 'self' data: blob: https://public.flourish.studio; connect-src 'self' https://public.flourish.studio https://fonts.googleapis.com https://fonts.gstatic.com https://api.fontshare.com https://cdn.fontshare.com; frame-src 'self' https://flo.uri.sh https://public.flourish.studio https://app.flourish.studio; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="copyright" content="© 2026 CYSD. All rights reserved.">
-<script src="guard.js?v=20261028"></script>
+<script src="guard.js?v=20261115"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tectonics · Soochana</title>
 <meta name="description" content="Soochana Tectonics: demography moves like tectonic plates. Story 1, 'Online, but unprotected?', sets Odisha's NFHS record on women's internet use and contraception against what people search for online.">
@@ -18,10 +18,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css?v=20261007">
 <link rel="stylesheet" href="tectonics.css?v=20261008-2">
-<script src="ui.js?v=20261006-3"></script>
+<script src="ui.js?v=20261116-2"></script>
 <script src="whatsnew.js?v=20261006" defer></script>
 <script src="tectonics-s1.js?v=20261008-2" defer></script>
 <script src="tectonics.js?v=20261008-2" defer></script>
+<link rel="stylesheet" href="nav.css?v=20261116-5">
 </head>
 <body class="tk-body" data-scene="cover">
 
@@ -39,14 +40,19 @@
       <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap:12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="about.html" class="btn-elegant">About Us</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant">Repository</a>
-    <a href="learn/index.html" class="btn-elegant">Learn</a>
-    <a href="tectonics.html" class="btn-elegant" aria-current="page">Tectonics</a>
-    <a href="planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu is-current">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="learn/index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="tectonics.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <!-- ═══════════════════════════════════════════════
@@ -98,8 +104,8 @@
       <div class="tk-reveal" data-reveal-for="online" hidden>
         <p class="tk-big"><b>52</b> of 100</p>
         <p class="tk-lead" data-verdict></p>
-        <p class="tk-lead">The share <b>roughly doubled</b>, from 24.9% to 51.8%, in about four years. Men moved too, from 50.7% to 73.2%. In towns it is 66.7% of women, in villages 49.0%.</p>
-        <p class="tk-badge tk-badge--official">Official · NFHS-5 and NFHS-6, Odisha</p>
+        <p class="tk-lead">The share <b>roughly doubled</b>: 51.8% in NFHS-6 (2023–24, published May 2026), from 24.9% in NFHS-5 (2019–21). Men moved too, from 50.7% to 73.2%. In towns it is 66.7% of women, in villages 49.0%.</p>
+        <p class="tk-badge tk-badge--official">Official · NFHS-5 (2019–21), IIPS and MoHFW · NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026</p>
       </div>
     </div>
   </section>
@@ -115,7 +121,7 @@
     <div class="tk-copy">
       <p class="tk-kicker tk-rise" style="--i:0">Story 1 · Chapter 1 · The plate</p>
       <h2 class="tk-display tk-rise" style="--i:1" id="tkMethodsTitle" tabindex="-1">And how many used modern contraception?</h2>
-      <p class="tk-lead tk-rise" style="--i:2">Modern methods are the pill, condoms, the IUD, injectables and sterilisation. In NFHS-5, <b>49 of every 100</b> currently married women used one. As women went online, did that rise or fall?</p>
+      <p class="tk-lead tk-rise" style="--i:2">Modern methods are the pill, condoms, the IUD, injectables and sterilisation. In NFHS-5 (2019–21), <b>49 of every 100</b> currently married women used one. As women went online, did that rise or fall?</p>
       <div class="tk-guess tk-rise" style="--i:3" data-guess="methods">
         <label class="tk-guess-label" for="guessMethods">Your guess</label>
         <div class="tk-guess-row">
@@ -127,8 +133,8 @@
       <div class="tk-reveal" data-reveal-for="methods" hidden>
         <p class="tk-big"><b>41</b> of 100</p>
         <p class="tk-lead" data-verdict></p>
-        <p class="tk-lead">Use of a modern method <b>fell 8 points</b>, from 48.8% to 40.8%. Use of any method fell from 74.1% to 66.2%. And the women who want to wait before their next child but use nothing, the <b>unmet need for spacing</b>, rose from 2.6% to 4.7%.</p>
-        <p class="tk-badge tk-badge--official">Official · NFHS-5 and NFHS-6, Odisha</p>
+        <p class="tk-lead">Use of a modern method <b>fell 8 points</b>: 40.8% in NFHS-6, from 48.8% in NFHS-5. Use of any method fell from 74.1% to 66.2%. This is an area for attention. And the women who want to wait before their next child but use nothing, the <b>unmet need for spacing</b>, rose from 2.6% to 4.7%.</p>
+        <p class="tk-badge tk-badge--official">Official · NFHS-5 (2019–21), IIPS and MoHFW · NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026</p>
       </div>
     </div>
   </section>
@@ -143,7 +149,7 @@
     <div class="tk-copy">
       <p class="tk-kicker tk-rise" style="--i:0">Story 1 · Chapter 1 · The plate</p>
       <h2 class="tk-display tk-rise" style="--i:1" id="tkApartTitle" tabindex="-1">Two lines, pulling apart</h2>
-      <p class="tk-lead tk-rise" style="--i:2">In the same four years, women came online in large numbers, fewer couples used modern contraception, and more women wanted to wait for a child with nothing to help them wait.</p>
+      <p class="tk-lead tk-rise" style="--i:2">In the same four years, women came online in large numbers, fewer couples used modern contraception, and more women wanted to wait for a child without a method to help them. That is where services have room to gain.</p>
       <p class="tk-lead tk-rise" style="--i:3">The survey records <b>that</b> this happened. It cannot tell us <b>why</b>. For that we need the second plate.</p>
       <div class="tk-beneath tk-rise" style="--i:4">
         <p class="tk-beneath-h">Beneath the average, NFHS-6</p>
@@ -153,7 +159,7 @@
           <div><dt>Unmet need for spacing</dt><dd><span>Towns</span> 3.4%</dd><dd><span>Villages</span> 4.9%</dd></div>
         </dl>
       </div>
-      <p class="tk-badge tk-badge--official tk-rise" style="--i:5">Official · NFHS-5 and NFHS-6, Odisha</p>
+      <p class="tk-badge tk-badge--official tk-rise" style="--i:5">Official · NFHS-5 (2019–21), IIPS and MoHFW · NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026</p>
     </div>
   </section>
 
@@ -226,9 +232,9 @@
       <p class="tk-lead tk-rise" style="--i:2">If the questions hold, the change reaches far beyond one survey table.</p>
       <ul class="tk-shocks">
         <li class="tk-rise" style="--i:3"><h3>Health</h3><p>Counselling may need to go where the questions are asked: on phones, in Odia, and in private.</p></li>
-        <li class="tk-rise" style="--i:4"><h3>Young people</h3><p>18.6% of women aged 20–24 married before 18. For many, the questions start before marriage, and the answers need to as well.</p></li>
+        <li class="tk-rise" style="--i:4"><h3>Young people</h3><p>18.6% of women aged 20–24 married before 18 in NFHS-6, down from 20.5% in NFHS-5. For many, the questions start before marriage, and the answers need to as well.</p></li>
         <li class="tk-rise" style="--i:5"><h3>Chemists</h3><p>The counter may already be a front line of family planning, and a source of data no survey reaches.</p></li>
-        <li class="tk-rise" style="--i:6"><h3>Planning</h3><p>A survey every four years cannot keep pace with change this fast. Signals can tell planners where to look in between.</p></li>
+        <li class="tk-rise" style="--i:6"><h3>Planning</h3><p>Surveys come every few years. Signals can tell planners where to look in between.</p></li>
       </ul>
       <div class="tk-after-grid">
         <div class="tk-needs tk-rise" style="--i:7">
@@ -267,6 +273,6 @@
 
 <p class="tk-live" id="tkLive" aria-live="polite"></p>
 
-<script src="chatbot.js?v=20261006-2"></script>
+<script src="chatbot.js?v=20261116-1"></script>
 </body>
 </html>

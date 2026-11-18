@@ -156,7 +156,7 @@ out = {
         },
         'notes': [
             'District names follow the portal spellings (Angul, Bolangir, Boudh, Khordha, Nabarangpur).',
-            'District age bands stop at 75+; the portal\'s Bayesian pyramids go to 80+.',
+            'District age bands stop at 75+; the portal splits 75+ into 75-79 and 80+ in the ratio of the ORGI state projection.',
             'Male + female can differ from the total by a few persons because of rounding in the source.',
             'District totals for 2021 and 2026 sum to within 1,000 of the ORGI state total; the methods differ.',
             'Workbook sheet "Odisha PP" labels the 1991 male and female columns the wrong way round; this file takes 1991 from the district sheet, which is correct.',

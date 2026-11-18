@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20261006-3">
 <link rel="stylesheet" href="learn.css?v=20261005">
-<script src="../ui.js?v=20261006-3"></script>
+<script src="../ui.js?v=20261116-2"></script>
 <script src="../whatsnew.js?v=20261006" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="learn.js?v=20260929"></script>
@@ -36,8 +36,10 @@
     .ln-seg { flex-wrap: wrap; border-radius: 14px; }
   }
 </style>
+<link rel="stylesheet" href="../site.css?v=20261116-2">
+<link rel="stylesheet" href="../nav.css?v=20261116-5">
 </head>
-<body class="ln-page">
+<body class="ln-page site">
 
 <header>
   <div class="nav-group">
@@ -53,13 +55,19 @@
       <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="../about.html" class="btn-elegant">About Us</a>
     <a href="../themes.html" class="btn-elegant">Themes</a>
     <a href="../repository.html" class="btn-elegant">Repository</a>
-    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
-    <a href="../planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu is-current">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="../learn/index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="../tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="../planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <main>
@@ -67,7 +75,7 @@
     <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M2</div>
     <h2 class="ln-title">Rates <em>and</em> ratios</h2>
     <p class="ln-dek">A big district always has more births and deaths, so we divide by its size to compare places fairly.</p>
-    <div class="ln-byline">By <b>DIU Team</b> · Data: Census of India, SRS, NFHS-5, DIU projections · Charts are computed live in your browser</div>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census of India, SRS, NFHS-5, ORGI and UNFPA projections · Charts are computed live in your browser</div>
   </section>
 
   <section class="ln-gist" aria-label="The idea in one picture">
@@ -117,7 +125,7 @@
       </div>
       <svg id="popSvg" role="img" aria-label="Population of the two chosen districts in 2021"></svg>
       <div id="recipes"></div>
-      <div class="ln-source">Population 2021: DIU projection (Bayesian approach), from Census of India 1951–2011.</div>
+      <div class="ln-source">Population 2021: UNFPA India, District Level Population Projections in Selected States of India, 2021 &amp; 2026 (2022), on the Census of India 2011 base.</div>
     </div>
   </div>
   <div class="ln-prose">
@@ -160,7 +168,7 @@
         <span><i class="line" style="background:var(--ln-test)"></i>Odisha, SRS: 28</span>
       </div>
       <svg id="imrSvg" role="img" aria-label="Bar chart of infant mortality rate for 30 districts, sorted from highest to lowest, with the state SRS value as a reference line"></svg>
-      <div class="ln-source">Districts: NFHS-5 (2019–21) based estimates. State line: SRS Statistical Report 2024.</div>
+      <div class="ln-source">Districts: NFHS-5 (2019–21) based estimates; the NFHS-6 district fact sheets (published May 2026) do not report infant mortality. State line: SRS Statistical Report 2024.</div>
     </div>
   </div>
   <div class="ln-prose">
@@ -188,7 +196,7 @@
       </div>
       <svg id="sexSvg" role="img" aria-label="Line chart of Odisha's sex ratio from 1901 to 2036, with projected values after 2011 drawn dashed"></svg>
       <div class="ln-stats" id="sexStats"></div>
-      <div class="ln-source">Census of India 1901–2011. 2021–2036: DIU projection (Bayesian approach).</div>
+      <div class="ln-source">Census of India 1901–2011. 2021–2036: ORGI Technical Group projections (Population Projections for India and States 2011–2036, July 2020).</div>
     </div>
   </div>
 
@@ -208,7 +216,7 @@
         <span><i class="sq" style="background:var(--ln-train);opacity:.4"></i>Projected</span>
       </div>
       <svg id="growSvg" role="img" aria-label="Bar chart of Odisha's average annual population growth rate for each period from 1901 to 2036"></svg>
-      <div class="ln-source">Census of India 1901–2011; DIU projection (Bayesian approach) 2021–2036. The last three bars are five-year periods.</div>
+      <div class="ln-source">Census of India 1901–2011; ORGI Technical Group projections (Population Projections for India and States 2011–2036, July 2020), 2021–2036. The last three bars are five-year periods.</div>
     </div>
   </div>
   <div class="ln-prose">
@@ -241,7 +249,7 @@
     <h2>Data and method</h2>
     <p><b>State rates.</b> Birth rate 15.8 and death rate 7.9 per 1,000 people, and IMR 28 per 1,000 live births: SRS Statistical Report 2024. MMR 124 per 1,00,000 live births: SRS Special Bulletin on Maternal Mortality in India 2022–24. Birth and death rates divide by the mid-year population; IMR and MMR divide by live births in the same period.</p>
     <p><b>District IMR.</b> Estimates based on NFHS-5 (2019–21) as compiled in the portal's mortality file. They come from mothers' birth histories in a sample survey, so they carry sampling error, and they cover a different period from SRS.</p>
-    <p><b>Population.</b> Census of India 1901–2011. District populations for 2021 and state figures for 2021–2036 are DIU projections (Bayesian approach). The 1936 row in the state file (a mid-decade estimate) is left out of the charts.</p>
+    <p><b>Population.</b> Census of India 1901–2011. District populations for 2021 come from UNFPA India, District Level Population Projections in Selected States of India, 2021 &amp; 2026 (2022); state figures for 2021–2036 from the ORGI Technical Group projections (Population Projections for India and States 2011–2036, July 2020). The 1936 row in the state file (a mid-decade estimate) is left out of the charts.</p>
     <p><b>Growth.</b> The bars use the growth figures in the portal's state file, which divide each period's total growth by the number of years (simple average). The calculator uses the exponential rate, r = ln(P₂ ÷ P₁) ÷ T × 100, which allows for compounding, so it gives slightly smaller numbers for the same period. Doubling time is ln 2 ÷ r, about 69.3 ÷ r.</p>
   </section>
 
@@ -257,7 +265,7 @@
     <div class="footer-brand">Demographic <span>Insights</span></div>
     <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
   </div>
-  <div class="footer-meta">Data Sources: Census of India, SRS, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+  <div class="footer-meta">Data Sources: Census of India, SRS, NFHS-4, NFHS-5, ORGI Technical Group projections (2020), UNFPA district projections (2022), UDISE+ & Government of Odisha.</div>
 </footer>
 
 <script>
@@ -623,6 +631,6 @@
   }
 })();
 </script>
-<script src="../chatbot.js?v=20261006-2"></script>
+<script src="../chatbot.js?v=20261116-1"></script>
 </body>
 </html>

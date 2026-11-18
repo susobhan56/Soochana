@@ -2,7 +2,12 @@
   "Angul": {
     "name": "Angul",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -112,7 +117,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Angul’s health and nutrition landscape reflects a pattern of gradual progress alongside emerging vulnerabilities. While the district’s health infrastructure provides a basic network of 33 Primary Health Centres, 9 Community Health Centres and 166 Health Sub Centres, the availability of just 31 beds per 1,00,000 population points to limited institutional capacity for a district of its size. Nutritional outcomes have improved in some respects, with stunting and underweight among children declining between NFHS-4 and NFHS-5. However, the rise in wasting suggests that acute malnutrition remains a persistent concern. More strikingly, Angul has witnessed a sharp deterioration in anaemia, with prevalence among young children and pregnant women increasing dramatically over the same period. Combined with an estimated Maternal Mortality Ratio of 197 during 2017–19, these trends indicate that improvements in general nutrition have not translated uniformly into better maternal and micronutrient health, making anaemia reduction, maternal care and strengthened health-system capacity critical priorities for the district.",
+        "text_content": "Angul’s health and nutrition landscape reflects a pattern of gradual progress alongside emerging vulnerabilities. While the district’s health infrastructure provides a basic network of 33 Primary Health Centres, 9 Community Health Centres and 166 Health Sub Centres, the availability of just 31 beds per 1,00,000 population points to limited institutional capacity for a district of its size. Nutritional outcomes have improved in some respects, with stunting and underweight among children declining between NFHS-4 and NFHS-5. However, the rise in wasting suggests that acute malnutrition remains a persistent concern. Anaemia among young children and pregnant women rose over the same period, which makes micronutrient nutrition the clearest next area of focus. Combined with an estimated Maternal Mortality Ratio of 197 during 2017–19, these trends indicate that improvements in general nutrition have not translated uniformly into better maternal and micronutrient health, making anaemia reduction, maternal care and strengthened health-system capacity critical priorities for the district.",
         "chart_url": ""
       },
       {
@@ -145,7 +150,7 @@
       {
         "slide_num": 16,
         "title": "Education",
-        "text_content": "Angul’s education profile reflects a relatively strong foundation in access and institutional capacity, but with persistent challenges in equity, digital preparedness and retention. Manageable pupil-teacher ratios at the Middle and Secondary levels suggest that classroom capacity is broadly adequate, while high enrolment and transition rates indicate that most children successfully enter and move through the school system. Yet this progress becomes harder to sustain at higher stages, as the sharp rise in the Secondary dropout rate points to growing barriers to retention during a critical period of education. The district also continues to face a substantial gender gap in literacy, with female literacy trailing male literacy by more than 17 percentage points. At the same time, uneven digital infrastructure—with only around one-fifth of schools equipped with functional smart classrooms despite wider computer availability—highlights the need to modernise learning environments. Going forward, Angul’s education challenge will be less about expanding basic access and more about ensuring that students, particularly girls and those at risk of dropping out, remain in school and have access to quality, technology-enabled learning opportunities.",
+        "text_content": "Angul’s education profile reflects a relatively strong foundation in access and institutional capacity, but with persistent challenges in equity, digital preparedness and retention. Manageable pupil-teacher ratios at the Middle and Secondary levels suggest that classroom capacity is broadly adequate, while high enrolment and transition rates indicate that most children successfully enter and move through the school system. The next step is to carry this progress into the secondary years, where the dropout rate has risen and keeping students in school can add the most. The district also continues to face a substantial gender gap in literacy, with female literacy trailing male literacy by more than 17 percentage points. At the same time, uneven digital infrastructure—with only around one-fifth of schools equipped with functional smart classrooms despite wider computer availability—highlights the need to modernise learning environments. Going forward, Angul’s education challenge will be less about expanding basic access and more about ensuring that students, particularly girls and those at risk of dropping out, remain in school and have access to quality, technology-enabled learning opportunities.",
         "chart_url": ""
       },
       {
@@ -240,7 +245,7 @@
       "pvtg_names": "Paudi Bhuyan"
     },
     "tribal_text": "",
-    "health_narrative": "Angul’s health and nutrition landscape reflects a pattern of gradual progress alongside emerging vulnerabilities. While the district’s health infrastructure provides a basic network of 33 Primary Health Centres, 9 Community Health Centres and 166 Health Sub Centres, the availability of just 31 beds per 1,00,000 population points to limited institutional capacity for a district of its size. Nutritional outcomes have improved in some respects, with stunting and underweight among children declining between NFHS-4 and NFHS-5. However, the rise in wasting suggests that acute malnutrition remains a persistent concern. More strikingly, Angul has witnessed a sharp deterioration in anaemia, with prevalence among young children and pregnant women increasing dramatically over the same period. Combined with an estimated Maternal Mortality Ratio of 197 during 2017–19, these trends indicate that improvements in general nutrition have not translated uniformly into better maternal and micronutrient health, making anaemia reduction, maternal care and strengthened health-system capacity critical priorities for the district.",
+    "health_narrative": "Angul’s health and nutrition landscape reflects a pattern of gradual progress alongside emerging vulnerabilities. While the district’s health infrastructure provides a basic network of 33 Primary Health Centres, 9 Community Health Centres and 166 Health Sub Centres, the availability of just 31 beds per 1,00,000 population points to limited institutional capacity for a district of its size. Nutritional outcomes have improved in some respects, with stunting and underweight among children declining between NFHS-4 and NFHS-5. However, the rise in wasting suggests that acute malnutrition remains a persistent concern. Anaemia among young children and pregnant women rose over the same period, which makes micronutrient nutrition the clearest next area of focus. Combined with an estimated Maternal Mortality Ratio of 197 during 2017–19, these trends indicate that improvements in general nutrition have not translated uniformly into better maternal and micronutrient health, making anaemia reduction, maternal care and strengthened health-system capacity critical priorities for the district.",
     "health_stats": {
       "mmr": "197",
       "phcs": "33",
@@ -248,7 +253,7 @@
       "sub_centres": "166",
       "beds_per_100k": "31"
     },
-    "education_narrative": "Angul’s education profile reflects a relatively strong foundation in access and institutional capacity, but with persistent challenges in equity, digital preparedness and retention. Manageable pupil-teacher ratios at the Middle and Secondary levels suggest that classroom capacity is broadly adequate, while high enrolment and transition rates indicate that most children successfully enter and move through the school system. Yet this progress becomes harder to sustain at higher stages, as the sharp rise in the Secondary dropout rate points to growing barriers to retention during a critical period of education. The district also continues to face a substantial gender gap in literacy, with female literacy trailing male literacy by more than 17 percentage points. At the same time, uneven digital infrastructure—with only around one-fifth of schools equipped with functional smart classrooms despite wider computer availability—highlights the need to modernise learning environments. Going forward, Angul’s education challenge will be less about expanding basic access and more about ensuring that students, particularly girls and those at risk of dropping out, remain in school and have access to quality, technology-enabled learning opportunities.",
+    "education_narrative": "Angul’s education profile reflects a relatively strong foundation in access and institutional capacity, but with persistent challenges in equity, digital preparedness and retention. Manageable pupil-teacher ratios at the Middle and Secondary levels suggest that classroom capacity is broadly adequate, while high enrolment and transition rates indicate that most children successfully enter and move through the school system. The next step is to carry this progress into the secondary years, where the dropout rate has risen and keeping students in school can add the most. The district also continues to face a substantial gender gap in literacy, with female literacy trailing male literacy by more than 17 percentage points. At the same time, uneven digital infrastructure—with only around one-fifth of schools equipped with functional smart classrooms despite wider computer availability—highlights the need to modernise learning environments. Going forward, Angul’s education challenge will be less about expanding basic access and more about ensuring that students, particularly girls and those at risk of dropping out, remain in school and have access to quality, technology-enabled learning opportunities.",
     "education_stats": {
       "raw": "Male Literacy Rate (2011): 86.0% | Female Literacy Rate (2011): 68.6% | Primary GER (2018-19): 97.08 | Upper Primary GER (2018-19): 96.92 | Middle Dropout Rate (2024-25): 2.6% | Secondary Dropout Rate (2024-25): 15.7% | Transition Rate Preparatory to Middle (2024-25): 96.7% | Transition Rate Middle to Secondary (2024-25): 93.7% | Middle PTR: 14 | Secondary PTR: 21 | % Schools with Smart Classrooms: 20.92% | % Schools with Computer Facility: 71.4%"
     },
@@ -264,7 +269,12 @@
   "Bolangir": {
     "name": "Bolangir",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -526,7 +536,12 @@
   "Baleshwar": {
     "name": "Baleshwar",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -669,7 +684,7 @@
       {
         "slide_num": 16,
         "title": "Education",
-        "text_content": "Balasore's education system is characterised by extensive school access and strong student progression through the foundational and middle stages, supported by a predominantly government-led network and relatively favourable teacher availability. However, the district faces persistent challenges in ensuring that these gains translate into sustained educational attainment, particularly at the secondary level where student retention weakens considerably. Gender disparities in literacy also remain significant, while uneven digital infrastructure limits the wider integration of technology into learning. Overall, the district has established a strong base for universal access and progression, but improving secondary-level retention, reducing gender gaps and strengthening digital learning facilities will be critical to improving educational outcomes.",
+        "text_content": "Balasore's education system is characterised by extensive school access and strong student progression through the foundational and middle stages, supported by a predominantly government-led network and relatively favourable teacher availability. The next opportunity is to turn these gains into completed schooling, especially at the secondary level, where keeping more students enrolled would add the most. Gender disparities in literacy also remain significant, while uneven digital infrastructure limits the wider integration of technology into learning. Overall, the district has established a strong base for universal access and progression, but improving secondary-level retention, reducing gender gaps and strengthening digital learning facilities will be critical to improving educational outcomes.",
         "chart_url": ""
       },
       {
@@ -772,7 +787,7 @@
       "sub_centres": "275",
       "beds_per_100k": "30"
     },
-    "education_narrative": "Balasore's education system is characterised by extensive school access and strong student progression through the foundational and middle stages, supported by a predominantly government-led network and relatively favourable teacher availability. However, the district faces persistent challenges in ensuring that these gains translate into sustained educational attainment, particularly at the secondary level where student retention weakens considerably. Gender disparities in literacy also remain significant, while uneven digital infrastructure limits the wider integration of technology into learning. Overall, the district has established a strong base for universal access and progression, but improving secondary-level retention, reducing gender gaps and strengthening digital learning facilities will be critical to improving educational outcomes.",
+    "education_narrative": "Balasore's education system is characterised by extensive school access and strong student progression through the foundational and middle stages, supported by a predominantly government-led network and relatively favourable teacher availability. The next opportunity is to turn these gains into completed schooling, especially at the secondary level, where keeping more students enrolled would add the most. Gender disparities in literacy also remain significant, while uneven digital infrastructure limits the wider integration of technology into learning. Overall, the district has established a strong base for universal access and progression, but improving secondary-level retention, reducing gender gaps and strengthening digital learning facilities will be critical to improving educational outcomes.",
     "education_stats": {
       "raw": "Male Literacy Rate (2011): 87.0% | Female Literacy Rate (2011): 72.3% | Primary GER (2018-19): 101.93 | Upper Primary GER (2018-19): 100.45 | Middle Dropout Rate (2024-25): 2% | Secondary Dropout Rate (2024-25): 9.2% | Transition Rate Preparatory to Middle (2024-25): 98.1% | Transition Rate Middle to Secondary (2024-25): 94.1% | Middle PTR: 14 | Secondary PTR: 21 | % Schools with Smart Classrooms: 16.75% | % Schools with Computer Facility: 57.36%"
     },
@@ -788,7 +803,12 @@
   "Bargarh": {
     "name": "Bargarh",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -898,7 +918,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Bargarh's health and nutrition profile reflects notable gains in child survival and several nutrition outcomes, but important gaps remain in healthcare capacity and the persistent burden of anaemia. While its network of health facilities provides a broad service base, low bed availability points to constraints in institutional capacity. Declining neonatal and infant mortality, alongside improvements in wasting and underweight, indicate progress in child health and nutrition, although largely unchanged stunting suggests that chronic malnutrition remains a concern. Anaemia continues to affect a substantial share of young children and pregnant women despite some improvement, highlighting the need for sustained nutrition interventions. With maternal mortality also remaining a concern, the district's priorities should focus on consolidating gains in child survival while strengthening maternal healthcare, reducing anaemia, and addressing the underlying drivers of chronic malnutrition.",
+        "text_content": "Bargarh's health and nutrition profile reflects notable gains in child survival and several nutrition outcomes; expanding healthcare capacity and reducing anaemia are the next areas of focus. While its network of health facilities provides a broad service base, low bed availability points to constraints in institutional capacity. Declining neonatal and infant mortality, alongside improvements in wasting and underweight, indicate progress in child health and nutrition, although largely unchanged stunting suggests that chronic malnutrition remains a concern. Anaemia continues to affect a substantial share of young children and pregnant women despite some improvement, highlighting the need for sustained nutrition interventions. With maternal mortality also remaining a concern, the district's priorities should focus on consolidating gains in child survival while strengthening maternal healthcare, reducing anaemia, and addressing the underlying drivers of chronic malnutrition.",
         "chart_url": ""
       },
       {
@@ -1026,7 +1046,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Bargarh's health and nutrition profile reflects notable gains in child survival and several nutrition outcomes, but important gaps remain in healthcare capacity and the persistent burden of anaemia. While its network of health facilities provides a broad service base, low bed availability points to constraints in institutional capacity. Declining neonatal and infant mortality, alongside improvements in wasting and underweight, indicate progress in child health and nutrition, although largely unchanged stunting suggests that chronic malnutrition remains a concern. Anaemia continues to affect a substantial share of young children and pregnant women despite some improvement, highlighting the need for sustained nutrition interventions. With maternal mortality also remaining a concern, the district's priorities should focus on consolidating gains in child survival while strengthening maternal healthcare, reducing anaemia, and addressing the underlying drivers of chronic malnutrition.",
+    "health_narrative": "Bargarh's health and nutrition profile reflects notable gains in child survival and several nutrition outcomes; expanding healthcare capacity and reducing anaemia are the next areas of focus. While its network of health facilities provides a broad service base, low bed availability points to constraints in institutional capacity. Declining neonatal and infant mortality, alongside improvements in wasting and underweight, indicate progress in child health and nutrition, although largely unchanged stunting suggests that chronic malnutrition remains a concern. Anaemia continues to affect a substantial share of young children and pregnant women despite some improvement, highlighting the need for sustained nutrition interventions. With maternal mortality also remaining a concern, the district's priorities should focus on consolidating gains in child survival while strengthening maternal healthcare, reducing anaemia, and addressing the underlying drivers of chronic malnutrition.",
     "health_stats": {
       "mmr": "77",
       "phcs": "49",
@@ -1050,7 +1070,12 @@
   "Boudh": {
     "name": "Boudh",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -1160,7 +1185,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Boudh's health and nutrition trajectory reflects steady progress, though important vulnerabilities persist beneath these improvements. Between NFHS-4 and NFHS-5, the district recorded consistent declines in neonatal, infant and under-five mortality, indicating gradual improvements in child survival, while reductions in stunting, wasting and underweight prevalence suggest a broader improvement in nutritional outcomes. The decline in anaemia among pregnant women is another encouraging sign, although the estimated maternal mortality ratio of 81 indicates that maternal health remains an area requiring sustained attention. The district's health infrastructure, comprising 12 Primary Health Centres, 5 Community Health Centres and 67 Health Sub Centres, with 35 beds per 1,00,000 population, provides the foundation for service delivery but will need to respond to these continuing challenges. Most notably, the sharp rise in anaemia among children aged 6–59 months, from 44.1% to 56.2%, contrasts with progress elsewhere and points to a growing micronutrient challenge. Boudh's priority, therefore, is to consolidate gains in child and maternal health while strengthening early childhood nutrition and anaemia interventions to ensure that improvements in overall health outcomes are more evenly sustained.",
+        "text_content": "Boudh's health and nutrition trajectory reflects steady progress, though important vulnerabilities persist beneath these improvements. Between NFHS-4 and NFHS-5, the district recorded consistent declines in neonatal, infant and under-five mortality, indicating gradual improvements in child survival, while reductions in stunting, wasting and underweight prevalence suggest a broader improvement in nutritional outcomes. The decline in anaemia among pregnant women is another encouraging sign, although the estimated maternal mortality ratio of 81 indicates that maternal health remains an area requiring sustained attention. The district's health infrastructure, comprising 12 Primary Health Centres, 5 Community Health Centres and 67 Health Sub Centres, with 35 beds per 1,00,000 population, provides the foundation for service delivery but will need to respond to these continuing challenges. Anaemia among children aged 6–59 months rose from 44.1% to 56.2%, which makes micronutrient nutrition the area where further effort can do the most. Boudh's priority, therefore, is to consolidate gains in child and maternal health while strengthening early childhood nutrition and anaemia interventions to ensure that improvements in overall health outcomes are more evenly sustained.",
         "chart_url": ""
       },
       {
@@ -1288,7 +1313,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Boudh's health and nutrition trajectory reflects steady progress, though important vulnerabilities persist beneath these improvements. Between NFHS-4 and NFHS-5, the district recorded consistent declines in neonatal, infant and under-five mortality, indicating gradual improvements in child survival, while reductions in stunting, wasting and underweight prevalence suggest a broader improvement in nutritional outcomes. The decline in anaemia among pregnant women is another encouraging sign, although the estimated maternal mortality ratio of 81 indicates that maternal health remains an area requiring sustained attention. The district's health infrastructure, comprising 12 Primary Health Centres, 5 Community Health Centres and 67 Health Sub Centres, with 35 beds per 1,00,000 population, provides the foundation for service delivery but will need to respond to these continuing challenges. Most notably, the sharp rise in anaemia among children aged 6–59 months, from 44.1% to 56.2%, contrasts with progress elsewhere and points to a growing micronutrient challenge. Boudh's priority, therefore, is to consolidate gains in child and maternal health while strengthening early childhood nutrition and anaemia interventions to ensure that improvements in overall health outcomes are more evenly sustained.",
+    "health_narrative": "Boudh's health and nutrition trajectory reflects steady progress, though important vulnerabilities persist beneath these improvements. Between NFHS-4 and NFHS-5, the district recorded consistent declines in neonatal, infant and under-five mortality, indicating gradual improvements in child survival, while reductions in stunting, wasting and underweight prevalence suggest a broader improvement in nutritional outcomes. The decline in anaemia among pregnant women is another encouraging sign, although the estimated maternal mortality ratio of 81 indicates that maternal health remains an area requiring sustained attention. The district's health infrastructure, comprising 12 Primary Health Centres, 5 Community Health Centres and 67 Health Sub Centres, with 35 beds per 1,00,000 population, provides the foundation for service delivery but will need to respond to these continuing challenges. Anaemia among children aged 6–59 months rose from 44.1% to 56.2%, which makes micronutrient nutrition the area where further effort can do the most. Boudh's priority, therefore, is to consolidate gains in child and maternal health while strengthening early childhood nutrition and anaemia interventions to ensure that improvements in overall health outcomes are more evenly sustained.",
     "health_stats": {
       "mmr": "81",
       "phcs": "12",
@@ -1312,7 +1337,12 @@
   "Bhadrak": {
     "name": "Bhadrak",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -1422,7 +1452,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Bhadrak's health profile presents a mixed picture of progress and persistent nutritional challenges. While improvements in child survival and relatively better maternal health outcomes suggest gains in healthcare delivery, progress in reducing undernutrition has remained limited. The most serious concern is the sharp rise in anaemia among both children and pregnant women, pointing to a major gap in micronutrient nutrition despite improvements in mortality indicators. Strengthening primary healthcare, maternal and child nutrition services, and targeted interventions to prevent and treat anaemia will therefore be central to improving the district's overall health outcomes.",
+        "text_content": "Bhadrak's health profile presents a mixed picture of progress and persistent nutritional challenges. While improvements in child survival and relatively better maternal health outcomes suggest gains in healthcare delivery, progress in reducing undernutrition has remained limited. Alongside the improvements in mortality, anaemia rose among both children and pregnant women, so micronutrient nutrition is the main area for the next round of attention. Strengthening primary healthcare, maternal and child nutrition services, and targeted interventions to prevent and treat anaemia will therefore be central to improving the district's overall health outcomes.",
         "chart_url": ""
       },
       {
@@ -1550,7 +1580,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Bhadrak's health profile presents a mixed picture of progress and persistent nutritional challenges. While improvements in child survival and relatively better maternal health outcomes suggest gains in healthcare delivery, progress in reducing undernutrition has remained limited. The most serious concern is the sharp rise in anaemia among both children and pregnant women, pointing to a major gap in micronutrient nutrition despite improvements in mortality indicators. Strengthening primary healthcare, maternal and child nutrition services, and targeted interventions to prevent and treat anaemia will therefore be central to improving the district's overall health outcomes.",
+    "health_narrative": "Bhadrak's health profile presents a mixed picture of progress and persistent nutritional challenges. While improvements in child survival and relatively better maternal health outcomes suggest gains in healthcare delivery, progress in reducing undernutrition has remained limited. Alongside the improvements in mortality, anaemia rose among both children and pregnant women, so micronutrient nutrition is the main area for the next round of attention. Strengthening primary healthcare, maternal and child nutrition services, and targeted interventions to prevent and treat anaemia will therefore be central to improving the district's overall health outcomes.",
     "health_stats": {
       "mmr": "48",
       "phcs": "55",
@@ -1574,7 +1604,12 @@
   "Cuttack": {
     "name": "Cuttack",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -1836,7 +1871,12 @@
   "Debagarh": {
     "name": "Debagarh",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -1946,7 +1986,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Debagarh's health profile reflects significant challenges in both healthcare access and population health outcomes. Despite some improvement in child mortality over recent years, neonatal, infant and under-five mortality remain relatively high, while maternal mortality continues to be a serious concern. The district's limited health infrastructure and low bed availability further underline the need to strengthen access to essential healthcare, particularly for mothers and children. Nutritional outcomes present a mixed picture, with some progress in reducing chronic undernutrition and underweight, but worsening levels of wasting indicating persistent acute nutritional stress. Childhood anaemia has emerged as an especially serious concern, rising sharply and adding to the district's broader maternal and child health burden. Overall, Debagarh requires greater emphasis on strengthening primary healthcare, maternal and child health services, and targeted nutrition interventions to address these interconnected challenges.",
+        "text_content": "Debagarh's health profile reflects significant challenges in both healthcare access and population health outcomes. Despite some improvement in child mortality over recent years, neonatal, infant and under-five mortality remain relatively high, while maternal mortality continues to be a serious concern. The district's limited health infrastructure and low bed availability further underline the need to strengthen access to essential healthcare, particularly for mothers and children. Nutritional outcomes present a mixed picture, with some progress in reducing chronic undernutrition and underweight, but worsening levels of wasting indicating persistent acute nutritional stress. Childhood anaemia rose markedly, which makes it a priority for the district's maternal and child health programmes. Overall, Debagarh requires greater emphasis on strengthening primary healthcare, maternal and child health services, and targeted nutrition interventions to address these interconnected challenges.",
         "chart_url": ""
       },
       {
@@ -2074,7 +2114,7 @@
       "pvtg_names": "Paudi Bhuyan"
     },
     "tribal_text": "",
-    "health_narrative": "Debagarh's health profile reflects significant challenges in both healthcare access and population health outcomes. Despite some improvement in child mortality over recent years, neonatal, infant and under-five mortality remain relatively high, while maternal mortality continues to be a serious concern. The district's limited health infrastructure and low bed availability further underline the need to strengthen access to essential healthcare, particularly for mothers and children. Nutritional outcomes present a mixed picture, with some progress in reducing chronic undernutrition and underweight, but worsening levels of wasting indicating persistent acute nutritional stress. Childhood anaemia has emerged as an especially serious concern, rising sharply and adding to the district's broader maternal and child health burden. Overall, Debagarh requires greater emphasis on strengthening primary healthcare, maternal and child health services, and targeted nutrition interventions to address these interconnected challenges.",
+    "health_narrative": "Debagarh's health profile reflects significant challenges in both healthcare access and population health outcomes. Despite some improvement in child mortality over recent years, neonatal, infant and under-five mortality remain relatively high, while maternal mortality continues to be a serious concern. The district's limited health infrastructure and low bed availability further underline the need to strengthen access to essential healthcare, particularly for mothers and children. Nutritional outcomes present a mixed picture, with some progress in reducing chronic undernutrition and underweight, but worsening levels of wasting indicating persistent acute nutritional stress. Childhood anaemia rose markedly, which makes it a priority for the district's maternal and child health programmes. Overall, Debagarh requires greater emphasis on strengthening primary healthcare, maternal and child health services, and targeted nutrition interventions to address these interconnected challenges.",
     "health_stats": {
       "mmr": "158",
       "phcs": "8",
@@ -2098,7 +2138,12 @@
   "Dhenkanal": {
     "name": "Dhenkanal",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -2208,7 +2253,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Dhenkanal's health profile reflects improving survival outcomes alongside persistent and worsening nutritional challenges. The district has a relatively broad primary healthcare network, and mortality indicators have declined substantially, suggesting progress in maternal and child health services. However, these gains are accompanied by deterioration in child nutrition, with rising levels of stunting, wasting and underweight. Anaemia has emerged as the most critical concern, affecting both children and pregnant women and pointing to persistent gaps in nutrition and preventive healthcare. Overall, Dhenkanal's experience highlights a growing disconnect between improvements in healthcare and survival outcomes and the nutritional well-being of vulnerable populations, underscoring the need for stronger, integrated maternal, child and nutrition interventions.",
+        "text_content": "Dhenkanal's health profile reflects improving survival outcomes alongside persistent and worsening nutritional challenges. The district has a relatively broad primary healthcare network, and mortality indicators have declined substantially, suggesting progress in maternal and child health services. Child nutrition is the area to build on next: stunting, wasting and underweight rose between NFHS-4 and NFHS-5. Anaemia has emerged as the most critical concern, affecting both children and pregnant women and pointing to persistent gaps in nutrition and preventive healthcare. Overall, Dhenkanal's experience highlights a growing disconnect between improvements in healthcare and survival outcomes and the nutritional well-being of vulnerable populations, underscoring the need for stronger, integrated maternal, child and nutrition interventions.",
         "chart_url": ""
       },
       {
@@ -2336,7 +2381,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Dhenkanal's health profile reflects improving survival outcomes alongside persistent and worsening nutritional challenges. The district has a relatively broad primary healthcare network, and mortality indicators have declined substantially, suggesting progress in maternal and child health services. However, these gains are accompanied by deterioration in child nutrition, with rising levels of stunting, wasting and underweight. Anaemia has emerged as the most critical concern, affecting both children and pregnant women and pointing to persistent gaps in nutrition and preventive healthcare. Overall, Dhenkanal's experience highlights a growing disconnect between improvements in healthcare and survival outcomes and the nutritional well-being of vulnerable populations, underscoring the need for stronger, integrated maternal, child and nutrition interventions.",
+    "health_narrative": "Dhenkanal's health profile reflects improving survival outcomes alongside persistent and worsening nutritional challenges. The district has a relatively broad primary healthcare network, and mortality indicators have declined substantially, suggesting progress in maternal and child health services. Child nutrition is the area to build on next: stunting, wasting and underweight rose between NFHS-4 and NFHS-5. Anaemia has emerged as the most critical concern, affecting both children and pregnant women and pointing to persistent gaps in nutrition and preventive healthcare. Overall, Dhenkanal's experience highlights a growing disconnect between improvements in healthcare and survival outcomes and the nutritional well-being of vulnerable populations, underscoring the need for stronger, integrated maternal, child and nutrition interventions.",
     "health_stats": {
       "mmr": "78",
       "phcs": "38",
@@ -2360,7 +2405,12 @@
   "Gajapati": {
     "name": "Gajapati",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -2470,7 +2520,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Gajapati's health profile reveals persistent maternal and child health challenges despite a substantial network of primary healthcare facilities. Mortality remains relatively high, particularly among newborns and young children, while maternal mortality continues to be a major concern. Nutritional outcomes are similarly worrying, with widespread deterioration in child nutrition and a sharp rise in anaemia among both children and pregnant women. Although wasting has shown some improvement, this isolated gain is outweighed by worsening stunting, underweight and anaemia. Overall, the district faces a significant and interconnected burden of maternal and child health and nutrition, highlighting the need for stronger primary healthcare, maternal care and targeted nutrition interventions, particularly among vulnerable rural and tribal communities.",
+        "text_content": "Gajapati's health profile reveals persistent maternal and child health challenges despite a substantial network of primary healthcare facilities. Mortality remains relatively high, particularly among newborns and young children, while maternal mortality continues to be a major concern. Nutrition is the main area for further gains: child nutrition indicators moved the less favourable way, and anaemia rose among both children and pregnant women. Although wasting has shown some improvement, this isolated gain is outweighed by worsening stunting, underweight and anaemia. Stronger primary healthcare, maternal care and targeted nutrition support, especially in rural and tribal communities, can build on these foundations.",
         "chart_url": ""
       },
       {
@@ -2503,7 +2553,7 @@
       {
         "slide_num": 16,
         "title": "Education",
-        "text_content": "Gajapati's education system is predominantly government-led, with a broad school network and growing access to digital learning facilities. While primary enrolment is relatively strong, participation declines at the upper-primary stage, and transition becomes a greater challenge as students move toward secondary education. The sharp rise in dropout at the secondary level points to difficulties in retaining adolescents within the school system, while relatively lower transition rates suggest that these challenges begin earlier. Educational attainment remains a major concern, with literacy levels considerably below those of many other districts and a pronounced gender gap. These disadvantages are particularly significant in a district with a large tribal population, underscoring the need for more inclusive and context-specific strategies to improve retention, secondary education and girls' learning outcomes.",
+        "text_content": "Gajapati's education system is predominantly government-led, with a broad school network and growing access to digital learning facilities. While primary enrolment is relatively strong, participation declines at the upper-primary stage, and transition becomes a greater challenge as students move toward secondary education. Keeping adolescents in school is the next opportunity: dropout at the secondary level has risen, and transition rates show the work can start in the middle years. Educational attainment remains a major concern, with literacy levels considerably below those of many other districts and a pronounced gender gap. These disadvantages are particularly significant in a district with a large tribal population, underscoring the need for more inclusive and context-specific strategies to improve retention, secondary education and girls' learning outcomes.",
         "chart_url": ""
       },
       {
@@ -2598,7 +2648,7 @@
       "pvtg_names": "Saora, Lanjia Saora"
     },
     "tribal_text": "",
-    "health_narrative": "Gajapati's health profile reveals persistent maternal and child health challenges despite a substantial network of primary healthcare facilities. Mortality remains relatively high, particularly among newborns and young children, while maternal mortality continues to be a major concern. Nutritional outcomes are similarly worrying, with widespread deterioration in child nutrition and a sharp rise in anaemia among both children and pregnant women. Although wasting has shown some improvement, this isolated gain is outweighed by worsening stunting, underweight and anaemia. Overall, the district faces a significant and interconnected burden of maternal and child health and nutrition, highlighting the need for stronger primary healthcare, maternal care and targeted nutrition interventions, particularly among vulnerable rural and tribal communities.",
+    "health_narrative": "Gajapati's health profile reveals persistent maternal and child health challenges despite a substantial network of primary healthcare facilities. Mortality remains relatively high, particularly among newborns and young children, while maternal mortality continues to be a major concern. Nutrition is the main area for further gains: child nutrition indicators moved the less favourable way, and anaemia rose among both children and pregnant women. Although wasting has shown some improvement, this isolated gain is outweighed by worsening stunting, underweight and anaemia. Stronger primary healthcare, maternal care and targeted nutrition support, especially in rural and tribal communities, can build on these foundations.",
     "health_stats": {
       "mmr": "168",
       "phcs": "22",
@@ -2606,7 +2656,7 @@
       "sub_centres": "136",
       "beds_per_100k": "47"
     },
-    "education_narrative": "Gajapati's education system is predominantly government-led, with a broad school network and growing access to digital learning facilities. While primary enrolment is relatively strong, participation declines at the upper-primary stage, and transition becomes a greater challenge as students move toward secondary education. The sharp rise in dropout at the secondary level points to difficulties in retaining adolescents within the school system, while relatively lower transition rates suggest that these challenges begin earlier. Educational attainment remains a major concern, with literacy levels considerably below those of many other districts and a pronounced gender gap. These disadvantages are particularly significant in a district with a large tribal population, underscoring the need for more inclusive and context-specific strategies to improve retention, secondary education and girls' learning outcomes.",
+    "education_narrative": "Gajapati's education system is predominantly government-led, with a broad school network and growing access to digital learning facilities. While primary enrolment is relatively strong, participation declines at the upper-primary stage, and transition becomes a greater challenge as students move toward secondary education. Keeping adolescents in school is the next opportunity: dropout at the secondary level has risen, and transition rates show the work can start in the middle years. Educational attainment remains a major concern, with literacy levels considerably below those of many other districts and a pronounced gender gap. These disadvantages are particularly significant in a district with a large tribal population, underscoring the need for more inclusive and context-specific strategies to improve retention, secondary education and girls' learning outcomes.",
     "education_stats": {
       "raw": "Male Literacy Rate (2011): 64.4% | Female Literacy Rate (2011): 43.2% | Primary GER (2018-19): 103.99 | Upper Primary GER (2018-19): 96.92 | Middle Dropout Rate (2024-25): 4.6% | Secondary Dropout Rate (2024-25): 15.7% | Transition Rate Preparatory to Middle (2024-25): 93.7% | Transition Rate Middle to Secondary (2024-25): 88.2% | Middle PTR: 14 | Secondary PTR: 20 | % Schools with Smart Classrooms: 27.16% | % Schools with Computer Facility: 72.04%"
     },
@@ -2622,7 +2672,12 @@
   "Ganjam": {
     "name": "Ganjam",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -2732,7 +2787,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Ganjam's health profile reflects a relatively extensive healthcare system and improving child survival outcomes, but significant gaps remain in maternal health and nutrition. Despite progress in reducing neonatal, infant and under-five mortality, maternal mortality remains a major concern. Nutritional outcomes are also mixed, with worsening levels of stunting and wasting and little improvement in underweight among children. Anaemia has emerged as the most pressing nutritional challenge, affecting both children and pregnant women at increasingly high levels. The combination of high maternal mortality and deteriorating nutrition highlights the need for stronger maternal healthcare, preventive services and integrated nutrition interventions across the district.",
+        "text_content": "Ganjam's health profile reflects a relatively extensive healthcare system and improving child survival outcomes, but significant gaps remain in maternal health and nutrition. Despite progress in reducing neonatal, infant and under-five mortality, maternal mortality remains a major concern. Nutritional outcomes are also mixed, with worsening levels of stunting and wasting and little improvement in underweight among children. Anaemia has emerged as the most pressing nutritional challenge, affecting both children and pregnant women at increasingly high levels. Maternal health and nutrition are where stronger maternal care, preventive services and integrated nutrition programmes can add the most across the district.",
         "chart_url": ""
       },
       {
@@ -2860,7 +2915,7 @@
       "pvtg_names": "Soura"
     },
     "tribal_text": "",
-    "health_narrative": "Ganjam's health profile reflects a relatively extensive healthcare system and improving child survival outcomes, but significant gaps remain in maternal health and nutrition. Despite progress in reducing neonatal, infant and under-five mortality, maternal mortality remains a major concern. Nutritional outcomes are also mixed, with worsening levels of stunting and wasting and little improvement in underweight among children. Anaemia has emerged as the most pressing nutritional challenge, affecting both children and pregnant women at increasingly high levels. The combination of high maternal mortality and deteriorating nutrition highlights the need for stronger maternal healthcare, preventive services and integrated nutrition interventions across the district.",
+    "health_narrative": "Ganjam's health profile reflects a relatively extensive healthcare system and improving child survival outcomes, but significant gaps remain in maternal health and nutrition. Despite progress in reducing neonatal, infant and under-five mortality, maternal mortality remains a major concern. Nutritional outcomes are also mixed, with worsening levels of stunting and wasting and little improvement in underweight among children. Anaemia has emerged as the most pressing nutritional challenge, affecting both children and pregnant women at increasingly high levels. Maternal health and nutrition are where stronger maternal care, preventive services and integrated nutrition programmes can add the most across the district.",
     "health_stats": {
       "mmr": "186",
       "phcs": "101",
@@ -2884,7 +2939,11 @@
   "Kendujhar": {
     "name": "Kendujhar",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -3146,7 +3205,12 @@
   "Nabarangpur": {
     "name": "Nabarangpur",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -3408,7 +3472,12 @@
   "Nayagarh": {
     "name": "Nayagarh",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -3670,7 +3739,12 @@
   "Nuapada": {
     "name": "Nuapada",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -3780,7 +3854,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Nuapada's health and nutrition profile points to significant vulnerabilities, with several indicators showing outcomes weaker than those observed across most other districts profiled. While the district has a basic network of health facilities and moderate bed availability, infant and under-five mortality have worsened, alongside a particularly high maternal mortality ratio that signals persistent gaps in maternal healthcare access and quality. Nutritional outcomes are similarly mixed: although wasting and underweight have improved, stunting has increased and anaemia among young children remains widespread, affecting nearly three-fourths of children aged 6–59 months. The combination of adverse mortality trends, persistent malnutrition, and high anaemia burden highlights the need for stronger maternal and child health services, particularly in the district's predominantly rural and tribal communities.",
+        "text_content": "Nuapada's health and nutrition profile shows considerable room to gain, with several indicators below those of most other districts profiled. While the district has a basic network of health facilities and moderate bed availability, infant and under-five mortality have worsened, alongside a particularly high maternal mortality ratio that signals persistent gaps in maternal healthcare access and quality. Nutritional outcomes are similarly mixed: although wasting and underweight have improved, stunting has increased and anaemia among young children remains widespread, affecting nearly three-fourths of children aged 6–59 months. Mortality, nutrition and anaemia are the areas where stronger maternal and child health services, particularly in rural and tribal communities, can make the largest difference.",
         "chart_url": ""
       },
       {
@@ -3908,7 +3982,7 @@
       "pvtg_names": "Chuktia Bhunjia"
     },
     "tribal_text": "",
-    "health_narrative": "Nuapada's health and nutrition profile points to significant vulnerabilities, with several indicators showing outcomes weaker than those observed across most other districts profiled. While the district has a basic network of health facilities and moderate bed availability, infant and under-five mortality have worsened, alongside a particularly high maternal mortality ratio that signals persistent gaps in maternal healthcare access and quality. Nutritional outcomes are similarly mixed: although wasting and underweight have improved, stunting has increased and anaemia among young children remains widespread, affecting nearly three-fourths of children aged 6–59 months. The combination of adverse mortality trends, persistent malnutrition, and high anaemia burden highlights the need for stronger maternal and child health services, particularly in the district's predominantly rural and tribal communities.",
+    "health_narrative": "Nuapada's health and nutrition profile shows considerable room to gain, with several indicators below those of most other districts profiled. While the district has a basic network of health facilities and moderate bed availability, infant and under-five mortality have worsened, alongside a particularly high maternal mortality ratio that signals persistent gaps in maternal healthcare access and quality. Nutritional outcomes are similarly mixed: although wasting and underweight have improved, stunting has increased and anaemia among young children remains widespread, affecting nearly three-fourths of children aged 6–59 months. Mortality, nutrition and anaemia are the areas where stronger maternal and child health services, particularly in rural and tribal communities, can make the largest difference.",
     "health_stats": {
       "mmr": "301",
       "phcs": "17",
@@ -3932,7 +4006,12 @@
   "Puri": {
     "name": "Puri",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -4042,7 +4121,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Puri's health profile reflects meaningful gains in maternal and child survival, supported by a relatively well-established healthcare network and improving access to essential services. Improvements in child nutrition further indicate progress in addressing undernutrition, with declines in stunting, wasting, and underweight among children. Yet these gains coexist with a growing anaemia burden among women and children, pointing to persistent gaps in dietary quality and micronutrient intake. With a broad network of primary and secondary healthcare facilities, Puri has a strong foundation for continued progress, but addressing anaemia and strengthening the quality and capacity of health services will be critical to sustaining its favourable health trajectory.",
+        "text_content": "Puri's health profile reflects meaningful gains in maternal and child survival, supported by a relatively well-established healthcare network and improving access to essential services. Improvements in child nutrition further indicate progress in addressing undernutrition, with declines in stunting, wasting, and underweight among children. Anaemia among women and children rose, so dietary quality and micronutrient intake are the next areas of focus. With a broad network of primary and secondary healthcare facilities, Puri has a strong foundation for continued progress, but addressing anaemia and strengthening the quality and capacity of health services will be critical to sustaining its favourable health trajectory.",
         "chart_url": ""
       },
       {
@@ -4170,7 +4249,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Puri's health profile reflects meaningful gains in maternal and child survival, supported by a relatively well-established healthcare network and improving access to essential services. Improvements in child nutrition further indicate progress in addressing undernutrition, with declines in stunting, wasting, and underweight among children. Yet these gains coexist with a growing anaemia burden among women and children, pointing to persistent gaps in dietary quality and micronutrient intake. With a broad network of primary and secondary healthcare facilities, Puri has a strong foundation for continued progress, but addressing anaemia and strengthening the quality and capacity of health services will be critical to sustaining its favourable health trajectory.",
+    "health_narrative": "Puri's health profile reflects meaningful gains in maternal and child survival, supported by a relatively well-established healthcare network and improving access to essential services. Improvements in child nutrition further indicate progress in addressing undernutrition, with declines in stunting, wasting, and underweight among children. Anaemia among women and children rose, so dietary quality and micronutrient intake are the next areas of focus. With a broad network of primary and secondary healthcare facilities, Puri has a strong foundation for continued progress, but addressing anaemia and strengthening the quality and capacity of health services will be critical to sustaining its favourable health trajectory.",
     "health_stats": {
       "mmr": "88",
       "phcs": "52",
@@ -4194,7 +4273,12 @@
   "Rayagada": {
     "name": "Rayagada",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -4304,7 +4388,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Rayagada's health and nutrition profile reflects encouraging improvements in healthcare alongside persistent public health challenges. Declining maternal and child mortality indicate gradual gains in healthcare access and service delivery, supported by an expanding network of primary health facilities that has improved outreach across the district's remote and hilly regions. Despite these advances, health infrastructure remains limited, particularly for specialized and inpatient care. Nutrition outcomes present a mixed picture: while acute and chronic undernutrition have shown signs of improvement, malnutrition continues to affect a large share of children, and anaemia has emerged as a critical public health concern among both women and children. These trends underscore the need to complement improvements in healthcare delivery with stronger nutrition programmes, maternal and child health interventions, and sustained efforts to address the underlying socio-economic determinants of poor health.",
+        "text_content": "Rayagada's health and nutrition profile reflects encouraging improvements in healthcare alongside persistent public health challenges. Declining maternal and child mortality indicate gradual gains in healthcare access and service delivery, supported by an expanding network of primary health facilities that has improved outreach across the district's remote and hilly regions. Despite these advances, health infrastructure remains limited, particularly for specialized and inpatient care. Nutrition outcomes present a mixed picture: while acute and chronic undernutrition have shown signs of improvement, malnutrition continues to affect a large share of children, and anaemia has emerged as a critical public health concern among both women and children. Building on better healthcare delivery with stronger nutrition programmes, maternal and child health services and wider social and economic support can extend these gains.",
         "chart_url": ""
       },
       {
@@ -4432,7 +4516,7 @@
       "pvtg_names": "Dongria Kandha, Lanjia Saora"
     },
     "tribal_text": "",
-    "health_narrative": "Rayagada's health and nutrition profile reflects encouraging improvements in healthcare alongside persistent public health challenges. Declining maternal and child mortality indicate gradual gains in healthcare access and service delivery, supported by an expanding network of primary health facilities that has improved outreach across the district's remote and hilly regions. Despite these advances, health infrastructure remains limited, particularly for specialized and inpatient care. Nutrition outcomes present a mixed picture: while acute and chronic undernutrition have shown signs of improvement, malnutrition continues to affect a large share of children, and anaemia has emerged as a critical public health concern among both women and children. These trends underscore the need to complement improvements in healthcare delivery with stronger nutrition programmes, maternal and child health interventions, and sustained efforts to address the underlying socio-economic determinants of poor health.",
+    "health_narrative": "Rayagada's health and nutrition profile reflects encouraging improvements in healthcare alongside persistent public health challenges. Declining maternal and child mortality indicate gradual gains in healthcare access and service delivery, supported by an expanding network of primary health facilities that has improved outreach across the district's remote and hilly regions. Despite these advances, health infrastructure remains limited, particularly for specialized and inpatient care. Nutrition outcomes present a mixed picture: while acute and chronic undernutrition have shown signs of improvement, malnutrition continues to affect a large share of children, and anaemia has emerged as a critical public health concern among both women and children. Building on better healthcare delivery with stronger nutrition programmes, maternal and child health services and wider social and economic support can extend these gains.",
     "health_stats": {
       "mmr": "180",
       "phcs": "41",
@@ -4456,7 +4540,12 @@
   "Sundargarh": {
     "name": "Sundargarh",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -4566,7 +4655,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Sundargarh's health and nutrition profile reflects a broadly improving health system, with progress in child survival and most indicators of nutritional status. Improvements in stunting, wasting and underweight prevalence suggest that interventions addressing childhood nutrition are yielding results, while relatively stable mortality outcomes point to gradual gains in maternal and child healthcare. However, the persistent and worsening burden of anaemia, particularly among children and pregnant women, highlights a critical gap in the district's nutrition transition, where improvements in growth outcomes have not been matched by reductions in micronutrient deficiencies. The district's extensive health infrastructure provides an important foundation for addressing these challenges, but its large and diverse tribal population, including PVTG communities, underscores the need for interventions that are accessible, culturally appropriate and responsive to geographically dispersed and vulnerable populations. Overall, Sundargarh's priority is to consolidate gains in child nutrition and survival while shifting greater attention towards anaemia, maternal nutrition and equitable access to quality healthcare.",
+        "text_content": "Sundargarh's health and nutrition profile reflects a broadly improving health system, with progress in child survival and most indicators of nutritional status. Improvements in stunting, wasting and underweight prevalence suggest that interventions addressing childhood nutrition are yielding results, while relatively stable mortality outcomes point to gradual gains in maternal and child healthcare. The next step in the district's nutrition progress is anaemia, which rose among children and pregnant women even as growth outcomes improved. The district's extensive health infrastructure provides an important foundation for addressing these challenges, but its large and diverse tribal population, including PVTG communities, underscores the need for interventions that are accessible, culturally appropriate and responsive to geographically dispersed and vulnerable populations. Overall, Sundargarh's priority is to consolidate gains in child nutrition and survival while shifting greater attention towards anaemia, maternal nutrition and equitable access to quality healthcare.",
         "chart_url": ""
       },
       {
@@ -4694,7 +4783,7 @@
       "pvtg_names": "Paudi Bhuyan, Birhor"
     },
     "tribal_text": "",
-    "health_narrative": "Sundargarh's health and nutrition profile reflects a broadly improving health system, with progress in child survival and most indicators of nutritional status. Improvements in stunting, wasting and underweight prevalence suggest that interventions addressing childhood nutrition are yielding results, while relatively stable mortality outcomes point to gradual gains in maternal and child healthcare. However, the persistent and worsening burden of anaemia, particularly among children and pregnant women, highlights a critical gap in the district's nutrition transition, where improvements in growth outcomes have not been matched by reductions in micronutrient deficiencies. The district's extensive health infrastructure provides an important foundation for addressing these challenges, but its large and diverse tribal population, including PVTG communities, underscores the need for interventions that are accessible, culturally appropriate and responsive to geographically dispersed and vulnerable populations. Overall, Sundargarh's priority is to consolidate gains in child nutrition and survival while shifting greater attention towards anaemia, maternal nutrition and equitable access to quality healthcare.",
+    "health_narrative": "Sundargarh's health and nutrition profile reflects a broadly improving health system, with progress in child survival and most indicators of nutritional status. Improvements in stunting, wasting and underweight prevalence suggest that interventions addressing childhood nutrition are yielding results, while relatively stable mortality outcomes point to gradual gains in maternal and child healthcare. The next step in the district's nutrition progress is anaemia, which rose among children and pregnant women even as growth outcomes improved. The district's extensive health infrastructure provides an important foundation for addressing these challenges, but its large and diverse tribal population, including PVTG communities, underscores the need for interventions that are accessible, culturally appropriate and responsive to geographically dispersed and vulnerable populations. Overall, Sundargarh's priority is to consolidate gains in child nutrition and survival while shifting greater attention towards anaemia, maternal nutrition and equitable access to quality healthcare.",
     "health_stats": {
       "mmr": "111",
       "phcs": "72",
@@ -4718,7 +4807,12 @@
   "Sambalpur": {
     "name": "Sambalpur",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -4980,7 +5074,12 @@
   "Subarnapur": {
     "name": "Subarnapur",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -5090,7 +5189,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Subarnapur's health and nutrition profile presents a mixed picture, with improvements in some child health and nutrition outcomes alongside persistent challenges in maternal health and acute malnutrition. The district has made notable progress in reducing neonatal mortality and chronic undernutrition, suggesting gains in basic health and nutrition interventions. However, relatively limited improvement in infant and under-five mortality, coupled with a high maternal mortality burden, points to continuing gaps in the quality and accessibility of maternal and child healthcare. The rise in wasting further indicates that improvements in long-term nutritional status have not fully translated into protection against acute malnutrition. Most concerning is the persistently severe burden of child anaemia, which remains a major barrier to healthy childhood development. Overall, Subarnapur's challenge is to consolidate gains in chronic nutrition while addressing acute malnutrition, maternal health and anaemia through more sustained and integrated interventions.",
+        "text_content": "Subarnapur's health and nutrition profile presents a mixed picture, with improvements in some child health and nutrition outcomes alongside persistent challenges in maternal health and acute malnutrition. The district has made notable progress in reducing neonatal mortality and chronic undernutrition, suggesting gains in basic health and nutrition interventions. Infant, under-five and maternal mortality are where better quality and reach of maternal and child healthcare can bring the next gains. The rise in wasting further indicates that improvements in long-term nutritional status have not fully translated into protection against acute malnutrition. Reducing child anaemia, which remains high, is the biggest opportunity for healthier childhoods. Overall, Subarnapur's challenge is to consolidate gains in chronic nutrition while addressing acute malnutrition, maternal health and anaemia through more sustained and integrated interventions.",
         "chart_url": ""
       },
       {
@@ -5218,7 +5317,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Subarnapur's health and nutrition profile presents a mixed picture, with improvements in some child health and nutrition outcomes alongside persistent challenges in maternal health and acute malnutrition. The district has made notable progress in reducing neonatal mortality and chronic undernutrition, suggesting gains in basic health and nutrition interventions. However, relatively limited improvement in infant and under-five mortality, coupled with a high maternal mortality burden, points to continuing gaps in the quality and accessibility of maternal and child healthcare. The rise in wasting further indicates that improvements in long-term nutritional status have not fully translated into protection against acute malnutrition. Most concerning is the persistently severe burden of child anaemia, which remains a major barrier to healthy childhood development. Overall, Subarnapur's challenge is to consolidate gains in chronic nutrition while addressing acute malnutrition, maternal health and anaemia through more sustained and integrated interventions.",
+    "health_narrative": "Subarnapur's health and nutrition profile presents a mixed picture, with improvements in some child health and nutrition outcomes alongside persistent challenges in maternal health and acute malnutrition. The district has made notable progress in reducing neonatal mortality and chronic undernutrition, suggesting gains in basic health and nutrition interventions. Infant, under-five and maternal mortality are where better quality and reach of maternal and child healthcare can bring the next gains. The rise in wasting further indicates that improvements in long-term nutritional status have not fully translated into protection against acute malnutrition. Reducing child anaemia, which remains high, is the biggest opportunity for healthier childhoods. Overall, Subarnapur's challenge is to consolidate gains in chronic nutrition while addressing acute malnutrition, maternal health and anaemia through more sustained and integrated interventions.",
     "health_stats": {
       "mmr": "255",
       "phcs": "20",
@@ -5242,7 +5341,12 @@
   "Mayurbhanj": {
     "name": "Mayurbhanj",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -5504,7 +5608,12 @@
   "Malkangiri": {
     "name": "Malkangiri",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -5614,7 +5723,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Malkangiri's health and nutrition landscape reflects incremental progress amid enduring structural challenges. Improvements in healthcare access and the expansion of primary health facilities have contributed to gradual reductions in maternal and child mortality, extending essential services to the district's remote tribal communities. Nutrition outcomes have also shown encouraging signs, with declines in child undernutrition indicating steady gains in food and nutrition security. However, the district continues to face serious public health concerns. Maternal health outcomes remain among the weakest in the state, while widespread anaemia among women and children points to persistent micronutrient deficiencies and gaps in preventive care. Sustained investments in primary healthcare, maternal and child health services, nutrition interventions, and last-mile service delivery will be essential to improving overall health outcomes in this geographically challenging district.",
+        "text_content": "Malkangiri's health and nutrition landscape reflects incremental progress amid enduring structural challenges. Improvements in healthcare access and the expansion of primary health facilities have contributed to gradual reductions in maternal and child mortality, extending essential services to the district's remote tribal communities. Nutrition outcomes have also shown encouraging signs, with declines in child undernutrition indicating steady gains in food and nutrition security. However, the district continues to face serious public health concerns. Maternal health and anaemia among women and children offer the most room to gain, through micronutrient nutrition and preventive care. Sustained investments in primary healthcare, maternal and child health services, nutrition interventions, and last-mile service delivery will be essential to improving overall health outcomes in this geographically challenging district.",
         "chart_url": ""
       },
       {
@@ -5742,7 +5851,7 @@
       "pvtg_names": "Bonda, Didayi"
     },
     "tribal_text": "",
-    "health_narrative": "Malkangiri's health and nutrition landscape reflects incremental progress amid enduring structural challenges. Improvements in healthcare access and the expansion of primary health facilities have contributed to gradual reductions in maternal and child mortality, extending essential services to the district's remote tribal communities. Nutrition outcomes have also shown encouraging signs, with declines in child undernutrition indicating steady gains in food and nutrition security. However, the district continues to face serious public health concerns. Maternal health outcomes remain among the weakest in the state, while widespread anaemia among women and children points to persistent micronutrient deficiencies and gaps in preventive care. Sustained investments in primary healthcare, maternal and child health services, nutrition interventions, and last-mile service delivery will be essential to improving overall health outcomes in this geographically challenging district.",
+    "health_narrative": "Malkangiri's health and nutrition landscape reflects incremental progress amid enduring structural challenges. Improvements in healthcare access and the expansion of primary health facilities have contributed to gradual reductions in maternal and child mortality, extending essential services to the district's remote tribal communities. Nutrition outcomes have also shown encouraging signs, with declines in child undernutrition indicating steady gains in food and nutrition security. However, the district continues to face serious public health concerns. Maternal health and anaemia among women and children offer the most room to gain, through micronutrient nutrition and preventive care. Sustained investments in primary healthcare, maternal and child health services, nutrition interventions, and last-mile service delivery will be essential to improving overall health outcomes in this geographically challenging district.",
     "health_stats": {
       "mmr": "286",
       "phcs": "28",
@@ -5766,7 +5875,12 @@
   "Koraput": {
     "name": "Koraput",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -5876,7 +5990,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Koraput's health landscape reflects steady progress alongside persistent challenges. Improvements in maternal and child healthcare have contributed to declining mortality and rising life expectancy, supported by an expanding network of health facilities that has improved access to essential services, particularly in rural areas. Yet the district continues to face a significant nutritional burden. While acute and chronic undernutrition have shown signs of improvement in some areas, malnutrition remains widespread, and anaemia continues to affect a large proportion of children and women. These patterns highlight the need to complement healthcare investments with stronger nutrition interventions, maternal and child health services, and sustained efforts to address the underlying social and economic determinants of health.",
+        "text_content": "Koraput's health landscape reflects steady progress alongside persistent challenges. Improvements in maternal and child healthcare have contributed to declining mortality and rising life expectancy, supported by an expanding network of health facilities that has improved access to essential services, particularly in rural areas. Nutrition is the main area for the next round of progress. While acute and chronic undernutrition have shown signs of improvement in some areas, malnutrition remains widespread, and anaemia continues to affect a large proportion of children and women. These patterns highlight the need to complement healthcare investments with stronger nutrition interventions, maternal and child health services, and sustained efforts to address the underlying social and economic determinants of health.",
         "chart_url": ""
       },
       {
@@ -6004,7 +6118,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Koraput's health landscape reflects steady progress alongside persistent challenges. Improvements in maternal and child healthcare have contributed to declining mortality and rising life expectancy, supported by an expanding network of health facilities that has improved access to essential services, particularly in rural areas. Yet the district continues to face a significant nutritional burden. While acute and chronic undernutrition have shown signs of improvement in some areas, malnutrition remains widespread, and anaemia continues to affect a large proportion of children and women. These patterns highlight the need to complement healthcare investments with stronger nutrition interventions, maternal and child health services, and sustained efforts to address the underlying social and economic determinants of health.",
+    "health_narrative": "Koraput's health landscape reflects steady progress alongside persistent challenges. Improvements in maternal and child healthcare have contributed to declining mortality and rising life expectancy, supported by an expanding network of health facilities that has improved access to essential services, particularly in rural areas. Nutrition is the main area for the next round of progress. While acute and chronic undernutrition have shown signs of improvement in some areas, malnutrition remains widespread, and anaemia continues to affect a large proportion of children and women. These patterns highlight the need to complement healthcare investments with stronger nutrition interventions, maternal and child health services, and sustained efforts to address the underlying social and economic determinants of health.",
     "health_stats": {
       "mmr": "260",
       "phcs": "52",
@@ -6028,7 +6142,12 @@
   "Khordha": {
     "name": "Khordha",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -6137,7 +6256,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Khordha's health and nutrition profile reflects the benefits of a relatively well-developed healthcare system, with steady improvements in maternal and child health contributing to some of the best health outcomes in the state. An extensive network of health facilities has strengthened access to healthcare, supporting declines in child mortality and significant reductions in child undernutrition. Despite these gains, anaemia has emerged as a major public health concern, with its prevalence rising sharply among women and children, highlighting persistent gaps in dietary quality and micronutrient intake even in a district with comparatively better healthcare access. As Khordha continues to urbanise, addressing the growing burden of anaemia while sustaining improvements in maternal, newborn, and child health will be critical to achieving better overall health outcomes.",
+        "text_content": "Khordha's health and nutrition profile reflects the benefits of a relatively well-developed healthcare system, with steady improvements in maternal and child health contributing to some of the best health outcomes in the state. An extensive network of health facilities has strengthened access to healthcare, supporting declines in child mortality and significant reductions in child undernutrition. Despite these gains, anaemia has emerged as a major public health concern, with its prevalence rising sharply among women and children, highlighting persistent gaps in dietary quality and micronutrient intake even in a district with comparatively better healthcare access. As Khordha continues to urbanise, reducing anaemia while sustaining its gains in maternal, newborn and child health will carry its health progress further.",
         "chart_url": ""
       },
       {
@@ -6265,7 +6384,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Khordha's health and nutrition profile reflects the benefits of a relatively well-developed healthcare system, with steady improvements in maternal and child health contributing to some of the best health outcomes in the state. An extensive network of health facilities has strengthened access to healthcare, supporting declines in child mortality and significant reductions in child undernutrition. Despite these gains, anaemia has emerged as a major public health concern, with its prevalence rising sharply among women and children, highlighting persistent gaps in dietary quality and micronutrient intake even in a district with comparatively better healthcare access. As Khordha continues to urbanise, addressing the growing burden of anaemia while sustaining improvements in maternal, newborn, and child health will be critical to achieving better overall health outcomes.",
+    "health_narrative": "Khordha's health and nutrition profile reflects the benefits of a relatively well-developed healthcare system, with steady improvements in maternal and child health contributing to some of the best health outcomes in the state. An extensive network of health facilities has strengthened access to healthcare, supporting declines in child mortality and significant reductions in child undernutrition. Despite these gains, anaemia has emerged as a major public health concern, with its prevalence rising sharply among women and children, highlighting persistent gaps in dietary quality and micronutrient intake even in a district with comparatively better healthcare access. As Khordha continues to urbanise, reducing anaemia while sustaining its gains in maternal, newborn and child health will carry its health progress further.",
     "health_stats": {
       "mmr": "45",
       "phcs": "75",
@@ -6289,7 +6408,13 @@
   "Kendrapara": {
     "name": "Kendrapara",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL", "No Tribal Groups slide in source"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL",
+      "No Tribal Groups slide in source"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -6399,7 +6524,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Kendrapara's health profile reflects gradual improvements in maternal and child survival, but persistent nutritional challenges. While mortality outcomes have improved, they remain relatively high, suggesting continuing gaps in maternal and child healthcare. Nutrition outcomes are mixed: wasting and underweight have declined, but stunting has shown little progress and remains a concern. The most significant challenge is the sharp rise in anaemia among both children and pregnant women, highlighting persistent deficiencies in maternal and child nutrition. Overall, Kendrapara's health trajectory points to the need to consolidate gains in survival while strengthening preventive care and targeted nutrition interventions, particularly to address the growing anaemia burden.",
+        "text_content": "Kendrapara's health profile reflects gradual improvements in maternal and child survival, but persistent nutritional challenges. While mortality outcomes have improved, they remain relatively high, suggesting continuing gaps in maternal and child healthcare. Nutrition outcomes are mixed: wasting and underweight have declined, but stunting has shown little progress and remains a concern. Anaemia rose among both children and pregnant women, which makes maternal and child nutrition the main area for further gains. Overall, Kendrapara can consolidate its gains in survival by strengthening preventive care and targeted nutrition, especially to bring anaemia down.",
         "chart_url": ""
       },
       {
@@ -6432,7 +6557,7 @@
       {
         "slide_num": 16,
         "title": "Education",
-        "text_content": "Kendrapara's education profile reflects strong foundational enrolment and comparatively high literacy, but significant retention challenges emerge at the secondary stage. While elementary enrolment and transition rates remain high and teacher availability is broadly favourable, the sharp rise in secondary-level dropout points to growing barriers to continued schooling as students progress. The district also retains a predominantly government-led school system and has comparatively strong access to functional computer facilities, although the limited spread of smart classrooms highlights continuing gaps in digital learning infrastructure. A persistent gender gap in literacy further underscores the need to strengthen educational outcomes and retention, particularly for girls as they move into higher stages of schooling.",
+        "text_content": "Kendrapara's education profile reflects strong foundational enrolment and comparatively high literacy, but significant retention challenges emerge at the secondary stage. Elementary enrolment and transition rates remain high and teacher availability is broadly favourable; the next opportunity is at the secondary level, where dropout has risen. The district also retains a predominantly government-led school system and has comparatively strong access to functional computer facilities, although the limited spread of smart classrooms highlights continuing gaps in digital learning infrastructure. A persistent gender gap in literacy further underscores the need to strengthen educational outcomes and retention, particularly for girls as they move into higher stages of schooling.",
         "chart_url": ""
       },
       {
@@ -6527,7 +6652,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Kendrapara's health profile reflects gradual improvements in maternal and child survival, but persistent nutritional challenges. While mortality outcomes have improved, they remain relatively high, suggesting continuing gaps in maternal and child healthcare. Nutrition outcomes are mixed: wasting and underweight have declined, but stunting has shown little progress and remains a concern. The most significant challenge is the sharp rise in anaemia among both children and pregnant women, highlighting persistent deficiencies in maternal and child nutrition. Overall, Kendrapara's health trajectory points to the need to consolidate gains in survival while strengthening preventive care and targeted nutrition interventions, particularly to address the growing anaemia burden.",
+    "health_narrative": "Kendrapara's health profile reflects gradual improvements in maternal and child survival, but persistent nutritional challenges. While mortality outcomes have improved, they remain relatively high, suggesting continuing gaps in maternal and child healthcare. Nutrition outcomes are mixed: wasting and underweight have declined, but stunting has shown little progress and remains a concern. Anaemia rose among both children and pregnant women, which makes maternal and child nutrition the main area for further gains. Overall, Kendrapara can consolidate its gains in survival by strengthening preventive care and targeted nutrition, especially to bring anaemia down.",
     "health_stats": {
       "mmr": "97",
       "phcs": "48",
@@ -6535,7 +6660,7 @@
       "sub_centres": "277",
       "beds_per_100k": "26"
     },
-    "education_narrative": "Kendrapara's education profile reflects strong foundational enrolment and comparatively high literacy, but significant retention challenges emerge at the secondary stage. While elementary enrolment and transition rates remain high and teacher availability is broadly favourable, the sharp rise in secondary-level dropout points to growing barriers to continued schooling as students progress. The district also retains a predominantly government-led school system and has comparatively strong access to functional computer facilities, although the limited spread of smart classrooms highlights continuing gaps in digital learning infrastructure. A persistent gender gap in literacy further underscores the need to strengthen educational outcomes and retention, particularly for girls as they move into higher stages of schooling.",
+    "education_narrative": "Kendrapara's education profile reflects strong foundational enrolment and comparatively high literacy, but significant retention challenges emerge at the secondary stage. Elementary enrolment and transition rates remain high and teacher availability is broadly favourable; the next opportunity is at the secondary level, where dropout has risen. The district also retains a predominantly government-led school system and has comparatively strong access to functional computer facilities, although the limited spread of smart classrooms highlights continuing gaps in digital learning infrastructure. A persistent gender gap in literacy further underscores the need to strengthen educational outcomes and retention, particularly for girls as they move into higher stages of schooling.",
     "education_stats": {
       "raw": "Male Literacy Rate (2011): 91.5% | Female Literacy Rate (2011): 79% | Primary GER (2018-19): 97.59 | Upper Primary GER (2018-19): 97.13 | Middle Dropout Rate (2024-25): 1.6% | Secondary Dropout Rate (2024-25): 12% | Transition Rate Preparatory to Middle (2024-25): 95.7% | Transition Rate Middle to Secondary (2024-25): 95.1% | Middle PTR: 13 | Secondary PTR: 19 | % Schools with Smart Classrooms: 17.67% | % Schools with Computer Facility: 62.23%"
     },
@@ -6551,7 +6676,12 @@
   "Kandhamal": {
     "name": "Kandhamal",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -6694,7 +6824,7 @@
       {
         "slide_num": 16,
         "title": "Education",
-        "text_content": "Kandhamal's education system is overwhelmingly government-led, with strong elementary-level access and relatively broad digital infrastructure. However, challenges become more pronounced as students progress through the school system. Teacher availability is comparatively weaker at the secondary stage, while dropout increases and transition rates decline during the move to secondary education. Literacy outcomes also reveal a pronounced gender disparity, particularly affecting women and girls. The combination of strong elementary enrolment with weaker secondary retention suggests that sustaining students through adolescence remains a key challenge. Given the district's predominantly rural, hilly and tribal character, improving accessibility, secondary-stage retention and girls' educational attainment will be central to strengthening educational outcomes.",
+        "text_content": "Kandhamal's education system is overwhelmingly government-led, with strong elementary-level access and relatively broad digital infrastructure. However, challenges become more pronounced as students progress through the school system. More teachers at the secondary stage, and support during the move to secondary school, are where the next gains lie. Literacy outcomes also reveal a pronounced gender disparity, particularly affecting women and girls. With strong elementary enrolment in place, keeping students in school through adolescence is the key next step. Given the district's predominantly rural, hilly and tribal character, improving accessibility, secondary-stage retention and girls' educational attainment will be central to strengthening educational outcomes.",
         "chart_url": ""
       },
       {
@@ -6797,7 +6927,7 @@
       "sub_centres": "172",
       "beds_per_100k": "67"
     },
-    "education_narrative": "Kandhamal's education system is overwhelmingly government-led, with strong elementary-level access and relatively broad digital infrastructure. However, challenges become more pronounced as students progress through the school system. Teacher availability is comparatively weaker at the secondary stage, while dropout increases and transition rates decline during the move to secondary education. Literacy outcomes also reveal a pronounced gender disparity, particularly affecting women and girls. The combination of strong elementary enrolment with weaker secondary retention suggests that sustaining students through adolescence remains a key challenge. Given the district's predominantly rural, hilly and tribal character, improving accessibility, secondary-stage retention and girls' educational attainment will be central to strengthening educational outcomes.",
+    "education_narrative": "Kandhamal's education system is overwhelmingly government-led, with strong elementary-level access and relatively broad digital infrastructure. However, challenges become more pronounced as students progress through the school system. More teachers at the secondary stage, and support during the move to secondary school, are where the next gains lie. Literacy outcomes also reveal a pronounced gender disparity, particularly affecting women and girls. With strong elementary enrolment in place, keeping students in school through adolescence is the key next step. Given the district's predominantly rural, hilly and tribal character, improving accessibility, secondary-stage retention and girls' educational attainment will be central to strengthening educational outcomes.",
     "education_stats": {
       "raw": "Male Literacy Rate (2011): 76.9% | Female Literacy Rate (2011): 51.9% | Primary GER (2018-19): 103.35 | Upper Primary GER (2018-19): 101.65 | Middle Dropout Rate (2024-25): 5.4% | Secondary Dropout Rate (2024-25): 8.9% | Transition Rate Preparatory to Middle (2024-25): 93.2% | Transition Rate Middle to Secondary (2024-25): 87.3% | Middle PTR: 15 | Secondary PTR: 23 | % Schools with Smart Classrooms: 21.28% | % Schools with Computer Facility: 69.32%"
     },
@@ -6813,7 +6943,11 @@
   "Kalahandi": {
     "name": "Kalahandi",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -7076,7 +7210,12 @@
   "Jharsuguda": {
     "name": "Jharsuguda",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -7338,7 +7477,12 @@
   "Jajpur": {
     "name": "Jajpur",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No District Magistrate name", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No District Magistrate name",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -7448,7 +7592,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Jajpur's health profile reflects steady progress in child survival and nutrition, supported by a broad network of primary healthcare facilities, although service capacity remains relatively limited. Maternal and child mortality have declined, indicating improvements in access to and delivery of essential health services. Nutritional outcomes have also strengthened, with reductions in stunting, wasting and underweight among children, suggesting gradual gains in child nutrition. However, these improvements are offset by a sharp rise in anaemia among both children and pregnant women, making it the district's most pressing nutritional concern. The contrast highlights the need to sustain progress in child nutrition while placing greater emphasis on anaemia prevention, maternal nutrition and integrated primary healthcare.",
+        "text_content": "Jajpur's health profile reflects steady progress in child survival and nutrition, supported by a broad network of primary healthcare facilities, although service capacity remains relatively limited. Maternal and child mortality have declined, indicating improvements in access to and delivery of essential health services. Nutritional outcomes have also strengthened, with reductions in stunting, wasting and underweight among children, suggesting gradual gains in child nutrition. Anaemia rose among both children and pregnant women, making it the district's main nutrition priority. The contrast highlights the need to sustain progress in child nutrition while placing greater emphasis on anaemia prevention, maternal nutrition and integrated primary healthcare.",
         "chart_url": ""
       },
       {
@@ -7576,7 +7720,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Jajpur's health profile reflects steady progress in child survival and nutrition, supported by a broad network of primary healthcare facilities, although service capacity remains relatively limited. Maternal and child mortality have declined, indicating improvements in access to and delivery of essential health services. Nutritional outcomes have also strengthened, with reductions in stunting, wasting and underweight among children, suggesting gradual gains in child nutrition. However, these improvements are offset by a sharp rise in anaemia among both children and pregnant women, making it the district's most pressing nutritional concern. The contrast highlights the need to sustain progress in child nutrition while placing greater emphasis on anaemia prevention, maternal nutrition and integrated primary healthcare.",
+    "health_narrative": "Jajpur's health profile reflects steady progress in child survival and nutrition, supported by a broad network of primary healthcare facilities, although service capacity remains relatively limited. Maternal and child mortality have declined, indicating improvements in access to and delivery of essential health services. Nutritional outcomes have also strengthened, with reductions in stunting, wasting and underweight among children, suggesting gradual gains in child nutrition. Anaemia rose among both children and pregnant women, making it the district's main nutrition priority. The contrast highlights the need to sustain progress in child nutrition while placing greater emphasis on anaemia prevention, maternal nutrition and integrated primary healthcare.",
     "health_stats": {
       "mmr": "98",
       "phcs": "66",
@@ -7600,7 +7744,11 @@
   "Jagatsinghapur": {
     "name": "Jagatsinghpur",
     "tagline": "",
-    "flags": ["No tagline provided", "No Uniques/Culture slide", "No NGO URL"],
+    "flags": [
+      "No tagline provided",
+      "No Uniques/Culture slide",
+      "No NGO URL"
+    ],
     "slides_detail": [
       {
         "slide_num": 1,
@@ -7711,7 +7859,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Jagatsinghpur has made notable strides in improving maternal and child health, with steady declines in neonatal, infant, and under-five mortality reflecting better survival outcomes. Maternal mortality is also comparatively low, reinforcing the district's strong health profile. Nutritional indicators have improved across the board, with marked reductions in stunting, wasting, and underweight among children. However, these gains are overshadowed by a sharp rise in anaemia, particularly among children and pregnant women, making it the district's most pressing public health concern. Supported by an extensive network of primary health centres, community health centres, and health sub-centres, the district has strengthened healthcare access, though limited bed availability suggests room for further expansion. Overall, Jagatsinghpur presents a picture of strong progress in healthcare and nutrition, tempered by the growing challenge of widespread anaemia.",
+        "text_content": "Jagatsinghpur has made notable strides in improving maternal and child health, with steady declines in neonatal, infant, and under-five mortality reflecting better survival outcomes. Maternal mortality is also comparatively low, reinforcing the district's strong health profile. Nutritional indicators have improved across the board, with marked reductions in stunting, wasting, and underweight among children. Anaemia rose, particularly among children and pregnant women, making it the district's main public health priority. Supported by an extensive network of primary health centres, community health centres, and health sub-centres, the district has strengthened healthcare access, though limited bed availability suggests room for further expansion. Overall, Jagatsinghpur presents a picture of strong progress in healthcare and nutrition, tempered by the growing challenge of widespread anaemia.",
         "chart_url": ""
       },
       {
@@ -7839,7 +7987,7 @@
       "pvtg_names": ""
     },
     "tribal_text": "",
-    "health_narrative": "Jagatsinghpur has made notable strides in improving maternal and child health, with steady declines in neonatal, infant, and under-five mortality reflecting better survival outcomes. Maternal mortality is also comparatively low, reinforcing the district's strong health profile. Nutritional indicators have improved across the board, with marked reductions in stunting, wasting, and underweight among children. However, these gains are overshadowed by a sharp rise in anaemia, particularly among children and pregnant women, making it the district's most pressing public health concern. Supported by an extensive network of primary health centres, community health centres, and health sub-centres, the district has strengthened healthcare access, though limited bed availability suggests room for further expansion. Overall, Jagatsinghpur presents a picture of strong progress in healthcare and nutrition, tempered by the growing challenge of widespread anaemia.",
+    "health_narrative": "Jagatsinghpur has made notable strides in improving maternal and child health, with steady declines in neonatal, infant, and under-five mortality reflecting better survival outcomes. Maternal mortality is also comparatively low, reinforcing the district's strong health profile. Nutritional indicators have improved across the board, with marked reductions in stunting, wasting, and underweight among children. Anaemia rose, particularly among children and pregnant women, making it the district's main public health priority. Supported by an extensive network of primary health centres, community health centres, and health sub-centres, the district has strengthened healthcare access, though limited bed availability suggests room for further expansion. Overall, Jagatsinghpur presents a picture of strong progress in healthcare and nutrition, tempered by the growing challenge of widespread anaemia.",
     "health_stats": {
       "mmr": "83",
       "phcs": "37",

@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20261006-3">
 <link rel="stylesheet" href="learn.css?v=20261005">
-<script src="../ui.js?v=20261006-3"></script>
+<script src="../ui.js?v=20261116-2"></script>
 <script src="../whatsnew.js?v=20261006" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="learn.js?v=20260929"></script>
@@ -45,8 +45,10 @@
     .ag-key-n { font-size: 32px; }
   }
 </style>
+<link rel="stylesheet" href="../site.css?v=20261116-2">
+<link rel="stylesheet" href="../nav.css?v=20261116-5">
 </head>
-<body class="ln-page">
+<body class="ln-page site">
 
 <header>
   <div class="nav-group">
@@ -62,13 +64,19 @@
       <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="../about.html" class="btn-elegant">About Us</a>
     <a href="../themes.html" class="btn-elegant">Themes</a>
     <a href="../repository.html" class="btn-elegant">Repository</a>
-    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
-    <a href="../planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu is-current">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="../learn/index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="../tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="../planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <main>
@@ -76,7 +84,7 @@
     <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M5</div>
     <h2 class="ln-title">Age Structure: <em>who is young, who is old</em></h2>
     <p class="ln-dek">How many children, working-age adults and older people live in Odisha, and how that mix is changing.</p>
-    <div class="ln-byline">By <b>DIU Team</b> · Data: Census 1991 and 2011; DIU population projection (Bayesian approach) for 2021–2036 · Every number is computed live in your browser</div>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census 1991 and 2011; ORGI Technical Group projections (2020) for 2021–2036 · Every number is computed live in your browser</div>
   </section>
 
   <!-- ── the idea in one picture ───────────────────── -->
@@ -140,7 +148,7 @@
       </div>
       <svg id="pyrSvg" role="img" aria-label="Population pyramid of Odisha for the chosen year, with the 1991 shape as a dashed outline"></svg>
       <p class="ag-note" id="pyrNote" aria-live="polite"></p>
-      <div class="ln-source">1991, 2011: Census of India (age tables) · 2021–2036: DIU population projection (Bayesian approach)</div>
+      <div class="ln-source">1991, 2011: Census of India (age tables) · 2021–2036: Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)</div>
     </figure>
   </div>
   <div class="ln-prose">
@@ -207,15 +215,15 @@
         <span><i class="line" style="background:var(--ag-old)"></i>Old-age ratio (60+)</span>
       </div>
       <svg id="depSvg" role="img" aria-label="Line chart of the total, child and old-age dependency ratios from 1991 to 2036"></svg>
-      <div class="ln-source">Computed from the age groups: Census 1991 and 2011; DIU population projection (Bayesian approach) 2021–2036</div>
+      <div class="ln-source">Computed from the age groups: Census 1991 and 2011; ORGI Technical Group projections (2020) for 2021–2036</div>
     </figure>
   </div>
   <div class="ln-prose">
-    <p>From 1991 to 2021, the total fell from <b data-v="dr1991"></b> to <b data-v="dr2021"></b>. Fewer children were born, so each earner had fewer people to support. You can see the teal line falling.</p>
-    <p>But the orange line is rising. The old-age ratio goes from <b data-v="old2021r"></b> in 2021 to <b data-v="old2036r"></b> in 2036. So after 2021, the total starts to climb again, to <b data-v="dr2036"></b> by 2036.</p>
+    <p>From 1991 to <span data-v="drMinYear"></span>, the total falls from <b data-v="dr1991"></b> to <b data-v="drMin"></b>. Fewer children were born, so each earner has fewer people to support. You can see the teal line falling.</p>
+    <p>But the orange line is rising. The old-age ratio goes from <b data-v="old2021r"></b> in 2021 to <b data-v="old2036r"></b> in 2036. So after <span data-v="drMinYear"></span>, the total starts to climb again, to <b data-v="dr2036"></b> by 2036.</p>
     <div class="ln-callout">
       <span class="ln-callout-t">The "demographic window"</span>
-      Of the six years shown, 2021 has the largest share of people of working age (<span data-v="work2021"></span>%). When many people can work and fairly few depend on them, a state has a chance to grow faster. Economists call this a <strong>demographic window</strong> (or demographic dividend). It only pays off if young people get good schooling, health care and jobs. And it does not stay open for ever: as today's young adults grow old, the share of older people keeps rising.
+      Of the six years shown, <span data-v="workPeakYear"></span> has the largest share of people of working age (<span data-v="workPeak"></span>%), and the share stays close to that level up to 2036. When many people can work and fairly few depend on them, a state has a chance to grow faster. Economists call this a <strong>demographic window</strong> (or demographic dividend). It pays off most when young people get good schooling, health care and jobs. The window is open now. As today's young adults grow older, the share of older people rises steadily, so these are the years to make the most of it.
     </div>
   </div>
 
@@ -248,7 +256,7 @@
         </div>
       </div>
       <div class="ln-stats" id="distStats"></div>
-      <div class="ln-source">2011: Census of India · 2021: UNFPA district projection · 2036: UNFPA 2026 grown at the ORGI state rate</div>
+      <div class="ln-source">2011: Census of India · 2021: UNFPA India, District Level Population Projections in Selected States of India, 2021 &amp; 2026 (2022) · 2036: Soochana estimate, UNFPA 2026 carried forward with the ORGI state projection</div>
     </figure>
   </div>
   <div class="ln-prose">
@@ -257,13 +265,13 @@
     <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
       <li>A population pyramid shows people by age: men on the left, women on the right, babies at the bottom.</li>
       <li>Odisha's pyramid is narrowing at the base and widening at the top: fewer children, more older people.</li>
-      <li>The dependency ratio counts children and older people for every 100 people aged 15–59. It fell from <span data-v="dr1991"></span> in 1991 to <span data-v="dr2021"></span> in 2021, and is projected to rise again as Odisha ages.</li>
+      <li>The dependency ratio counts children and older people for every 100 people aged 15–59. It fell from <span data-v="dr1991"></span> in 1991 to <span data-v="dr2021"></span> in 2021, is lowest around <span data-v="drMinYear"></span>, and is projected to rise gently after that as people live longer.</li>
     </ol></div>
   </div>
 
   <section class="ln-notes">
     <h2>Data and method</h2>
-    <p><b>1991 and 2011</b> are Census of India counts by five-year age group and sex. People whose age was not stated are left out of the age groups, so the pyramid totals (<span data-v="tot1991"></span> lakh in 1991, <span data-v="tot2011"></span> lakh in 2011) are slightly below the full census populations. <b>2021, 2026, 2031 and 2036</b> are from the DIU population projection (Bayesian approach) used across Soochana. The district pyramids are UNFPA's district projections for 2021 and 2026 (published 2022); 2031 and 2036 grow UNFPA 2026 at the ORGI state rate and keep the age shape of the DIU projection. See <a href="projections.html">Projecting the future</a> for how these are made.</p>
+    <p><b>1991 and 2011</b> are Census of India counts by five-year age group and sex. People whose age was not stated are left out of the age groups, so the pyramid totals (<span data-v="tot1991"></span> lakh in 1991, <span data-v="tot2011"></span> lakh in 2011) are slightly below the full census populations. <b>2021, 2026, 2031 and 2036</b> are the official projections for Odisha in <i>Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)</i>, a cohort-component projection that starts from the 2011 Census. The district pyramids are from <i>UNFPA India, District Level Population Projections in Selected States of India, 2021 &amp; 2026 (2022)</i> for 2021 and 2026 as published; 2031 and 2036 are Soochana estimates that carry UNFPA 2026 forward with the ORGI state projection (ratio method). As a cross-check from a survey: NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026, found 22.3% of Odisha's household population under 15 and 15.6% aged 60 and over, from 24.9% and 13.4% in NFHS-5 (2019–21). See <a href="projections.html">Projecting the future</a> for how these are made.</p>
     <p>Broad groups: children 0–14, working age 15–59, older people 60 and over. This follows the usual Indian convention; many international sources use 15–64 instead, which gives a different ratio. Dependency ratio = (0–14 + 60+) ÷ (15–59) × 100. Child ratio = (0–14) ÷ (15–59) × 100; old-age ratio = (60+) ÷ (15–59) × 100. The 100-people picture rounds each share with the largest-remainder method, so the three numbers always add to 100.</p>
     <details class="ln-details">
       <summary>Show the data table</summary>
@@ -344,6 +352,9 @@
 
     /* ── fixed numbers in the prose ─────────────── */
     var pc = function (y, g) { return per100(S[y])[g]; };
+    /* the year with the largest working-age share, and the year with the lowest dependency ratio */
+    var PEAK = YEARS.slice().sort(function (a, b) { return S[b].work / S[b].total - S[a].work / S[a].total; })[0];
+    var DRMIN = YEARS.slice().sort(function (a, b) { return S[a].dr - S[b].dr; })[0];
     var V = {
       drGist: SL.fmt(S['2021'].dr, 0),
       child1991: pc('1991', 'child'), child2036: pc('2036', 'child'),
@@ -351,6 +362,8 @@
       dr1991: SL.fmt(S['1991'].dr, 0), dr2021: SL.fmt(S['2021'].dr, 0), dr2036: SL.fmt(S['2036'].dr, 0),
       old2021r: SL.fmt(S['2021'].oldR, 0), old2036r: SL.fmt(S['2036'].oldR, 0),
       work2021: SL.fmt(100 * S['2021'].work / S['2021'].total, 1),
+      workPeakYear: PEAK, workPeak: SL.fmt(100 * S[PEAK].work / S[PEAK].total, 1),
+      drMinYear: DRMIN, drMin: SL.fmt(S[DRMIN].dr, 0),
       tot1991: lakh(S['1991'].total), tot2011: lakh(S['2011'].total),
       yearLabel: year,
     };
@@ -692,6 +705,6 @@
   });
 })();
 </script>
-<script src="../chatbot.js?v=20261006-2"></script>
+<script src="../chatbot.js?v=20261116-1"></script>
 </body>
 </html>

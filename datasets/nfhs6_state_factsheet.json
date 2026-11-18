@@ -1,0 +1,1633 @@
+{
+ "meta": {
+  "title": "NFHS-6 (2023-24) and NFHS-5 (2019-21) key indicators, Odisha and India",
+  "source": "International Institute for Population Sciences (IIPS). 2026. National Family Health Survey (NFHS-6), 2023-24: India and State/UT Fact Sheets. Mumbai: IIPS. Ministry of Health and Family Welfare, Government of India.",
+  "published": "May 2026",
+  "short": "NFHS-6 (2023-24), IIPS and MoHFW fact sheets, published May 2026",
+  "nfhs5_source": "IIPS and ICF. 2021. National Family Health Survey (NFHS-5), 2019-21: State and District Fact Sheets, Odisha; India Report Volume I (March 2022). Mumbai: IIPS.",
+  "fieldwork_odisha_nfhs6": "18 July 2024 to 28 November 2024",
+  "notes": [
+   "Values are percentages unless the indicator says otherwise (total fertility rate is children per woman).",
+   "The NFHS-5 column is the value printed beside NFHS-6 in the NFHS-6 fact sheet.",
+   "null: not shown in the fact sheet (fewer than 25 unweighted cases). Odisha indicator 65 urban (64.2) is based on 25-49 unweighted cases."
+  ]
+ },
+ "indicators": [
+  {
+   "n": 1,
+   "indicator": "Population below age 5 years (%)",
+   "odisha": {
+    "nfhs6_urban": 6.0,
+    "nfhs6_rural": 7.3,
+    "nfhs6": 7.1,
+    "nfhs5": 7.8
+   },
+   "india": {
+    "nfhs6_urban": 6.6,
+    "nfhs6_rural": 8.6,
+    "nfhs6": 8.0,
+    "nfhs5": 8.2
+   }
+  },
+  {
+   "n": 2,
+   "indicator": "Population below age 15 years (%)",
+   "odisha": {
+    "nfhs6_urban": 20.5,
+    "nfhs6_rural": 22.6,
+    "nfhs6": 22.3,
+    "nfhs5": 24.9
+   },
+   "india": {
+    "nfhs6_urban": 22.0,
+    "nfhs6_rural": 27.0,
+    "nfhs6": 25.5,
+    "nfhs5": 26.5
+   }
+  },
+  {
+   "n": 3,
+   "indicator": "Population age 60 years and above (%)",
+   "odisha": {
+    "nfhs6_urban": 13.9,
+    "nfhs6_rural": 15.9,
+    "nfhs6": 15.6,
+    "nfhs5": 13.4
+   },
+   "india": {
+    "nfhs6_urban": 12.7,
+    "nfhs6_rural": 13.0,
+    "nfhs6": 12.9,
+    "nfhs5": 11.8
+   }
+  },
+  {
+   "n": 4,
+   "indicator": "Population living in households with electricity (%)",
+   "odisha": {
+    "nfhs6_urban": 99.4,
+    "nfhs6_rural": 97.4,
+    "nfhs6": 97.7,
+    "nfhs5": 97.0
+   },
+   "india": {
+    "nfhs6_urban": 99.5,
+    "nfhs6_rural": 97.8,
+    "nfhs6": 98.3,
+    "nfhs5": 96.8
+   }
+  },
+  {
+   "n": 5,
+   "indicator": "Population living in households with an improved drinking-water source (%)",
+   "odisha": {
+    "nfhs6_urban": 96.5,
+    "nfhs6_rural": 91.8,
+    "nfhs6": 92.5,
+    "nfhs5": 91.1
+   },
+   "india": {
+    "nfhs6_urban": 99.1,
+    "nfhs6_rural": 95.4,
+    "nfhs6": 96.5,
+    "nfhs5": 95.9
+   }
+  },
+  {
+   "n": 6,
+   "indicator": "Households using iodized salt (%)",
+   "odisha": {
+    "nfhs6_urban": 96.3,
+    "nfhs6_rural": 93.1,
+    "nfhs6": 93.6,
+    "nfhs5": 98.0
+   },
+   "india": {
+    "nfhs6_urban": 96.2,
+    "nfhs6_rural": 93.3,
+    "nfhs6": 94.2,
+    "nfhs5": 94.3
+   }
+  },
+  {
+   "n": 7,
+   "indicator": "Households with any usual member covered under a health insurance/financing scheme (%)",
+   "odisha": {
+    "nfhs6_urban": 65.2,
+    "nfhs6_rural": 86.0,
+    "nfhs6": 82.7,
+    "nfhs5": 47.9
+   },
+   "india": {
+    "nfhs6_urban": 56.4,
+    "nfhs6_rural": 62.0,
+    "nfhs6": 60.2,
+    "nfhs5": 41.0
+   }
+  },
+  {
+   "n": 8,
+   "indicator": "Households with any usual member having a bank account/post office account (%)",
+   "odisha": {
+    "nfhs6_urban": 97.8,
+    "nfhs6_rural": 98.6,
+    "nfhs6": 98.5,
+    "nfhs5": 96.9
+   },
+   "india": {
+    "nfhs6_urban": 97.3,
+    "nfhs6_rural": 98.6,
+    "nfhs6": 98.2,
+    "nfhs5": 95.7
+   }
+  },
+  {
+   "n": 9,
+   "indicator": "Female population age 6 years and above who ever attended school (%)",
+   "odisha": {
+    "nfhs6_urban": 84.6,
+    "nfhs6_rural": 71.0,
+    "nfhs6": 73.1,
+    "nfhs5": 71.5
+   },
+   "india": {
+    "nfhs6_urban": 84.3,
+    "nfhs6_rural": 69.2,
+    "nfhs6": 73.7,
+    "nfhs5": 71.8
+   }
+  },
+  {
+   "n": 10,
+   "indicator": "Households with any usual female members owning a house and/or land (alone or jointly with others) (%)",
+   "odisha": {
+    "nfhs6_urban": 15.3,
+    "nfhs6_rural": 13.1,
+    "nfhs6": 13.5,
+    "nfhs5": 12.2
+   },
+   "india": {
+    "nfhs6_urban": 18.2,
+    "nfhs6_rural": 19.1,
+    "nfhs6": 18.8,
+    "nfhs5": 14.0
+   }
+  },
+  {
+   "n": 11,
+   "indicator": "Children age 2-4 years who attended pre-school (%)",
+   "odisha": {
+    "nfhs6_urban": 48.6,
+    "nfhs6_rural": 55.9,
+    "nfhs6": 55.0,
+    "nfhs5": 56.8
+   },
+   "india": {
+    "nfhs6_urban": 50.0,
+    "nfhs6_rural": 46.0,
+    "nfhs6": 47.0,
+    "nfhs5": 40.1
+   }
+  },
+  {
+   "n": 12,
+   "indicator": "Women with 10 or more years of schooling (%)",
+   "odisha": {
+    "nfhs6_urban": 58.1,
+    "nfhs6_rural": 41.1,
+    "nfhs6": 43.9,
+    "nfhs5": 33.0
+   },
+   "india": {
+    "nfhs6_urban": 61.5,
+    "nfhs6_rural": 39.7,
+    "nfhs6": 46.4,
+    "nfhs5": 41.0
+   }
+  },
+  {
+   "n": 13,
+   "indicator": "Men with 10 or more years of schooling (%)",
+   "odisha": {
+    "nfhs6_urban": 60.3,
+    "nfhs6_rural": 46.8,
+    "nfhs6": 49.1,
+    "nfhs5": 38.6
+   },
+   "india": {
+    "nfhs6_urban": 64.0,
+    "nfhs6_rural": 49.9,
+    "nfhs6": 54.6,
+    "nfhs5": 50.2
+   }
+  },
+  {
+   "n": 14,
+   "indicator": "Women who have ever used the internet (%)",
+   "odisha": {
+    "nfhs6_urban": 66.7,
+    "nfhs6_rural": 49.0,
+    "nfhs6": 51.8,
+    "nfhs5": 24.9
+   },
+   "india": {
+    "nfhs6_urban": 77.3,
+    "nfhs6_rural": 58.6,
+    "nfhs6": 64.3,
+    "nfhs5": 33.3
+   }
+  },
+  {
+   "n": 15,
+   "indicator": "Men who have ever used the internet (%)",
+   "odisha": {
+    "nfhs6_urban": 85.0,
+    "nfhs6_rural": 70.9,
+    "nfhs6": 73.2,
+    "nfhs5": 50.7
+   },
+   "india": {
+    "nfhs6_urban": 87.1,
+    "nfhs6_rural": 77.1,
+    "nfhs6": 80.5,
+    "nfhs5": 51.2
+   }
+  },
+  {
+   "n": 16,
+   "indicator": "Women age 20-24 years married before age 18 years (%)",
+   "odisha": {
+    "nfhs6_urban": 14.7,
+    "nfhs6_rural": 19.3,
+    "nfhs6": 18.6,
+    "nfhs5": 20.5
+   },
+   "india": {
+    "nfhs6_urban": 11.4,
+    "nfhs6_rural": 23.3,
+    "nfhs6": 20.1,
+    "nfhs5": 23.3
+   }
+  },
+  {
+   "n": 17,
+   "indicator": "Men age 25-29 years married before age 21 years (%)",
+   "odisha": {
+    "nfhs6_urban": 15.1,
+    "nfhs6_rural": 12.1,
+    "nfhs6": 12.5,
+    "nfhs5": 13.3
+   },
+   "india": {
+    "nfhs6_urban": 9.7,
+    "nfhs6_rural": 19.0,
+    "nfhs6": 15.9,
+    "nfhs5": 17.7
+   }
+  },
+  {
+   "n": 18,
+   "indicator": "Total fertility rate (children per woman)",
+   "odisha": {
+    "nfhs6_urban": 1.5,
+    "nfhs6_rural": 1.8,
+    "nfhs6": 1.7,
+    "nfhs5": 1.8
+   },
+   "india": {
+    "nfhs6_urban": 1.6,
+    "nfhs6_rural": 2.1,
+    "nfhs6": 2.0,
+    "nfhs5": 2.0
+   }
+  },
+  {
+   "n": 19,
+   "indicator": "Women age 15-19 years who were already mothers or pregnant at the time of the survey (%)",
+   "odisha": {
+    "nfhs6_urban": 2.8,
+    "nfhs6_rural": 7.2,
+    "nfhs6": 6.5,
+    "nfhs5": 7.5
+   },
+   "india": {
+    "nfhs6_urban": 3.4,
+    "nfhs6_rural": 7.9,
+    "nfhs6": 6.7,
+    "nfhs5": 6.8
+   }
+  },
+  {
+   "n": 20,
+   "indicator": "Any method (%)",
+   "odisha": {
+    "nfhs6_urban": 67.1,
+    "nfhs6_rural": 66.0,
+    "nfhs6": 66.2,
+    "nfhs5": 74.1
+   },
+   "india": {
+    "nfhs6_urban": 69.6,
+    "nfhs6_rural": 68.9,
+    "nfhs6": 69.1,
+    "nfhs5": 66.7
+   }
+  },
+  {
+   "n": 21,
+   "indicator": "Any modern method (%)",
+   "odisha": {
+    "nfhs6_urban": 40.8,
+    "nfhs6_rural": 40.8,
+    "nfhs6": 40.8,
+    "nfhs5": 48.8
+   },
+   "india": {
+    "nfhs6_urban": 52.9,
+    "nfhs6_rural": 52.7,
+    "nfhs6": 52.7,
+    "nfhs5": 56.4
+   }
+  },
+  {
+   "n": 22,
+   "indicator": "Any traditional method (%)",
+   "odisha": {
+    "nfhs6_urban": 26.3,
+    "nfhs6_rural": 25.2,
+    "nfhs6": 25.4,
+    "nfhs5": 25.3
+   },
+   "india": {
+    "nfhs6_urban": 16.7,
+    "nfhs6_rural": 16.2,
+    "nfhs6": 16.4,
+    "nfhs5": 10.3
+   }
+  },
+  {
+   "n": 23,
+   "indicator": "Female sterilization (%)",
+   "odisha": {
+    "nfhs6_urban": 22.7,
+    "nfhs6_rural": 26.7,
+    "nfhs6": 26.1,
+    "nfhs5": 28.0
+   },
+   "india": {
+    "nfhs6_urban": 32.6,
+    "nfhs6_rural": 38.1,
+    "nfhs6": 36.5,
+    "nfhs5": 37.9
+   }
+  },
+  {
+   "n": 24,
+   "indicator": "Male sterilization (%)",
+   "odisha": {
+    "nfhs6_urban": 0.2,
+    "nfhs6_rural": 0.3,
+    "nfhs6": 0.3,
+    "nfhs5": 0.3
+   },
+   "india": {
+    "nfhs6_urban": 0.4,
+    "nfhs6_rural": 0.5,
+    "nfhs6": 0.5,
+    "nfhs5": 0.3
+   }
+  },
+  {
+   "n": 25,
+   "indicator": "Total unmet need (%)",
+   "odisha": {
+    "nfhs6_urban": 9.1,
+    "nfhs6_rural": 10.1,
+    "nfhs6": 10.0,
+    "nfhs5": 7.2
+   },
+   "india": {
+    "nfhs6_urban": 7.0,
+    "nfhs6_rural": 9.1,
+    "nfhs6": 8.5,
+    "nfhs5": 9.4
+   }
+  },
+  {
+   "n": 26,
+   "indicator": "Unmet need for spacing (%)",
+   "odisha": {
+    "nfhs6_urban": 3.4,
+    "nfhs6_rural": 4.9,
+    "nfhs6": 4.7,
+    "nfhs5": 2.6
+   },
+   "india": {
+    "nfhs6_urban": 3.5,
+    "nfhs6_rural": 4.9,
+    "nfhs6": 4.5,
+    "nfhs5": 4.0
+   }
+  },
+  {
+   "n": 27,
+   "indicator": "Unmet need for limiting (%)",
+   "odisha": {
+    "nfhs6_urban": 5.7,
+    "nfhs6_rural": 5.2,
+    "nfhs6": 5.3,
+    "nfhs5": 4.6
+   },
+   "india": {
+    "nfhs6_urban": 3.5,
+    "nfhs6_rural": 4.2,
+    "nfhs6": 4.0,
+    "nfhs5": 5.4
+   }
+  },
+  {
+   "n": 28,
+   "indicator": "Mothers who had an antenatal check-up in the first trimester (%)",
+   "odisha": {
+    "nfhs6_urban": 73.5,
+    "nfhs6_rural": 70.2,
+    "nfhs6": 70.6,
+    "nfhs5": 76.9
+   },
+   "india": {
+    "nfhs6_urban": 81.4,
+    "nfhs6_rural": 74.4,
+    "nfhs6": 76.2,
+    "nfhs5": 70.0
+   }
+  },
+  {
+   "n": 29,
+   "indicator": "Mothers who had any antenatal care visits (%)",
+   "odisha": {
+    "nfhs6_urban": 92.6,
+    "nfhs6_rural": 94.9,
+    "nfhs6": 94.6,
+    "nfhs5": 98.3
+   },
+   "india": {
+    "nfhs6_urban": 96.2,
+    "nfhs6_rural": 95.8,
+    "nfhs6": 95.9,
+    "nfhs5": 92.6
+   }
+  },
+  {
+   "n": 30,
+   "indicator": "Mothers who had at least 4 antenatal care visits (%)",
+   "odisha": {
+    "nfhs6_urban": 74.5,
+    "nfhs6_rural": 73.4,
+    "nfhs6": 73.6,
+    "nfhs5": 78.1
+   },
+   "india": {
+    "nfhs6_urban": 75.8,
+    "nfhs6_rural": 61.4,
+    "nfhs6": 65.2,
+    "nfhs5": 58.5
+   }
+  },
+  {
+   "n": 31,
+   "indicator": "Mothers whose last birth was protected against neonatal tetanus (%)",
+   "odisha": {
+    "nfhs6_urban": 93.0,
+    "nfhs6_rural": 96.2,
+    "nfhs6": 95.8,
+    "nfhs5": 95.2
+   },
+   "india": {
+    "nfhs6_urban": 94.4,
+    "nfhs6_rural": 93.6,
+    "nfhs6": 93.8,
+    "nfhs5": 92.0
+   }
+  },
+  {
+   "n": 32,
+   "indicator": "Mothers who consumed iron folic acid for 100 days or more when they were pregnant (%)",
+   "odisha": {
+    "nfhs6_urban": 74.1,
+    "nfhs6_rural": 74.6,
+    "nfhs6": 74.5,
+    "nfhs5": 60.8
+   },
+   "india": {
+    "nfhs6_urban": 67.4,
+    "nfhs6_rural": 50.3,
+    "nfhs6": 54.9,
+    "nfhs5": 44.1
+   }
+  },
+  {
+   "n": 33,
+   "indicator": "Mothers who consumed iron folic acid for 180 days or more when they were pregnant (%)",
+   "odisha": {
+    "nfhs6_urban": 51.8,
+    "nfhs6_rural": 51.2,
+    "nfhs6": 51.3,
+    "nfhs5": 34.4
+   },
+   "india": {
+    "nfhs6_urban": 49.2,
+    "nfhs6_rural": 33.7,
+    "nfhs6": 37.8,
+    "nfhs5": 26.0
+   }
+  },
+  {
+   "n": 34,
+   "indicator": "Registered pregnancies for which the mother received a Mother and Child Protection (MCP) card (%)",
+   "odisha": {
+    "nfhs6_urban": 99.1,
+    "nfhs6_rural": 99.4,
+    "nfhs6": 99.3,
+    "nfhs5": 99.4
+   },
+   "india": {
+    "nfhs6_urban": 94.9,
+    "nfhs6_rural": 95.9,
+    "nfhs6": 95.6,
+    "nfhs5": 95.9
+   }
+  },
+  {
+   "n": 35,
+   "indicator": "Institutional births (%)",
+   "odisha": {
+    "nfhs6_urban": 97.1,
+    "nfhs6_rural": 93.4,
+    "nfhs6": 93.9,
+    "nfhs5": 92.2
+   },
+   "india": {
+    "nfhs6_urban": 95.2,
+    "nfhs6_rural": 89.0,
+    "nfhs6": 90.6,
+    "nfhs5": 88.6
+   }
+  },
+  {
+   "n": 36,
+   "indicator": "Institutional births in public facility (%)",
+   "odisha": {
+    "nfhs6_urban": 64.2,
+    "nfhs6_rural": 76.6,
+    "nfhs6": 75.0,
+    "nfhs5": 78.7
+   },
+   "india": {
+    "nfhs6_urban": 48.2,
+    "nfhs6_rural": 62.1,
+    "nfhs6": 58.6,
+    "nfhs5": 61.9
+   }
+  },
+  {
+   "n": 37,
+   "indicator": "Births attended by skilled health personnel (%)",
+   "odisha": {
+    "nfhs6_urban": 96.3,
+    "nfhs6_rural": 92.5,
+    "nfhs6": 93.0,
+    "nfhs5": 91.8
+   },
+   "india": {
+    "nfhs6_urban": 95.3,
+    "nfhs6_rural": 90.0,
+    "nfhs6": 91.3,
+    "nfhs5": 89.4
+   }
+  },
+  {
+   "n": 38,
+   "indicator": "Births delivered by caesarean section (%)",
+   "odisha": {
+    "nfhs6_urban": 46.4,
+    "nfhs6_rural": 26.9,
+    "nfhs6": 29.4,
+    "nfhs5": 21.6
+   },
+   "india": {
+    "nfhs6_urban": 40.5,
+    "nfhs6_rural": 22.8,
+    "nfhs6": 27.2,
+    "nfhs5": 21.5
+   }
+  },
+  {
+   "n": 39,
+   "indicator": "Births in a private health facility that were delivered by caesarean section (%)",
+   "odisha": {
+    "nfhs6_urban": 80.1,
+    "nfhs6_rural": 75.7,
+    "nfhs6": 76.8,
+    "nfhs5": 70.7
+   },
+   "india": {
+    "nfhs6_urban": 57.4,
+    "nfhs6_rural": 52.2,
+    "nfhs6": 54.1,
+    "nfhs5": 47.4
+   }
+  },
+  {
+   "n": 40,
+   "indicator": "Births in a public health facility that were delivered by caesarean section (%)",
+   "odisha": {
+    "nfhs6_urban": 31.2,
+    "nfhs6_rural": 18.5,
+    "nfhs6": 19.9,
+    "nfhs5": 15.3
+   },
+   "india": {
+    "nfhs6_urban": 28.0,
+    "nfhs6_rural": 14.0,
+    "nfhs6": 16.9,
+    "nfhs5": 14.3
+   }
+  },
+  {
+   "n": 41,
+   "indicator": "Mothers who received postnatal care from a doctor/nurse/LHV/ANM/midwife/other health personnel within 2 days of delivery (%)",
+   "odisha": {
+    "nfhs6_urban": 87.9,
+    "nfhs6_rural": 86.0,
+    "nfhs6": 86.3,
+    "nfhs5": 88.4
+   },
+   "india": {
+    "nfhs6_urban": 88.6,
+    "nfhs6_rural": 80.7,
+    "nfhs6": 82.8,
+    "nfhs5": 78.0
+   }
+  },
+  {
+   "n": 42,
+   "indicator": "Children born at home who were taken to a health facility for a check-up within 24 hours of birth (%)",
+   "odisha": {
+    "nfhs6_urban": null,
+    "nfhs6_rural": 18.6,
+    "nfhs6": 18.4,
+    "nfhs5": 10.5
+   },
+   "india": {
+    "nfhs6_urban": 6.6,
+    "nfhs6_rural": 6.4,
+    "nfhs6": 6.4,
+    "nfhs5": 4.2
+   }
+  },
+  {
+   "n": 43,
+   "indicator": "Children who received postnatal care from a doctor/nurse/LHV/ANM/midwife/other health personnel within 2 days of delivery (%)",
+   "odisha": {
+    "nfhs6_urban": 87.4,
+    "nfhs6_rural": 86.8,
+    "nfhs6": 86.9,
+    "nfhs5": 88.1
+   },
+   "india": {
+    "nfhs6_urban": 89.9,
+    "nfhs6_rural": 83.7,
+    "nfhs6": 85.3,
+    "nfhs5": 79.1
+   }
+  },
+  {
+   "n": 44,
+   "indicator": "Children age 12-23 months fully vaccinated based on information from either vaccination card or mother's recall (%)",
+   "odisha": {
+    "nfhs6_urban": 81.2,
+    "nfhs6_rural": 92.4,
+    "nfhs6": 90.8,
+    "nfhs5": 90.7
+   },
+   "india": {
+    "nfhs6_urban": 81.0,
+    "nfhs6_rural": 83.1,
+    "nfhs6": 82.6,
+    "nfhs5": 76.6
+   }
+  },
+  {
+   "n": 45,
+   "indicator": "Children age 12-23 months fully vaccinated based on information from vaccination card only (%)",
+   "odisha": {
+    "nfhs6_urban": 89.4,
+    "nfhs6_rural": 93.2,
+    "nfhs6": 92.7,
+    "nfhs5": 90.7
+   },
+   "india": {
+    "nfhs6_urban": 85.7,
+    "nfhs6_rural": 87.6,
+    "nfhs6": 87.1,
+    "nfhs5": 83.8
+   }
+  },
+  {
+   "n": 46,
+   "indicator": "Children age 12-23 months who have received any vaccine (%)",
+   "odisha": {
+    "nfhs6_urban": 94.4,
+    "nfhs6_rural": 96.3,
+    "nfhs6": 96.1,
+    "nfhs5": 97.9
+   },
+   "india": {
+    "nfhs6_urban": 95.7,
+    "nfhs6_rural": 96.5,
+    "nfhs6": 96.4,
+    "nfhs5": 96.4
+   }
+  },
+  {
+   "n": 47,
+   "indicator": "Children age 12-23 months who have received BCG (%)",
+   "odisha": {
+    "nfhs6_urban": 92.5,
+    "nfhs6_rural": 95.8,
+    "nfhs6": 95.3,
+    "nfhs5": 97.3
+   },
+   "india": {
+    "nfhs6_urban": 94.5,
+    "nfhs6_rural": 95.1,
+    "nfhs6": 95.0,
+    "nfhs5": 95.2
+   }
+  },
+  {
+   "n": 48,
+   "indicator": "Children age 12-23 months who have received 3 doses of polio vaccine (%)",
+   "odisha": {
+    "nfhs6_urban": 85.1,
+    "nfhs6_rural": 93.5,
+    "nfhs6": 92.3,
+    "nfhs5": 91.7
+   },
+   "india": {
+    "nfhs6_urban": 83.6,
+    "nfhs6_rural": 85.5,
+    "nfhs6": 85.0,
+    "nfhs5": 80.5
+   }
+  },
+  {
+   "n": 49,
+   "indicator": "Children age 12-23 months who have received 3 doses of pentavalent vaccine (%)",
+   "odisha": {
+    "nfhs6_urban": 86.8,
+    "nfhs6_rural": 95.0,
+    "nfhs6": 93.8,
+    "nfhs5": 95.0
+   },
+   "india": {
+    "nfhs6_urban": 88.1,
+    "nfhs6_rural": 89.6,
+    "nfhs6": 89.2,
+    "nfhs5": 87.0
+   }
+  },
+  {
+   "n": 50,
+   "indicator": "Children age 12-23 months who have received the first dose of measles-containing vaccine (MCV) (%)",
+   "odisha": {
+    "nfhs6_urban": 87.9,
+    "nfhs6_rural": 95.0,
+    "nfhs6": 94.0,
+    "nfhs5": 95.9
+   },
+   "india": {
+    "nfhs6_urban": 91.1,
+    "nfhs6_rural": 91.9,
+    "nfhs6": 91.7,
+    "nfhs5": 87.9
+   }
+  },
+  {
+   "n": 51,
+   "indicator": "Children age 24-35 months who have received a second dose of measles-containing vaccine (MCV) (%)",
+   "odisha": {
+    "nfhs6_urban": 89.2,
+    "nfhs6_rural": 85.9,
+    "nfhs6": 86.3,
+    "nfhs5": 78.9
+   },
+   "india": {
+    "nfhs6_urban": 71.3,
+    "nfhs6_rural": 72.0,
+    "nfhs6": 71.8,
+    "nfhs5": 58.6
+   }
+  },
+  {
+   "n": 52,
+   "indicator": "Children age 12-23 months who have received birth dose of hepatitis B vaccine (%)",
+   "odisha": {
+    "nfhs6_urban": 85.6,
+    "nfhs6_rural": 90.3,
+    "nfhs6": 89.6,
+    "nfhs5": 88.6
+   },
+   "india": {
+    "nfhs6_urban": 80.0,
+    "nfhs6_rural": 76.8,
+    "nfhs6": 77.6,
+    "nfhs5": 67.4
+   }
+  },
+  {
+   "n": 53,
+   "indicator": "Children age 12-23 months who have received 3 doses of rotavirus vaccine (%)",
+   "odisha": {
+    "nfhs6_urban": 82.3,
+    "nfhs6_rural": 90.7,
+    "nfhs6": 89.5,
+    "nfhs5": 88.1
+   },
+   "india": {
+    "nfhs6_urban": 84.0,
+    "nfhs6_rural": 85.9,
+    "nfhs6": 85.4,
+    "nfhs5": 36.4
+   }
+  },
+  {
+   "n": 54,
+   "indicator": "Children age 9-35 months who received a vitamin A dose in the last 6 months (%)",
+   "odisha": {
+    "nfhs6_urban": 82.9,
+    "nfhs6_rural": 82.7,
+    "nfhs6": 82.7,
+    "nfhs5": 87.1
+   },
+   "india": {
+    "nfhs6_urban": 77.1,
+    "nfhs6_rural": 73.7,
+    "nfhs6": 74.6,
+    "nfhs5": 71.2
+   }
+  },
+  {
+   "n": 55,
+   "indicator": "Children age 12-23 months who received most of their vaccinations in a public health facility (%)",
+   "odisha": {
+    "nfhs6_urban": 95.8,
+    "nfhs6_rural": 99.3,
+    "nfhs6": 98.8,
+    "nfhs5": 98.1
+   },
+   "india": {
+    "nfhs6_urban": 90.2,
+    "nfhs6_rural": 97.4,
+    "nfhs6": 95.6,
+    "nfhs5": 94.5
+   }
+  },
+  {
+   "n": 56,
+   "indicator": "Children age 12-23 months who received most of their vaccinations in a private health facility (%)",
+   "odisha": {
+    "nfhs6_urban": 3.6,
+    "nfhs6_rural": 0.3,
+    "nfhs6": 0.7,
+    "nfhs5": 1.4
+   },
+   "india": {
+    "nfhs6_urban": 8.0,
+    "nfhs6_rural": 1.4,
+    "nfhs6": 3.1,
+    "nfhs5": 4.2
+   }
+  },
+  {
+   "n": 57,
+   "indicator": "Prevalence of diarrhoea in the 2 weeks preceding the survey (%)",
+   "odisha": {
+    "nfhs6_urban": 9.4,
+    "nfhs6_rural": 11.5,
+    "nfhs6": 11.2,
+    "nfhs5": 9.7
+   },
+   "india": {
+    "nfhs6_urban": 6.7,
+    "nfhs6_rural": 8.3,
+    "nfhs6": 7.9,
+    "nfhs5": 7.3
+   }
+  },
+  {
+   "n": 58,
+   "indicator": "Prevalence of severe diarrhoea in the 2 weeks preceding the survey (%)",
+   "odisha": {
+    "nfhs6_urban": 0.3,
+    "nfhs6_rural": 1.0,
+    "nfhs6": 0.9,
+    "nfhs5": 1.0
+   },
+   "india": {
+    "nfhs6_urban": 0.4,
+    "nfhs6_rural": 0.6,
+    "nfhs6": 0.5,
+    "nfhs5": 0.7
+   }
+  },
+  {
+   "n": 59,
+   "indicator": "Prevalence of symptoms of acute respiratory infection (ARI) in the 2 weeks preceding the survey (%)",
+   "odisha": {
+    "nfhs6_urban": 1.1,
+    "nfhs6_rural": 1.2,
+    "nfhs6": 1.2,
+    "nfhs5": 3.2
+   },
+   "india": {
+    "nfhs6_urban": 1.4,
+    "nfhs6_rural": 2.0,
+    "nfhs6": 1.9,
+    "nfhs5": 2.8
+   }
+  },
+  {
+   "n": 60,
+   "indicator": "Children with fever or symptoms of ARI in the 2 weeks preceding the survey taken to a health facility or health provider (%)",
+   "odisha": {
+    "nfhs6_urban": 72.1,
+    "nfhs6_rural": 69.2,
+    "nfhs6": 69.5,
+    "nfhs5": 65.4
+   },
+   "india": {
+    "nfhs6_urban": 74.8,
+    "nfhs6_rural": 67.3,
+    "nfhs6": 68.8,
+    "nfhs5": 69.0
+   }
+  },
+  {
+   "n": 61,
+   "indicator": "Children under age 3 years breastfed within one hour of birth (%)",
+   "odisha": {
+    "nfhs6_urban": 58.6,
+    "nfhs6_rural": 61.2,
+    "nfhs6": 60.9,
+    "nfhs5": 68.5
+   },
+   "india": {
+    "nfhs6_urban": 48.0,
+    "nfhs6_rural": 50.8,
+    "nfhs6": 50.1,
+    "nfhs5": 41.8
+   }
+  },
+  {
+   "n": 62,
+   "indicator": "Children under age 6 months exclusively breastfed (%)",
+   "odisha": {
+    "nfhs6_urban": 68.3,
+    "nfhs6_rural": 66.5,
+    "nfhs6": 66.7,
+    "nfhs5": 72.9
+   },
+   "india": {
+    "nfhs6_urban": 54.5,
+    "nfhs6_rural": 56.2,
+    "nfhs6": 55.8,
+    "nfhs5": 63.7
+   }
+  },
+  {
+   "n": 63,
+   "indicator": "Children under age 6 months currently breastfeeding (%)",
+   "odisha": {
+    "nfhs6_urban": 91.4,
+    "nfhs6_rural": 95.9,
+    "nfhs6": 95.4,
+    "nfhs5": 97.1
+   },
+   "india": {
+    "nfhs6_urban": 91.0,
+    "nfhs6_rural": 96.0,
+    "nfhs6": 95.6,
+    "nfhs5": 95.1
+   }
+  },
+  {
+   "n": 64,
+   "indicator": "Children under age 6 months exclusively breastfed or breastfeeding and consuming plain water only/other milk (%)",
+   "odisha": {
+    "nfhs6_urban": 79.8,
+    "nfhs6_rural": 80.5,
+    "nfhs6": 80.5,
+    "nfhs5": 83.0
+   },
+   "india": {
+    "nfhs6_urban": 82.4,
+    "nfhs6_rural": 86.2,
+    "nfhs6": 85.3,
+    "nfhs5": 82.8
+   }
+  },
+  {
+   "n": 65,
+   "indicator": "Children age 6-8 months receiving solid or semi-solid food and breastmilk (%)",
+   "odisha": {
+    "nfhs6_urban": 64.2,
+    "nfhs6_rural": 67.1,
+    "nfhs6": 66.7,
+    "nfhs5": 67.5
+   },
+   "india": {
+    "nfhs6_urban": 58.8,
+    "nfhs6_rural": 59.7,
+    "nfhs6": 59.5,
+    "nfhs5": 45.9
+   }
+  },
+  {
+   "n": 66,
+   "indicator": "Breastfeeding children age 6-23 months receiving an adequate diet (%)",
+   "odisha": {
+    "nfhs6_urban": 16.9,
+    "nfhs6_rural": 15.0,
+    "nfhs6": 15.3,
+    "nfhs5": 20.1
+   },
+   "india": {
+    "nfhs6_urban": 15.6,
+    "nfhs6_rural": 15.0,
+    "nfhs6": 15.1,
+    "nfhs5": 10.8
+   }
+  },
+  {
+   "n": 67,
+   "indicator": "Non-breastfeeding children age 6-23 months receiving an adequate diet (%)",
+   "odisha": {
+    "nfhs6_urban": null,
+    "nfhs6_rural": 6.3,
+    "nfhs6": 6.6,
+    "nfhs5": 21.3
+   },
+   "india": {
+    "nfhs6_urban": 18.2,
+    "nfhs6_rural": 15.2,
+    "nfhs6": 16.3,
+    "nfhs5": 12.3
+   }
+  },
+  {
+   "n": 68,
+   "indicator": "Total children age 6-23 months receiving an adequate diet (%)",
+   "odisha": {
+    "nfhs6_urban": 16.3,
+    "nfhs6_rural": 14.6,
+    "nfhs6": 14.9,
+    "nfhs5": 20.1
+   },
+   "india": {
+    "nfhs6_urban": 16.2,
+    "nfhs6_rural": 15.0,
+    "nfhs6": 15.3,
+    "nfhs5": 11.0
+   }
+  },
+  {
+   "n": 69,
+   "indicator": "Children under 5 years who are stunted (height-for-age) (%)",
+   "odisha": {
+    "nfhs6_urban": 18.5,
+    "nfhs6_rural": 28.0,
+    "nfhs6": 26.8,
+    "nfhs5": 31.0
+   },
+   "india": {
+    "nfhs6_urban": 23.9,
+    "nfhs6_rural": 30.9,
+    "nfhs6": 29.3,
+    "nfhs5": 35.5
+   }
+  },
+  {
+   "n": 70,
+   "indicator": "Children under 5 years who are wasted (weight-for-height) (%)",
+   "odisha": {
+    "nfhs6_urban": 22.6,
+    "nfhs6_rural": 22.1,
+    "nfhs6": 22.1,
+    "nfhs5": 18.1
+   },
+   "india": {
+    "nfhs6_urban": 16.5,
+    "nfhs6_rural": 19.8,
+    "nfhs6": 19.0,
+    "nfhs5": 19.3
+   }
+  },
+  {
+   "n": 71,
+   "indicator": "Children under 5 years who are severely wasted (weight-for-height) (%)",
+   "odisha": {
+    "nfhs6_urban": 5.3,
+    "nfhs6_rural": 5.9,
+    "nfhs6": 5.8,
+    "nfhs5": 6.1
+   },
+   "india": {
+    "nfhs6_urban": 4.6,
+    "nfhs6_rural": 5.4,
+    "nfhs6": 5.2,
+    "nfhs5": 7.7
+   }
+  },
+  {
+   "n": 72,
+   "indicator": "Children under 5 years who are underweight (weight-for-age) (%)",
+   "odisha": {
+    "nfhs6_urban": 22.1,
+    "nfhs6_rural": 32.9,
+    "nfhs6": 31.6,
+    "nfhs5": 29.7
+   },
+   "india": {
+    "nfhs6_urban": 25.3,
+    "nfhs6_rural": 33.8,
+    "nfhs6": 31.8,
+    "nfhs5": 32.1
+   }
+  },
+  {
+   "n": 73,
+   "indicator": "Children under 5 years who are overweight (weight-for-height) (%)",
+   "odisha": {
+    "nfhs6_urban": 4.4,
+    "nfhs6_rural": 1.8,
+    "nfhs6": 2.1,
+    "nfhs5": 3.5
+   },
+   "india": {
+    "nfhs6_urban": 1.8,
+    "nfhs6_rural": 1.1,
+    "nfhs6": 1.3,
+    "nfhs5": 3.4
+   }
+  },
+  {
+   "n": 74,
+   "indicator": "Women whose Body Mass Index (BMI) is below normal (BMI <18.5 kg/m2) (%)",
+   "odisha": {
+    "nfhs6_urban": 10.7,
+    "nfhs6_rural": 20.5,
+    "nfhs6": 18.9,
+    "nfhs5": 20.8
+   },
+   "india": {
+    "nfhs6_urban": 13.2,
+    "nfhs6_rural": 22.5,
+    "nfhs6": 19.7,
+    "nfhs5": 18.7
+   }
+  },
+  {
+   "n": 75,
+   "indicator": "Men whose Body Mass Index (BMI) is below normal (BMI <18.5 kg/m2) (%)",
+   "odisha": {
+    "nfhs6_urban": 10.4,
+    "nfhs6_rural": 18.7,
+    "nfhs6": 17.5,
+    "nfhs5": 15.3
+   },
+   "india": {
+    "nfhs6_urban": 14.9,
+    "nfhs6_rural": 21.9,
+    "nfhs6": 19.7,
+    "nfhs5": 16.2
+   }
+  },
+  {
+   "n": 76,
+   "indicator": "Women who are overweight or obese (BMI >=25.0 kg/m2) (%)",
+   "odisha": {
+    "nfhs6_urban": 46.3,
+    "nfhs6_rural": 26.7,
+    "nfhs6": 29.7,
+    "nfhs5": 23.0
+   },
+   "india": {
+    "nfhs6_urban": 42.8,
+    "nfhs6_rural": 25.5,
+    "nfhs6": 30.7,
+    "nfhs5": 24.0
+   }
+  },
+  {
+   "n": 77,
+   "indicator": "Men who are overweight or obese (BMI >=25.0 kg/m2) (%)",
+   "odisha": {
+    "nfhs6_urban": 43.9,
+    "nfhs6_rural": 24.9,
+    "nfhs6": 27.8,
+    "nfhs5": 22.2
+   },
+   "india": {
+    "nfhs6_urban": 36.3,
+    "nfhs6_rural": 23.0,
+    "nfhs6": 27.3,
+    "nfhs5": 22.9
+   }
+  },
+  {
+   "n": 78,
+   "indicator": "Women: blood sugar level - high (141-160 mg/dl) (%)",
+   "odisha": {
+    "nfhs6_urban": 9.5,
+    "nfhs6_rural": 9.6,
+    "nfhs6": 9.5,
+    "nfhs5": 6.5
+   },
+   "india": {
+    "nfhs6_urban": 8.0,
+    "nfhs6_rural": 7.3,
+    "nfhs6": 7.5,
+    "nfhs5": 6.1
+   }
+  },
+  {
+   "n": 79,
+   "indicator": "Women: blood sugar level - very high (>160 mg/dl) (%)",
+   "odisha": {
+    "nfhs6_urban": 14.5,
+    "nfhs6_rural": 10.5,
+    "nfhs6": 11.1,
+    "nfhs5": 6.6
+   },
+   "india": {
+    "nfhs6_urban": 11.9,
+    "nfhs6_rural": 8.0,
+    "nfhs6": 9.1,
+    "nfhs5": 6.3
+   }
+  },
+  {
+   "n": 80,
+   "indicator": "Women: blood sugar level - high or very high (>140 mg/dl) or taking medicine to control blood sugar level (%)",
+   "odisha": {
+    "nfhs6_urban": 26.2,
+    "nfhs6_rural": 21.0,
+    "nfhs6": 21.7,
+    "nfhs5": 14.0
+   },
+   "india": {
+    "nfhs6_urban": 21.9,
+    "nfhs6_rural": 16.2,
+    "nfhs6": 17.8,
+    "nfhs5": 13.5
+   }
+  },
+  {
+   "n": 81,
+   "indicator": "Men: blood sugar level - high (141-160 mg/dl) (%)",
+   "odisha": {
+    "nfhs6_urban": 9.9,
+    "nfhs6_rural": 10.9,
+    "nfhs6": 10.7,
+    "nfhs5": 7.3
+   },
+   "india": {
+    "nfhs6_urban": 8.8,
+    "nfhs6_rural": 8.8,
+    "nfhs6": 8.8,
+    "nfhs5": 7.3
+   }
+  },
+  {
+   "n": 82,
+   "indicator": "Men: blood sugar level - very high (>160 mg/dl) (%)",
+   "odisha": {
+    "nfhs6_urban": 18.0,
+    "nfhs6_rural": 14.0,
+    "nfhs6": 14.6,
+    "nfhs5": 8.7
+   },
+   "india": {
+    "nfhs6_urban": 13.2,
+    "nfhs6_rural": 10.0,
+    "nfhs6": 10.9,
+    "nfhs5": 7.1
+   }
+  },
+  {
+   "n": 83,
+   "indicator": "Men: blood sugar level - high or very high (>140 mg/dl) or taking medicine to control blood sugar level (%)",
+   "odisha": {
+    "nfhs6_urban": 30.0,
+    "nfhs6_rural": 26.1,
+    "nfhs6": 26.6,
+    "nfhs5": 17.0
+   },
+   "india": {
+    "nfhs6_urban": 23.9,
+    "nfhs6_rural": 19.7,
+    "nfhs6": 20.9,
+    "nfhs5": 15.6
+   }
+  },
+  {
+   "n": 84,
+   "indicator": "Women: mildly elevated blood pressure (Systolic 140-159 mm of Hg and/or Diastolic 90-99 mm of Hg) (%)",
+   "odisha": {
+    "nfhs6_urban": 12.4,
+    "nfhs6_rural": 11.0,
+    "nfhs6": 11.2,
+    "nfhs5": 12.9
+   },
+   "india": {
+    "nfhs6_urban": 10.5,
+    "nfhs6_rural": 8.9,
+    "nfhs6": 9.4,
+    "nfhs5": 12.4
+   }
+  },
+  {
+   "n": 85,
+   "indicator": "Women: moderately or severely elevated blood pressure (Systolic >=160 mm of Hg and/or Diastolic >=100 mm of Hg) (%)",
+   "odisha": {
+    "nfhs6_urban": 5.9,
+    "nfhs6_rural": 5.4,
+    "nfhs6": 5.5,
+    "nfhs5": 5.6
+   },
+   "india": {
+    "nfhs6_urban": 5.0,
+    "nfhs6_rural": 4.7,
+    "nfhs6": 4.8,
+    "nfhs5": 5.2
+   }
+  },
+  {
+   "n": 86,
+   "indicator": "Women: elevated blood pressure (Systolic >=140 mm of Hg and/or Diastolic >=90 mm of Hg) or taking medicine to control blood pressure (%)",
+   "odisha": {
+    "nfhs6_urban": 26.6,
+    "nfhs6_rural": 21.5,
+    "nfhs6": 22.3,
+    "nfhs5": 22.4
+   },
+   "india": {
+    "nfhs6_urban": 23.5,
+    "nfhs6_rural": 17.8,
+    "nfhs6": 19.4,
+    "nfhs5": 21.3
+   }
+  },
+  {
+   "n": 87,
+   "indicator": "Men: mildly elevated blood pressure (Systolic 140-159 mm of Hg and/or Diastolic 90-99 mm of Hg) (%)",
+   "odisha": {
+    "nfhs6_urban": 16.1,
+    "nfhs6_rural": 13.2,
+    "nfhs6": 13.6,
+    "nfhs5": 16.8
+   },
+   "india": {
+    "nfhs6_urban": 13.9,
+    "nfhs6_rural": 11.7,
+    "nfhs6": 12.4,
+    "nfhs5": 15.7
+   }
+  },
+  {
+   "n": 88,
+   "indicator": "Men: moderately or severely elevated blood pressure (Systolic >=160 mm of Hg and/or Diastolic >=100 mm of Hg) (%)",
+   "odisha": {
+    "nfhs6_urban": 4.3,
+    "nfhs6_rural": 3.4,
+    "nfhs6": 3.5,
+    "nfhs5": 6.1
+   },
+   "india": {
+    "nfhs6_urban": 3.6,
+    "nfhs6_rural": 3.1,
+    "nfhs6": 3.3,
+    "nfhs5": 5.7
+   }
+  },
+  {
+   "n": 89,
+   "indicator": "Men: elevated blood pressure (Systolic >=140 mm of Hg and/or Diastolic >=90 mm of Hg) or taking medicine to control blood pressure (%)",
+   "odisha": {
+    "nfhs6_urban": 31.7,
+    "nfhs6_rural": 23.8,
+    "nfhs6": 24.9,
+    "nfhs5": 25.6
+   },
+   "india": {
+    "nfhs6_urban": 26.2,
+    "nfhs6_rural": 20.4,
+    "nfhs6": 22.1,
+    "nfhs5": 24.0
+   }
+  },
+  {
+   "n": 90,
+   "indicator": "Currently married women who usually participate in three household decisions (%)",
+   "odisha": {
+    "nfhs6_urban": 86.4,
+    "nfhs6_rural": 87.3,
+    "nfhs6": 87.2,
+    "nfhs5": 90.2
+   },
+   "india": {
+    "nfhs6_urban": 91.4,
+    "nfhs6_rural": 88.0,
+    "nfhs6": 89.0,
+    "nfhs5": 88.7
+   }
+  },
+  {
+   "n": 91,
+   "indicator": "Women who worked in the last 12 months and were paid in cash (%)",
+   "odisha": {
+    "nfhs6_urban": 22.5,
+    "nfhs6_rural": 27.6,
+    "nfhs6": 26.7,
+    "nfhs5": 25.7
+   },
+   "india": {
+    "nfhs6_urban": 29.8,
+    "nfhs6_rural": 31.2,
+    "nfhs6": 30.8,
+    "nfhs5": 25.4
+   }
+  },
+  {
+   "n": 92,
+   "indicator": "Women having a bank or savings account that they themselves use (%)",
+   "odisha": {
+    "nfhs6_urban": 89.4,
+    "nfhs6_rural": 90.8,
+    "nfhs6": 90.6,
+    "nfhs5": 86.5
+   },
+   "india": {
+    "nfhs6_urban": 88.3,
+    "nfhs6_rural": 89.3,
+    "nfhs6": 89.0,
+    "nfhs5": 78.6
+   }
+  },
+  {
+   "n": 93,
+   "indicator": "Women having a mobile phone that they themselves use (%)",
+   "odisha": {
+    "nfhs6_urban": 79.0,
+    "nfhs6_rural": 60.7,
+    "nfhs6": 63.6,
+    "nfhs5": 50.1
+   },
+   "india": {
+    "nfhs6_urban": 77.6,
+    "nfhs6_rural": 57.4,
+    "nfhs6": 63.6,
+    "nfhs5": 53.9
+   }
+  },
+  {
+   "n": 94,
+   "indicator": "Women age 15-24 years who use hygienic methods of protection during their menstrual period (%)",
+   "odisha": {
+    "nfhs6_urban": 95.4,
+    "nfhs6_rural": 87.5,
+    "nfhs6": 88.7,
+    "nfhs5": 81.7
+   },
+   "india": {
+    "nfhs6_urban": 90.7,
+    "nfhs6_rural": 75.0,
+    "nfhs6": 79.2,
+    "nfhs5": 77.6
+   }
+  },
+  {
+   "n": 95,
+   "indicator": "Ever-married women age 18-49 years who have ever experienced spousal violence (%)",
+   "odisha": {
+    "nfhs6_urban": 15.2,
+    "nfhs6_rural": 19.6,
+    "nfhs6": 18.9,
+    "nfhs5": 30.3
+   },
+   "india": {
+    "nfhs6_urban": 17.5,
+    "nfhs6_rural": 24.4,
+    "nfhs6": 22.3,
+    "nfhs5": 29.2
+   }
+  },
+  {
+   "n": 96,
+   "indicator": "Ever-married women age 18-49 years who have experienced physical violence during any pregnancy (%)",
+   "odisha": {
+    "nfhs6_urban": 1.7,
+    "nfhs6_rural": 2.8,
+    "nfhs6": 2.6,
+    "nfhs5": 3.5
+   },
+   "india": {
+    "nfhs6_urban": 2.3,
+    "nfhs6_rural": 2.9,
+    "nfhs6": 2.7,
+    "nfhs5": 3.1
+   }
+  },
+  {
+   "n": 97,
+   "indicator": "Young women age 18-29 years who experienced sexual violence by age 18 (%)",
+   "odisha": {
+    "nfhs6_urban": 0.2,
+    "nfhs6_rural": 0.5,
+    "nfhs6": 0.5,
+    "nfhs5": 0.7
+   },
+   "india": {
+    "nfhs6_urban": 0.4,
+    "nfhs6_rural": 0.8,
+    "nfhs6": 0.7,
+    "nfhs5": 1.2
+   }
+  },
+  {
+   "n": 98,
+   "indicator": "Women age 15 years and above who use any kind of tobacco (%)",
+   "odisha": {
+    "nfhs6_urban": 14.2,
+    "nfhs6_rural": 24.4,
+    "nfhs6": 22.8,
+    "nfhs5": 26.1
+   },
+   "india": {
+    "nfhs6_urban": 4.6,
+    "nfhs6_rural": 10.0,
+    "nfhs6": 8.4,
+    "nfhs5": 8.9
+   }
+  },
+  {
+   "n": 99,
+   "indicator": "Men age 15 years and above who use any kind of tobacco (%)",
+   "odisha": {
+    "nfhs6_urban": 36.7,
+    "nfhs6_rural": 50.6,
+    "nfhs6": 48.3,
+    "nfhs5": 51.7
+   },
+   "india": {
+    "nfhs6_urban": 26.2,
+    "nfhs6_rural": 41.1,
+    "nfhs6": 36.3,
+    "nfhs5": 38.0
+   }
+  },
+  {
+   "n": 100,
+   "indicator": "Women age 15 years and above who consume alcohol (%)",
+   "odisha": {
+    "nfhs6_urban": 1.4,
+    "nfhs6_rural": 3.5,
+    "nfhs6": 3.1,
+    "nfhs5": 4.3
+   },
+   "india": {
+    "nfhs6_urban": 0.5,
+    "nfhs6_rural": 1.4,
+    "nfhs6": 1.1,
+    "nfhs5": 1.3
+   }
+  },
+  {
+   "n": 101,
+   "indicator": "Men age 15 years and above who consume alcohol (%)",
+   "odisha": {
+    "nfhs6_urban": 21.2,
+    "nfhs6_rural": 28.0,
+    "nfhs6": 26.8,
+    "nfhs5": 28.7
+   },
+   "india": {
+    "nfhs6_urban": 15.5,
+    "nfhs6_rural": 20.6,
+    "nfhs6": 18.9,
+    "nfhs5": 18.7
+   }
+  }
+ ]
+}

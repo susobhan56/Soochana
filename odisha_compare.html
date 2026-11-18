@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css?v=20261006-3">
-<script src="ui.js?v=20261006-3"></script>
+<script src="ui.js?v=20261116-2"></script>
 <script src="whatsnew.js?v=20261006" defer></script>
 <style>
     body { overflow-y: auto; height: auto; }
@@ -124,8 +124,10 @@
         }
     }
 </style>
+<link rel="stylesheet" href="site.css?v=20261116-2">
+<link rel="stylesheet" href="nav.css?v=20261116-5">
 </head>
-<body>
+<body class="site">
 
 <header>
   <div class="nav-group">
@@ -141,14 +143,19 @@
       <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="about.html" class="btn-elegant">About Us</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant">Repository</a>
-    <a href="learn/index.html" class="btn-elegant">Learn</a>
-    <a href="tectonics.html" class="btn-elegant">Tectonics</a>
-    <a href="planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="learn/index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <div class="compare-wrap">
@@ -178,16 +185,40 @@
             </div>
         </div>
 
-        <!-- TFR -->
+        <!-- NFHS-6 beside NFHS-5: the small figure is NFHS-5 -->
         <div class="comp-row">
             <div class="left-bar">
-                <div class="bar-val" id="tfrA-val">--</div>
-                <div class="bar-container" style="flex:1"><div id="tfrA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
+                <div class="bar-val" id="instA-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="instA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
             </div>
-            <div class="comp-label">Fertility<br>(TFR, 2021)</div>
+            <div class="comp-label">Births in a health facility<br>(NFHS-6, %; small: NFHS-5)</div>
             <div class="right-bar">
-                <div class="bar-container" style="flex:1"><div id="tfrB-bar" class="bar-fill" style="background:var(--purple); width:0"></div></div>
-                <div class="bar-val" id="tfrB-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="instB-bar" class="bar-fill" style="background:var(--purple); width:0"></div></div>
+                <div class="bar-val" id="instB-val">--</div>
+            </div>
+        </div>
+
+        <div class="comp-row">
+            <div class="left-bar">
+                <div class="bar-val" id="schA-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="schA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
+            </div>
+            <div class="comp-label">Women with 10+ years of schooling<br>(NFHS-6, %; small: NFHS-5)</div>
+            <div class="right-bar">
+                <div class="bar-container" style="flex:1"><div id="schB-bar" class="bar-fill" style="background:var(--purple); width:0"></div></div>
+                <div class="bar-val" id="schB-val">--</div>
+            </div>
+        </div>
+
+        <div class="comp-row">
+            <div class="left-bar">
+                <div class="bar-val" id="cmbA-val">--</div>
+                <div class="bar-container" style="flex:1"><div id="cmbA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
+            </div>
+            <div class="comp-label">Women 20–24 married before 18<br>(NFHS-6, %; small: NFHS-5)</div>
+            <div class="right-bar">
+                <div class="bar-container" style="flex:1"><div id="cmbB-bar" class="bar-fill" style="background:var(--purple); width:0"></div></div>
+                <div class="bar-val" id="cmbB-val">--</div>
             </div>
         </div>
 
@@ -197,7 +228,7 @@
                 <div class="bar-val" id="leA-val">--</div>
                 <div class="bar-container" style="flex:1"><div id="leA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
             </div>
-            <div class="comp-label">Female Life Exp<br>(NFHS-5, Years)</div>
+            <div class="comp-label">Female Life Exp<br>(computed from NFHS-5, years)</div>
             <div class="right-bar">
                 <div class="bar-container" style="flex:1"><div id="leB-bar" class="bar-fill" style="background:var(--purple); width:0"></div></div>
                 <div class="bar-val" id="leB-val">--</div>
@@ -223,7 +254,7 @@
                 <div class="bar-val" id="mortA-val">--</div>
                 <div class="bar-container" style="flex:1"><div id="mortA-bar" class="bar-fill" style="background:var(--teal); width:0; float:right"></div></div>
             </div>
-            <div class="comp-label">Infant Mortality<br>(NFHS-5, per 1000)</div>
+            <div class="comp-label">Infant Mortality<br>(computed from NFHS-5, per 1000)</div>
             <div class="right-bar">
                 <div class="bar-container" style="flex:1"><div id="mortB-bar" class="bar-fill" style="background:var(--purple); width:0"></div></div>
                 <div class="bar-val" id="mortB-val">--</div>
@@ -242,6 +273,7 @@
                 <div class="bar-val" id="mmrB-val">--</div>
             </div>
         </div>
+        <p style="font-size:12px; color:var(--muted); margin-top:18px; line-height:1.6;">Sources: population and sex ratio, UNFPA India, District Level Population Projections in Selected States of India, 2021 &amp; 2026 (2022). Survey rows: NFHS-6 (2023–24), IIPS and MoHFW, district fact sheets published May 2026, with NFHS-5 (2019–21) in small type. Life expectancy and infant mortality are computed from NFHS-5; the NFHS-6 fact sheets do not report them. Maternal mortality: district estimates, 2017–19.</p>
     </div>
 
     <!-- Dual Pyramids Section -->
@@ -283,13 +315,18 @@
     // Load dynamic cached JSONs
     Promise.all([
         DataLoader.getDistrictPopulationTrends(),
-        DataLoader.getDistrictFertilityTrends(),
+        DataLoader.loadJSON('datasets/nfhs_district_rounds.json'),
         DataLoader.getDistrictLifeExpectancy(),
         DataLoader.getDistrictMortality(),
         DataLoader.getDistrictAgePyramids()
-    ]).then(([pop, fertility, lifeExpectancy, mortality, pyramids]) => {
+    ]).then(([pop, nfhs, lifeExpectancy, mortality, pyramids]) => {
         
-        datasets = { pop, fertility, lifeExpectancy, mortality, pyramids };
+        datasets = { pop, nfhs, lifeExpectancy, mortality, pyramids };
+        /* [NFHS-6, NFHS-5] for a district and indicator number */
+        const pair = (n, d) => {
+            const ind = nfhs.indicators.find(i => i.n === n);
+            return (ind && ind.districts[d]) || [null, null];
+        };
 
         const districts = Object.keys(pop).sort();
 
@@ -315,7 +352,6 @@
 
             // Limits (max values for visual bar scaling)
             const maxPop = 4.2;      // millions
-            const maxTfr = 3.2;      // child per woman
             const maxLe = 85.0;      // years
             const maxSex = 1150.0;    // F per 1000 M
             const maxMort = 65.0;    // Infant per 1000
@@ -326,10 +362,14 @@
             const popB = pop[dB]["2021"] ? pop[dB]["2021"].total / 1000000 : 0;
             animateRow("pop", popA, popB, maxPop, "M");
 
-            // 2. Fertility (2021)
-            const tfrA = fertility[dA]["2021"] || 0;
-            const tfrB = fertility[dB]["2021"] || 0;
-            animateRow("tfr", tfrA, tfrB, maxTfr, "");
+            // 2. NFHS-6 (2023-24) with NFHS-5 (2019-21) beside it
+            [["inst", 36], ["sch", 12], ["cmb", 16]].forEach(([id, n]) => {
+                const a = pair(n, dA), b = pair(n, dB);
+                animateRow(id, a[0] || 0, b[0] || 0, 100, "%");
+                const was = (sel, v) => { if (v != null) d3.select(sel).append("small")
+                    .style("display", "block").style("opacity", 0.7).style("font-size", "0.75em").text("NFHS-5 " + v.toFixed(1) + "%"); };
+                was(`#${id}A-val`, a[1]); was(`#${id}B-val`, b[1]);
+            });
 
             // 3. Female Life Expectancy (NFHS-5)
             const leA = lifeExpectancy[dA] ? lifeExpectancy[dA].female.nfhs5 : 0;
@@ -358,7 +398,7 @@
         }
 
         function animateRow(id, valA, valB, max, unit) {
-            const dec = (id === 'tfr' || id === 'pop') ? 2 : 1;
+            const dec = id === 'pop' ? 2 : 1;
             d3.select(`#${id}A-val`).text(valA ? valA.toFixed(dec) + unit : "--");
             d3.select(`#${id}B-val`).text(valB ? valB.toFixed(dec) + unit : "--");
             
@@ -551,7 +591,7 @@
         updatePyramids(dA, dB);
     });
 </script>
-<script src="chatbot.js?v=20261006-2"></script>
+<script src="chatbot.js?v=20261116-1"></script>
 <script src="chart-download.js?v=20260928-2" defer></script>
 </body>
 </html>

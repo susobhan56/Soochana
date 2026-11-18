@@ -1,9 +1,11 @@
 /* ═══════════════════════════════════════════════════════════════════
    TECTONICS · story 5, "Leaving home" (tectonics-migration.html)
    The story's numbers and words; tectonics.js draws them. Sources, all
-   in excel/Migration and Urbanization.xlsx and DIU's migration notes:
-   Census 1991–2011, NSS 64th round (2007–08), PLFS 2020–21, and the
-   CMLS–Aajeevika Bureau field survey (2014) quoted in those notes.
+   in excel/Migration and Urbanization.xlsx: Census 1991–2011, NSS 64th
+   round (2007–08), PLFS 2020–21, and the CMLS–Aajeevika Bureau field
+   survey (2014). The "Counted where they work" scene (typed into the
+   page) is the South India Interstate Migration Survey 2026 (IIMAD,
+   UNFPA and IOM): a sample of workers at destination.
    ═══════════════════════════════════════════════════════════════════ */
 window.TK_STORY = {
   number: 5,

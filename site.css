@@ -1,0 +1,280 @@
+/* ═══════════════════════════════════════════════════════════════════
+   site.css — the About page's look, shared by every page that carries
+   <body class="site">.
+
+   Type, as on about.html (modelled on populationmatters.org):
+     headings  Anton, condensed capitals
+     reading   Merriweather, light
+     labels    Hind, small spaced capitals in sky blue
+   Grounds are white and light grey with the paper grain; accents sky
+   blue. Page layouts are left alone: this file restyles type, labels and
+   accents only, so it can sit after each page's own CSS.
+
+   It also carries a self-contained copy of the shared header for pages
+   that do not load style.css (<header class="site-nav">).
+   ═══════════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap');
+
+body.site {
+  --pm-display: 'Anton', 'Oswald', 'Arial Narrow', Impact, sans-serif;
+  --pm-read:    'Merriweather', Georgia, 'Times New Roman', serif;
+  --pm-ui:      'Hind', 'Outfit', system-ui, sans-serif;
+  --pm-sky:     #0f9dde;
+  --pm-sky-hi:  #36b4ee;
+  --pm-sky-ink: #0b6fa0;
+  --pm-sky-deep:#0879ad;
+  --pm-navy:    #0d2b45;
+  --pm-ink:     #141414;
+  --pm-body:    #3d434b;
+  --pm-grey:    #f4f4f4;
+  --pm-line:    #d6d6d6;
+  --pm-orange:  #f08a4b;
+}
+
+/* ── headings: condensed capitals ── */
+body.site :is(h1, h2, h3, .h1, .h2, .h3):not(header:not(.hero) :is(h1, h2, h3)):not(#soochana-chatbot *):not(.chatbot-window *) {
+  font-family: var(--pm-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.08;
+}
+
+
+/* ── reading text ── */
+body.site :is(p, li, dd, blockquote):not(header:not(.hero) *):not(nav *):not(table *):not(#soochana-chatbot *):not(.chatbot-window *):not([class*="stat"]):not([class*="label"]):not([class*="note"]):not([class*="src"]):not([class*="source"]):not([class*="kicker"]) {
+  font-family: var(--pm-read);
+  font-weight: 300;
+  line-height: 1.75;
+}
+body.site :is(p, li) :is(b, strong) { font-weight: 700; color: var(--pm-ink); }
+
+/* ── labels: small spaced capitals ── */
+body.site :is(.kicker, .label, .eyebrow, .section-kicker) {
+  font-family: var(--pm-ui) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--pm-sky-ink) !important;
+}
+
+/* ── interface text: Hind ── */
+body.site :is(button, select, input, label, table, th, td, figcaption, .btn, .btn-pill) { font-family: var(--pm-ui); }
+
+/* ── accents: the sky-blue pills of the About page ── */
+body.site .btn-elegant[aria-current="page"] { background: var(--pm-sky-deep); border-color: var(--pm-sky-deep); color: #fff; }
+body.site .btn-elegant:hover { border-color: var(--pm-sky-deep); color: var(--pm-sky-ink); }
+body.site main a:not([class]), body.site article a:not([class]) { color: var(--pm-sky-ink); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   The shared header, for pages without style.css (home, district health).
+   Same markup and look as style.css's header.
+   ═══════════════════════════════════════════════════════════════════ */
+header.site-nav {
+  position: sticky; top: 0; z-index: 1000;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px 20px;
+  min-height: 80px; padding: 12px 40px; box-sizing: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+  background: rgba(250, 249, 245, 0.86);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  backdrop-filter: blur(24px) saturate(1.6);
+  font-family: 'General Sans', 'Hind', 'Outfit', system-ui, sans-serif;
+  color: #1e2530;
+}
+header.site-nav .nav-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+header.site-nav .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+header.site-nav .brand h1 {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+header.site-nav .brand-tag { font-size: 13px; font-weight: 500; color: #5b6472; white-space: nowrap; }
+header.site-nav .brand-partner {
+  display: flex; align-items: center; gap: 10px; padding-left: 16px; margin-left: 4px;
+  border-left: 1px solid rgba(0, 0, 0, 0.12); text-decoration: none;
+}
+header.site-nav .brand-partner-k { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #5b6472; }
+header.site-nav .brand-partner img { display: block; height: 40px; width: auto; border-radius: 6px; border: 1px solid rgba(0, 0, 0, 0.08); background: #fff; }
+header.site-nav .btn-elegant {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 16px; border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.12); background: rgba(0, 0, 0, 0.03); color: #2b323c;
+  font: 500 14px/1.2 'General Sans', 'Hind', system-ui, sans-serif; text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+header.site-nav .btn-elegant:hover { border-color: #0879ad; color: #0b6fa0; transform: translateY(-1px); background: rgba(0, 0, 0, 0.05); }
+header.site-nav .btn-elegant[aria-current="page"], header.site-nav .btn-elegant.is-solid { background: #0879ad; border-color: #0879ad; color: #fff; }
+header.site-nav .btn-elegant:focus-visible { outline: 2px solid #0879ad; outline-offset: 2px; }
+header.site-nav .btn-elegant svg { width: 16px; height: 16px; }
+@media (max-width: 1100px) {
+  header.site-nav { padding: 10px 16px; }
+  header.site-nav .nav-group:last-child { width: 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  header.site-nav .btn-elegant { padding: 8px 13px; }
+}
+@media (max-width: 600px) {
+  header.site-nav .brand-tag, header.site-nav .brand-partner { display: none; }
+}
+
+/* the animated logo (drawn by ui.js), for pages without style.css */
+header.site-nav { --orange: #e8590c; --orange-lit: #d35400; --ink-heading: #0f172a; --teal-lit: #387478; --font-sans: 'General Sans', 'Hind', system-ui, sans-serif; }
+/* ═══════════════════════════════════════════════════════════════════
+   THE SOOCHANA LOGO — drawn by ui.js into <span class="soo-mark">
+   Three dots (Numbers, Narratives, Intelligence) run together through a
+   gooey filter into one orange circle, and SOOCHANA lands across it:
+   ink outside the circle, knocked out where it crosses. .soo-play runs
+   the build; afterwards a droplet buds off the circle every few seconds.
+   The resting state is the finished logo, so reduced motion simply
+   switches the keyframes off.
+   ═══════════════════════════════════════════════════════════════════ */
+.soo-brand,
+.soo-mark {
+  --soo-disc:  var(--orange-lit);
+  --soo-ink:   var(--ink-heading);
+  --soo-knock: #ffffff;
+  --soo-n1:    #0f9dde;           /* numbers      */
+  --soo-n2:    var(--teal-lit);   /* narratives   */
+  --soo-n3:    #d4a017;           /* intelligence */
+  --soo-bar:   var(--teal-lit);   /* tagline underlines */
+  --soo-dot:   var(--orange-lit);
+}
+.pm-home header :is(.soo-brand, .soo-mark),
+.ex-body header :is(.soo-brand, .soo-mark),
+.tk-body header :is(.soo-brand, .soo-mark),
+.soo-mark--dark {
+  --soo-disc:  #f08a4b;
+  --soo-ink:   #ffffff;
+  --soo-knock: #0d2b45;
+  --soo-n1:    #36b4ee;
+  --soo-n2:    #9fd3f0;
+  --soo-n3:    #f4c534;
+  --soo-bar:   #9fd3f0;
+  --soo-dot:   #f08a4b;
+}
+
+.soo-mark {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 120px;
+  height: 56px;
+  line-height: 0;
+}
+/* no JS: the original brand dot, beside the page's own heading */
+.soo-mark:empty {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+.soo-mark svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* the logo carries the name; the heading stays for screen readers */
+.soo-brand h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.soo-brand .brand-tag { margin-top: 0; }
+
+.soo-mark text {
+  font-family: 'Anton', Impact, 'Arial Narrow', sans-serif;
+  font-size: 96px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.soo-mark .soo-ink   { fill: var(--soo-ink); }
+.soo-mark .soo-knock { fill: var(--soo-knock); }
+.soo-mark .soo-disc { fill: var(--soo-disc); transform-box: fill-box; transform-origin: center; }
+.soo-mark .soo-blob { fill: var(--soo-disc); opacity: 0; transform-box: fill-box; transform-origin: center; }
+.soo-mark .soo-bl1 { --c: var(--soo-n1); }
+.soo-mark .soo-bl2 { --c: var(--soo-n2); }
+.soo-mark .soo-bl3 { --c: var(--soo-n3); }
+.soo-mark .soo-bud { fill: var(--soo-disc); opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(0.6); }
+.soo-mark .soo-bud1 { --bx: 100px; --by: -60px; }
+.soo-mark .soo-bud2 { --bx: -38px; --by: 104px; }
+.soo-mark .soo-lb {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  text-anchor: middle;
+  fill: #0d2b45;
+  opacity: 0;
+}
+
+/* the build: dots appear in a row, gather into the circle, the word lands */
+.soo-play .soo-bl1   { animation: sooGather 1.5s cubic-bezier(0.65, 0, 0.35, 1) both; }
+.soo-play .soo-bl2   { animation: sooGather 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both; }
+.soo-play .soo-bl3   { animation: sooGather 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.2s both; }
+.soo-play .soo-disc  { animation: sooDisc 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1.15s both; }
+.soo-play .soo-word  { animation: sooWord 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.4s both; }
+.soo-play .soo-bud1  { animation: sooBud 9s ease-in-out 3.4s infinite; }
+.soo-play .soo-bud2  { animation: sooBud 9s ease-in-out 7.9s infinite; }
+
+@keyframes sooGather {
+  0%   { opacity: 1; fill: var(--c); transform: translateX(var(--x)) scale(0); }
+  22%  { opacity: 1; fill: var(--c); transform: translateX(var(--x)) scale(var(--s)); }
+  50%  { opacity: 1; fill: var(--c); transform: translateX(var(--x)) scale(var(--s)); }
+  100% { opacity: 1; fill: var(--soo-disc); transform: translateX(0) scale(1); }
+}
+@keyframes sooDisc {
+  0%   { opacity: 0; transform: scale(0.4); }
+  60%  { opacity: 1; transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes sooWord {
+  from { opacity: 0; transform: translateX(-46px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes sooBud {
+  0%, 30%, 100% { opacity: 1; transform: translate(0, 0) scale(0.6); }
+  9%, 15%       { opacity: 1; transform: translate(var(--bx), var(--by)) scale(1); }
+}
+
+/* the welcome screen: large, slower, the three dots named */
+.soo-mark--hero { width: min(470px, 84vw); height: auto; aspect-ratio: 440 / 200; }
+.soo-mark--hero.soo-play .soo-bl1  { animation-duration: 2.8s; }
+.soo-mark--hero.soo-play .soo-bl2  { animation-duration: 2.8s; animation-delay: 0.15s; }
+.soo-mark--hero.soo-play .soo-bl3  { animation-duration: 2.8s; animation-delay: 0.3s; }
+.soo-mark--hero.soo-play .soo-disc { animation-duration: 0.7s; animation-delay: 2.3s; }
+.soo-mark--hero.soo-play .soo-word { animation-duration: 0.8s; animation-delay: 2.65s; }
+.soo-mark--hero.soo-play .soo-lb1  { animation: sooLabel 2.8s ease both; }
+.soo-mark--hero.soo-play .soo-lb2  { animation: sooLabel 2.8s ease 0.15s both; }
+.soo-mark--hero.soo-play .soo-lb3  { animation: sooLabel 2.8s ease 0.3s both; }
+@keyframes sooLabel {
+  0%, 12% { opacity: 0; }
+  24%, 44% { opacity: 1; }
+  52%, 100% { opacity: 0; }
+}
+/* held until the welcome screen itself starts */
+.intro:not(.go) .soo-mark--hero * { animation-play-state: paused !important; }
+
+/* the tagline's two words underline as the word lands */
+.soo-w {
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 2px;
+  padding-bottom: 1px;
+}
+.soo-w1 { background-image: linear-gradient(var(--soo-bar), var(--soo-bar)); }
+.soo-w2 { background-image: linear-gradient(var(--soo-dot), var(--soo-dot)); }
+.soo-brand:has(.soo-play) .soo-w1 { animation: sooUnderline 1.6s cubic-bezier(0.65, 0, 0.35, 1) 1.2s both; }
+.soo-brand:has(.soo-play) .soo-w2 { animation: sooUnderline 1.6s cubic-bezier(0.65, 0, 0.35, 1) 1.7s both; }
+@keyframes sooUnderline {
+  0%   { background-size: 0 2px;    background-position: 0 100%; }
+  45%  { background-size: 100% 2px; background-position: 0 100%; }
+  70%  { background-size: 100% 2px; background-position: 100% 100%; }
+  100% { background-size: 0 2px;    background-position: 100% 100%; }
+}
+
+@media (max-width: 600px) {
+  .soo-mark { width: 90px; height: 42px; }
+  /* the logo carries the brand on a phone; the tagline would push the partner badge onto a second row */
+  .soo-brand .brand-tag { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .soo-mark--hero { width: min(470px, 88vw); height: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soo-mark *, .soo-w { animation: none !important; }
+}
+

@@ -10,8 +10,10 @@
    of care…). The index bar above names the chapter and module being
    read, shows how far through you are, and jumps to any module.
 
-   Every number in a card or a picture is read from state_details.json
-   (and state_demographics.json for the population modules). Change the
+   Every number in a card or a picture is read from state_details.json,
+   state_demographics.json (the ORGI projection) for the population
+   modules, orgi_state_projection.json for the fertility path and
+   nfhs6_state_factsheet.json for NFHS-6 beside NFHS-5. Change the
    data, not this file. Styles: dossier.css.
    ───────────────────────────────────────────────────────────────────── */
 (function () {
@@ -129,7 +131,7 @@
   /* ═════════════════════════════════════════════════════════════════
      FIGURES the population modules quote, from state_demographics.json
      ═════════════════════════════════════════════════════════════════ */
-  function popFacts(state, fert) {
+  function popFacts(state) {
     var trends = [];
     /* the file carries a second table after the series; stop where the
        years start again */
@@ -149,18 +151,46 @@
         if (lo < 5) u5 += r.total;
         if (lo >= 60) el60 += r.total;
       });
-      return { child: ch / tot * 100, elder: el60 / tot * 100, under5: u5 };
+      return { year: +y, child: ch / tot * 100, elder: el60 / tot * 100, work: (tot - ch - el60) / tot * 100, under5: u5, rows: rows, total: tot };
     }
     var years = Object.keys(state.pyramids).sort();
     var first = trends[0], last = trends[trends.length - 1];
     var low = trends.reduce(function (a, b) { return b.sex_ratio < a.sex_ratio ? b : a; });
-    var allFall = fert ? Object.keys(fert).every(function (k) { return fert[k]['2036'] < fert[k]['2020']; }) : false;
     return {
-      first: first, last: last, p2011: at(2011), low: low,
+      first: first, last: last, p2011: at(2011), p2021: at(2021), low: low, series: trends,
       a2011: ages('2011'), aLast: ages(years[years.length - 1]), lastAgeYear: years[years.length - 1],
-      allFall: allFall, nDistricts: fert ? Object.keys(fert).length : 30
+      ageSeries: years.filter(function (y) { return +y >= 2011; }).map(ages)
     };
   }
+
+  /* ═════════════════════════════════════════════════════════════════
+     FERTILITY and the NFHS rounds. The projected path is ORGI's
+     (orgi_state_projection.json); the surveyed rates are the state fact
+     sheet's (nfhs6_state_factsheet.json), NFHS-6 beside NFHS-5.
+     ═════════════════════════════════════════════════════════════════ */
+  var SRC = {
+    orgi: 'Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)',
+    orgiShort: 'ORGI Technical Group projections (2020)',
+    nfhs6: 'NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026',
+    nfhs5: 'NFHS-5 (2019–21), IIPS and MoHFW'
+  };
+  /* one row of the state fact sheet: Odisha and India, both rounds */
+  function nfhsRow(nfhs, re) {
+    var r = ((nfhs && nfhs.indicators) || []).filter(function (i) { return re.test(i.indicator); })[0];
+    if (!r || !r.odisha || r.odisha.nfhs6 == null || r.odisha.nfhs5 == null) return null;
+    return { o6: r.odisha.nfhs6, o5: r.odisha.nfhs5, urban: r.odisha.nfhs6_urban, rural: r.odisha.nfhs6_rural,
+             i6: r.india && r.india.nfhs6, i5: r.india && r.india.nfhs5 };
+  }
+  function tfrFacts(orgi, nfhs) {
+    var n = nfhsRow(nfhs, /^Total fertility rate/i);
+    var o = orgi && orgi.odisha, s = orgi && orgi.tfr_states;
+    if (!n || !o || !o.tfr || !s) return null;
+    return {
+      n: n, periods: o.periods.map(function (p) { return p.replace('-', '–'); }),
+      odisha: o.tfr, india: s.india
+    };
+  }
+  function one(v) { return (+v).toFixed(1); }
 
   /* ═════════════════════════════════════════════════════════════════
      LEADS — the card text for modules whose data carries no narrative.
@@ -191,18 +221,24 @@
       return ['Almost one in four people belongs to a Scheduled Tribe (**' + t.tribal_share_pct + '**), and about one in six lives in a town (**' +
               t.urban_population_share + '**).',
               'There were **' + num(t.sex_ratio_2011) + '** women for every 1,000 men in 2011, and women outlive men: **' +
-              t.life_expectancy_female_nfhs5 + '** years at birth against **' + t.life_expectancy_male_nfhs5 + '**.'];
+              t.life_expectancy_female_nfhs5 + '** years at birth against **' + t.life_expectancy_male_nfhs5 + '** (computed from NFHS-5, 2019–21).'];
     },
     6: function (x) {
       var p = x.p;
       return ['From **' + crore(p.first.total) + '** in ' + p.first.year + ' to **' + crore(p.p2011.total) + '** at the 2011 Census, and a projected **' +
               crore(p.last.total) + '** by ' + p.last.year + '.',
-              'Hover the chart to read any year. The later points are projections.'];
+              'Hover the chart to read any year. The points after 2011 are the official projections, which see growth easing to **' +
+              p.last.annual_growth_rate.toFixed(2) + '%** a year by ' + p.last.year + '.'];
     },
     7: function (x) {
-      return ['Odisha’s fertility rate is **' + (x.tfrState || '1.8') + '** children per woman (NFHS-5), below the replacement level of 2.1.',
-              x.p.allFall ? 'The projections keep it falling: every one of the ' + x.p.nDistricts + ' districts is projected lower in 2036 than in 2020.'
-                          : 'The chart follows the projections to 2036.'];
+      var f = tfrFacts(x.orgi, x.nfhs);
+      if (!f) return ['Odisha’s fertility rate is **' + (x.tfrState || '1.7') + '** children per woman in NFHS-6 (2023–24, published May 2026), below the replacement level of 2.1.'];
+      var k = f.periods.length - 1;
+      return ['Odisha’s fertility rate is **' + one(f.n.o6) + '** children per woman in NFHS-6 (2023–24, published May 2026), from **' + one(f.n.o5) +
+              '** in NFHS-5 (2019–21). Both are below the replacement level of 2.1; India is at ' + one(f.n.i6) + ' in NFHS-6.',
+              'The official projection follows the same path: **' + f.odisha[0].toFixed(2) + '** in ' + f.periods[0] + ', easing to **' + f.odisha[k].toFixed(2) + '** by ' + f.periods[k] +
+              '. Smaller families give each child a larger share of a household’s time and resources.',
+              'Neither NFHS round publishes a district fertility rate, so this module stays with the state.'];
     },
     8: function (x) {
       var a = x.p.a2011, b = x.p.aLast;
@@ -228,11 +264,31 @@
     },
     14: function (x) {
       return ['The maternal mortality ratio was estimated at **' + num(x.t.mmr_2017_19) + '** per 1,00,000 live births in 2017–19.',
-              'The chart follows child deaths, which have fallen on every measure: in the first month, the first year and the first five years.'];
+              'The chart follows child deaths up to NFHS-5 (2019–21), which fell on every measure: in the first month, the first year and the first five years.',
+              'The NFHS-6 fact sheets (published May 2026) do not carry mortality rates, so NFHS-5 remains the latest survey figure here.'];
     },
-    15: function () {
-      return ['Stunting, wasting and underweight have all come down.',
-              'Anaemia has moved the other way, in young children and in pregnant women. That is the gap the health profile singles out.'];
+    12: function (x) {
+      var R = function (re) { return nfhsRow(x.nfhs, re); };
+      var ib = R(/^Institutional births \(/i), hc = R(/health insurance/i), ifa = R(/iron folic acid for 100 days/i),
+          st = R(/who are stunted/i), fv = R(/fully vaccinated based on information from either/i), anc = R(/at least 4 antenatal/i);
+      if (!ib || !hc || !ifa || !st || !fv || !anc) return null;
+      var pair = function (r) { return '**' + one(r.o6) + '%** in NFHS-6 (2023–24, published May 2026), from **' + one(r.o5) + '%** in NFHS-5 (2019–21)'; };
+      var short = function (r) { return '**' + one(r.o6) + '%**, from ' + one(r.o5) + '%'; };
+      return ['Care is reaching more households. Births in a health facility stand at ' + pair(ib) + '. Households with health cover rose to ' + short(hc) +
+              ', and mothers taking iron and folic acid for 100 days or more to ' + short(ifa) + '.',
+              'Children are growing better too: stunting under five is down to ' + short(st) + ', and full vaccination holds at ' + short(fv) + '.',
+              'The next area of focus is care during pregnancy: four or more antenatal visits stand at ' + short(anc) +
+              '. Anaemia and mortality are not in the NFHS-6 fact sheets; for those, NFHS-5 (2019–21) remains the latest survey.'];
+    },
+    15: function (x) {
+      var R = function (re) { return nfhsRow(x.nfhs, re); };
+      var st = R(/who are stunted/i), wa = R(/who are wasted/i), uw = R(/who are underweight/i), sw = R(/severely wasted/i);
+      if (!st || !wa || !uw || !sw) return null;
+      return ['Fewer children are stunted: **' + one(st.o6) + '%** of children under five in NFHS-6 (2023–24, published May 2026), from **' + one(st.o5) +
+              '%** in NFHS-5 (2019–21). Severe wasting also eased, to **' + one(sw.o6) + '%** from ' + one(sw.o5) + '%.',
+              'Wasting (**' + one(wa.o6) + '%**, from ' + one(wa.o5) + '%) and underweight (**' + one(uw.o6) + '%**, from ' + one(uw.o5) +
+              '%) moved the other way, and are the next area of focus for nutrition programmes.',
+              'The NFHS-6 fact sheets do not report anaemia; for that, NFHS-5 (2019–21) remains the latest survey.'];
     },
     17: function (x) {
       var t = x.t;
@@ -287,6 +343,102 @@
     var g = box.appendChild(el('div', 'dz-group'));
     if (title) g.appendChild(el('div', 'dz-group-t', title));
     return g;
+  }
+
+  /* ── charts drawn here, for the modules whose figures come from the
+     ORGI projection and the NFHS fact sheets. Plain SVG in a 600-wide
+     box; marks carry data-tip for the panel's tooltip. ── */
+  var T_MUTED = 'font:500 15px var(--pm-ui);fill:var(--dz-muted)';
+  var T_INK = 'font:700 16px var(--pm-ui);fill:var(--dz-ink)';
+  function put(svg, tag, attrs, text) {
+    var n = svgEl(tag, attrs);
+    if (text != null) n.textContent = text;
+    svg.appendChild(n);
+    return n;
+  }
+  function chartSvg(box, h, label) {
+    var s = box.appendChild(svgEl('svg', { viewBox: '0 0 600 ' + h, role: 'img', 'aria-label': label }));
+    s.style.width = '100%';
+    s.style.flex = '0 1 auto';
+    return s;
+  }
+  /* o: { label, h, series: [{ name, color, pts: [{ x, y, proj, tip }], end }],
+          xTicks: [[x, text]], yTicks: [..], yFmt, yDomain, ref: { y, text }, r } */
+  function lineChart(box, o) {
+    var W = 600, H = o.h || 330, m = { l: 58, r: o.r || 110, t: 18, b: 36 };
+    var svg = chartSvg(box, H, o.label);
+    var all = [].concat.apply([], o.series.map(function (s) { return s.pts; }));
+    var x = d3.scaleLinear().domain(d3.extent(all, function (p) { return p.x; })).range([m.l, W - m.r]);
+    var y = d3.scaleLinear().domain(o.yDomain || [0, d3.max(all, function (p) { return p.y; }) * 1.1]).range([H - m.b, m.t]);
+    (o.yTicks || y.ticks(5)).forEach(function (v) {
+      put(svg, 'line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: '#e3e6ea', 'stroke-width': 1 });
+      put(svg, 'text', { x: m.l - 8, y: y(v) + 5, 'text-anchor': 'end', style: T_MUTED }, o.yFmt ? o.yFmt(v) : String(v));
+    });
+    o.xTicks.forEach(function (t) {
+      put(svg, 'text', { x: x(t[0]), y: H - 10, 'text-anchor': 'middle', style: T_MUTED }, t[1]);
+    });
+    if (o.ref) {
+      put(svg, 'line', { x1: m.l, x2: W - m.r, y1: y(o.ref.y), y2: y(o.ref.y), stroke: '#8a8f98', 'stroke-width': 1.5, 'stroke-dasharray': '3 5' });
+      put(svg, 'text', { x: m.l + 6, y: y(o.ref.y) - 7, style: T_MUTED }, o.ref.text);
+    }
+    var line = d3.line().x(function (p) { return x(p.x); }).y(function (p) { return y(p.y); });
+    var ends = [];
+    o.series.forEach(function (s) {
+      var solid = s.pts.filter(function (p) { return !p.proj; });
+      var firstProj = s.pts.findIndex(function (p) { return p.proj; });
+      var dashed = firstProj === -1 ? [] : s.pts.slice(Math.max(0, firstProj - 1));
+      if (solid.length > 1) put(svg, 'path', { d: line(solid), fill: 'none', stroke: s.color, 'stroke-width': 3, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+      if (dashed.length > 1) put(svg, 'path', { d: line(dashed), fill: 'none', stroke: s.color, 'stroke-width': 3, 'stroke-dasharray': '7 6', 'stroke-linecap': 'round' });
+      s.pts.forEach(function (p) {
+        put(svg, 'circle', { cx: x(p.x), cy: y(p.y), r: 5, fill: p.proj ? '#fff' : s.color, stroke: s.color, 'stroke-width': 2.5,
+                             'data-tip': p.tip });
+      });
+      var last = s.pts[s.pts.length - 1];
+      ends.push({ y: y(last.y), text: s.end, color: s.color });
+    });
+    /* end labels, nudged apart where two lines finish close together */
+    ends.sort(function (a, b) { return a.y - b.y; });
+    for (var i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 19) ends[i].y = ends[i - 1].y + 19;
+    ends.forEach(function (e) {
+      put(svg, 'text', { x: W - m.r + 12, y: e.y + 5, style: 'font:700 15px var(--pm-ui);fill:' + e.color }, e.text);
+    });
+    return svg;
+  }
+  /* NFHS-5 beside NFHS-6: a ring for the earlier round, a dot for the
+     later one, both values written out at the end of the row.
+     rows: [label, nfhs5, nfhs6]; o: { label, max, unit } */
+  function dumbbell(box, rows, o) {
+    o = o || {};
+    var W = 600, rowH = 44, top = 34, lw = 212, x1 = 432;
+    var svg = chartSvg(box, top + rows.length * rowH + 6, o.label || 'NFHS-5 and NFHS-6 compared');
+    var max = o.max || 100, unit = o.unit == null ? '%' : o.unit;
+    var x = d3.scaleLinear().domain([0, max]).range([lw, x1]);
+    put(svg, 'text', { x: 478, y: 16, 'text-anchor': 'middle', style: 'font:600 13px var(--pm-ui);fill:var(--dz-muted)' }, 'NFHS-5');
+    put(svg, 'text', { x: 556, y: 16, 'text-anchor': 'middle', style: 'font:700 13px var(--pm-ui);fill:' + C.blue }, 'NFHS-6');
+    put(svg, 'text', { x: lw, y: 16, style: 'font:500 12px var(--pm-ui);fill:var(--dz-muted)' }, '0');
+    put(svg, 'text', { x: x1, y: 16, 'text-anchor': 'end', style: 'font:500 12px var(--pm-ui);fill:var(--dz-muted)' }, max + unit);
+    rows.forEach(function (r, i) {
+      var cy = top + i * rowH + rowH / 2 - 4, a = r[1], b = r[2];
+      var tip = r[0] + ' · ' + one(b) + unit + ' in NFHS-6 (2023–24), ' + one(a) + unit + ' in NFHS-5 (2019–21)';
+      put(svg, 'text', { x: lw - 14, y: cy + 5, 'text-anchor': 'end', style: 'font:600 14px var(--pm-ui);fill:var(--dz-ink)' }, r[0]);
+      put(svg, 'line', { x1: lw, x2: x1, y1: cy, y2: cy, stroke: '#e3e6ea', 'stroke-width': 2, 'stroke-linecap': 'round' });
+      put(svg, 'line', { x1: x(a), x2: x(b), y1: cy, y2: cy, stroke: C.blue, 'stroke-width': 4, 'stroke-linecap': 'round', opacity: 0.45 });
+      put(svg, 'circle', { cx: x(a), cy: cy, r: 7, fill: '#fff', stroke: '#8a8f98', 'stroke-width': 2.5, 'data-tip': tip });
+      put(svg, 'circle', { cx: x(b), cy: cy, r: 8, fill: C.blue, 'data-tip': tip });
+      put(svg, 'text', { x: 478, y: cy + 5, 'text-anchor': 'middle', style: T_MUTED }, one(a) + unit);
+      put(svg, 'text', { x: 517, y: cy + 5, 'text-anchor': 'middle', style: T_MUTED }, '→');
+      put(svg, 'text', { x: 556, y: cy + 5, 'text-anchor': 'middle', style: T_INK }, one(b) + unit).setAttribute('data-count', one(b) + unit);
+    });
+    return svg;
+  }
+  function nfhsRows(x, list) {
+    return list.map(function (l) {
+      var r = nfhsRow(x.nfhs, l[1]);
+      return r ? [l[0], r.o5, r.o6] : null;
+    }).filter(Boolean);
+  }
+  function nfhsHint(box, extra) {
+    box.appendChild(el('p', 'dz-hint', 'Ring: NFHS-5 (2019–21). Dot: NFHS-6 (2023–24). ' + (extra || '') + 'Source: ' + SRC.nfhs6 + '; ' + SRC.nfhs5 + '.'));
   }
 
   var PICTURES = {
@@ -408,13 +560,160 @@
       var g1 = group(box, 'Share of the population, 2011');
       barRow(g1, 'Scheduled Tribes', t.tribal_share_pct, num(t.tribal_share_pct) / 100, C.orange);
       barRow(g1, 'Living in towns and cities', t.urban_population_share, num(t.urban_population_share) / 100, C.blue);
-      var g2 = group(box, 'Life expectancy at birth, years (NFHS-5)');
+      var g2 = group(box, 'Life expectancy at birth, years (computed from NFHS-5, 2019–21)');
       var top = Math.max(num(t.life_expectancy_female_nfhs5), num(t.life_expectancy_male_nfhs5));
       barRow(g2, 'Women', t.life_expectancy_female_nfhs5, num(t.life_expectancy_female_nfhs5) / (top * 1.1), C.orange);
       barRow(g2, 'Men', t.life_expectancy_male_nfhs5, num(t.life_expectancy_male_nfhs5) / (top * 1.1), C.blue);
       var ts = tiles(box);
       tile(ts, t.population_2011, 'people, Census 2011');
       tile(ts, String(num(t.sex_ratio_2011)), 'women per 1,000 men, 2011');
+    },
+
+    /* the population since 1901, the ORGI projection dashed */
+    6: function (box, x) {
+      var p = x.p;
+      lineChart(box, {
+        label: 'Population of Odisha, ' + p.first.year + ' to ' + p.last.year, r: 96,
+        series: [{ name: 'Population', color: C.blue, end: crore(p.last.total).replace(' crore', ' cr'),
+                   pts: p.series.map(function (r) {
+                     return { x: r.year, y: r.total, proj: r.year > 2011,
+                              tip: r.year + ' · ' + crore(r.total) + (r.year > 2011 ? ' (projected)' : '') };
+                   }) }],
+        xTicks: [p.first.year, 1951, 2011, p.last.year].map(function (v) { return [v, String(v)]; }),
+        yTicks: [0, 1e7, 2e7, 3e7, 4e7, 5e7], yDomain: [0, 5.4e7],
+        yFmt: function (v) { return v / 1e7 + ' cr'; }
+      });
+      box.appendChild(el('p', 'dz-hint', 'Hollow points and the dashed line are projections. Source: Census of India 1901–2011; ' + SRC.orgi + '.'));
+      var ts = tiles(box);
+      if (p.p2021) tile(ts, crore(p.p2021.total), 'people in 2021 (projected)');
+      tile(ts, crore(p.last.total), 'people by ' + p.last.year + ' (projected)');
+    },
+
+    /* the ORGI fertility path, with the two NFHS rounds beside it */
+    7: function (box, x) {
+      var f = tfrFacts(x.orgi, x.nfhs);
+      if (!f) return;
+      var k = f.periods.length - 1;
+      function pts(arr, who) {
+        return arr.map(function (v, i) {
+          return { x: i, y: v, proj: i > 0, tip: who + ', ' + f.periods[i] + ' · ' + v.toFixed(2) + ' children per woman' + (i > 0 ? ' (projected)' : '') };
+        });
+      }
+      lineChart(box, {
+        label: 'Total fertility rate, Odisha and India, ' + f.periods[0] + ' to ' + f.periods[k], h: 300, r: 120,
+        series: [{ color: '#8a8f98', end: 'India ' + f.india[k].toFixed(2), pts: pts(f.india, 'India') },
+                 { color: C.orange, end: 'Odisha ' + f.odisha[k].toFixed(2), pts: pts(f.odisha, 'Odisha') }],
+        xTicks: f.periods.map(function (p, i) { return [i, p]; }),
+        yTicks: [1.5, 2.0, 2.5], yDomain: [1.4, 2.6], yFmt: function (v) { return v.toFixed(1); },
+        ref: { y: 2.1, text: 'Replacement level 2.1' }
+      });
+      box.appendChild(el('p', 'dz-hint', 'Children per woman. Source: ' + SRC.orgi + ', Table 3.'));
+      var ts = tiles(box);
+      tile(ts, one(f.n.o6), 'children per woman, NFHS-6 (2023–24, published May 2026)');
+      tile(ts, one(f.n.o5), 'in NFHS-5 (2019–21)');
+      if (f.n.urban != null && f.n.rural != null) tile(ts, one(f.n.urban) + ' · ' + one(f.n.rural), 'urban · rural, NFHS-6');
+      box.appendChild(el('p', 'dz-hint', 'Surveyed rates: ' + SRC.nfhs6 + '; ' + SRC.nfhs5 + '. Neither round publishes a district fertility rate.'));
+    },
+
+    /* children, working age and elders as shares, 2011 to 2036 */
+    8: function (box, x) {
+      var a = x.p.ageSeries, last = a[a.length - 1];
+      function s(key, name, color) {
+        return { color: color, end: last[key].toFixed(1) + '% ' + name,
+                 pts: a.map(function (r) {
+                   return { x: r.year, y: r[key], proj: r.year > 2011, tip: r.year + ' · ' + name + ' ' + r[key].toFixed(1) + '%' + (r.year > 2011 ? ' (projected)' : '') };
+                 }) };
+      }
+      lineChart(box, {
+        label: 'Share of the population by age group, 2011 to ' + last.year, r: 170,
+        series: [s('work', 'aged 15–59', '#5b6470'), s('child', 'under 15', C.blue), s('elder', 'aged 60+', C.orange)],
+        xTicks: a.map(function (r) { return [r.year, String(r.year)]; }),
+        yTicks: [0, 20, 40, 60], yDomain: [0, 72], yFmt: function (v) { return v + '%'; }
+      });
+      box.appendChild(el('p', 'dz-hint', 'Source: Census of India 2011; ' + SRC.orgi + '.'));
+      var ts = tiles(box);
+      tile(ts, Math.round(x.p.a2011.elder / 100 * x.p.a2011.total / 1e5) + ' lakh', 'people aged 60+, 2011');
+      tile(ts, Math.round(last.elder / 100 * last.total / 1e5) + ' lakh', 'people aged 60+, ' + last.year + ' (projected)');
+    },
+
+    /* women per 1,000 men since 1901 */
+    9: function (box, x) {
+      var p = x.p;
+      lineChart(box, {
+        label: 'Sex ratio of Odisha, ' + p.first.year + ' to ' + p.last.year, r: 70,
+        series: [{ color: C.orange, end: String(Math.round(p.last.sex_ratio)),
+                   pts: p.series.map(function (r) {
+                     return { x: r.year, y: r.sex_ratio, proj: r.year > 2011,
+                              tip: r.year + ' · ' + indian(Math.round(r.sex_ratio)) + ' women per 1,000 men' + (r.year > 2011 ? ' (projected)' : '') };
+                   }) }],
+        xTicks: [p.first.year, 1951, p.low.year, 2011, p.last.year].map(function (v) { return [v, String(v)]; }),
+        yTicks: [950, 1000, 1050, 1100], yDomain: [940, 1100], yFmt: function (v) { return indian(v); },
+        ref: { y: 1000, text: 'As many women as men' }
+      });
+      box.appendChild(el('p', 'dz-hint', 'Women per 1,000 men. Hollow points are projections. Source: Census of India 1901–2011; ' + SRC.orgi + '.'));
+      var ts = tiles(box);
+      tile(ts, String(Math.round(p.p2011.sex_ratio)), 'women per 1,000 men, Census 2011');
+      if (p.p2021) tile(ts, String(Math.round(p.p2021.sex_ratio)), 'in 2021 (projected)');
+      tile(ts, String(Math.round(p.last.sex_ratio)), 'by ' + p.last.year + ' (projected)');
+    },
+
+    /* the age pyramid: 2011 as an outline, the last projected year filled */
+    10: function (box, x) {
+      var a = x.p.a2011, b = x.p.aLast, n = b.rows.length;
+      var W = 600, rowH = 19, top = 30, H = top + n * rowH + 30, mid = W / 2, gap = 30;
+      var svg = chartSvg(box, H, 'Age pyramid of Odisha, 2011 and ' + b.year);
+      var max = 0;
+      [a, b].forEach(function (s) { s.rows.forEach(function (r) { max = Math.max(max, r.male / s.total * 100, r.female / s.total * 100); }); });
+      var w = d3.scaleLinear().domain([0, max * 1.05]).range([0, mid - gap - 16]);
+      put(svg, 'text', { x: mid - gap - 4, y: 16, 'text-anchor': 'end', style: 'font:700 14px var(--pm-ui);fill:' + C.blue }, 'Men');
+      put(svg, 'text', { x: mid + gap + 4, y: 16, style: 'font:700 14px var(--pm-ui);fill:' + C.orange }, 'Women');
+      b.rows.forEach(function (r, i) {
+        var y = top + (n - 1 - i) * rowH, o = a.rows[i] || r;
+        var m = r.male / b.total * 100, f = r.female / b.total * 100;
+        var tip = 'Age ' + r.age + ' · ' + b.year + ': men ' + m.toFixed(1) + '%, women ' + f.toFixed(1) + '% · 2011: men ' +
+                  (o.male / a.total * 100).toFixed(1) + '%, women ' + (o.female / a.total * 100).toFixed(1) + '%';
+        put(svg, 'rect', { x: mid - gap - w(m), y: y + 2, width: w(m), height: rowH - 4, rx: 2, fill: C.blue, 'data-tip': tip });
+        put(svg, 'rect', { x: mid + gap, y: y + 2, width: w(f), height: rowH - 4, rx: 2, fill: C.orange, 'data-tip': tip });
+        var wm = w(o.male / a.total * 100), wf = w(o.female / a.total * 100);
+        put(svg, 'rect', { x: mid - gap - wm, y: y + 2, width: wm, height: rowH - 4, rx: 2, fill: 'none', stroke: '#30343a', 'stroke-width': 1.4, 'pointer-events': 'none' });
+        put(svg, 'rect', { x: mid + gap, y: y + 2, width: wf, height: rowH - 4, rx: 2, fill: 'none', stroke: '#30343a', 'stroke-width': 1.4, 'pointer-events': 'none' });
+        put(svg, 'text', { x: mid, y: y + rowH - 5, 'text-anchor': 'middle', style: 'font:600 11.5px var(--pm-ui);fill:var(--dz-muted)' }, r.age);
+      });
+      var ly = H - 10;
+      put(svg, 'rect', { x: 150, y: ly - 11, width: 22, height: 12, rx: 2, fill: 'none', stroke: '#30343a', 'stroke-width': 1.4 });
+      put(svg, 'text', { x: 178, y: ly, style: 'font:500 13px var(--pm-ui);fill:var(--dz-muted)' }, '2011 (Census)');
+      put(svg, 'rect', { x: 310, y: ly - 11, width: 22, height: 12, rx: 2, fill: C.blue });
+      put(svg, 'text', { x: 338, y: ly, style: 'font:500 13px var(--pm-ui);fill:var(--dz-muted)' }, b.year + ' (projected)');
+      box.appendChild(el('p', 'dz-hint', 'Each bar is a five-year age group as a share of everyone. Source: Census of India 2011; ' + SRC.orgi + '.'));
+    },
+
+    /* the health picture, NFHS-5 beside NFHS-6 */
+    12: function (box, x) {
+      var rows = nfhsRows(x, [
+        ['Births in a health facility', /^Institutional births \(/i],
+        ['Households with health cover', /health insurance/i],
+        ['Iron and folic acid, 100+ days', /iron folic acid for 100 days/i],
+        ['Children fully vaccinated', /fully vaccinated based on information from either/i],
+        ['Four or more antenatal visits', /at least 4 antenatal/i],
+        ['Children under 5 stunted', /who are stunted/i]
+      ]);
+      if (!rows.length) return;
+      dumbbell(box, rows, { label: 'Health indicators for Odisha in NFHS-5 and NFHS-6' });
+      nfhsHint(box, 'Per cent. ');
+    },
+
+    /* child nutrition, NFHS-5 beside NFHS-6 */
+    15: function (box, x) {
+      var rows = nfhsRows(x, [
+        ['Stunted (short for age)', /who are stunted/i],
+        ['Wasted (thin for height)', /who are wasted/i],
+        ['Severely wasted', /severely wasted/i],
+        ['Underweight', /who are underweight/i],
+        ['Breastfed only, under 6 months', /under age 6 months exclusively breastfed \(/i]
+      ]);
+      if (!rows.length) return;
+      dumbbell(box, rows, { label: 'Child nutrition in Odisha in NFHS-5 and NFHS-6', max: 80 });
+      nfhsHint(box, 'Children under five, per cent. ');
     },
 
     /* the 62 communities, the 13 particularly vulnerable ones picked out */
@@ -438,27 +737,6 @@
       var ts = tiles(box);
       if (x.t.tribal_population) tile(ts, x.t.tribal_population, 'tribal people, Census 2011');
       if (x.t.tribal_share_pct) tile(ts, x.t.tribal_share_pct, 'of the state’s population');
-    },
-
-    /* which way each part of the health picture is moving */
-    12: function (box) {
-      var rows = [
-        ['Child deaths', 'newborn, infant and under-five', 'down', 'Falling', true],
-        ['Undernutrition', 'stunting, wasting, underweight', 'down', 'Falling', true],
-        ['Anaemia', 'young children and pregnant women', 'up', 'Rising', false]
-      ];
-      var list = box.appendChild(el('div', 'dz-trends'));
-      rows.forEach(function (r, i) {
-        var d = list.appendChild(el('div', 'dz-trend ' + (r[4] ? 'is-good' : 'is-bad')));
-        d.style.setProperty('--d', (i * 180) + 'ms');
-        var ar = d.appendChild(el('span', 'dz-arrow', r[2] === 'down' ? '↓' : '↑'));
-        ar.setAttribute('aria-hidden', 'true');
-        var tx = d.appendChild(el('div'));
-        tx.appendChild(el('b', null, r[0]));
-        tx.appendChild(el('span', null, r[1]));
-        d.appendChild(el('span', 'dz-verdict', r[3] + (r[4] ? ' · good news' : ' · a concern')));
-      });
-      box.appendChild(el('p', 'dz-hint', 'The direction of change, as the state health profile reads it. The next modules show the figures.'));
     },
 
     /* sub-centres → PHCs → CHCs, bar widths to scale */
@@ -524,7 +802,8 @@
      BUILD
      ═════════════════════════════════════════════════════════════════ */
   var sec = typeof document !== 'undefined' && document.getElementById('dashboard');
-  var API = { splitText: splitText, popFacts: popFacts, landCats: landCats, LEADS: LEADS, CHAPTERS: CHAPTERS, num: num };
+  var API = { splitText: splitText, popFacts: popFacts, landCats: landCats, LEADS: LEADS, CHAPTERS: CHAPTERS, num: num,
+              tfrFacts: tfrFacts, nfhsRow: nfhsRow, SRC: SRC };
   if (typeof module !== 'undefined' && module.exports) module.exports = API;
   /* the same, for the printable report (report.js) */
   if (typeof window !== 'undefined') window.SoochanaDossier = API;
@@ -538,7 +817,7 @@
   var order = [], chapterOf = {}, scenes = {}, steps = {}, current = null, CH = [];
   function modIcon(n) { return MODULE_ICONS[n] || CH[chapterOf[n]].icon; }
 
-  function build(details, state, fert, geo) {
+  function build(details, state, geo, orgi, nfhs) {
     var d = details && details.Odisha;
     if (!d || !d.slides_detail) return;
     var byNum = {};
@@ -556,7 +835,7 @@
     var s3 = byNum[3] && byNum[3].table_data || {};
     var ctxBase = {
       byNum: byNum, geo: geo,
-      p: popFacts(state, fert),
+      p: popFacts(state), orgi: orgi, nfhs: nfhs,
       areaKha: (num(s3.area_sq_km) || 155707) / 10,      /* sq km → thousand hectares */
       tfrState: keyTfr()
     };
@@ -746,6 +1025,47 @@
     });
   }
 
+  /* A Flourish chart tells its host how tall it wants to be. The panel is
+     often shorter than that on a laptop, which used to cut the bottom of
+     the chart (usually the year axis). The frame now takes the height it
+     asks for and is fitted to the panel. */
+  window.addEventListener('message', function (e) {
+    if (!/^https:\/\/(flo\.uri\.sh|public\.flourish\.studio)$/.test(e.origin)) return;
+    var d = e.data;
+    if (typeof d === 'string') { try { d = JSON.parse(d); } catch (err) { return; } }
+    if (!d || d.sender !== 'Flourish' || !(d.height > 0)) return;
+    var frames = document.querySelectorAll('iframe');
+    for (var i = 0; i < frames.length; i++) {
+      if (frames[i].contentWindow !== e.source) continue;
+      var f = frames[i], h = Math.ceil(d.height);
+      var body = f.closest('.dz-scene-b');
+      if (!body) { f.style.height = h + 'px'; return; }       /* the policy timelines */
+      /* A little too tall: shrink the whole chart to fit, so nothing needs
+         scrolling. Much too tall (it would be unreadably small): keep its
+         size and let the panel scroll. */
+      var room = body.clientHeight, k = room / h;
+      var fit = h > room + 4 && k >= 0.62, tall = h > room + 4 && !fit;
+      var mode = fit ? 'fit' : tall ? 'tall' : 'plain';
+      /* Flourish repeats this message, and a chart that has been resized
+         may ask for a slightly different height. Decide once for a given
+         panel size and then hold, or the chart flips between sizes and
+         flickers. */
+      var key = Math.round(room / 10) + 'x' + Math.round(body.clientWidth / 10);
+      if (f._dzKey === key && f._dzMode !== 'plain') {   /* the first report is often a placeholder */
+        if (f._dzMode !== 'tall' || Math.abs(h - f._dzH) < 2) return;
+        f._dzH = h; f.style.height = h + 'px';      /* a scrolling chart may still grow */
+        return;
+      }
+      f._dzKey = key; f._dzMode = mode; f._dzH = h;
+      f.style.height = (fit || tall) ? h + 'px' : '';
+      f.style.width = fit ? (body.clientWidth / k) + 'px' : '';
+      f.style.transform = fit ? 'scale(' + k + ')' : '';
+      body.classList.toggle('is-fit', fit);
+      body.classList.toggle('is-tall', tall);
+      return;
+    }
+  });
+
   function loadChart(scene) {
     if (!scene || !scene.classList.contains('is-chart')) return;
     var body = scene.querySelector('.dz-scene-b');
@@ -802,10 +1122,11 @@
   Promise.all([
     DataLoader.getStateDetails(),
     DataLoader.getStateDemographics(),
-    DataLoader.getDistrictFertilityTrends().catch(function () { return null; }),
-    DataLoader.loadJSON('./Orissa.geojson')
+    DataLoader.loadJSON('./Orissa.geojson'),
+    DataLoader.loadJSON('datasets/orgi_state_projection.json').catch(function () { return null; }),
+    DataLoader.loadJSON('datasets/nfhs6_state_factsheet.json').catch(function () { return null; })
   ]).then(function (r) {
-    build(r[0], r[1], r[2], r[3]);
+    build(r[0], r[1], r[2], r[3], r[4]);
     sec.classList.add('is-ready');
   }).catch(function (err) {
     if (window.console) console.warn('Dossier: data did not load', err);

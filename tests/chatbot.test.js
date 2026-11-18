@@ -8,7 +8,9 @@ const table = require('../learn/data/districts.json');
 const engine = Chat.createEngine({
   districts: table,
   population: require('../datasets/district_population_trends.json'),
-  fertility: require('../datasets/district_fertility_trends.json'),
+  nfhs: require('../datasets/nfhs_district_rounds.json'),
+  nfhsState: require('../datasets/nfhs6_state_factsheet.json'),
+  orgi: require('../datasets/orgi_state_projection.json'),
   national: require('../datasets/national_comparisons.json'),
   contents: require('../data/contents.json').recentContent,
   reports: require('../data/reports.json').reports,
@@ -103,7 +105,7 @@ test('"why" questions report associations, flagged as not causal', () => {
 test('a district assessment lists strengths and gaps from the data', () => {
   const a = engine.answer('What should Nabarangpur focus on?');
   assert.equal(a.intent, 'assess');
-  assert.match(text(a), /Where it lags/);
+  assert.match(text(a), /Where it has the most room to gain/);
   assert.match(text(a), /literacy/i);
 });
 
@@ -138,4 +140,20 @@ test('a broad battery of questions never throws', () => {
     assert.ok(Array.isArray(a.blocks) && a.blocks.length, q);
     ctx = { last: a.memory };
   }
+});
+
+test('district survey answers lead with NFHS-6 and give NFHS-5 for change', () => {
+  const R = require('../datasets/nfhs_district_rounds.json');
+  const ib = R.indicators.find(i => i.n === 36).districts.Koraput;
+  const t = text(engine.answer('institutional births in Koraput'));
+  assert.match(t, /NFHS-6/);
+  assert.ok(t.includes(ib[0].toFixed(1)), 'NFHS-6 value shown');
+  assert.ok(t.includes(ib[1].toFixed(1)), 'NFHS-5 value shown');
+});
+
+test('fertility questions answer from the state figures, not a district projection', () => {
+  const a = engine.answer('fertility in Malkangiri by 2036');
+  assert.equal(a.intent, 'fertility');
+  assert.match(text(a), /1\.7/);
+  assert.match(text(a), /do not publish a fertility rate for each district/);
 });

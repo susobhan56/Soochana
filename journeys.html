@@ -15,8 +15,9 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css?v=20261006-3">
-<script src="ui.js?v=20261006-3"></script>
+<script src="ui.js?v=20261116-2"></script>
 <script src="whatsnew.js?v=20261006" defer></script>
+<link rel="stylesheet" href="nav.css?v=20261116-5">
 </head>
 <body>
 
@@ -37,14 +38,19 @@
       <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="about.html" class="btn-elegant">About Us</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant">Repository</a>
-    <a href="learn/index.html" class="btn-elegant">Learn</a>
-    <a href="tectonics.html" class="btn-elegant">Tectonics</a>
-    <a href="planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="learn/index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <!-- ═══════════════════════════════════════════════
@@ -80,8 +86,8 @@
         <div class="stat-label">Population<br>(2023)</div>
       </div>
       <div class="stat-cell">
-        <div class="stat-value teal">1.98</div>
-        <div class="stat-label">Fertility Rate<br>(NFHS-5)</div>
+        <div class="stat-value teal">2.0</div>
+        <div class="stat-label">Fertility Rate<br>(NFHS-6, 2023–24; 2.0 in NFHS-5)</div>
       </div>
       <div class="stat-cell">
         <div class="stat-value yellow">29.8</div>
@@ -99,16 +105,16 @@
     <div class="stat-region-title purple" style="color: var(--purple);">Odisha Overview</div>
     <div class="stat-row">
       <div class="stat-cell">
-        <div class="stat-value purple">46.2M</div>
-        <div class="stat-label">Population<br>(2021)</div>
+        <div class="stat-value purple">45.7M</div>
+        <div class="stat-label">Population<br>(2021, projected)</div>
       </div>
       <div class="stat-cell">
-        <div class="stat-value red">1.80</div>
-        <div class="stat-label">Fertility Rate<br>(NFHS-5)</div>
+        <div class="stat-value red">1.7</div>
+        <div class="stat-label">Fertility Rate<br>(NFHS-6, 2023–24; 1.8 in NFHS-5)</div>
       </div>
       <div class="stat-cell">
         <div class="stat-value orange">1063</div>
-        <div class="stat-label">Sex Ratio<br>(NFHS-5)</div>
+        <div class="stat-label">Sex Ratio<br>(NFHS-5, 2019–21; not in NFHS-6 fact sheets)</div>
       </div>
       <div class="stat-cell">
         <div class="stat-value blue">293</div>
@@ -163,9 +169,9 @@
       <div class="step-idx">02 · The Transition</div>
       <h2>Below replacement for the first time</h2>
       <p>
-        A country needs a total fertility rate of 2.1 to maintain a stable population. India's fertility rate fell to 1.98 in 2023, signaling that population stabilization is on the horizon.
+        A country needs a total fertility rate of 2.1 to maintain a stable population. India's rate reached 2.0 in NFHS-5 (2019–21) and held there in NFHS-6 (2023–24, published May 2026), so population stabilization is on the horizon.
       </p>
-      <div class="big-num teal">1.98</div>
+      <div class="big-num teal">2.0</div>
       <div class="big-num-label">Fertility rate (TFR) · replacement = 2.1</div>
     </div>
 
@@ -173,28 +179,28 @@
       <div class="step-idx">03 · Regional Disparity</div>
       <h2>A divide in demographic speed</h2>
       <p>
-        While southern states like Kerala (TFR 1.5) and Odisha (TFR 1.8) stabilized early, northern states like Bihar (TFR 2.8) continue to drive growth.
+        Kerala (1.8) and Odisha (1.7) are already below replacement, and Bihar (2.7, from 3.0 in NFHS-5) is moving steadily toward it. Figures from NFHS-6 (2023–24, published May 2026).
       </p>
       <div class="mini-bar-wrap">
         <div class="mini-bar-row">
           <span class="mini-bar-label">Kerala</span>
-          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--green)" data-w="54%"></div></div>
-          <span class="mini-bar-val">1.5</span>
-        </div>
-        <div class="mini-bar-row">
-          <span class="mini-bar-label">Odisha</span>
-          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--purple)" data-w="64%"></div></div>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--green)" data-w="67%"></div></div>
           <span class="mini-bar-val">1.8</span>
         </div>
         <div class="mini-bar-row">
+          <span class="mini-bar-label">Odisha</span>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--purple)" data-w="63%"></div></div>
+          <span class="mini-bar-val">1.7</span>
+        </div>
+        <div class="mini-bar-row">
           <span class="mini-bar-label">National Avg</span>
-          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--teal)" data-w="70%"></div></div>
-          <span class="mini-bar-val">1.98</span>
+          <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--teal)" data-w="74%"></div></div>
+          <span class="mini-bar-val">2.0</span>
         </div>
         <div class="mini-bar-row">
           <span class="mini-bar-label">Bihar</span>
           <div class="mini-bar-track"><div class="mini-bar-fill" style="background:var(--red)" data-w="100%"></div></div>
-          <span class="mini-bar-val red">2.8</span>
+          <span class="mini-bar-val red">2.7</span>
         </div>
       </div>
     </div>
@@ -299,7 +305,7 @@
   </div>
   <div class="footer-meta">
     Data Sources: UN World Population Prospects 2024, Census of India 2011,<br>
-    NFHS-4 (2015-16), NFHS-5 (2019-21), and ORGI Population Projections (1951-2036).
+    NFHS-4 (2015-16), NFHS-5 (2019-21), NFHS-6 (2023-24; fact sheets published May 2026), and Population Projections for India and States 2011-2036, Technical Group on Population Projections (July 2020).
   </div>
 </footer>
 
@@ -762,10 +768,11 @@ function drawIndiaChart(mode) {
     d3.select('#legendLineC').style('display', 'none');
 
     const statesTfrData = [
-      { state: "Kerala", tfr: 1.5, color: "var(--green)" },
-      { state: "Odisha", tfr: 1.8, color: "var(--purple)" },
-      { state: "National Avg", tfr: 1.98, color: "var(--teal)" },
-      { state: "Bihar", tfr: 2.8, color: "var(--red)" }
+      /* NFHS-6 (2023-24), IIPS and MoHFW fact sheets, published May 2026 */
+      { state: "Kerala", tfr: 1.8, color: "var(--green)" },
+      { state: "Odisha", tfr: 1.7, color: "var(--purple)" },
+      { state: "National Avg", tfr: 2.0, color: "var(--teal)" },
+      { state: "Bihar", tfr: 2.7, color: "var(--red)" }
     ];
 
     const x = d3.scaleLinear().domain([0, 3.5]).range([0, w]);
@@ -1337,7 +1344,7 @@ window.addEventListener('resize', () => {
   triggerPyramids(currentPyramidYear);
 });
 </script>
-<script src="chatbot.js?v=20261006-2"></script>
+<script src="chatbot.js?v=20261116-1"></script>
 <script src="chart-download.js?v=20260928-2" defer></script>
 </body>
 </html>

@@ -16,7 +16,7 @@
 <!-- the guided tour's type: Anton (display), Merriweather (reading), Hind (labels) -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css?v=20261006-3">
-<script src="ui.js?v=20261006-3"></script>
+<script src="ui.js?v=20261116-2"></script>
 <script src="whatsnew.js?v=20261006" defer></script>
 <style>
   /* ═══════════════════════════════════════════════════════════════════
@@ -1149,6 +1149,7 @@
     }
 }
 </style>
+<link rel="stylesheet" href="nav.css?v=20261116-5">
 </head>
 <body class="pm-about">
 
@@ -1167,14 +1168,19 @@
       <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="about.html" class="btn-elegant" aria-current="page">About Us</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant">Repository</a>
-    <a href="learn/index.html" class="btn-elegant">Learn</a>
-    <a href="tectonics.html" class="btn-elegant">Tectonics</a>
-    <a href="planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="learn/index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <!-- MAIN CONTENT WRAPPER -->
@@ -1471,7 +1477,7 @@
     </div>
   </div>
   <div class="footer-meta">
-    Data Sources: Census of India, NFHS-5, PLFS, UDISE+ & Government of Odisha Survey Reports.
+    Data Sources: Census of India, NFHS-6 (2023–24, published May 2026) and NFHS-5 (2019–21), PLFS, UDISE+, ORGI Technical Group population projections (2020), UNFPA district projections (2022) &amp; Government of Odisha Survey Reports.
   </div>
 </footer>
 
@@ -1725,6 +1731,6 @@
   });
 </script>
 <script src="chapter-index.js?v=20261105-1"></script>
-<script src="chatbot.js?v=20261006-2"></script>
+<script src="chatbot.js?v=20261116-1"></script>
 </body>
 </html>

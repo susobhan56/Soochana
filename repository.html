@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css?v=20261006-3">
-<script src="ui.js?v=20261006-3"></script>
+<script src="ui.js?v=20261116-2"></script>
 <script src="whatsnew.js?v=20261006" defer></script>
 <script src="data_loader.js?v=20260925-2"></script>
 <style>
@@ -355,8 +355,10 @@
         height: auto;
     }
 </style>
+<link rel="stylesheet" href="site.css?v=20261116-2">
+<link rel="stylesheet" href="nav.css?v=20261116-5">
 </head>
-<body>
+<body class="site">
 
 <!-- GLOBAL HEADER -->
 <header>
@@ -373,14 +375,19 @@
       <img src="images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="about.html" class="btn-elegant">About Us</a>
     <a href="themes.html" class="btn-elegant">Themes</a>
     <a href="repository.html" class="btn-elegant" aria-current="page">Repository</a>
-    <a href="learn/index.html" class="btn-elegant">Learn</a>
-    <a href="tectonics.html" class="btn-elegant">Tectonics</a>
-    <a href="planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="learn/index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <!-- MAIN REPOSITORY HUB CONTENT -->
@@ -460,7 +467,7 @@
     </div>
   </div>
   <div class="footer-meta">
-    Data Sources: Census of India, NFHS-5, PLFS, UDISE+ & Government of Odisha Survey Reports.
+    Data Sources: Census of India, NFHS-6 (2023–24, published May 2026) and NFHS-5 (2019–21), PLFS, UDISE+, ORGI Technical Group population projections (2020), UNFPA district projections (2022) &amp; Government of Odisha Survey Reports.
   </div>
 </footer>
 
@@ -610,9 +617,9 @@
     // Static Data Sources catalog definitions
     const staticDataSources = [
         {
-            heading: 'National Family Health Survey (NFHS-5)',
+            heading: 'National Family Health Survey (NFHS-6 and NFHS-5)',
             subheading: 'Ministry of Health & Family Welfare',
-            details: ['NFHS-1 (1992-93) to NFHS-5 (2019-21)', 'Comprehensive household interview clusters', 'State and district-level factsheets'],
+            details: ['NFHS-1 (1992-93) to NFHS-6 (2023-24); NFHS-6 fact sheets published May 2026', 'Comprehensive household interview clusters', 'State and district-level factsheets'],
             link: 'http://rchiips.org/nfhs/index.shtml',
             indicators: 'Total Fertility Rate (TFR), Infant and Child Mortality Rates, Maternal Health coverage, Nutritional benchmarks, Anaemia levels, Women empowerment indices.'
         },
@@ -643,6 +650,27 @@
             details: ['Nationally representative longitudinal survey', 'Targeting adults aged 45 and older', 'Focusing on geriatric health & socio-economic profiles'],
             link: 'https://www.iipsindia.ac.in/content/lasi-wave-1',
             indicators: 'Chronic disease prevalence, Cognitive and physical functional capacities, Elderly employment/retirement, Social security, isolation and pension indexes.'
+        },
+        {
+            heading: 'Population Projections for India and States 2011–2036',
+            subheading: 'Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)',
+            details: ['Cohort-component projection on the Census 2011 base', 'India and states, 2011–2036, by age and sex', 'Source of the state projections across Soochana'],
+            link: 'https://main.mohfw.gov.in/',
+            indicators: 'Projected population by age and sex, sex ratio, median age, dependency ratios, crude birth and death rates, infant and under-five mortality, total fertility rate, life expectancy.'
+        },
+        {
+            heading: 'District Level Population Projections in Selected States of India, 2021 & 2026',
+            subheading: 'UNFPA India (2022)',
+            details: ['Madhya Pradesh, Bihar, Odisha and Rajasthan', 'District population by age and sex, 2021 and 2026', 'Source of the district projections across Soochana'],
+            link: 'https://india.unfpa.org/',
+            indicators: 'District population by sex and single year (0–14) or five-year age group (to 75+), 2021 and 2026.'
+        },
+        {
+            heading: 'South India Interstate Migration Survey 2026 (SIIMS 2026)',
+            subheading: 'IIMAD, UNFPA and IOM (2026)',
+            details: ['1,824 interstate migrant workers in 33 districts', 'Karnataka, Keralam and Tamil Nadu', 'Odisha is the fourth-largest source state (12.0% of workers surveyed)'],
+            link: 'https://india.unfpa.org/',
+            indicators: 'Origin states and corridors, sectors of work, circular and seasonal migration, working conditions, remittances.'
         }
     ];
 
@@ -665,6 +693,6 @@
         `;
     });
 </script>
-<script src="chatbot.js?v=20261006-2"></script>
+<script src="chatbot.js?v=20261116-1"></script>
 </body>
 </html>

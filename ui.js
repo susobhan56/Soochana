@@ -23,6 +23,28 @@
     }
   }
 
+  /* ── 1b. the header menus (nav.css): one open at a time; an outside
+     click, Esc or choosing an item closes them ── */
+  function navMenus() {
+    var menus = [].slice.call(document.querySelectorAll('header details.nav-menu'));
+    if (!menus.length) return;
+    function closeAll(except) { menus.forEach(function (m) { if (m !== except) m.open = false; }); }
+    menus.forEach(function (m) {
+      m.addEventListener('toggle', function () { if (m.open) closeAll(m); });
+      m.querySelectorAll('.nav-pop a, .nav-pop button').forEach(function (it) {
+        it.addEventListener('click', function () { m.open = false; });
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest || !e.target.closest('header details.nav-menu')) closeAll(null);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var open = menus.filter(function (m) { return m.open; })[0];
+      if (open) { open.open = false; open.querySelector('summary').focus(); }
+    });
+  }
+
   /* ── 2. editorial bands and the gallery reveal on scroll ── */
   function revealBands() {
     var targets = document.querySelectorAll('.editorial-band, .editorial-gallery');
@@ -264,11 +286,134 @@
     });
   }
 
+  /* ── 5. motion: cards rise into view, headline figures count up ──
+     The same treatment as the district profile, for every content page.
+     Only blocks that start below the fold are hidden first, so nothing
+     already on screen flickers; blocks a page draws later fade up as they
+     arrive. The home page, the district profile, Tectonics and the guided
+     tour run their own animation and are left alone. Off for readers who
+     ask for reduced motion. */
+  var MOTION_CARDS = [
+    '.feature-card', '.institution-card', '.next-card', '.team-card-unit',
+    '.theme-card', '.article-card', '.dataset-card', '.report-card',
+    '.report-section-card', '.stat-cell', '.band-cell', '.policy-panel',
+    '.editorial-figure', '.flourish-figure', '.pyramid-panel', '.contact-form-card',
+    '.ln-figure', '.fr-card', '.ln-recipe-box', '.comp-row', 'main section.panel', '.pl-tile', '.pl-card'
+  ].join(', ');
+  var MOTION_NUMS = '.stat-value, .meta-val, .big-num, .band-val:not([data-to])';
+  var MOTION_SKIP = 'header, nav, #soochana-chatbot, .chatbot-window, .dp-card, .dp-hero, [data-count], [data-no-motion]';
+
+  function motion() {
+    var body = document.body;
+    if (!body || body.classList.contains('home') || body.classList.contains('tk-body') || body.classList.contains('ex-body')) return;
+    if (document.querySelector('.dp-hero')) return;              /* the district profile has its own */
+    var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !('IntersectionObserver' in window)) return;
+
+    var css = document.createElement('style');
+    css.textContent =
+      '.mo-reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .8s cubic-bezier(.16,1,.3,1)!important;transition-delay:var(--mo-d,0s)!important}' +
+      '.mo-reveal.mo-in{opacity:1;transform:none}';
+    document.head.appendChild(css);
+
+    var seen = typeof WeakSet === 'function' ? new WeakSet() : null;
+    function done(el) {
+      /* hand the element back its own transitions once it has landed */
+      setTimeout(function () { el.classList.remove('mo-reveal', 'mo-in'); el.style.removeProperty('--mo-d'); }, 1300);
+    }
+    var io = new IntersectionObserver(function (entries) {
+      var k = 0;
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.style.setProperty('--mo-d', Math.min(k++, 6) * 0.08 + 's');
+        e.target.classList.add('mo-in');
+        io.unobserve(e.target);
+        countIn(e.target);
+        done(e.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+    function take(el, fresh) {
+      if (seen) { if (seen.has(el)) return; seen.add(el); }
+      else { if (el.__mo) return; el.__mo = 1; }
+      if (el.closest(MOTION_SKIP)) return;
+      var r = el.getBoundingClientRect();
+      if (!r.width && !r.height) { io.observe(el); el.classList.add('mo-reveal'); return; }
+      if (r.top < window.innerHeight * 0.92 && !fresh) { countIn(el); return; }   /* already on screen */
+      el.classList.add('mo-reveal');
+      io.observe(el);
+    }
+    function scan(root, fresh) {
+      if (!root.querySelectorAll) return;
+      if (root.matches && root.matches(MOTION_CARDS)) take(root, fresh);
+      root.querySelectorAll(MOTION_CARDS).forEach(function (el) { take(el, fresh); });
+    }
+    scan(document, false);
+
+    /* blocks the page draws after loading (dataset cards, themes, charts) */
+    var queued = [];
+    new MutationObserver(function (list) {
+      list.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) queued.push(n); }); });
+      if (queued.length === 1) requestAnimationFrame(function () {
+        var q = queued; queued = [];
+        q.forEach(function (n) { if (n.isConnected) scan(n, true); });
+      });
+    }).observe(body, { childList: true, subtree: true });
+  }
+
+  /* a headline figure counts up from zero, keeping its words and unit;
+     if the page rewrites the figure meanwhile, the count gives way */
+  var NUM_RE = /^(\D{0,3}?)(\d[\d,]*(?:\.\d+)?)(.*)$/;
+  function countIn(root) {
+    var nodes = [];
+    if (root.matches && root.matches(MOTION_NUMS)) nodes.push(root);
+    if (root.querySelectorAll) root.querySelectorAll(MOTION_NUMS).forEach(function (n) { nodes.push(n); });
+    nodes.forEach(function (n) {
+      if (n.__counted || n.closest(MOTION_SKIP) || n.children.length) return;
+      var text = (n.textContent || '').trim(), m = NUM_RE.exec(text);
+      if (!m) return;
+      n.__counted = 1;
+      var raw = m[2], target = parseFloat(raw.replace(/,/g, '')), dec = (raw.split('.')[1] || '').length;
+      if (!(target > 0)) return;
+      var grouped = raw.indexOf(',') !== -1, t0 = performance.now(), dur = 1100, last = null;
+      function fmt(v) {
+        var s = v.toFixed(dec);
+        if (grouped) s = Number(s).toLocaleString('en-IN', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+        return m[1] + s + m[3];
+      }
+      (function tick(now) {
+        if (last !== null && n.textContent !== last) return;       /* the page changed it */
+        var p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        last = n.textContent = p < 1 ? fmt(target * e) : text;
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+      setTimeout(function () { if (n.textContent === last) n.textContent = text; }, dur + 500);
+    });
+  }
+
+  /* ── 6. Flourish charts report the height they need; size each frame
+     to it so axes and legends are never cut (not the state dossier,
+     which scales its charts itself) ── */
+  window.addEventListener('message', function (e) {
+    if (!/flo\.uri\.sh|flourish\.studio/.test(e.origin || '')) return;
+    var d = e.data;
+    if (typeof d === 'string') { try { d = JSON.parse(d); } catch (err) { return; } }
+    var h = d && +(d.height || (d.args && d.args.height));
+    if (!h || h < 150 || h > 2400) return;
+    document.querySelectorAll('iframe').forEach(function (f) {
+      if (f.contentWindow !== e.source || f.closest('.dz-scene')) return;
+      f.style.setProperty('--flh', Math.ceil(h) + 'px');
+      if (!f.closest('.dp-card')) f.style.setProperty('height', Math.ceil(h) + 'px', 'important');
+    });
+  });
+
   function init() {
     drawMarks();
     build();
+    navMenus();
     guardFigures();
     revealBands();
+    motion();
   }
 
   if (document.readyState === 'loading') {

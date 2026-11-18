@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20261006-3">
 <link rel="stylesheet" href="learn.css?v=20261005">
-<script src="../ui.js?v=20261006-3"></script>
+<script src="../ui.js?v=20261116-2"></script>
 <script src="../whatsnew.js?v=20261006" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="learn.js?v=20260929"></script>
@@ -65,8 +65,10 @@
   .ln-legend i.band { width: 18px; height: 10px; border-radius: 2px; }
   @media (max-width: 600px) { .samp-waffle { gap: 1px; } }
 </style>
+<link rel="stylesheet" href="../site.css?v=20261116-2">
+<link rel="stylesheet" href="../nav.css?v=20261116-5">
 </head>
-<body class="ln-page">
+<body class="ln-page site">
 
 <header>
   <div class="nav-group">
@@ -82,13 +84,19 @@
       <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="../about.html" class="btn-elegant">About Us</a>
     <a href="../themes.html" class="btn-elegant">Themes</a>
     <a href="../repository.html" class="btn-elegant">Repository</a>
-    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
-    <a href="../planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu is-current">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="../learn/index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="../tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="../planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <main>
@@ -96,7 +104,7 @@
     <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M1</div>
     <h2 class="ln-title">Where the numbers <em>come from</em></h2>
     <p class="ln-dek">Every number on Soochana was counted, asked or written down by someone, and here is how.</p>
-    <div class="ln-byline">By <b>DIU Team</b> · Data: Census of India, NFHS-4, NFHS-5, SRS, UDISE+ · Charts are computed live in your browser</div>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census of India, NFHS-4, NFHS-5 and NFHS-6, SRS, UDISE+, ORGI and UNFPA projection reports · Charts are computed live in your browser</div>
   </section>
 
   <section class="ln-gist wn-gist" aria-label="The idea in one picture">
@@ -156,10 +164,10 @@
         <dl>
           <div><dt>Who is asked</dt><dd>A sample of households in every district. Women and men answer questions; young children are weighed and measured.</dd></div>
           <div><dt>How often</dt><dd>Every few years: NFHS-4 (2015–16), NFHS-5 (2019–21), NFHS-6 (2023–24).</dd></div>
-          <div><dt>Latest round</dt><dd>NFHS-6. This page uses NFHS-4 and NFHS-5.</dd></div>
+          <div><dt>Latest round</dt><dd>NFHS-6 (2023–24). Fieldwork in Odisha ran from 18 July to 28 November 2024. The fact sheets were published in May 2026.</dd></div>
           <div><dt>Soochana uses it for</dt><dd>Child nutrition, fertility, vaccination, mothers' health.</dd></div>
         </dl>
-        <div class="src-eg"><b>1.8</b><small>Children per woman (TFR), Odisha (NFHS-5, 2019–21)</small></div>
+        <div class="src-eg"><b>1.7</b><small>Children per woman (TFR), Odisha, in NFHS-6 (2023–24, published May 2026), from 1.8 in NFHS-5 (2019–21)</small></div>
       </article>
       <article class="src-card is-srs">
         <div class="src-head">
@@ -192,7 +200,7 @@
   <div class="ln-prose">
     <div class="ln-callout">
       <span class="ln-callout-t">What about 2021 and later?</span>
-      There has been no Census count since 2011. So population numbers for 2021 onwards on Soochana are <b>projections</b>: careful estimates worked out from past Censuses and recent birth and death rates. The lesson <a href="projections.html">Projecting the future</a> shows how they are made.
+      There has been no Census count since 2011. So population numbers for 2021 onwards on Soochana are <b>projections</b>: careful estimates worked out from the 2011 Census and recent birth and death rates. Two published reports supply them. For Odisha as a whole: <i>Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)</i>. For districts in 2021 and 2026: <i>UNFPA India, District Level Population Projections in Selected States of India, 2021 &amp; 2026 (2022)</i>. District figures for 2031 and 2036 carry the UNFPA 2026 figures forward with the ORGI state projection. The lesson <a href="projections.html">Projecting the future</a> shows how projections are made.
     </div>
     <div class="ln-seeit">See these sources on Soochana: <a href="../odisha.html">Odisha dashboard</a> <a href="../district.html">District insight</a> <a href="../district-health.html">District health</a></div>
   </div>
@@ -201,7 +209,7 @@
   <div class="ln-prose">
     <h2>Why a sample works (and where it wobbles)</h2>
     <p>NFHS does not measure every child in a district. It measures a sample. Can a few hundred children tell us about all of them? Mostly yes, but each sample gives a slightly different answer.</p>
-    <p>Below is a pretend district of <b>1,000 children</b>. The share who are <strong>stunted</strong> (too short for their age) is set to the real NFHS-5 value for the district you pick. A faint orange square is a stunted child. A real survey cannot see these colours. It has to ask.</p>
+    <p>Below is a pretend district of <b>1,000 children</b>. The share who are <strong>stunted</strong> (too short for their age) is set to the real NFHS-6 value for the district you pick. A faint orange square is a stunted child. A real survey cannot see these colours. It has to ask.</p>
     <p>Press a button to ask a random group of children. Each estimate lands as a dot on the strip below the grid. Press each button a few times.</p>
   </div>
   <div class="ln-wide">
@@ -233,7 +241,7 @@
       </div>
       <svg id="sampSvg" role="img" aria-label="Strip chart of sample estimates for samples of 50, 200 and 800 children, with the true value and the margin of error"></svg>
       <div class="ln-stats" id="sampStats"></div>
-      <div class="ln-source">True shares: NFHS-5 (2019–21) district stunting, children under 5. The 1,000 children and the samples are a simulation.</div>
+      <div class="ln-source">True shares: district stunting, children under 5, NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026. The 1,000 children and the samples are a simulation.</div>
     </div>
   </div>
   <div class="ln-prose">
@@ -245,12 +253,18 @@
   <div class="ln-prose">
     <h2>Is a change real?</h2>
     <p>Every survey round has its own wobble. So when a district's number moves between two rounds, part of the move may be chance. Before saying "stunting rose in this district", we should ask: is the change bigger than the wobble?</p>
-    <p>The chart compares stunting in NFHS-4 (2015–16) and NFHS-5 (2019–21) for all 30 districts. The grey band around each NFHS-4 dot is the wobble zone. If the NFHS-5 dot lands inside it, the change could be just chance.</p>
+    <p>The chart compares stunting in two rounds for all 30 districts. It starts with NFHS-5 (2019–21) and NFHS-6 (2023–24, published May 2026). The buttons switch to the earlier pair, NFHS-4 and NFHS-5. The grey band around each earlier dot is the wobble zone. If the later dot lands inside it, the change could be just chance.</p>
   </div>
   <div class="ln-wide">
     <div class="ln-figure">
-      <p class="ln-figure-t">Children under 5 who are stunted, NFHS-4 and NFHS-5</p>
+      <p class="ln-figure-t" id="chgTitle">Children under 5 who are stunted, NFHS-5 and NFHS-6</p>
       <p class="ln-figure-s">Districts sorted from the biggest fall (top) to the biggest rise (bottom). Hover a row for details.</p>
+      <div class="ln-controls">
+        <div class="ln-seg" role="group" aria-label="Which two survey rounds to compare" id="chgPair">
+          <button type="button" aria-pressed="true" data-pair="56">NFHS-5 → NFHS-6</button>
+          <button type="button" aria-pressed="false" data-pair="45">NFHS-4 → NFHS-5</button>
+        </div>
+      </div>
       <div class="ln-controls">
         <span>Children measured per district in each round (our guess):</span>
         <div class="ln-seg" role="group" aria-label="Assumed number of children measured per district">
@@ -260,15 +274,15 @@
         </div>
       </div>
       <div class="ln-legend">
-        <span><i style="background:var(--ln-train)"></i>NFHS-4 (2015–16)</span>
-        <span><i style="background:var(--ln-test)"></i>NFHS-5 (2019–21)</span>
+        <span><i style="background:var(--ln-train)"></i><span id="chgLegA">NFHS-5 (2019–21)</span></span>
+        <span><i style="background:var(--ln-test)"></i><span id="chgLegB">NFHS-6 (2023–24)</span></span>
         <span><i class="band" style="background:var(--ln-ghost)"></i>Wobble zone (approximate)</span>
         <span><i class="line" style="background:var(--ln-fit)"></i>Change bigger than the wobble</span>
         <span><i class="line" style="background:rgba(15,23,42,.25)"></i>Could be chance</span>
       </div>
-      <svg id="chgSvg" role="img" aria-label="Dumbbell chart of stunting in NFHS-4 and NFHS-5 for 30 districts, with an approximate margin of error around each NFHS-4 value"></svg>
+      <svg id="chgSvg" role="img" aria-label="Dumbbell chart of stunting in two NFHS rounds for 30 districts, with an approximate margin of error around each earlier value"></svg>
       <div class="ln-stats" id="chgStats"></div>
-      <div class="ln-source">Stunting: NFHS-4 (2015–16) and NFHS-5 (2019–21) district fact sheets. Wobble zone: our approximation, see the notes below.</div>
+      <div class="ln-source">Stunting, district fact sheets: NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026 · NFHS-5 (2019–21), IIPS and MoHFW · NFHS-4 (2015–16). Wobble zone: our approximation, see the notes below.</div>
     </div>
   </div>
   <div class="ln-prose">
@@ -284,9 +298,10 @@
 
   <section class="ln-notes">
     <h2>Data and method</h2>
-    <p><b>Sources.</b> Literacy: Census of India 2011. TFR: NFHS-5 (2019–21) state fact sheet. IMR: SRS Statistical Report 2024. Secondary dropout: UDISE+ 2024–25. District stunting (height-for-age below −2 SD, children under 5): NFHS-4 and NFHS-5 district fact sheets, as compiled in the portal's Health workbook.</p>
-    <p><b>Sampling demo.</b> The district of 1,000 children is a simulation: the number of stunted children is set to the district's NFHS-5 share, placed at random. Each button press draws a simple random sample without replacement (seeded, so every reader starts with the same sequence). The band is the usual 95% margin for a proportion, ±1.96 × √(p(1−p)/n). NFHS itself uses a stratified two-stage cluster sample with survey weights, so its real margins are somewhat wider than a simple random sample of the same size.</p>
-    <p><b>Is a change real?</b> District sample sizes are not in the portal's data, so the number of children measured is an assumption you can change (250, 500 or 1,000 per round). The wobble zone is ±1.96 × √(p₄(1−p₄)/n + p₅(1−p₅)/n), the approximate 95% margin for the difference between two independent rounds. It ignores the cluster design effect, so it is, if anything, too narrow.</p>
+    <p><b>Sources.</b> Literacy: Census of India 2011. TFR: NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026, and NFHS-5 (2019–21), IIPS and MoHFW. IMR: SRS Statistical Report 2024. Secondary dropout: UDISE+ 2024–25. District stunting (height-for-age below −2 SD, children under 5): NFHS-6 and NFHS-5 district fact sheets, and NFHS-4 (2015–16) as compiled in the portal's Health workbook. NFHS-6 fieldwork in Odisha ran from 18 July to 28 November 2024.</p>
+    <p><b>Projections.</b> State population, age groups and assumed fertility for 2021–2036: <i>Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)</i>. District population for 2021 and 2026: <i>UNFPA India, District Level Population Projections in Selected States of India, 2021 &amp; 2026 (2022)</i>; 2031 and 2036 are carried forward with the ORGI state projection.</p>
+    <p><b>Sampling demo.</b> The district of 1,000 children is a simulation: the number of stunted children is set to the district's NFHS-6 share, placed at random. Each button press draws a simple random sample without replacement (seeded, so every reader starts with the same sequence). The band is the usual 95% margin for a proportion, ±1.96 × √(p(1−p)/n). NFHS itself uses a stratified two-stage cluster sample with survey weights, so its real margins are somewhat wider than a simple random sample of the same size.</p>
+    <p><b>Is a change real?</b> District sample sizes are not in the portal's data, so the number of children measured is an assumption you can change (250, 500 or 1,000 per round). The wobble zone is ±1.96 × √(p₁(1−p₁)/n + p₂(1−p₂)/n), where p₁ and p₂ are the shares in the two rounds: the approximate 95% margin for the difference between two independent rounds. It ignores the cluster design effect, so it is, if anything, too narrow.</p>
   </section>
 
   <nav class="ln-next" aria-label="More explainers">
@@ -361,7 +376,8 @@
   function signed(v, d) { return (v > 0 ? '+' : v < 0 ? '−' : '') + SL.fmt(Math.abs(v), d == null ? 1 : d); }
 
   SL.loadData().then(function (data) {
-    var R = SL.rows(data.districts, ['nfhs4.stunted', 'nfhs5.stunted']);
+    var R = SL.rows(data.districts, ['nfhs4.stunted', 'nfhs5.stunted', 'nfhs6.stunted']);
+    var STATE = { n5: data.meta.state_nfhs5.stunted, n6: data.meta.state_nfhs6.stunted };
 
     /* UDISE+ example on the source card */
     var ud = data.districts.filter(function (d) { return d.name === 'Angul'; })[0] || data.districts[0];
@@ -369,7 +385,7 @@
     document.querySelectorAll('[data-v]').forEach(function (el) { if (V[el.dataset.v] != null) el.textContent = V[el.dataset.v]; });
 
     setupSampling(R);
-    setupChange(R);
+    setupChange(R, STATE);
   }).catch(function (err) {
     console.error(err);
     document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
@@ -381,7 +397,7 @@
     var sel = document.getElementById('sampDistrict');
     R.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (d) {
       var o = document.createElement('option');
-      o.value = d.name; o.textContent = d.name + ' (' + SL.fmt(d['nfhs5.stunted'], 1) + '%)';
+      o.value = d.name; o.textContent = d.name + ' (' + SL.fmt(d['nfhs6.stunted'], 1) + '%)';
       sel.appendChild(o);
     });
     sel.value = 'Koraput';
@@ -410,7 +426,7 @@
 
     function reset() {
       var row = R.filter(function (d) { return d.name === sel.value; })[0];
-      name = row.name; p = row['nfhs5.stunted'] / 100;
+      name = row.name; p = row['nfhs6.stunted'] / 100;
       var k = Math.round(p * N);
       var order = SL.shuffle(SL.range(N), SL.rng(7 + sel.selectedIndex));
       truth = new Array(N).fill(false);
@@ -500,10 +516,19 @@
   }
 
   /* ── is a change real? ────────────────────────── */
-  function setupChange(R) {
-    var rows = R.map(function (d) {
-      return { name: d.name, a: d['nfhs4.stunted'], b: d['nfhs5.stunted'], diff: d['nfhs5.stunted'] - d['nfhs4.stunted'] };
-    }).sort(function (u, v) { return u.diff - v.diff; });
+  function setupChange(R, STATE) {
+    var PAIRS = {
+      '56': { a: 'nfhs5.stunted', b: 'nfhs6.stunted', A: 'NFHS-5', B: 'NFHS-6', la: 'NFHS-5 (2019–21)', lb: 'NFHS-6 (2023–24)' },
+      '45': { a: 'nfhs4.stunted', b: 'nfhs5.stunted', A: 'NFHS-4', B: 'NFHS-5', la: 'NFHS-4 (2015–16)', lb: 'NFHS-5 (2019–21)' },
+    };
+    var pair = '56', curN = 500, rows = [];
+    function build() {
+      var P = PAIRS[pair];
+      rows = R.map(function (d) {
+        return { name: d.name, a: d[P.a], b: d[P.b], diff: d[P.b] - d[P.a] };
+      }).sort(function (u, v) { return u.diff - v.diff; });
+    }
+    build();
     var W = NARROW ? 460 : 900, rowH = NARROW ? 24 : 22;
     var M = { t: 30, r: NARROW ? 58 : 70, b: 40, l: NARROW ? 134 : 130 };
     var H = M.t + rows.length * rowH + M.b;
@@ -518,12 +543,15 @@
     svg.append('text').attr('class', 'ln-axis-label').attr('x', W - 4).attr('y', M.t - 10).attr('text-anchor', 'end').text('Change');
     var gZone = svg.append('g'), gLine = svg.append('g'), gDots = svg.append('g'), gLab = svg.append('g'), gHit = svg.append('g');
 
-    gLab.selectAll('text.nm').data(rows).join('text').attr('class', 'ln-axis-label nm')
-      .attr('x', M.l - 10).attr('y', function (d, i) { return y(i); }).attr('dy', '0.35em').attr('text-anchor', 'end')
-      .style('fill', 'var(--ink-body)').text(function (d) { return d.name; });
-
     function render(n) {
-      var t = d3.transition().duration(SL.dur(400));
+      var t = d3.transition().duration(SL.dur(400)), P = PAIRS[pair];
+      curN = n;
+      gLab.selectAll('text.nm').data(rows).join('text').attr('class', 'ln-axis-label nm')
+        .attr('x', M.l - 10).attr('y', function (d, i) { return y(i); }).attr('dy', '0.35em').attr('text-anchor', 'end')
+        .style('fill', 'var(--ink-body)').text(function (d) { return d.name; });
+      document.getElementById('chgTitle').textContent = 'Children under 5 who are stunted, ' + P.A + ' and ' + P.B;
+      document.getElementById('chgLegA').textContent = P.la;
+      document.getElementById('chgLegB').textContent = P.lb;
       rows.forEach(function (d) {
         var pa = d.a / 100, pb = d.b / 100;
         d.moe = 196 * Math.sqrt(pa * (1 - pa) / n + pb * (1 - pb) / n);
@@ -554,7 +582,7 @@
         .attr('x', 0).attr('width', W).attr('y', function (d, i) { return y(i) - rowH / 2; }).attr('height', rowH)
         .style('fill', 'transparent')
         .on('pointerenter pointermove', function (e, d) {
-          tip.show(e, '<b>' + d.name + '</b><br>NFHS-4: ' + SL.fmt(d.a, 1) + '% → NFHS-5: ' + SL.fmt(d.b, 1) + '%<br>Change ' + signed(d.diff) + ' points, wobble about ±' + SL.fmt(d.moe, 1) +
+          tip.show(e, '<b>' + d.name + '</b><br>' + P.A + ': ' + SL.fmt(d.a, 1) + '% → ' + P.B + ': ' + SL.fmt(d.b, 1) + '%<br>Change ' + signed(d.diff) + ' points, wobble about ±' + SL.fmt(d.moe, 1) +
             '<br><span class="muted">' + (d.clear ? 'Bigger than the wobble: likely a real change' : 'Within the wobble: could be chance') + '</span>');
         })
         .on('pointerleave', function () { tip.hide(); });
@@ -565,11 +593,12 @@
       var typical = SL.median(rows.map(function (d) { return d.moe; }));
       document.getElementById('chgStats').innerHTML =
         '<div class="ln-stat"><div class="ln-stat-v">' + fall + '</div><div class="ln-stat-l">Districts where stunting clearly fell</div></div>' +
-        '<div class="ln-stat"><div class="ln-stat-v">' + rise + '</div><div class="ln-stat-l">Districts where it clearly rose</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + rise + '</div><div class="ln-stat-l">Districts where it clearly rose: the next area of focus</div></div>' +
         '<div class="ln-stat"><div class="ln-stat-v">' + unsure + '</div><div class="ln-stat-l">Change could be chance (marked ?)</div></div>' +
         '<div class="ln-stat"><div class="ln-stat-v">±' + SL.fmt(typical, 1) + '</div><div class="ln-stat-l">Typical wobble of a change (points)</div></div>';
       var nFell = rows.filter(function (d) { return d.diff < 0; }).length;
-      document.getElementById('chgText').innerHTML = 'Stunting went down in <b>' + nFell + ' of 30</b> districts between the two rounds. If about ' + SL.fmt(n) +
+      document.getElementById('chgText').innerHTML = (pair === '56' ? 'For Odisha as a whole, stunting is <b>' + SL.fmt(STATE.n6, 1) + '%</b> in NFHS-6 (2023–24, published May 2026), from ' + SL.fmt(STATE.n5, 1) + '% in NFHS-5 (2019–21). ' : '') +
+        'Stunting went down in <b>' + nFell + ' of ' + rows.length + '</b> districts between ' + P.A + ' and ' + P.B + '. If about ' + SL.fmt(n) +
         ' children were measured in each district, the typical wobble of a change is about <b>±' + SL.fmt(typical, 1) + ' points</b>. Then <b>' + fall +
         '</b> falls and <b>' + rise + '</b> rises are bigger than the wobble. The other <b>' + unsure + '</b> changes could be chance. Try a smaller guess: the wobble grows and fewer changes look certain.';
     }
@@ -581,10 +610,16 @@
         render(+b.dataset.n);
       });
     });
+    document.querySelectorAll('#chgPair button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('#chgPair button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        pair = b.dataset.pair; build(); render(curN);
+      });
+    });
     render(500);
   }
 })();
 </script>
-<script src="../chatbot.js?v=20261006-2"></script>
+<script src="../chatbot.js?v=20261116-1"></script>
 </body>
 </html>

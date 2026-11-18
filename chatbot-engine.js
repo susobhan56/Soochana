@@ -325,6 +325,16 @@
     }
     const numOrNull = v => (v == null || v === '' || isNaN(+v) ? null : +v);
 
+    /* NFHS-6 (2023–24) and NFHS-5 (2019–21) district fact sheets, when given
+       (datasets/nfhs_district_rounds.json). Each district value is
+       [NFHS-6, NFHS-5]. Keys are the table's nfhs5 keys. */
+    const ROUNDS = src.nfhs || null;
+    const ROUND_N = { stunted: 70, wasted: 71, underweight: 73, insurance: 7, child_marriage: 16, fp_any: 21,
+      unmet_need: 26, anc4: 31, inst_births: 36, full_vax: 46, adequate_diet: 69 };
+    const roundInd = {};
+    if (ROUNDS) ROUNDS.indicators.forEach(i => { roundInd[i.n] = i; });
+    const RL = { nfhs4: 'NFHS-4 (2015–16)', nfhs5: 'NFHS-5 (2019–21)', nfhs6: 'NFHS-6 (2023–24)' };
+
     TABLE.forEach(([key, path, pol, theme, syn]) => {
       const parts = path.split('.'), grp = parts[0], k = parts[1];
       const f = (meta.features || {})[k] || {};
@@ -343,6 +353,28 @@
         ind.source = has4 ? 'NFHS-5 (2019–21), with NFHS-4 (2015–16) for change' : 'NFHS-5 (2019–21)';
         ind.raw = (name, p) => numOrNull(((byName[name] || {})[p || 'nfhs5'] || {})[k]);
         ind.state = meta.state_nfhs5 && meta.state_nfhs5[k] != null ? { v: +meta.state_nfhs5[k], label: 'Odisha, NFHS-5' } : null;
+        if (has4) { ind.prev = 'nfhs4'; ind.cur = 'nfhs5'; }
+        const R6 = ROUNDS && roundInd[ROUND_N[k]];
+        if (R6) {
+          /* both rounds from the fact sheets, so the change compares like with like */
+          const pair = name => { const key = resolveKey(name, R6.districts); return key ? R6.districts[key] : null; };
+          const table5 = ind.raw;
+          ind.periods = ind.periods.filter(x => x.id === 'nfhs4')
+            .concat([{ id: 'nfhs5', label: 'NFHS-5, 2019–21' }, { id: 'nfhs6', label: 'NFHS-6, 2023–24' }]);
+          ind.def = 'nfhs6';
+          ind.prev = 'nfhs5'; ind.cur = 'nfhs6';
+          ind.source = 'NFHS-6 (2023–24), IIPS and MoHFW, district fact sheets published May 2026, with NFHS-5 (2019–21) for change';
+          ind.raw = (name, p) => {
+            const per = p || 'nfhs6';
+            if (per === 'nfhs4') return table5(name, per);
+            const v = pair(name);
+            return v ? numOrNull(v[per === 'nfhs6' ? 0 : 1]) : null;
+          };
+          ind.stateBy = {
+            nfhs6: R6.odisha.nfhs6 != null ? { v: +R6.odisha.nfhs6, label: 'Odisha, NFHS-6' } : null,
+            nfhs5: R6.odisha.nfhs5 != null ? { v: +R6.odisha.nfhs5, label: 'Odisha, NFHS-5' } : null
+          };
+        }
       }
       add(ind);
     });
@@ -488,7 +520,7 @@
     function standing(ind, pos) {
       if (!pos || pos.good == null) return '';
       if (pos.good <= Math.ceil(pos.n / 4)) return 'among the better-placed quarter of districts';
-      if (pos.good > pos.n - Math.ceil(pos.n / 4)) return 'among the weakest quarter of districts';
+      if (pos.good > pos.n - Math.ceil(pos.n / 4)) return 'among the quarter of districts with the most room to gain';
       return '';
     }
     function fmt(ind, v, bare) {
@@ -510,6 +542,7 @@
     function medianOf(ind, p) { const s = series(ind, p); return s.length ? median(s.map(x => x.v)) : null; }
     function stateValue(ind, p) {
       if (ind.stateRaw) { const v = ind.stateRaw(p || ind.def); return v != null ? { v, label: 'Odisha' } : null; }
+      if (ind.stateBy) return ind.stateBy[p || ind.def] || null;
       if (ind.state && (p || ind.def) === 'nfhs5') return ind.state;
       return null;
     }
@@ -525,7 +558,9 @@
       inds.forEach(i => { if (i.source && !seen.has(i.source)) { seen.add(i.source); s.push(i.label + ': ' + i.source); } });
       return s.length ? { type: 'note', text: 'Source — ' + s.join(' · ') } : null;
     }
-    function hasPrev(ind) { return ind.periods.length === 2 && ind.periods[0].id === 'nfhs4'; }
+    function hasPrev(ind) {
+      return !!(ind.prev && ind.periods.some(x => x.id === ind.prev) && ind.periods.some(x => x.id === ind.cur));
+    }
 
     // The most similar district (tribal share, literacy, urban share), for
     // "compare with..." suggestions that are worth asking.
@@ -658,13 +693,13 @@
     function districtLink(n) { return { title: '🗺️ ' + n + ' district profile', url: 'district.html?id=' + encodeURIComponent(n) }; }
     const LINK = {
       duel: { title: '⚔️ District duel with age pyramids', url: 'odisha_compare.html' },
-      health: { title: '🩺 District health, NFHS-5 vs NFHS-6', url: 'district-health.html' },
+      health: { title: '🩺 District health, NFHS-6 beside NFHS-5', url: 'district-health.html' },
       learn: { title: '🧮 Indicator correlation matrix (Learn)', url: 'learn/index.html' },
       states: { title: '🇮🇳 Odisha vs other states', url: 'compare.html' },
       map: { title: '🗺️ Odisha district map', url: 'index.html' },
       repo: { title: '📁 Data repository', url: 'repository.html' },
       themes: { title: '📊 All themes', url: 'themes.html' },
-      timeline: { title: '⌛ Policy timelines', url: 'index.html#policyTimeline' }
+      timeline: { title: '⌛ Policy timelines', url: 'state.html#policyTimeline' }
     };
     function indLink(ind) {
       if (ind.periods.some(x => /nfhs/.test(x.id))) return LINK.health;
@@ -673,11 +708,14 @@
     }
     function pickPeriod(ind, p) {
       if (p.year && ind.periods.some(x => x.id === p.year)) return p.year;
+      if (p.nfhs && ind.periods.some(x => x.id === 'nfhs' + p.nfhs)) return 'nfhs' + p.nfhs;
       if (p.nfhs === '4') { const x = ind.periods.find(q => /nfhs/i.test(q.id) || /NFHS-4/.test(q.label)); if (x) return x.id; }
       return ind.def;
     }
     function nfhs6Note(p) {
-      return p.nfhs === '6' ? para('NFHS-6 district figures are on the district health page; I answer from NFHS-5 (2019–21) for now.') : null;
+      const ind = p.indicators.find(i => !i.nationalOnly);
+      if (p.nfhs !== '6' || (ind && ind.periods.some(x => x.id === 'nfhs6'))) return null;
+      return para('The NFHS-6 district fact sheets (published May 2026) do not report this indicator, so this answer uses the latest earlier figure. All NFHS-6 district indicators are on the district health page.');
     }
     function dataInds() { return IND.filter(i => !i.nationalOnly); }
     function suggestFor(p, kind) {
@@ -704,12 +742,12 @@
     }
     function help() {
       return answer([
-        para('I work from the portal’s data for Odisha’s 30 districts (Census, NFHS-4 and NFHS-5, UDISE+, projections to 2036) and its articles and reports. You can ask me to:'),
+        para('I work from the portal’s data for Odisha’s 30 districts (Census, NFHS-6 with NFHS-5 and NFHS-4 for change, UDISE+, projections to 2036) and its articles and reports. You can ask me to:'),
         { type: 'list', items: [
           'Look up a figure: “Infant mortality in Rayagada”',
           'Rank districts: “Top 5 districts for institutional births”, “Which districts have literacy below 60%?”',
           'Compare: “Koraput vs Ganjam”, “KBK districts vs the rest on stunting”, “Odisha vs Kerala sex ratio”',
-          'Show a trend: “How has Cuttack’s population changed?”, “Fertility in Malkangiri by 2036”',
+          'Show a trend: “How has Cuttack’s population changed?”, “Institutional births in Malkangiri”',
           'Look for links: “Why is stunting high in some districts?”',
           'Read a district: “What should Nabarangpur focus on?”',
           'Find reading: “Reports on migration”'
@@ -737,11 +775,11 @@
             const y36 = val(ind, d, '2036');
             if (per !== '2036' && y36 != null) s += ' Projected for 2036: ' + fmt(ind, y36) + '.';
             s += ' Replacement level is 2.1.';
-          } else if (hasPrev(ind) && per === 'nfhs5') {
-            const v4 = val(ind, d, 'nfhs4');
+          } else if (hasPrev(ind) && per === ind.cur) {
+            const v4 = val(ind, d, ind.prev);
             if (v4 != null) {
               const better = ind.pol * (v - v4) > 0;
-              s += ' In NFHS-4 (2015–16) it was ' + fmt(ind, v4) + ', so it has ' + (v === v4 ? 'not changed' : (v > v4 ? 'risen' : 'fallen') + ' by ' + fmtDiff(ind, v - v4) + (ind.pol ? (better ? ', an improvement' : ', a setback') : '')) + '.';
+              s += ' In ' + RL[ind.prev] + ' it was ' + fmt(ind, v4) + ', so it has ' + (v === v4 ? 'not changed' : (v > v4 ? 'risen' : 'fallen') + ' by ' + fmtDiff(ind, v - v4) + (ind.pol ? (better ? ', an improvement' : ', an area for attention') : '')) + '.';
             }
           }
           blocks.push(para(s));
@@ -821,9 +859,9 @@
       const blocks = [para('**' + ind.label + '** across Odisha’s districts (' + periodOf(ind, per).label + '): from ' + fmt(ind, sorted[sorted.length - 1].v) + ' in ' + sorted[sorted.length - 1].name + ' to ' + fmt(ind, sorted[0].v) + ' in ' + sorted[0].name + '. ' + (ind.key === 'population' ? '' : 'The median district is at ' + fmt(ind, md) + '.') + (st ? ' ' + st.label + ': ' + fmt(ind, st.v) + '.' : ''))];
       blocks.push({ type: 'bars', compact: true, items: sorted.map(x => ({ label: x.name, value: x.v, text: fmt(ind, x.v, true) })) });
       if (hasPrev(ind)) {
-        const ch = names.map(n => ({ n, a: val(ind, n, 'nfhs4'), b: val(ind, n, 'nfhs5') })).filter(x => x.a != null && x.b != null);
+        const ch = names.map(n => ({ n, a: val(ind, n, ind.prev), b: val(ind, n, ind.cur) })).filter(x => x.a != null && x.b != null);
         const better = ch.filter(x => ind.pol * (x.b - x.a) > 0).length;
-        blocks.push(para('Between NFHS-4 and NFHS-5, ' + better + ' of ' + ch.length + ' districts moved in the better direction (' + direction(ind) + ').'));
+        blocks.push(para('Between ' + RL[ind.prev] + ' and ' + RL[ind.cur] + ', ' + better + ' of ' + ch.length + ' districts moved in the better direction (' + direction(ind) + ').'));
       } else if (ind.pol) {
         blocks.push(para('For this indicator ' + direction(ind) + '.'));
       }
@@ -839,14 +877,14 @@
       let pool = names;
       let scope = '';
       if (p.groups.length) { const g = GROUPS[p.groups[0]]; pool = names.filter(n => g.test(byName[n])); scope = ' among ' + g.label; }
-      const ch = pool.map(n => ({ n, a: val(ind, n, 'nfhs4'), b: val(ind, n, 'nfhs5') })).filter(x => x.a != null && x.b != null)
+      const ch = pool.map(n => ({ n, a: val(ind, n, ind.prev), b: val(ind, n, ind.cur) })).filter(x => x.a != null && x.b != null)
         .map(x => Object.assign(x, { g: ind.pol * (x.b - x.a) }));
       ch.sort((x, y) => (worse ? x.g - y.g : y.g - x.g));
       const top = ch.slice(0, p.topN || 5);
       const lead = top[0];
       const improved = ch.filter(x => x.g > 0).length;
       const blocks = [
-        para('Between NFHS-4 (2015–16) and NFHS-5 (2019–21), ' + (worse ? 'the biggest setback' : 'the biggest improvement') + ' in ' + ind.name + scope + ' was in **' + lead.n + '**: ' + fmt(ind, lead.a) + ' → ' + fmt(ind, lead.b) + '.'),
+        para('Between ' + RL[ind.prev] + ' and ' + RL[ind.cur] + ', ' + (worse ? 'the largest move the less favourable way' : 'the biggest improvement') + ' in ' + ind.name + scope + ' was in **' + lead.n + '**: ' + fmt(ind, lead.a) + ' → ' + fmt(ind, lead.b) + '.'),
         { type: 'bars', signed: true, items: top.map(x => ({ label: x.n, value: x.g, text: (x.b - x.a > 0 ? '+' : '−') + num(Math.abs(x.b - x.a), ind.dec) + ' (' + num(x.a, ind.dec) + ' → ' + num(x.b, ind.dec) + ')' })) },
         para(improved + ' of ' + ch.length + ' districts' + scope + ' moved in the better direction (' + direction(ind) + ').'),
         sourceNote([ind])
@@ -885,9 +923,9 @@
           const md = medianOf(ind, per);
           blocks.push({ type: 'bars', items: vals.filter(x => x.v != null).map(x => ({ label: x.d, value: x.v, text: fmt(ind, x.v, true) }))
             .concat(md != null && ind.key !== 'population' ? [{ label: 'Median district', value: md, text: fmt(ind, md, true), muted: true }] : []) });
-          if (hasPrev(ind) && per === 'nfhs5') {
-            const ch = ds.map(d => { const a = val(ind, d, 'nfhs4'), b = val(ind, d, 'nfhs5'); return a != null && b != null ? d + ' ' + fmt(ind, a) + ' → ' + fmt(ind, b) : null; }).filter(Boolean);
-            if (ch.length) blocks.push(para('Change since NFHS-4: ' + ch.join('; ') + '.'));
+          if (hasPrev(ind) && per === ind.cur) {
+            const ch = ds.map(d => { const a = val(ind, d, ind.prev), b = val(ind, d, ind.cur); return a != null && b != null ? d + ' ' + fmt(ind, a) + ' → ' + fmt(ind, b) : null; }).filter(Boolean);
+            if (ch.length) blocks.push(para('Change since ' + RL[ind.prev] + ': ' + ch.join('; ') + '.'));
           }
         } else {
           blocks.push(para('The portal doesn’t have ' + ind.name + ' for all of ' + listJoin(ds) + '.'));
@@ -1010,17 +1048,19 @@
         blocks.push({ type: 'note', text: 'Values after 2020 are projections. Source — ' + ind.source + '.' });
       } else if (hasPrev(ind)) {
         if (!d) return overviewAnswer(p);
-        const a = val(ind, d, 'nfhs4'), b = val(ind, d, 'nfhs5');
+        const a = val(ind, d, ind.prev), b = val(ind, d, ind.cur);
         if (a == null || b == null) return valueAnswer(p);
-        const ch = names.map(n => ({ n, g: ind.pol * ((val(ind, n, 'nfhs5') || 0) - (val(ind, n, 'nfhs4') || 0)) }));
+        const ch = names.map(n => ({ n, g: ind.pol * ((val(ind, n, ind.cur) || 0) - (val(ind, n, ind.prev) || 0)) }));
         const myG = ind.pol * (b - a);
         const rank = 1 + ch.filter(x => x.g > myG).length;
-        let s = '**' + d + '** — ' + ind.label + ' went from ' + fmt(ind, a) + ' in NFHS-4 (2015–16) to **' + fmt(ind, b) + '** in NFHS-5 (2019–21)';
+        let s = '**' + d + '** — ' + ind.label + ' went from ' + fmt(ind, a) + ' in ' + RL[ind.prev] + ' to **' + fmt(ind, b) + '** in ' + RL[ind.cur];
         s += a === b ? ', unchanged.' : ', ' + (b > a ? 'up' : 'down') + ' ' + fmtDiff(ind, b - a) + '.';
-        if (ind.pol && a !== b) s += ' That is ' + (myG > 0 ? 'an improvement' : 'a setback') + ' (' + direction(ind) + '); ' + (rank <= 15 ? ordinal(rank) + ' best change' : ordinal(ch.length - rank + 1) + ' weakest change') + ' of ' + ch.length + ' districts.';
+        if (ind.pol && a !== b) s += ' That is ' + (myG > 0 ? 'an improvement' : 'an area for attention') + ' (' + direction(ind) + '); ' + ordinal(rank) + ' largest gain of ' + ch.length + ' districts.';
         blocks.push(para(s));
-        blocks.push({ type: 'bars', items: [{ label: 'NFHS-4 (2015–16)', value: a, text: fmt(ind, a, true) }, { label: 'NFHS-5 (2019–21)', value: b, text: fmt(ind, b, true) }] });
-        blocks.push(nfhs6Note(p) || para('NFHS-6 figures for this district are on the district health page.'));
+        const v4 = ind.prev === 'nfhs5' ? val(ind, d, 'nfhs4') : null;
+        blocks.push({ type: 'bars', items: (v4 != null ? [{ label: RL.nfhs4, value: v4, text: fmt(ind, v4, true) }] : [])
+          .concat([{ label: RL[ind.prev], value: a, text: fmt(ind, a, true) }, { label: RL[ind.cur], value: b, text: fmt(ind, b, true) }]) });
+        blocks.push(nfhs6Note(p));
         blocks.push(sourceNote([ind]));
       } else {
         const r = d ? valueAnswer(p) : overviewAnswer(p);
@@ -1085,7 +1125,7 @@
       const strengths = oneFamilyEach(pts.filter(x => x.pos.good <= q(x.pos.n)).sort((a, b) => a.pos.good - b.pos.good));
       const concerns = oneFamilyEach(pts.filter(x => x.pos.good > x.pos.n - q(x.pos.n)).sort((a, b) => b.pos.good - a.pos.good));
       const changes = inds.filter(hasPrev).map(ind => {
-        const a = val(ind, d, 'nfhs4'), b = val(ind, d, 'nfhs5');
+        const a = val(ind, d, ind.prev), b = val(ind, d, ind.cur);
         if (a == null || b == null || a === b) return null;
         return { ind, a, b, rel: ind.pol * (b - a) / Math.max(Math.abs(a), 1e-9) };
       }).filter(Boolean);
@@ -1108,10 +1148,10 @@
           const worst = series(ind, per).sort((a, b) => ind.pol * (a.v - b.v)).slice(0, 5);
           const cs = correlates(ind, per).slice(0, 2);
           const blocks = [
-            para('On ' + ind.name + ' (' + direction(ind) + '), the districts furthest behind are:'),
+            para('On ' + ind.name + ' (' + direction(ind) + '), the districts with the most room to gain are:'),
             { type: 'bars', items: worst.map(x => ({ label: x.name, value: x.v, text: fmt(ind, x.v, true) })) },
             para((refLine(ind, per) ? refLine(ind, per).replace(/^\w/, c => c.toUpperCase()) + '. ' : '') + (cs.length ? 'Across districts it moves with ' + listJoin(cs.map(c => c.ind.name + ' (r = ' + (c.r < 0 ? '−' : '') + num(Math.abs(c.r), 2) + ')')) + ', so progress on those may go together. ' : '') + 'Those districts are the natural place to focus.'),
-            { type: 'note', text: 'A reading of the portal’s figures, not a policy assessment. Local context and newer data (NFHS-6) matter.' },
+            { type: 'note', text: 'A reading of the portal’s figures, not a policy assessment. Local context matters.' },
             sourceNote([ind])
           ];
           return answer(blocks, [indLink(ind)].concat(relatedLinks(p, [ind.theme], 3)), suggestFor(p, 'indicator'), { intent: 'assess', needsLLM: true });
@@ -1125,16 +1165,16 @@
       const tags = [row.division + ' division', row.kbk ? 'KBK district' : null, row.coastal ? 'coastal' : null].filter(Boolean).join(' · ');
       const blocks = [para('**' + d + '**' + (theme ? ' on ' + theme : '') + ' — a reading of the portal’s indicators (' + tags + ').')];
       if (r.strengths.length) { blocks.push(para('**Where it does well**')); blocks.push({ type: 'list', items: r.strengths.slice(0, 4).map(ptText) }); }
-      if (r.concerns.length) { blocks.push(para('**Where it lags**')); blocks.push({ type: 'list', items: r.concerns.slice(0, 4).map(ptText) }); }
+      if (r.concerns.length) { blocks.push(para('**Where it has the most room to gain**')); blocks.push({ type: 'list', items: r.concerns.slice(0, 4).map(ptText) }); }
       if (!r.strengths.length && !r.concerns.length) blocks.push(para(d + ' sits in the middle of the districts on most indicators, with no extreme highs or lows.'));
       if (r.gains.length || r.setbacks.length) {
-        blocks.push(para('**Change since NFHS-4 (2015–16 → 2019–21)**'));
-        blocks.push({ type: 'list', items: r.gains.slice(0, 2).map(x => '↑ Better: ' + chText(x)).concat(r.setbacks.slice(0, 2).map(x => '↓ Worse: ' + chText(x))) });
+        blocks.push(para('**Change between survey rounds** (NFHS-5 to NFHS-6 where the NFHS-6 district fact sheets carry the indicator, otherwise NFHS-4 to NFHS-5)'));
+        blocks.push({ type: 'list', items: r.gains.slice(0, 3).map(x => '↑ Better: ' + chText(x)).concat(r.setbacks.slice(0, 2).map(x => '→ Area for attention: ' + chText(x))) });
       }
       const focus = r.concerns.slice(0, 3).map(x => x.ind.name).concat(r.setbacks.slice(0, 2).map(x => x.ind.name));
       const uniq = focus.filter((x, i) => focus.indexOf(x) === i).slice(0, 4);
-      if (uniq.length) blocks.push(para('**Where the data points to attention:** ' + listJoin(uniq) + '. These are the indicators where ' + d + ' is furthest behind other districts or has slipped since NFHS-4.'));
-      blocks.push({ type: 'note', text: 'Ranks compare ' + d + ' with the other 29 districts, using the latest year the portal holds for each indicator. This reads the figures, not the local context; programmes on the ground and newer data (NFHS-6) may change the picture.' });
+      if (uniq.length) blocks.push(para('**Where the data points to attention:** ' + listJoin(uniq) + '. These are the indicators where ' + d + ' has the most room to gain compared with other districts, or that moved the less favourable way between survey rounds.'));
+      blocks.push({ type: 'note', text: 'Ranks compare ' + d + ' with the other 29 districts, using the latest year the portal holds for each indicator. This reads the figures, not the local context; programmes on the ground may change the picture.' });
       const themesHit = uniq.length ? r.concerns.slice(0, 2).map(x => x.ind.theme) : [];
       return answer(blocks, [districtLink(d), LINK.health].concat(relatedLinks(Object.assign({}, p, { stems: p.stems.concat(r.concerns.slice(0, 2).flatMap(x => x.ind.phrases[0])) }), themesHit, 2)),
         [r.concerns[0] ? 'Why is ' + r.concerns[0].ind.name + ' ' + (r.concerns[0].pos.hi <= r.concerns[0].pos.lo ? 'high' : 'low') + ' in ' + d + '?' : 'Tell me about ' + d, 'Compare ' + d + ' and ' + peerOf(d), 'How has ' + d + '’s population changed?'],
@@ -1243,6 +1283,28 @@
 
     /* ── routing ───────────────────────────────────────── */
 
+    /* Total fertility rate: the NFHS fact sheets give it for the state, not
+       for districts. src.nfhsState is datasets/nfhs6_state_factsheet.json,
+       src.orgi is datasets/orgi_state_projection.json. */
+    function fertilityAnswer(p) {
+      const blocks = [];
+      const row = src.nfhsState && src.nfhsState.indicators.find(r => /^Total fertility rate/i.test(r.indicator));
+      if (row) {
+        const o = row.odisha, i = row.india;
+        blocks.push(para('Odisha’s total fertility rate is **' + o.nfhs6 + '** children per woman in NFHS-6 (2023–24, published May 2026), from ' + o.nfhs5 +
+          ' in NFHS-5 (2019–21): ' + o.nfhs6_urban + ' in towns and ' + o.nfhs6_rural + ' in villages. That is below the replacement level of 2.1, and below India’s ' + num(i.nfhs6, 1) + '.'));
+      }
+      const t = src.orgi && src.orgi.odisha;
+      if (t) {
+        blocks.push({ type: 'bars', items: t.periods.map((per, k) => ({ label: per.replace('-', '–') + (k > 1 ? ' (proj.)' : ''), value: t.tfr[k], text: num(t.tfr[k], 2), muted: k > 1 })) });
+        blocks.push(para('The official projection sees it settle at ' + num(t.tfr[t.tfr.length - 1], 2) + ' by ' + t.periods[t.periods.length - 1].replace('-', '–') + '.'));
+      }
+      blocks.push(para('The NFHS fact sheets do not publish a fertility rate for each district. For a district, ask about related figures such as child marriage, institutional births or family planning, e.g. “child marriage in ' + (p.districts[0] || 'Malkangiri') + '”.'));
+      blocks.push({ type: 'note', text: 'Source — NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026; NFHS-5 (2019–21); Population Projections for India and States 2011–2036, Technical Group on Population Projections (July 2020).' });
+      const d = p.districts[0];
+      return answer(blocks, [LINK.health, d ? districtLink(d) : null], [d ? 'Child marriage in ' + d : 'Which district has the most child marriage?', 'Family planning in ' + (d || 'Koraput'), 'Odisha vs India'], { intent: 'fertility' });
+    }
+
     function respond(query, ctx) {
       const q = String(query || '').trim();
       if (!q) return help();
@@ -1261,7 +1323,8 @@
         const otherRegion = p.regions.some(r => r !== 'odisha');
         const multiD = p.districts.length >= 2;
 
-        if ((otherRegion || natOnly || (f.stateWord && !p.districts.length)) && !p.districts.length) a = nationalAnswer(p);
+        if (!byKey.tfr && /\b(fertility|tfr|children per woman|births? per woman)\b/.test(p.text) && !ind) a = fertilityAnswer(p);
+        if (!a && (otherRegion || natOnly || (f.stateWord && !p.districts.length)) && !p.districts.length) a = nationalAnswer(p);
         if (!a && f.content && !ind && !p.districts.length) a = contentAnswer(p);
         if (!a && f.why && ind && !f.assessStrong) a = whyAnswer(p);
         if (!a && (f.assessStrong || (f.assess && !ind)) && !multiD && !(p.groups.length && !p.districts.length && !f.assessStrong)) a = assessAnswer(p);

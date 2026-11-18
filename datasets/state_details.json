@@ -55,7 +55,7 @@
       {
         "slide_num": 5,
         "title": "Demography",
-        "text_content": "Population (Census 2011): 4.2 Crores | Tribal Population as Share of State Population (Census 2011): 22.85% | Sex Ratio (Census 2011): 979 | Life Expectancy at Birth - Male (Computed from NFHS-5): 72 | Life Expectancy at Birth - Female (Computed from NFHS-5): 73.3 | Urban Population Share (Census 2011): 16.68%.\n\nOdisha is undergoing an advanced demographic transition, marked by slowing population growth, sustained fertility decline and rising longevity. After decades of population expansion, growth is projected to moderate further, while fertility has fallen well below replacement level. The sex ratio is also recovering after its historical decline and is expected to move above parity. These shifts are reshaping the age structure: the working-age population has expanded and remains relatively large, but the share of children is steadily declining while the elderly population is growing rapidly. With relatively low urbanisation and a substantial tribal population, the transition is unfolding alongside significant rural and social diversity. Overall, Odisha is moving from the latter stages of the demographic dividend toward an ageing population, making employment generation, human capital development and early preparation for social protection and elderly care increasingly important.",
+        "text_content": "Population (Census 2011): 4.2 Crores | Tribal Population as Share of State Population (Census 2011): 22.85% | Sex Ratio (Census 2011): 979 | Life Expectancy at Birth - Male (Computed from NFHS-5, 2019–21): 72 | Life Expectancy at Birth - Female (Computed from NFHS-5, 2019–21): 73.3 | Urban Population Share (Census 2011): 16.68%.\n\nOdisha is well into its demographic transition: population growth is easing, families are smaller and people are living longer. The official projections put the population at 4.57 crore in 2021 and 4.90 crore in 2036, with growth slowing from 0.89% a year in 2011–21 to 0.32% a year in 2031–36. Fertility is below the replacement level: 1.7 children per woman in NFHS-6 (2023–24, published May 2026), from 1.8 in NFHS-5 (2019–21). The sex ratio is recovering from its low of 1991, from 979 women per 1,000 men in 2011 to a projected 987 in 2021 and 998 in 2036. The age structure is shifting with it: the working-age share stays close to 65% through 2036, the share of children eases from 23.6% in 2021 to 18.9%, and people aged 60 and over rise from 11.5% to 17.0%, from about 52 lakh to 84 lakh. With a large rural and tribal population, this change unfolds differently from district to district. The years ahead are an opening: a large working-age population to equip with skills and jobs, and time to build social protection and care for a growing number of elders. Source: Census of India 2011; Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020); NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026; NFHS-5 (2019–21), IIPS and MoHFW.",
         "table_data": {
           "population_2011": "4.2 Crores",
           "tribal_share_pct": "22.85%",
@@ -69,32 +69,32 @@
       {
         "slide_num": 6,
         "title": "Population Trends of Odisha: 1901-2036",
-        "text_content": "Source: Census, Population Projections using Bayesian Approach, ORGI",
-        "chart_url": "https://flo.uri.sh/visualisation/24003580/embed"
+        "text_content": "Source: Census of India 1901–2011; Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)",
+        "chart_url": ""
       },
       {
         "slide_num": 7,
-        "title": "Total Fertility Rate – 2015-36",
-        "text_content": "Source: 2015, 2020 - Computed from NFHS-4 & 5 district level data; 2021-36 - Projected figures using Bayesian Approach",
-        "chart_url": "https://flo.uri.sh/visualisation/23841643/embed"
+        "title": "Total Fertility Rate: 2011–2036",
+        "text_content": "Source: Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020), Table 3; NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026; NFHS-5 (2019–21), IIPS and MoHFW",
+        "chart_url": ""
       },
       {
         "slide_num": 8,
         "title": "Young-Age vs Working Age vs Elderly Population Trends: 2011-2036 (as % of Total Population)",
-        "text_content": "Source: Census, Population Projections using Bayesian Approach, ORGI",
-        "chart_url": "https://flo.uri.sh/visualisation/23838794/embed"
+        "text_content": "Source: Census of India 2011; Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)",
+        "chart_url": ""
       },
       {
         "slide_num": 9,
         "title": "Sex Ratio: 1901-2036",
-        "text_content": "Source: Census, Population Projections using Bayesian Approach, ORGI",
-        "chart_url": "https://flo.uri.sh/visualisation/23840967/embed"
+        "text_content": "Source: Census of India 1901–2011; Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)",
+        "chart_url": ""
       },
       {
         "slide_num": 10,
-        "title": "Population Pyramids: 2011-2036 (in Lakhs)",
-        "text_content": "Source: Census, Population Projections using Bayesian Approach, ORGI",
-        "chart_url": "https://flo.uri.sh/visualisation/30187525/embed"
+        "title": "Population Pyramids: 2011 and 2036",
+        "text_content": "Source: Census of India 2011; Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)",
+        "chart_url": ""
       },
       {
         "slide_num": 11,
@@ -112,7 +112,7 @@
       {
         "slide_num": 12,
         "title": "Health & Nutrition",
-        "text_content": "Odisha's health profile reflects substantial progress in healthcare access and survival outcomes, with an extensive primary healthcare network supporting improvements in neonatal, infant and under-five mortality. Child nutrition has also improved, with declines in stunting, wasting and underweight indicating gradual gains in tackling undernutrition. However, anaemia has emerged as a major and worsening public health challenge, affecting both young children and pregnant women at increasingly high levels. This divergence between improving mortality and undernutrition outcomes and rising anaemia underscores the need to strengthen preventive healthcare, maternal and child nutrition, and micronutrient-focused interventions alongside existing health services.",
+        "text_content": "Odisha's health profile shows steady gains in access to care. Births in a health facility reached 93.9% in NFHS-6 (2023–24, published May 2026), from 92.2% in NFHS-5 (2019–21). Households with health cover rose to 82.7% from 47.9%, mothers taking iron and folic acid for 100 days or more to 74.5% from 60.8%, and full vaccination of children aged 12–23 months holds at 90.8% (90.7% in NFHS-5). Stunting among children under five came down to 26.8% from 31.0%. The next areas of focus are care during pregnancy, where four or more antenatal visits stand at 73.6% against 78.1% in NFHS-5, and acute undernutrition, where wasting is 22.1% against 18.1% and underweight 31.6% against 29.7%. The NFHS-6 fact sheets do not report anaemia or mortality rates; for those, NFHS-5 (2019–21) remains the latest survey, and it recorded falling neonatal, infant and under-five mortality alongside rising anaemia among young children and pregnant women. An extensive primary care network gives the state a strong base to build on in maternal nutrition and micronutrient programmes. Source: NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026; NFHS-5 (2019–21), IIPS and MoHFW.",
         "chart_url": ""
       },
       {
@@ -130,7 +130,7 @@
       {
         "slide_num": 14,
         "title": "Mortality Rates",
-        "text_content": "Maternal Mortality Rate Estimate (2017-19): 138",
+        "text_content": "Maternal Mortality Rate Estimate (2017-19): 138. Source: child mortality from NFHS-4 (2015–16) and NFHS-5 (2019–21), IIPS and MoHFW. Note: the NFHS-6 fact sheets (published May 2026) do not carry mortality rates",
         "table_data": {
           "mmr_2017_19": "138"
         },
@@ -139,8 +139,8 @@
       {
         "slide_num": 15,
         "title": "Nutrition Profile",
-        "text_content": "Source: NFHS-4, 5",
-        "chart_url": "https://flo.uri.sh/visualisation/23855834/embed"
+        "text_content": "Source: NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026; NFHS-5 (2019–21), IIPS and MoHFW",
+        "chart_url": ""
       },
       {
         "slide_num": 16,
@@ -220,18 +220,12 @@
       "district_magistrate": ""
     },
     "charts": {
-      "6": "https://flo.uri.sh/visualisation/24003580/embed",
-      "7": "https://flo.uri.sh/visualisation/23841643/embed",
-      "8": "https://flo.uri.sh/visualisation/23838794/embed",
-      "9": "https://flo.uri.sh/visualisation/23840967/embed",
-      "10": "https://flo.uri.sh/visualisation/30187525/embed",
       "14": "https://flo.uri.sh/visualisation/23843127/embed",
-      "15": "https://flo.uri.sh/visualisation/23855834/embed",
       "18": "https://flo.uri.sh/visualisation/30187665/embed",
       "19": "https://flo.uri.sh/visualisation/30187706/embed"
     },
     "uniques_raw": "",
-    "demography_narrative": "Odisha is undergoing an advanced demographic transition, marked by slowing population growth, sustained fertility decline and rising longevity. After decades of population expansion, growth is projected to moderate further, while fertility has fallen well below replacement level. The sex ratio is also recovering after its historical decline and is expected to move above parity. These shifts are reshaping the age structure: the working-age population has expanded and remains relatively large, but the share of children is steadily declining while the elderly population is growing rapidly. With relatively low urbanisation and a substantial tribal population, the transition is unfolding alongside significant rural and social diversity. Overall, Odisha is moving from the latter stages of the demographic dividend toward an ageing population, making employment generation, human capital development and early preparation for social protection and elderly care increasingly important.",
+    "demography_narrative": "Odisha is well into its demographic transition: population growth is easing, families are smaller and people are living longer. The official projections put the population at 4.57 crore in 2021 and 4.90 crore in 2036, with growth slowing from 0.89% a year in 2011–21 to 0.32% a year in 2031–36. Fertility is below the replacement level: 1.7 children per woman in NFHS-6 (2023–24, published May 2026), from 1.8 in NFHS-5 (2019–21). The sex ratio is recovering from its low of 1991, from 979 women per 1,000 men in 2011 to a projected 987 in 2021 and 998 in 2036. The age structure is shifting with it: the working-age share stays close to 65% through 2036, the share of children eases from 23.6% in 2021 to 18.9%, and people aged 60 and over rise from 11.5% to 17.0%, from about 52 lakh to 84 lakh. With a large rural and tribal population, this change unfolds differently from district to district. The years ahead are an opening: a large working-age population to equip with skills and jobs, and time to build social protection and care for a growing number of elders.",
     "tribal_info": {
       "tribal_groups_count": "62",
       "tribal_population": "95,90,756",
@@ -240,7 +234,7 @@
       "pvtg_names": "Birhor, Bondo, Didayi, Juang, Hill Kharia, Kuta Kondh, Lodha, Mankirdia, Lanjia Saora, Shabar/Lodha, Chukta Bhunjia, Dongria Kondh, Paudi Bhuyan"
     },
     "tribal_text": "As per the Census 2011, Odisha has the third-highest percentage of tribal population in the country, which stands at 95,90,756. The state has 62 different tribal communities spread over 30 districts and 314 blocks. They constitute 22.85% of the state's total population and contribute 9.17% to the country's total tribal population.",
-    "health_narrative": "Odisha's health profile reflects substantial progress in healthcare access and survival outcomes, with an extensive primary healthcare network supporting improvements in neonatal, infant and under-five mortality. Child nutrition has also improved, with declines in stunting, wasting and underweight indicating gradual gains in tackling undernutrition. However, anaemia has emerged as a major and worsening public health challenge, affecting both young children and pregnant women at increasingly high levels. This divergence between improving mortality and undernutrition outcomes and rising anaemia underscores the need to strengthen preventive healthcare, maternal and child nutrition, and micronutrient-focused interventions alongside existing health services.",
+    "health_narrative": "Odisha's health profile shows steady gains in access to care. Births in a health facility reached 93.9% in NFHS-6 (2023–24, published May 2026), from 92.2% in NFHS-5 (2019–21). Households with health cover rose to 82.7% from 47.9%, mothers taking iron and folic acid for 100 days or more to 74.5% from 60.8%, and full vaccination of children aged 12–23 months holds at 90.8% (90.7% in NFHS-5). Stunting among children under five came down to 26.8% from 31.0%. The next areas of focus are care during pregnancy, where four or more antenatal visits stand at 73.6% against 78.1% in NFHS-5, and acute undernutrition, where wasting is 22.1% against 18.1% and underweight 31.6% against 29.7%. The NFHS-6 fact sheets do not report anaemia or mortality rates; for those, NFHS-5 (2019–21) remains the latest survey, and it recorded falling neonatal, infant and under-five mortality alongside rising anaemia among young children and pregnant women. An extensive primary care network gives the state a strong base to build on in maternal nutrition and micronutrient programmes.",
     "health_stats": {
       "mmr": "138",
       "phcs": "1405",

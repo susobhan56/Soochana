@@ -40,11 +40,11 @@
      so rather than guessing. */
   var SOURCES = {
     districtPopulation: {
-      name: 'Census of India / ORGI; population projections using a Bayesian approach',
+      name: 'Census of India; UNFPA India district projections 2021 and 2026 (2022), carried forward with the ORGI Technical Group projections (2020)',
       note: 'Values up to 2011 are Census counts; 2016 onward are projections.'
     },
     districtFertility: {
-      name: 'NFHS-4 and NFHS-5 district data (computed); projections using a Bayesian approach',
+      name: 'District fertility series (retired from the portal; the NFHS fact sheets publish no district TFR)',
       note: '2015-16 and 2020 are computed from NFHS rounds; 2021 onward are projections.'
     },
     districtPyramids: {
@@ -64,9 +64,9 @@
       note: 'Growth rates are computed from the state totals in datasets/state_demographics.json. The chart does not name its projection source.'
     },
     /* The state sheet behind index.html's slides, which cite it as
-       "Source: Census, Population Projections using Bayesian Approach, ORGI". */
+       "Census of India; ORGI Technical Group projections (2020)". */
     stateSheet: {
-      name: 'Census of India; population projections using a Bayesian approach (ORGI)',
+      name: 'Census of India; Population Projections for India and States 2011–2036, Technical Group on Population Projections (July 2020)',
       note: 'Values up to 2011 are Census counts; later values are projections.'
     },
     stateCensusSeries: {

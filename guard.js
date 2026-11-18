@@ -47,7 +47,10 @@
     if (footers.length) {
       footers[footers.length - 1].appendChild(p);
     } else {
-      p.style.cssText += ';padding:14px clamp(16px,6vw,80px);text-align:center;position:relative;z-index:1';
+      /* flex:none matters on pages whose <body> is a full-height flex column
+         (Tectonics): with flex-basis:100% the notice took the whole height
+         and squeezed the story itself down to nothing */
+      p.style.cssText += ';flex:none;padding:14px clamp(16px,6vw,80px);text-align:center;position:relative;z-index:1';
       document.body.appendChild(p);
     }
   }

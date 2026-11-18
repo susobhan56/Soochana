@@ -85,8 +85,11 @@
       .attr('class', 'rp-chart').attr('role', 'img').attr('aria-label', label);
     return s;
   }
-  function popChart(parent, series) {
-    var fig = parent.appendChild(el('figure', 'rp-fig'));
+  var ORGI = Dz.SRC.orgi, ORGI_SHORT = Dz.SRC.orgiShort, NFHS6 = Dz.SRC.nfhs6, NFHS5 = Dz.SRC.nfhs5;
+  var UNFPA = 'UNFPA India, District Level Population Projections in Selected States of India, 2021 & 2026 (2022)';
+  /* `bare`: draw into a figure that already exists and leave the caption to the caller */
+  function popChart(parent, series, bare) {
+    var fig = bare ? parent : parent.appendChild(el('figure', 'rp-fig'));
     var W = 720, H = 300, m = { l: 56, r: 24, t: 20, b: 34 };
     var s = svg(fig, W, H, 'Population of Odisha, 1901 to ' + series[series.length - 1].year);
     var x = d3.scaleLinear().domain(d3.extent(series, function (d) { return d.year; })).range([m.l, W - m.r]);
@@ -111,11 +114,11 @@
         .text((p[0].total / 1e7).toFixed(2) + ' cr');
     });
     s.append('text').attr('class', 't').attr('x', x(2021) + 6).attr('y', y(last.total) + 34).text('dashed: projected');
-    fig.appendChild(el('figcaption', null, 'Population of Odisha, ' + series[0].year + '–' + last.year +
-      '. Census of India to 2011; DIU population projection (Bayesian approach) after.'));
+    if (!bare) fig.appendChild(el('figcaption', null, 'Population of Odisha, ' + series[0].year + '–' + last.year +
+      '. Census of India to 2011; ' + ORGI + ' after.'));
   }
-  function ageChart(parent, A, B) {
-    var fig = parent.appendChild(el('figure', 'rp-fig'));
+  function ageChart(parent, A, B, bare) {
+    var fig = bare ? parent : parent.appendChild(el('figure', 'rp-fig'));
     var W = 720, H = 260, m = { l: 20, r: 20, t: 34, b: 40 };
     var s = svg(fig, W, H, 'Share of the population by age group, 2021 and ' + B.year);
     var groups = ['Children (0–14)', 'Working age (15–59)', 'Elders (60+)'];
@@ -137,7 +140,7 @@
       s.append('rect').attr('x', m.l + i * 90).attr('y', 6).attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', yr[3]);
       s.append('text').attr('class', 't').attr('x', m.l + 18 + i * 90).attr('y', 16).text(yr[1]);
     });
-    fig.appendChild(el('figcaption', null, 'People in every 100, by age group, 2021 and ' + B.year + '. DIU population projection (Bayesian approach).'));
+    if (!bare) fig.appendChild(el('figcaption', null, 'People in every 100, by age group, 2021 and ' + B.year + '. ' + ORGI_SHORT + '.'));
   }
 
   /* ── a chart for every module ──────────────────────────────────────
@@ -173,6 +176,39 @@
       s.append('text').attr('class', 'v').attr('x', x(r[1]) + 8).attr('y', y + rowH / 2 + 5).text(r[2]);
     });
     return s;
+  }
+
+  /* NFHS-5 beside NFHS-6: a ring for the earlier round, a dot for the
+     later one, both values at the end of the row. rows: [label, nfhs5, nfhs6] */
+  function dumbbell(fig, rows, opt) {
+    opt = opt || {};
+    var W = 720, rowH = 34, m = { l: 250, r: 190, t: 34, b: 6 }, H = m.t + rows.length * rowH + m.b;
+    var s = svg(fig, W, H, opt.title || 'NFHS-5 and NFHS-6 compared');
+    var x = d3.scaleLinear().domain([0, opt.max || 100]).range([m.l, W - m.r]);
+    if (opt.title) s.append('text').attr('class', 'h').attr('x', 0).attr('y', 17).text(opt.title);
+    s.append('text').attr('class', 't').attr('x', W - 120).attr('y', 17).attr('text-anchor', 'middle').text('NFHS-5');
+    s.append('text').attr('class', 't').attr('x', W - 40).attr('y', 17).attr('text-anchor', 'middle').text('NFHS-6');
+    rows.forEach(function (r, i) {
+      var y = m.t + i * rowH + rowH / 2;
+      s.append('text').attr('class', 'lbl').attr('x', m.l - 12).attr('y', y + 5).attr('text-anchor', 'end').text(r[0]);
+      s.append('line').attr('class', 'g').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y);
+      s.append('line').attr('x1', x(r[1])).attr('x2', x(r[2])).attr('y1', y).attr('y2', y).attr('stroke', BLUE).attr('stroke-width', 3).attr('opacity', 0.45);
+      s.append('circle').attr('cx', x(r[1])).attr('cy', y).attr('r', 5.5).attr('fill', '#fff').attr('stroke', '#777').attr('stroke-width', 2);
+      s.append('circle').attr('cx', x(r[2])).attr('cy', y).attr('r', 6.5).attr('fill', BLUE);
+      s.append('text').attr('class', 't').attr('x', W - 120).attr('y', y + 5).attr('text-anchor', 'middle').text(r[1].toFixed(1));
+      s.append('text').attr('class', 't').attr('x', W - 80).attr('y', y + 5).attr('text-anchor', 'middle').text('→');
+      s.append('text').attr('class', 'v').attr('x', W - 40).attr('y', y + 5).attr('text-anchor', 'middle').text(r[2].toFixed(1));
+    });
+    return s;
+  }
+  function nfhsFigure(fig, x, list, max, title) {
+    var rows = list.map(function (l) {
+      var r = Dz.nfhsRow(x.nfhs, l[1]);
+      return r ? [l[0], r.o5, r.o6] : null;
+    }).filter(Boolean);
+    if (!rows.length) return false;
+    dumbbell(fig, rows, { max: max, title: title });
+    fig._cap = 'Ring: ' + NFHS5 + '. Dot: ' + NFHS6 + '.';
   }
 
   var MODULE_CHARTS = {
@@ -240,8 +276,80 @@
                 { title: 'Share of the population, 2011 (%)', max: 100 });
       hbars(fig, [['Women', N(t.life_expectancy_female_nfhs5), t.life_expectancy_female_nfhs5 + ' years', ORANGE],
                   ['Men', N(t.life_expectancy_male_nfhs5), t.life_expectancy_male_nfhs5 + ' years']],
-                { title: 'Life expectancy at birth (computed from NFHS-5)', max: 80 });
-      fig._cap = 'Census 2011; NFHS-5.';
+                { title: 'Life expectancy at birth (computed from NFHS-5, 2019–21)', max: 80 });
+      fig._cap = 'Census of India 2011; ' + NFHS5 + '. The NFHS-6 fact sheets do not carry life expectancy.';
+    },
+    /* the population modules: the ORGI projection, drawn in ink */
+    6: function (fig, x) {
+      if (!x.series) return false;
+      popChart(fig, x.series, true);
+      fig._cap = 'Population of Odisha, ' + x.series[0].year + '–' + x.series[x.series.length - 1].year + '. Census of India to 2011; ' + ORGI + ' after.';
+    },
+    7: function (fig, x) {
+      var f = Dz.tfrFacts(x.orgi, x.nfhs);
+      if (!f) return false;
+      var W = 720, H = 280, m = { l: 56, r: 130, t: 20, b: 36 }, k = f.periods.length - 1;
+      var s = svg(fig, W, H, 'Total fertility rate, Odisha and India, ' + f.periods[0] + ' to ' + f.periods[k]);
+      var xs = d3.scaleLinear().domain([0, k]).range([m.l, W - m.r]);
+      var y = d3.scaleLinear().domain([1.4, 2.6]).range([H - m.b, m.t]);
+      [1.5, 2.0, 2.5].forEach(function (v) {
+        s.append('line').attr('class', 'g').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(v)).attr('y2', y(v));
+        s.append('text').attr('class', 't').attr('x', m.l - 8).attr('y', y(v) + 4).attr('text-anchor', 'end').text(v.toFixed(1));
+      });
+      f.periods.forEach(function (p, i) {
+        s.append('text').attr('class', 't').attr('x', xs(i)).attr('y', H - 12).attr('text-anchor', 'middle').text(p);
+      });
+      s.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(2.1)).attr('y2', y(2.1)).attr('stroke', '#888').attr('stroke-dasharray', '4 5');
+      s.append('text').attr('class', 't').attr('x', m.l + 6).attr('y', y(2.1) - 6).text('replacement level 2.1');
+      var ln = d3.line().x(function (d, i) { return xs(i); }).y(function (d) { return y(d); });
+      [[f.india, '#888', 'India '], [f.odisha, ORANGE, 'Odisha ']].forEach(function (r) {
+        s.append('path').attr('d', ln(r[0])).attr('fill', 'none').attr('stroke', r[1]).attr('stroke-width', 2.5);
+        r[0].forEach(function (v, i) { s.append('circle').attr('cx', xs(i)).attr('cy', y(v)).attr('r', 3.4).attr('fill', r[1]); });
+        s.append('text').attr('class', 'v').attr('x', W - m.r + 10).attr('y', y(r[0][k]) + (r[2] === 'India ' ? -3 : 12)).text(r[2] + r[0][k].toFixed(2));
+      });
+      fig._cap = 'Total fertility rate (children per woman), ' + f.periods[0] + ' to ' + f.periods[k] + ', projected after ' + f.periods[0] + '. ' + ORGI + ', Table 3. ' +
+        'Surveyed: ' + f.n.o6.toFixed(1) + ' in ' + NFHS6 + ', from ' + f.n.o5.toFixed(1) + ' in ' + NFHS5 + '. Neither round publishes a district fertility rate.';
+    },
+    8: function (fig, x) {
+      if (!x.ageA || !x.ageB) return false;
+      ageChart(fig, x.ageA, x.ageB, true);
+      fig._cap = 'People in every 100, by age group, 2021 and ' + x.ageB.year + '. ' + ORGI + '.';
+    },
+    9: function (fig, x) {
+      var p = x.p, rows = [p.first, p.low, p.p2011, p.p2021, p.last].filter(Boolean);
+      hbars(fig, rows.map(function (r) {
+        var v = Math.round(r.sex_ratio);
+        return [r.year + (r.year > 2011 ? ' (projected)' : ''), v, indian(v), r.year > 2011 ? ORANGE : BLUE];
+      }), { title: 'Women per 1,000 men', max: 1100, lw: 150 });
+      fig._cap = 'Census of India to 2011; ' + ORGI + ' after.';
+    },
+    10: function (fig, x) {
+      var a = x.p.a2011, b = x.p.aLast;
+      var eA = a.elder / 100 * a.total / 1e5, eB = b.elder / 100 * b.total / 1e5;
+      hbars(fig, [['Under five, 2011', a.under5 / 1e5, Math.round(a.under5 / 1e5) + ' lakh'],
+                  ['Under five, ' + b.year, b.under5 / 1e5, Math.round(b.under5 / 1e5) + ' lakh'],
+                  ['Aged 60+, 2011', eA, Math.round(eA) + ' lakh', ORANGE],
+                  ['Aged 60+, ' + b.year, eB, Math.round(eB) + ' lakh', ORANGE]],
+            { title: 'The base narrows and the top widens (lakh people)', lw: 150 });
+      fig._cap = 'Census of India 2011; ' + ORGI + '.';
+    },
+    /* the health picture, NFHS-5 beside NFHS-6 */
+    12: function (fig, x) {
+      return nfhsFigure(fig, x, [
+        ['Births in a health facility', /^Institutional births \(/i],
+        ['Households with health cover', /health insurance/i],
+        ['Iron and folic acid, 100+ days', /iron folic acid for 100 days/i],
+        ['Children fully vaccinated', /fully vaccinated based on information from either/i],
+        ['Four or more antenatal visits', /at least 4 antenatal/i],
+        ['Children under 5 stunted', /who are stunted/i]], 100, 'Health indicators, Odisha (%)');
+    },
+    15: function (fig, x) {
+      return nfhsFigure(fig, x, [
+        ['Stunted (short for age)', /who are stunted/i],
+        ['Wasted (thin for height)', /who are wasted/i],
+        ['Severely wasted', /severely wasted/i],
+        ['Underweight', /who are underweight/i],
+        ['Breastfed only, under 6 months', /under age 6 months exclusively breastfed \(/i]], 80, 'Children under five, Odisha (%)');
     },
     /* the 62 communities, the PVTGs picked out */
     11: function (fig, x) {
@@ -262,23 +370,6 @@
       s.append('circle').attr('cx', 230).attr('cy', ly - 4).attr('r', 7).attr('fill', ORANGE);
       s.append('text').attr('class', 'lbl').attr('x', 244).attr('y', ly).text(nP + ' particularly vulnerable tribal groups (PVTGs)');
       fig._cap = 'One dot for each of Odisha’s ' + names.length + ' Scheduled Tribe communities.';
-    },
-    /* which way each part of the health picture is moving */
-    12: function (fig) {
-      var rows = [['Child deaths', 'newborn, infant and under-five', false, 'Falling · good news'],
-                  ['Undernutrition', 'stunting, wasting, underweight', false, 'Falling · good news'],
-                  ['Anaemia', 'young children and pregnant women', true, 'Rising · a concern']];
-      var W = 720, H = rows.length * 62, s = svg(fig, W, H, 'Direction of change in health and nutrition');
-      rows.forEach(function (r, i) {
-        var y = i * 62 + 30;
-        s.append('rect').attr('class', 'track').attr('x', 0).attr('y', y - 26).attr('width', W).attr('height', 54).attr('rx', 10);
-        s.append('circle').attr('cx', 32).attr('cy', y + 1).attr('r', 17).attr('fill', r[2] ? BAD : GOOD);
-        s.append('text').attr('class', 'arrow').attr('x', 32).attr('y', y + 8).attr('text-anchor', 'middle').text(r[2] ? '↑' : '↓');
-        s.append('text').attr('class', 'v').attr('x', 64).attr('y', y - 3).text(r[0]);
-        s.append('text').attr('class', 'lbl').attr('x', 64).attr('y', y + 16).text(r[1]);
-        s.append('text').attr('class', 'v').attr('x', W - 16).attr('y', y + 6).attr('text-anchor', 'end').text(r[3]);
-      });
-      fig._cap = 'The direction of change, as the state health profile reads it.';
     },
     /* sub-centres, PHCs, CHCs: a pyramid of care */
     13: function (fig, x) {
@@ -352,7 +443,7 @@
 
   /* ── the document ── */
   function build(D) {
-    var F = S.compute({ state: D.state, learn: D.learn, pop: D.pop, fert: D.fert, nat: D.nat, details: D.details,
+    var F = S.compute({ state: D.state, learn: D.learn, pop: D.pop, orgi: D.orgi, nfhs: D.nfhs, nat: D.nat, details: D.details,
                         keyStats: window.SOOCHANA_KEY_STATS });
     var T = F.T, today = new Date();
     var dateText = today.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -364,14 +455,14 @@
     cover.appendChild(el('h1', null, 'Odisha: a demographic report'));
     para(cover, 'From numbers to narrative: the state’s population, its changing age structure and its thirty districts, in figures drawn from the Soochana portal.', 'rp-deck');
     var heads = cover.appendChild(el('div', 'rp-heads'));
-    [[T.pop21, 'people, 2021 (projected)'], [T.tfrState || '–', 'children per woman (NFHS-5)'],
+    [[T.pop21, 'people, 2021 (projected)'], [T.tfrState || '–', 'children per woman, NFHS-6 (2023–24); ' + (T.tfr5 || '–') + ' in NFHS-5'],
      [T.el36 + ' in 100', 'aged 60+ by ' + T.ageYear], [String(F.districts.length), 'districts']].forEach(function (h) {
       var d = heads.appendChild(el('div', 'rp-head'));
       d.appendChild(el('b', null, h[0]));
       d.appendChild(el('span', null, h[1]));
     });
     cover.appendChild(el('p', 'rp-meta', 'Generated on ' + dateText + ' from the portal’s data files. ' +
-      'Data: Census of India; DIU population projections (Bayesian approach); NFHS-4, 5 and 6; SRS; UDISE+; Government of Odisha.'));
+      'Data: Census of India; ' + ORGI + '; ' + UNFPA + '; ' + NFHS6 + '; ' + NFHS5 + '; SRS; UDISE+; Government of Odisha.'));
 
     /* contents */
     var toc = cover.appendChild(el('ol', 'rp-toc'));
@@ -405,9 +496,11 @@
                T.pop2036 + '** by ' + T.lastYear + '.',
                'Growth peaked at **' + T.peakRate + '** a year in ' + T.peakPeriod + '; by ' + T.tailPeriod + ' it is projected at **' + T.tailRate +
                '**. Between 2011 and 2021 Odisha grew **' + T.decOd + '**, against **' + T.decIn + '** for India.'], 'pop'],
-      ['Why it is slowing', ['In ' + T.tfrYearA + ', only **' + T.tfrAboveA + '** of the ' + T.tfrN + ' districts had fertility above the replacement level of 2.1 children per woman. The highest was **' +
-               T.tfrHiA + '**, the lowest **' + T.tfrLoA + '**. By ' + T.tfrYearB + ', the projections put **' + T.tfrBelowB + '** districts below replacement; the exceptions are **' +
-               T.tfrAboveB + '**. The state’s rate is **' + (T.tfrState || '–') + '** (NFHS-5).']],
+      ['Why it is slowing', ['Families are smaller. Odisha’s fertility rate is **' + (T.tfrState || '–') + '** children per woman in NFHS-6 (2023–24, published May 2026), from **' +
+               (T.tfr5 || '–') + '** in NFHS-5 (2019–21): **' + T.tfrUrban + '** in towns and **' + T.tfrRural + '** in villages. Both rounds are below the replacement level of 2.1.',
+               'In the official projections, **' + T.tfrAboveA + '** of the ' + T.tfrN + ' larger states were above replacement in ' + T.tfrYearA + ', from **' + T.tfrHiA +
+               '** down to **' + T.tfrLoA + '**; Odisha was at **' + T.tfrOdA + '**. By ' + T.tfrYearB + ' they put **' + T.tfrBelowB + '** of the ' + T.tfrN +
+               ' below replacement (above it: ' + T.tfrAboveB + '), with Odisha at **' + T.tfrOdB + '** and India at **' + T.tfrInB + '**.']],
       ['What it does', ['In 2021, of every 100 people **' + T.ch21 + '** were children under 15, **' + T.wk21 + '** of working age and **' + T.el21 +
                '** aged 60 or more. By ' + T.ageYear + ' the projection is **' + T.ch36 + '**, **' + T.wk36 + '** and **' + T.el36 +
                '**. People aged 60 and over rise from **' + T.el21abs + '** to **' + T.el36abs + '**, an increase of **' + T.elGrow + '**.'], 'age'],
@@ -433,7 +526,8 @@
     var slides = D.details && D.details.Odisha && D.details.Odisha.slides_detail || [];
     slides.forEach(function (s) { byNum[s.slide_num] = s; });
     var area = Dz.num(byNum[3] && byNum[3].table_data && byNum[3].table_data.area_sq_km) || 155707;
-    var ctx = { byNum: byNum, p: Dz.popFacts(D.state, D.fert), areaKha: area / 10, tfrState: T.tfrState, geo: D.geo };
+    var ctx = { byNum: byNum, p: Dz.popFacts(D.state), orgi: D.orgi, nfhs: D.nfhs, areaKha: area / 10, tfrState: T.tfrState, geo: D.geo,
+                series: F.series, ageA: F.ageA, ageB: F.ageB };
     var listed = [], k = 0;
     Dz.CHAPTERS.forEach(function (c) {
       var mods = c.mods.filter(function (n) { return byNum[n]; });
@@ -468,13 +562,14 @@
     }
 
     /* 4. districts */
-    var s4 = section('districts', '4', 'The 30 districts', 'One row per district, alphabetical. Population 2021 is projected; growth is 2011–21. Fertility is the DIU district projection.');
-    var head = ['District', 'Population 2011', 'Population 2021', 'Growth 2011–21', 'TFR 2020', 'TFR 2036', 'Literacy 2011', 'Scheduled Tribes', 'Urban', 'Aged 60+ in 2036'];
+    var s4 = section('districts', '4', 'The 30 districts', 'One row per district, alphabetical. Population 2021 is projected; growth is 2011–21. The share of people under 15 is shown for NFHS-6 (2023–24, published May 2026) with NFHS-5 (2019–21) beside it; neither round publishes a district fertility rate.');
+    var head = ['District', 'Population 2011', 'Population 2021', 'Growth 2011–21', 'Under 15, NFHS-6 (2023–24)', 'Under 15, NFHS-5 (2019–21)', 'Literacy 2011', 'Scheduled Tribes', 'Urban', 'Aged 60+ in 2036'];
+    var u15 = ((D.districtNfhs && D.districtNfhs.indicators) || []).filter(function (r) { return r.indicator === 'Population below age 15 years'; })[0];
     var rows = F.districts.map(function (d) {
-      var p = pick(D.pop, d.name) || {}, f = pick(D.fert, d.name) || {};
+      var p = pick(D.pop, d.name) || {}, f = (u15 && pick(u15.districts, d.name)) || [];
       var a = p['2011'] && p['2011'].total, b = p['2021'] && p['2021'].total;
       return [d.name, a ? indian(a) : null, b ? indian(b) : null, a && b ? ((b - a) / a * 100).toFixed(1) + '%' : null,
-              f['2020'] != null ? (+f['2020']).toFixed(2) : null, f['2036'] != null ? (+f['2036']).toFixed(2) : null,
+              f[0] != null ? (+f[0]).toFixed(1) + '%' : null, f[1] != null ? (+f[1]).toFixed(1) + '%' : null,
               d.f.literacy + '%', d.f.tribal_pct + '%', d.f.urban_pct + '%', d.f.elderly_pct_2036 + '%'];
     });
     table(s4, head, rows, 'rp-wide');
@@ -483,9 +578,10 @@
     /* 5. sources */
     var s5 = section('sources', '5', 'Notes and sources');
     [
-      'Population 1901–2011: Census of India. 2021–2036: DIU population projection (Bayesian approach), with ORGI projections for the state comparisons. Districts: UNFPA district projections for 2021 and 2026 (published 2022), grown to 2031 and 2036 at the ORGI state rate.',
-      'Age structure: DIU population projection by five-year age group, 2011–2036.',
-      'Fertility: NFHS-5 (2019–21) for the state; DIU district projections (Bayesian approach) for 2020–2036. The district file’s NFHS-4 column was not used: it lists Cuttack as the highest district (2.84), which does not match published NFHS-4 figures.',
+      'Population 1901–2011: Census of India. State, 2021–2036: ' + ORGI + '. Districts: ' + UNFPA + ' for 2021 and 2026; 2031 and 2036 are carried forward with the ORGI state projection.',
+      'Age structure: ' + ORGI_SHORT + ', by five-year age group, 2021–2036; Census of India for 2011.',
+      'Fertility: the state’s surveyed rate is from ' + NFHS6 + ', shown with ' + NFHS5 + '. The projected path for Odisha and the larger states is from ' + ORGI_SHORT + ', Table 3. Neither NFHS round publishes a district fertility rate, so the district table shows the share of people under 15 from the NFHS district fact sheets instead.',
+      'Health and nutrition: ' + NFHS6 + ', beside ' + NFHS5 + '. The NFHS-6 fact sheets do not carry mortality rates, anaemia or life expectancy; those remain NFHS-5 (2019–21) figures and are labelled so.',
       'District indicators (literacy, urban and tribal shares): Census of India 2011.',
       'State dossier modules: Directorate of Economics and Statistics, Government of Odisha; UDISE+; NFHS; Census of India, as named under each module.',
       'Prepared by the Demographic Intelligence Unit (DIU), CYSD, with technical support from UNFPA Odisha. The interactive version is at the Soochana portal home page.'
@@ -521,12 +617,14 @@
     DataLoader.getStateDemographics(),
     DataLoader.loadJSON('learn/data/districts.json'),
     DataLoader.getDistrictPopulationTrends(),
-    DataLoader.getDistrictFertilityTrends(),
+    DataLoader.loadJSON('datasets/orgi_state_projection.json'),
     DataLoader.getNationalComparisons(),
     DataLoader.getStateDetails(),
-    DataLoader.loadJSON('./Orissa.geojson').catch(function () { return null; })
+    DataLoader.loadJSON('./Orissa.geojson').catch(function () { return null; }),
+    DataLoader.loadJSON('datasets/nfhs6_state_factsheet.json'),
+    DataLoader.loadJSON('datasets/nfhs_district_rounds.json').catch(function () { return null; })
   ]).then(function (r) {
-    build({ state: r[0], learn: r[1], pop: r[2], fert: r[3], nat: r[4], details: r[5], geo: r[6] });
+    build({ state: r[0], learn: r[1], pop: r[2], orgi: r[3], nat: r[4], details: r[5], geo: r[6], nfhs: r[7], districtNfhs: r[8] });
     /* print only once the chart images are in, or after 8 seconds at most */
     if (autoPrint) {
       Promise.race([Promise.all(pendingImages), new Promise(function (ok) { setTimeout(ok, 8000); })])

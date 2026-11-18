@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20261006-3">
 <link rel="stylesheet" href="learn.css?v=20261005">
-<script src="../ui.js?v=20261006-3"></script>
+<script src="../ui.js?v=20261116-2"></script>
 <script src="../whatsnew.js?v=20261006" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="learn.js?v=20260929"></script>
@@ -67,8 +67,10 @@
   @media (max-width: 960px) { .xt-layout { grid-template-columns: 1fr; } }
   @media (max-width: 860px) { .hub-grid, .xt-wrap { padding: 0 16px; } .hub-grid { grid-template-columns: 1fr; } }
 </style>
+<link rel="stylesheet" href="../site.css?v=20261116-2">
+<link rel="stylesheet" href="../nav.css?v=20261116-5">
 </head>
-<body class="ln-page">
+<body class="ln-page site">
 
 <header>
   <div class="nav-group">
@@ -84,13 +86,19 @@
       <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="../about.html" class="btn-elegant">About Us</a>
     <a href="../themes.html" class="btn-elegant">Themes</a>
     <a href="../repository.html" class="btn-elegant">Repository</a>
-    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
-    <a href="../planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu is-current">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="../learn/index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="../tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="../planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <main>
@@ -167,7 +175,7 @@
 
   <section class="ln-notes">
     <h2>About Soochana Learn</h2>
-    <p>Track 1 explains the methods behind the figures shown across Soochana: Census counts, NFHS survey estimates, SRS vital rates, and the DIU population and fertility projections (Bayesian approach). Where a picture is an illustration rather than real data, the lesson says so. Track 2 is inspired by <a href="https://mlu-explain.github.io/" target="_blank" rel="noopener noreferrer">MLU-Explain</a>, Amazon's visual machine-learning essays, rebuilt around Odisha's own statistics. Its models are deliberately small and transparent: they teach how prediction works and where it goes wrong, not to rank districts or guide funding. The modelling table is built by <code>learn/tools/build_learn_data.py</code> from files already in the portal. <a href="data/districts.json">Download the table (JSON)</a>.</p>
+    <p>Track 1 explains the methods behind the figures shown across Soochana: Census counts, NFHS survey estimates (NFHS-6, 2023–24, fact sheets published May 2026, beside NFHS-5, 2019–21), SRS vital rates, and the official population projections: the Technical Group on Population Projections for the state (July 2020) and UNFPA India for the districts (2022). Where a picture is an illustration rather than real data, the lesson says so. Track 2 is inspired by <a href="https://mlu-explain.github.io/" target="_blank" rel="noopener noreferrer">MLU-Explain</a>, Amazon's visual machine-learning essays, rebuilt around Odisha's own statistics. Its models are deliberately small and transparent: they teach how prediction works and where it goes wrong, not to rank districts or guide funding. The modelling table is built by <code>learn/tools/build_learn_data.py</code> from files already in the portal. <a href="data/districts.json">Download the table (JSON)</a>.</p>
   </section>
 </main>
 
@@ -176,7 +184,7 @@
     <div class="footer-brand">Demographic <span>Insights</span></div>
     <div style="margin-top:8px; font-family:var(--mono); font-size: var(--fs-caption); color:var(--muted);">Odisha Welfare Portal · Soochana Learn</div>
   </div>
-  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, UDISE+ & Government of Odisha.</div>
+  <div class="footer-meta">Data Sources: Census of India, NFHS-4, NFHS-5, NFHS-6 (published May 2026), ORGI Technical Group projections (2020), UNFPA district projections (2022), UDISE+ & Government of Odisha.</div>
 </footer>
 
 <script>
@@ -193,8 +201,8 @@
       d: 'Why we say "28 per 1,000" and not just "28": making a big district and a small one comparable.',
       data: 'Infant mortality, sex ratio, growth', thumb: 'waffle' },
     { n: 'M3', href: 'fertility-rate.html', t: 'Total Fertility Rate',
-      d: 'What "1.8 children per woman" really means, and why 2.1 is the number to watch.',
-      data: 'District fertility, 2020–2036', thumb: 'tfr' },
+      d: 'What "1.7 children per woman" really means, and why 2.1 is the number to watch.',
+      data: 'NFHS-6 and NFHS-5; ORGI state paths', thumb: 'tfr' },
     { n: 'M4', href: 'life-expectancy.html', t: 'Life Expectancy',
       d: 'Follow 100 imaginary babies through life to see where "70.4 years" comes from.',
       data: 'SRS and NFHS-based estimates', thumb: 'survive' },
@@ -203,7 +211,7 @@
       data: 'Odisha by age, 1991–2036', thumb: 'pyramid' },
     { n: 'M6', href: 'projections.html', t: 'Projecting the Future',
       d: 'How we estimate Odisha in 2036: age everyone forward, add births, remove deaths, and show the range.',
-      data: 'DIU projections (Bayesian approach)', thumb: 'project' },
+      data: 'ORGI Technical Group projections (2020)', thumb: 'project' },
   ];
 
   var ESSAYS = [
@@ -247,7 +255,7 @@
   }
   Promise.all([
     fetch('../datasets/state_demographics.json').then(function (r) { return r.json(); }),
-    fetch('../datasets/district_fertility_trends.json').then(function (r) { return r.json(); }),
+    fetch('../datasets/orgi_state_projection.json').then(function (r) { return r.json(); }),
   ]).then(function (res) {
     var SD = res[0], FT = res[1];
     var POP = SD.population_trends.filter(function (d) { return typeof d.total === 'number' && d.total > 1e6; });
@@ -282,8 +290,9 @@
         txt(svg, 250, 124, 'babies', { size: 11 });
       },
       tfr: function (svg) {
-        var names = Object.keys(FT), vals = names.map(function (n) { return FT[n]['2020']; }).filter(function (v) { return v != null; }).sort(d3.ascending);
-        /* one bar per district, sorted, against the 2.1 replacement line */
+        /* one bar per larger state, ORGI 2021–25, sorted, against the 2.1 replacement line */
+        var TS = FT.tfr_states.states, names = Object.keys(TS),
+          vals = names.map(function (n) { return TS[n][2]; }).sort(d3.ascending);
         var y = d3.scaleLinear([0, 3], [150, 20]), bw = 260 / vals.length;
         vals.forEach(function (v, k) {
           svg.append('rect').attr('x', 30 + k * bw).attr('y', y(v)).attr('width', bw - 1.6).attr('height', y(0) - y(v)).attr('rx', 1.5)
@@ -291,7 +300,7 @@
         });
         svg.append('line').attr('x1', 26).attr('x2', 294).attr('y1', y(2.1)).attr('y2', y(2.1)).style('stroke', INK).style('stroke-width', '1.4px').style('stroke-dasharray', '4 4');
         txt(svg, 30, y(2.1) - 6, '2.1 = replacement level', { size: 11, fill: INK, weight: 600 });
-        txt(svg, 30, 168, '30 districts, children per woman, 2020', { size: 11 });
+        txt(svg, 30, 168, '22 states, children per woman, 2021–25 (ORGI)', { size: 11 });
       },
       survive: function (svg) {
         /* illustrative survival curve: share of 100 babies still alive by age */
@@ -419,7 +428,7 @@
 
 
     /* ── cross-tab (correlation matrix) ────────── */
-    var CORE = ['f.female_lit', 'f.urban_pct', 'f.tribal_pct', 'f.density', 'f.tfr_2020', 'f.elderly_pct', 'f.beds_per_100k', 'f.sec_dropout',
+    var CORE = ['f.female_lit', 'f.urban_pct', 'f.tribal_pct', 'f.density', 'f.child_pct_nfhs6', 'f.elderly_pct', 'f.beds_per_100k', 'f.sec_dropout',
       'nfhs5.stunted', 'nfhs5.u5mr', 'nfhs5.imr', 'nfhs5.inst_births', 'nfhs5.full_vax', 'nfhs5.child_marriage', 'nfhs5.le_female'];
     var ALL = Object.keys(D[0].f).filter(function (k) { return k !== 'rainfall_mm' && k !== 'male_lit' && k !== 'literacy'; }).map(function (k) { return 'f.' + k; })
       .concat(Object.keys(D[0].nfhs5).map(function (k) { return 'nfhs5.' + k; }));
@@ -528,6 +537,6 @@
   });
 })();
 </script>
-<script src="../chatbot.js?v=20261006-2"></script>
+<script src="../chatbot.js?v=20261116-1"></script>
 </body>
 </html>

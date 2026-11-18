@@ -1,0 +1,134 @@
+/* ═══════════════════════════════════════════════════════════════════
+   nav.css — the main navigation, the same on every page.
+
+   The links sit on one row beside the Odisha Development Initiative
+   logo. Learn, Tectonics and Planning share one "Discover" menu; on the
+   home page Present and Download report share one "Report" menu. The
+   menus are <details> elements, so they open without JavaScript; ui.js
+   closes them on an outside click or Esc.
+
+   Load it after the page's own stylesheets.
+   ═══════════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
+
+header, header.site-nav {
+  --nav-font: 'Plus Jakarta Sans', 'Hind', system-ui, sans-serif;
+  --nav-ink: #1f2a37;
+  --nav-accent: #0879ad;
+  --nav-line: rgba(15, 23, 42, 0.12);
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 18px !important;
+}
+
+/* the logos, then a thin rule, then the links */
+header > .nav-group:first-child { flex: 0 0 auto; flex-wrap: nowrap; }
+header .nav-main {
+  display: flex; align-items: center; gap: 4px !important;
+  flex: 1 1 auto; min-width: 0; flex-wrap: nowrap !important;
+  padding-left: 18px; border-left: 1px solid var(--nav-line);
+  font-family: var(--nav-font);
+}
+/* other stylesheets turn this row into a scroll box on mid-size screens,
+   which would clip the menus; it fits, so let it overflow visibly */
+@media (min-width: 901px) {
+  header .nav-main, header .nav-group:last-child { overflow: visible !important; width: auto !important; }
+}
+header .nav-main .nav-end { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+/* links: quiet text, an underline marks the current page */
+header .nav-main .btn-elegant,
+header .nav-main .nav-menu > summary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 13px !important; border: 0 !important; border-radius: 10px !important;
+  background: transparent !important; box-shadow: none !important; transform: none !important;
+  font: 600 14.5px/1.2 var(--nav-font) !important; letter-spacing: 0.005em; text-transform: none;
+  color: var(--nav-ink) !important; text-decoration: none; white-space: nowrap; cursor: pointer;
+  position: relative; overflow: visible;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+header .nav-main .btn-elegant::after { display: none; }
+header .nav-main .btn-elegant:hover,
+header .nav-main .nav-menu > summary:hover,
+header .nav-main .nav-menu[open] > summary {
+  background: rgba(8, 121, 173, 0.08) !important; color: var(--nav-accent) !important;
+}
+header .nav-main .btn-elegant[aria-current="page"],
+header .nav-main .nav-menu.is-current > summary { color: var(--nav-accent) !important; }
+header .nav-main .btn-elegant[aria-current="page"]::before,
+header .nav-main .nav-menu.is-current > summary::before {
+  content: ''; position: absolute; left: 13px; right: 13px; bottom: 3px; height: 2px;
+  border-radius: 2px; background: var(--nav-accent);
+}
+header .nav-main :is(.btn-elegant, summary):focus-visible { outline: 2px solid var(--nav-accent); outline-offset: 2px; }
+
+/* the menus */
+header .nav-menu { position: relative; }
+header .nav-menu > summary { list-style: none; }
+header .nav-menu > summary::-webkit-details-marker { display: none; }
+header .nav-menu > summary .chev { width: 14px; height: 14px; transition: transform 0.2s ease; }
+header .nav-menu[open] > summary .chev { transform: rotate(180deg); }
+header .nav-pop {
+  position: absolute; top: calc(100% + 8px); left: 0; z-index: 1200;
+  min-width: 240px; padding: 8px;
+  background: #fff; border: 1px solid var(--nav-line); border-radius: 14px;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.14);
+  display: grid; gap: 2px;
+}
+header .nav-menu--end .nav-pop { left: auto; right: 0; }
+header .nav-pop :is(a, button) {
+  display: grid; grid-template-columns: 22px 1fr; column-gap: 10px; align-items: start;
+  padding: 10px 12px; border: 0; border-radius: 10px; background: transparent;
+  font: 600 14.5px/1.25 var(--nav-font); color: var(--nav-ink); text-align: left;
+  text-decoration: none; cursor: pointer; width: 100%;
+}
+header .nav-pop :is(a, button) small {
+  grid-column: 2; display: block; margin-top: 3px;
+  font: 500 12.5px/1.35 var(--nav-font); color: #5b6472;
+}
+header .nav-pop :is(a, button) svg { width: 20px; height: 20px; color: var(--nav-accent); margin-top: 1px; }
+header .nav-pop :is(a, button):hover,
+header .nav-pop :is(a, button):focus-visible { background: rgba(8, 121, 173, 0.08); color: var(--nav-accent); outline: none; }
+header .nav-pop a[aria-current="page"] { color: var(--nav-accent); background: rgba(8, 121, 173, 0.06); }
+
+/* the home page's Report menu reads as the main action */
+header .nav-main .nav-menu--solid > summary {
+  background: var(--nav-accent) !important; color: #fff !important; padding: 9px 16px !important; border-radius: 999px !important;
+}
+header .nav-main .nav-menu--solid > summary:hover,
+header .nav-main .nav-menu--solid[open] > summary { background: #066390 !important; color: #fff !important; }
+
+/* the language switch, restyled to match */
+header .nav-main .seg { border: 1px solid var(--nav-line) !important; border-radius: 999px; }
+header .nav-main .seg button { font: 600 13px/1 var(--nav-font) !important; padding: 8px 12px; }
+
+/* medium screens: drop the tagline and the "Part of" label so the links
+   still fit beside the logo */
+@media (max-width: 1320px) {
+  header .brand-tag, header .brand-partner-k { display: none !important; }
+  header .nav-main { padding-left: 12px; }
+  header .nav-main .btn-elegant, header .nav-main .nav-menu > summary { padding: 9px 10px !important; }
+}
+
+/* narrow screens: the links scroll sideways on their own row; menus
+   open as a sheet under the header so the scroll box cannot clip them */
+@media (max-width: 900px) {
+  header, header.site-nav { flex-wrap: wrap !important; }
+  header .nav-main {
+    flex-basis: 100%; padding-left: 0; border-left: 0;
+    overflow-x: auto; scrollbar-width: none; padding-bottom: 2px;
+  }
+  header .nav-main::-webkit-scrollbar { display: none; }
+  header .nav-pop { position: fixed; top: auto; left: 12px; right: 12px; min-width: 0; margin-top: 8px; }
+  header .nav-menu--end .nav-pop { left: 12px; right: 12px; }
+}
+
+/* pages with a dark header (state page, Tectonics, guided tour) */
+:is(.pm-home, .tk-body, .ex-body) header { --nav-ink: #ffffff; --nav-line: rgba(255, 255, 255, 0.22); }
+:is(.pm-home, .tk-body, .ex-body) header .nav-main .btn-elegant:hover,
+:is(.pm-home, .tk-body, .ex-body) header .nav-main .nav-menu > summary:hover,
+:is(.pm-home, .tk-body, .ex-body) header .nav-main .nav-menu[open] > summary { background: rgba(255, 255, 255, 0.12) !important; color: #fff !important; }
+:is(.pm-home, .tk-body, .ex-body) header .nav-main .btn-elegant[aria-current="page"],
+:is(.pm-home, .tk-body, .ex-body) header .nav-main .nav-menu.is-current > summary { color: #7fd0f5 !important; }
+:is(.pm-home, .tk-body, .ex-body) header .nav-main .btn-report { border: 1px solid rgba(255, 255, 255, 0.4) !important; border-radius: 999px !important; }
+:is(.pm-home, .tk-body, .ex-body) header .nav-pop { --nav-ink: #1f2a37; --nav-line: rgba(15, 23, 42, 0.12); }

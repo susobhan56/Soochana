@@ -1,0 +1,402 @@
+{
+ "meta": {
+  "title": "Odisha in the official population projections, 2011-2036",
+  "source": "Population Projections for India and States 2011-2036: Report of the Technical Group on Population Projections. National Commission on Population, Ministry of Health and Family Welfare, Government of India, New Delhi, July 2020 (Census of India 2011 base).",
+  "short": "Population Projections for India and States 2011–2036, Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)",
+  "tables": "Odisha: Table 17 and 17A (page 213), Table 18 (page 214). States: Table 3, projected levels of total fertility rate (page 38).",
+  "notes": [
+   "Population is in thousands, as on 1 March of each year.",
+   "Rates are for five-year periods; the report's last period is 2031-35.",
+   "Population growth rate, CBR and CDR are per 1,000 people a year; IMR and under-5 mortality per 1,000 live births."
+  ]
+ },
+ "odisha": {
+  "years": [
+   2011,
+   2016,
+   2021,
+   2026,
+   2031,
+   2036
+  ],
+  "population_000": {
+   "total": [
+    41974,
+    43966,
+    45696,
+    47147,
+    48260,
+    49026
+   ],
+   "male": [
+    21212,
+    22179,
+    23003,
+    23692,
+    24204,
+    24542
+   ],
+   "female": [
+    20762,
+    21787,
+    22693,
+    23455,
+    24055,
+    24483
+   ]
+  },
+  "sex_ratio": [
+   979,
+   982,
+   987,
+   990,
+   994,
+   998
+  ],
+  "density_per_sq_km": [
+   270,
+   282,
+   293,
+   303,
+   310,
+   315
+  ],
+  "age_000": {
+   "18_plus": [
+    27434,
+    29497,
+    31369,
+    32847,
+    33856,
+    34456
+   ],
+   "0_14": [
+    12111,
+    11438,
+    10804,
+    10260,
+    9785,
+    9261
+   ],
+   "15_59": [
+    25971,
+    28006,
+    29655,
+    30736,
+    31253,
+    31414
+   ],
+   "60_plus": [
+    3892,
+    4522,
+    5237,
+    6152,
+    7222,
+    8350
+   ]
+  },
+  "age_pct": {
+   "0_14": [
+    28.9,
+    26.0,
+    23.6,
+    21.8,
+    20.3,
+    18.9
+   ],
+   "15_59": [
+    61.9,
+    63.7,
+    64.9,
+    65.2,
+    64.8,
+    64.1
+   ],
+   "60_plus": [
+    9.3,
+    10.3,
+    11.5,
+    13.0,
+    15.0,
+    17.0
+   ],
+   "women_15_49": [
+    53.9,
+    55.0,
+    55.0,
+    54.2,
+    52.9,
+    51.2
+   ]
+  },
+  "median_age": [
+   26.55,
+   28.32,
+   30.18,
+   32.18,
+   34.22,
+   36.35
+  ],
+  "dependency_per_1000": {
+   "young": [
+    466,
+    408,
+    364,
+    334,
+    313,
+    295
+   ],
+   "old": [
+    150,
+    161,
+    177,
+    200,
+    231,
+    266
+   ],
+   "total": [
+    616,
+    569,
+    541,
+    534,
+    544,
+    561
+   ]
+  },
+  "periods": [
+   "2011-15",
+   "2016-20",
+   "2021-25",
+   "2026-30",
+   "2031-35"
+  ],
+  "growth_rate": [
+   9.3,
+   7.7,
+   6.3,
+   4.7,
+   3.1
+  ],
+  "cbr": [
+   18.0,
+   16.4,
+   15.1,
+   13.8,
+   12.6
+  ],
+  "cdr": [
+   7.9,
+   8.0,
+   8.1,
+   8.4,
+   8.7
+  ],
+  "imr": [
+   53,
+   47,
+   42,
+   39,
+   35
+  ],
+  "u5mr": [
+   69,
+   61,
+   55,
+   51,
+   46
+  ],
+  "tfr": [
+   2.1,
+   1.93,
+   1.81,
+   1.75,
+   1.71
+  ],
+  "life_expectancy_male": [
+   65.61,
+   67.11,
+   68.61,
+   69.61,
+   70.61
+  ],
+  "life_expectancy_female": [
+   68.26,
+   70.26,
+   71.46,
+   72.66,
+   73.66
+  ]
+ },
+ "tfr_states": {
+  "periods": [
+   "2011-15",
+   "2016-20",
+   "2021-25",
+   "2026-30",
+   "2031-35"
+  ],
+  "india": [
+   2.37,
+   2.13,
+   1.94,
+   1.81,
+   1.73
+  ],
+  "states": {
+   "Jammu & Kashmir": [
+    1.93,
+    1.61,
+    1.52,
+    1.5,
+    1.5
+   ],
+   "Himachal Pradesh": [
+    1.71,
+    1.59,
+    1.54,
+    1.51,
+    1.5
+   ],
+   "Punjab": [
+    1.73,
+    1.6,
+    1.53,
+    1.51,
+    1.5
+   ],
+   "Uttarakhand": [
+    1.95,
+    1.77,
+    1.65,
+    1.61,
+    1.6
+   ],
+   "Haryana": [
+    2.26,
+    2.06,
+    1.86,
+    1.76,
+    1.72
+   ],
+   "Delhi": [
+    1.8,
+    1.59,
+    1.53,
+    1.51,
+    1.5
+   ],
+   "Rajasthan": [
+    2.95,
+    2.51,
+    2.2,
+    1.99,
+    1.87
+   ],
+   "Uttar Pradesh": [
+    3.3,
+    2.76,
+    2.28,
+    1.98,
+    1.85
+   ],
+   "Bihar": [
+    3.81,
+    3.23,
+    2.92,
+    2.64,
+    2.38
+   ],
+   "Assam": [
+    2.34,
+    2.17,
+    2.0,
+    1.89,
+    1.83
+   ],
+   "West Bengal": [
+    1.7,
+    1.56,
+    1.51,
+    1.5,
+    1.5
+   ],
+   "Jharkhand": [
+    2.78,
+    2.46,
+    2.17,
+    1.98,
+    1.87
+   ],
+   "Odisha": [
+    2.1,
+    1.93,
+    1.81,
+    1.75,
+    1.71
+   ],
+   "Chhattisgarh": [
+    2.62,
+    2.31,
+    2.05,
+    1.9,
+    1.83
+   ],
+   "Madhya Pradesh": [
+    3.04,
+    2.64,
+    2.34,
+    2.12,
+    1.96
+   ],
+   "Gujarat": [
+    2.3,
+    2.17,
+    2.02,
+    1.9,
+    1.82
+   ],
+   "Maharashtra": [
+    1.77,
+    1.67,
+    1.56,
+    1.52,
+    1.51
+   ],
+   "Andhra Pradesh": [
+    1.68,
+    1.61,
+    1.54,
+    1.51,
+    1.5
+   ],
+   "Karnataka": [
+    1.86,
+    1.72,
+    1.64,
+    1.61,
+    1.6
+   ],
+   "Kerala": [
+    1.82,
+    1.78,
+    1.79,
+    1.8,
+    1.8
+   ],
+   "Tamil Nadu": [
+    1.68,
+    1.59,
+    1.54,
+    1.52,
+    1.51
+   ],
+   "Telangana": [
+    1.68,
+    1.61,
+    1.54,
+    1.51,
+    1.5
+   ]
+  }
+ }
+}

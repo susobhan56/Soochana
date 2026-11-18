@@ -9,14 +9,17 @@ and rewrites, in place:
 
   2021, 2026  UNFPA, as published.
   2031, 2036  UNFPA 2026 grown at the ORGI state growth rate for each sex, so the
-              line has no break at 2026. The age shape is kept from the DIU
-              Bayesian projection and scaled to the new totals.
+              line has no break at 2026. The age shape is the district's UNFPA
+              2026 age shape, moved forward by the change ORGI projects for the
+              same age band and sex in the state (a ratio method), then scaled
+              to the district total.
   2016        Geometric midpoint of Census 2011 and UNFPA 2021, for each sex.
   75+         UNFPA stops at 75+; it is split into 75-79 and 80+ in the ratio the
-              Bayesian projection gives for that district, year and sex.
+              ORGI state projection gives for that year and sex.
 
-Safe to run again: every step derives its targets from the UNFPA file and keeps
-only ratios from the files it rewrites. Then run tools/build_hero_data.py and
+Only published sources go in: Census of India, the UNFPA district book (2022)
+and the ORGI Technical Group report (July 2020). Safe to run again. Then run
+tools/apply_orgi_state.py, tools/build_hero_data.py and
 learn/tools/build_learn_data.py.
 """
 import json
@@ -55,6 +58,8 @@ unfpa = load('unfpa_district_projections.json')
 trends = load('district_population_trends.json')
 pyramids = load('district_age_pyramids.json')
 state = unfpa['state']['projection']
+# ORGI state population by age band, year and sex
+st_age = {y: {a['age']: a for a in state[y]['ages']} for y in state}
 growth = {(y0, y1, s): state[y1]['total'][s] / state[y0]['total'][s]
           for y0, y1 in (('2026', '2031'), ('2031', '2036')) for s in SEXES}
 
@@ -74,7 +79,6 @@ for d, src in unfpa['districts'].items():
     # ── age pyramids ──
     for y in ('2021', '2026'):
         ages = {a['age']: a for a in proj[y]['ages']}
-        old = {b['age']: b for b in pyr[y]}
         rows = []
         for band in BANDS[:15]:
             lo, hi = map(int, band.split('-'))
@@ -86,16 +90,17 @@ for d, src in unfpa['districts'].items():
         for band in BANDS[15:]:
             rows.append({'age': band})
         for s in SEXES:
-            share = old['75-79'][s] / (old['75-79'][s] + old['80+'][s])
+            share = st_age[y]['75-79'][s] / (st_age[y]['75-79'][s] + st_age[y]['80+'][s])
             rows[15][s] = round(ages['75+'][s] * share)
             rows[16][s] = ages['75+'][s] - rows[15][s]
         for r in rows:
             r['total'] = r['male'] + r['female']
         pyr[y] = rows
-    for y in ('2031', '2036'):
-        old = pyr[y]
-        assert [b['age'] for b in old] == BANDS, (d, y)
-        cols = {s: scale_to([b[s] for b in old], series[y][s]) for s in SEXES}
+    for y0, y in (('2026', '2031'), ('2031', '2036')):
+        prev = pyr[y0]
+        assert [b['age'] for b in prev] == BANDS, (d, y0)
+        cols = {s: scale_to([b[s] * st_age[y][b['age']][s] / st_age[y0][b['age']][s] for b in prev],
+                            series[y][s]) for s in SEXES}
         pyr[y] = [{'age': a, 'male': cols['male'][i], 'female': cols['female'][i],
                    'total': cols['male'][i] + cols['female'][i]} for i, a in enumerate(BANDS)]
 

@@ -8,14 +8,14 @@
 <script src="../guard.js?v=20261028"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Projecting the Future · Soochana Learn</title>
-<meta name="description" content="How Soochana's population numbers for 2021 to 2036 are made: age everyone forward, remove deaths, add births, allow for migration, and use the Bayesian approach to show the range of possible futures.">
+<meta name="description" content="How Soochana's population numbers for 2021 to 2036 are made: age everyone forward, remove deaths, add births, allow for migration, and repeat, as the official ORGI Technical Group projection does from the 2011 Census.">
 <link rel="icon" href="../favicon.ico" type="image/x-icon">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20261006-3">
 <link rel="stylesheet" href="learn.css?v=20261005">
-<script src="../ui.js?v=20261006-3"></script>
+<script src="../ui.js?v=20261116-2"></script>
 <script src="../whatsnew.js?v=20261006" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="learn.js?v=20260929"></script>
@@ -60,8 +60,10 @@
     .pj-cards, .pj-myths { grid-template-columns: 1fr; }
   }
 </style>
+<link rel="stylesheet" href="../site.css?v=20261116-2">
+<link rel="stylesheet" href="../nav.css?v=20261116-5">
 </head>
-<body class="ln-page">
+<body class="ln-page site">
 
 <header>
   <div class="nav-group">
@@ -77,13 +79,19 @@
       <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="../about.html" class="btn-elegant">About Us</a>
     <a href="../themes.html" class="btn-elegant">Themes</a>
     <a href="../repository.html" class="btn-elegant">Repository</a>
-    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
-    <a href="../planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu is-current">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="../learn/index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="../tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="../planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <main>
@@ -91,7 +99,7 @@
     <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M6</div>
     <h2 class="ln-title">Projecting the future: <em>how we estimate 2036</em></h2>
     <p class="ln-dek">Nobody has counted Odisha's people in 2036, so here is how Soochana's numbers for 2021 to 2036 are worked out.</p>
-    <div class="ln-byline">By <b>DIU Team</b> · Data: Census of India; DIU population and fertility projections (Bayesian approach) · Every number is computed live in your browser</div>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: Census of India; ORGI Technical Group projections (2020) · Every number is computed live in your browser</div>
   </section>
 
   <!-- ── the idea in one picture ───────────────────── -->
@@ -122,8 +130,8 @@
         <div><dt>Projection</dt><dd>An estimate of the future, if present trends continue.</dd></div>
         <div><dt>Cohort</dt><dd>A group of people born in the same years, followed as they age.</dd></div>
         <div><dt>Cohort-component method</dt><dd>Age each cohort forward, remove deaths, add births, adjust for migration.</dd></div>
-        <div><dt>Bayesian approach</dt><dd>Combine past patterns from many places with local data to get many possible futures.</dd></div>
-        <div><dt>Uncertainty range</dt><dd>The spread of believable values around the middle estimate.</dd></div>
+        <div><dt>Assumption</dt><dd>A stated expectation about future births, deaths or migration, based on recent data.</dd></div>
+        <div><dt>Base year</dt><dd>The count the projection starts from. Here it is the 2011 Census.</dd></div>
       </dl>
     </div>
   </section>
@@ -133,7 +141,7 @@
     <h2>Watch a group of people grow older</h2>
     <p>The orange bars below are one <strong>cohort</strong>: a group of people born in the same five years. In 2021 they are aged 10–14.</p>
     <p>Press <em>Next 5 years</em>. The whole population gets five years older. Our cohort moves up one row. A new group of babies appears at the bottom, in teal.</p>
-    <p>These are Soochana's real projected numbers for Odisha. Watch how the size of the cohort changes, or does not.</p>
+    <p>These are the official projected numbers for Odisha, from the ORGI Technical Group. Watch how the size of the cohort changes, or does not.</p>
   </div>
   <div class="ln-wide">
     <figure class="ln-figure" style="margin:0">
@@ -156,7 +164,7 @@
       <svg id="cohSvg" role="img" aria-label="Population pyramid of Odisha with one cohort highlighted as it moves up one row every five years"></svg>
       <div class="pj-chain" id="cohChain" aria-live="polite"></div>
       <p class="pj-text" id="cohText" aria-live="polite"></p>
-      <div class="ln-source">DIU population projection (Bayesian approach), Odisha, 2021–2036</div>
+      <div class="ln-source">Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020), Odisha, 2021–2036</div>
     </figure>
   </div>
   <div class="ln-prose">
@@ -177,7 +185,7 @@
         </svg>
         <span class="pj-from">Births ← fertility</span>
         <h3>How many babies?</h3>
-        <p>This uses the fertility rate (TFR): how many children a woman is expected to have. It is based on NFHS surveys and the recent trend.</p>
+        <p>This uses the fertility rate (TFR): how many children a woman is expected to have. The Technical Group continues the trend in the birth rates recorded by the Sample Registration System (SRS).</p>
         <a href="fertility-rate.html">Total Fertility Rate →</a>
       </div>
       <div class="pj-card">
@@ -205,30 +213,31 @@
     </div>
   </div>
 
-  <!-- ── fan chart ──────────────────────────────────── -->
+  <!-- ── the stated assumptions ─────────────────────── -->
   <div class="ln-prose">
-    <h2>Many possible futures: the Bayesian idea</h2>
-    <p>Nobody knows exactly how many children women in Koraput will have in 2036. A single guess would hide that.</p>
-    <p>The <strong>Bayesian approach</strong> does something better. It starts with what we know from many places: in most districts and countries, fertility falls in a similar way over time. Then it adds this district's own survey data. Putting the two together, it produces thousands of possible futures. Each one is a believable path.</p>
-    <p>Soochana reports the <strong>middle</strong> path. The spread of the paths shows how sure we can be. The further ahead we look, the wider the spread.</p>
+    <h2>The assumptions, written down</h2>
+    <p>Nobody can know exactly how many children women in Odisha will have in 2036. So the Technical Group does something simple and open. It writes its assumptions down.</p>
+    <p>For every state it sets a path for the fertility rate and for life expectancy. Each path continues the trend recorded by the Sample Registration System. Then it runs the steps you saw above, five years at a time, starting from the 2011 Census.</p>
+    <p id="asmText"></p>
+    <p>The chart shows the assumed fertility path for all 22 states in the report. Odisha is in colour. Pick another state to compare.</p>
   </div>
   <div class="ln-wide">
     <figure class="ln-figure" style="margin:0">
-      <p class="ln-figure-t" id="fanTitle">Total Fertility Rate, 2020 to 2036</p>
-      <p class="ln-figure-s">Black line: the published projection (the middle path). Grey lines: other possible futures. Shaded band: where most grey lines fall.</p>
-      <p class="pj-illus">Illustration: the grey paths show the idea of uncertainty; they are not the published projection intervals.</p>
+      <p class="ln-figure-t" id="fanTitle">Assumed Total Fertility Rate, 2011–15 to 2031–35</p>
+      <p class="ln-figure-s">Each line is one state. Each point is the average for a five-year period. Hover a line for its values, click to pick it.</p>
       <div class="ln-controls">
-        <label>District <select id="fanSel" aria-label="Choose a district"></select></label>
-        <button class="ln-btn" id="fanMore" type="button">Draw more futures</button>
-        <span id="fanCount" style="color:var(--ink-subtle)"></span>
+        <label>Compare with <select id="fanSel" aria-label="Choose a state to compare with Odisha"></select></label>
       </div>
       <div class="ln-legend">
-        <span><i class="line" style="background:#0f172a"></i>Published projection (middle path)</span>
-        <span><i class="line" style="background:rgba(15,23,42,.3)"></i>Possible futures (illustration)</span>
-        <span><i style="background:color-mix(in srgb, var(--ln-train) 25%, #fff);border-radius:2px"></i>Middle 90% of the grey paths</span>
+        <span><i class="line" style="background:var(--ln-test)"></i>Odisha</span>
+        <span><i class="line" style="background:var(--ln-train)"></i>Chosen state</span>
+        <span><i class="line" style="background:#0f172a"></i>India</span>
+        <span><i class="line" style="background:rgba(15,23,42,.25)"></i>Other states</span>
+        <span><i class="line" style="background:var(--ln-val)"></i>Replacement level 2.1</span>
       </div>
-      <svg id="fanSvg" role="img" aria-label="Fan chart of possible future fertility paths around the published projection for the chosen district"></svg>
-      <div class="ln-source">Black line: 2020 computed from NFHS-5; 2021–2036 DIU district projection (Bayesian approach). Grey paths: random illustration drawn in your browser.</div>
+      <svg id="fanSvg" role="img" aria-label="Line chart of the total fertility rate assumed for each of 22 states and India in five periods from 2011–15 to 2031–35, with Odisha highlighted"></svg>
+      <div class="ln-stats" id="fanStats"></div>
+      <div class="ln-source">Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020), Table 3 (projected levels of total fertility rate) and Table 17 (Odisha).</div>
     </figure>
   </div>
   <div class="ln-prose">
@@ -260,7 +269,7 @@
       <p class="ln-figure-t">Odisha's population, 1901 to 2036</p>
       <p class="ln-figure-s">Solid line: Census counts. Dashed line: projection. Hover the chart for any year. 1 crore = 100 lakh.</p>
       <svg id="popSvg" role="img" aria-label="Line chart of Odisha's total population from 1901 to 2036, solid for census years and dashed for projected years"></svg>
-      <div class="ln-source">1901–2011: Census of India · 2021–2036: DIU population projection (Bayesian approach)</div>
+      <div class="ln-source">1901–2011: Census of India · 2021–2036: Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)</div>
     </figure>
   </div>
   <div class="ln-prose">
@@ -268,15 +277,15 @@
 
     <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
       <li>A projection moves everyone forward five years at a time: remove expected deaths, add expected births, allow for migration. Then repeat.</li>
-      <li>The Bayesian approach draws many possible futures and reports the middle one. The range shows how uncertain it is, and it gets wider the further ahead we look.</li>
+      <li>The official projection starts from the 2011 Census and writes its assumptions down. For Odisha, fertility eases from 2.10 to 1.71 children per woman and life expectancy keeps rising.</li>
       <li>A projection says what happens if trends continue. It is not a promise, and it is updated when new census or survey data arrive.</li>
     </ol></div>
   </div>
 
   <section class="ln-notes">
     <h2>Data and method</h2>
-    <p><b>Population and age groups, 2021–2036:</b> DIU population projection (Bayesian approach), as used across Soochana; state figures follow the Census of India / ORGI population projections using the Bayesian approach. <b>1901–2011:</b> Census of India. A 1936 row in the source file is not a census year and is left out of the line chart. <b>District fertility:</b> 2020 is computed from NFHS-5 (2019–21); 2021–2036 is the DIU district projection (Bayesian approach). The file's NFHS-4 column is not used.</p>
-    <p>The cohort-component method described here is the standard way such projections are built. The exact assumptions for fertility, mortality and migration are set out by ORGI and DIU; the sources named in the three cards are the usual ones. The grey paths in the fan chart are a teaching illustration only: seeded random walks (each year adds a random step with a standard deviation of 0.035 births per woman) centred on the published path. They are not draws from the actual model and not its published intervals. The cohort numbers include both sexes; the 80+ group is open-ended.</p>
+    <p><b>Population and age groups, 2021–2036:</b> <i>Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)</i>, Tables 17, 17A and 18 for Odisha. It is a cohort-component projection with the 2011 Census as its base, and its population figures are for 1 March of each year. <b>1901–2011:</b> Census of India. A 1936 row in the source file is not a census year and is left out of the line chart. <b>Fertility and life expectancy paths:</b> the same report, Table 3 (22 states and India) and Table 17 (Odisha). Rates are averages for five-year periods, and the last period is 2031–35. <b>Districts:</b> the report covers states only. District figures elsewhere on Soochana come from <i>UNFPA India, District Level Population Projections in Selected States of India, 2021 &amp; 2026 (2022)</i> for 2021 and 2026, with 2031 and 2036 carried forward with the ORGI state projection.</p>
+    <p>The cohort-component method described here is the standard way such projections are built. The exact assumptions for fertility, mortality and migration are set out in the Technical Group's report; the three cards describe them in plain words. The report publishes one set of figures, not a range. A survey gives a useful cross-check: NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026, measured Odisha's TFR at 1.7, from 1.8 in NFHS-5 (2019–21), close to the 1.81 the report assumes for 2021–25. The cohort numbers include both sexes; the 80+ group is open-ended.</p>
   </section>
 
   <nav class="ln-next" aria-label="More explainers">
@@ -356,7 +365,7 @@
 
   Promise.all([
     fetch('../datasets/state_demographics.json').then(function (r) { if (!r.ok) throw new Error('state_demographics.json'); return r.json(); }),
-    fetch('../datasets/district_fertility_trends.json').then(function (r) { if (!r.ok) throw new Error('district_fertility_trends.json'); return r.json(); }),
+    fetch('../datasets/orgi_state_projection.json').then(function (r) { if (!r.ok) throw new Error('orgi_state_projection.json'); return r.json(); }),
   ]).then(function (res) {
     var P = {};
     STEPS.forEach(function (y) { P[y] = clean(res[0].pyramids[y]); });
@@ -458,90 +467,70 @@
     var o0 = P['2021'][12].total, o3 = P['2036'][15].total;
     document.querySelectorAll('[data-v="oldLoss"]').forEach(function (el) { el.textContent = SL.fmt(100 * (o0 - o3) / o0, 0); });
 
-    /* ── fan chart ───────────────────────────────── */
-    var TF = res[1], FNAMES = Object.keys(TF).sort(), FY = d3.range(2020, 2037);
-    var fsel = document.getElementById('fanSel'), fdist = 'Koraput';
-    fsel.innerHTML = FNAMES.map(function (n) { return '<option' + (n === fdist ? ' selected' : '') + '>' + n + '</option>'; }).join('');
-    var fW = NARROW ? 460 : 880, fH = NARROW ? 340 : 360, fM = { t: 16, r: NARROW ? 16 : 150, b: 36, l: 40 };
+    /* ── assumed TFR paths, ORGI Table 3 ─────────── */
+    var OR = res[1], OD = OR.odisha, TS = OR.tfr_states, PER = TS.periods.map(function (q) { return q.replace('-', '–'); });
+    var ST = Object.keys(TS.states).map(function (n) { return { name: n, v: TS.states[n] }; });
+    var IND = { name: 'India', v: TS.india }, ODI = ST.filter(function (d) { return d.name === 'Odisha'; })[0];
+    var LAST = PER.length - 1;
+    function f2(v) { return SL.fmt(v, 2); }
+    var i21 = OD.periods.indexOf('2021-25'), i31 = OD.periods.indexOf('2031-35');
+    document.getElementById('asmText').innerHTML = 'For Odisha, the assumed TFR eases from <b>' + f2(OD.tfr[0]) + '</b> children per woman in ' + PER[0] + ' to <b>' + f2(OD.tfr[i21]) + '</b> in 2021–25 and <b>' + f2(OD.tfr[i31]) + '</b> in 2031–35. ' +
+      'Life expectancy at birth rises from <b>' + SL.fmt(OD.life_expectancy_male[i21], 1) + '</b> to <b>' + SL.fmt(OD.life_expectancy_male[i31], 1) + '</b> years for men, and from <b>' + SL.fmt(OD.life_expectancy_female[i21], 1) + '</b> to <b>' + SL.fmt(OD.life_expectancy_female[i31], 1) + '</b> years for women, between 2021–25 and 2031–35.';
+    var fsel = document.getElementById('fanSel'), fstate = 'Kerala';
+    fsel.innerHTML = ST.filter(function (d) { return d !== ODI; }).map(function (d) { return d.name; }).sort()
+      .map(function (n) { return '<option' + (n === fstate ? ' selected' : '') + '>' + n.replace('&', '&amp;') + '</option>'; }).join('');
+    var fW = NARROW ? 460 : 880, fH = NARROW ? 360 : 380, fM = { t: 18, r: NARROW ? 84 : 170, b: 36, l: 40 };
     var fsvg = d3.select('#fanSvg').attr('viewBox', [0, 0, fW, fH]);
-    var fx = d3.scaleLinear([2020, 2036], [fM.l, fW - fM.r]), fy = d3.scaleLinear([0.4, 3.4], [fH - fM.b, fM.t]);
+    var fx = d3.scalePoint(PER, [fM.l + 26, fW - fM.r]), fy = d3.scaleLinear([1.4, 4], [fH - fM.b, fM.t]);
     fsvg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + fM.l + ',0)').call(d3.axisLeft(fy).ticks(6).tickSize(-(fW - fM.l - fM.r)).tickFormat(''));
-    fsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (fH - fM.b) + ')').call(d3.axisBottom(fx).ticks(NARROW ? 4 : 8).tickFormat(d3.format('d')));
-    fsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + fM.l + ',0)').call(d3.axisLeft(fy).ticks(6));
+    fsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (fH - fM.b) + ')').call(d3.axisBottom(fx));
+    fsvg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + fM.l + ',0)').call(d3.axisLeft(fy).ticks(6).tickFormat(d3.format('.1f')));
     fsvg.append('text').attr('class', 'ln-axis-label').attr('x', fM.l + 6).attr('y', fM.t + 10).text('↑ Children per woman (TFR)');
     fsvg.append('line').attr('x1', fM.l).attr('x2', fW - fM.r).attr('y1', fy(2.1)).attr('y2', fy(2.1)).style('stroke', C.val).style('stroke-dasharray', '5 4').style('stroke-width', 1.5);
     fsvg.append('text').attr('class', 'ln-dlabel').attr('x', fW - fM.r - 4).attr('y', fy(2.1) - 6).attr('text-anchor', 'end').style('fill', C.val).text('2.1: replacement level');
-    var band = fsvg.append('path').style('fill', 'color-mix(in srgb, ' + C.birth + ' 22%, transparent)').style('stroke', 'none');
-    var pathG = fsvg.append('g');
-    var central = fsvg.append('path').style('fill', 'none').style('stroke', C.ink).style('stroke-width', '3px');
-    var startDot = fsvg.append('circle').attr('r', 5.5).attr('class', 'ln-dot').attr('fill', C.ink);
+    var line = d3.line().x(function (v, i) { return fx(PER[i]); }).y(function (v) { return fy(v); });
+    function tipHtml(d) { return '<b>' + d.name + '</b><br>' + PER.map(function (q, i) { return q + ': ' + f2(d.v[i]); }).join('<br>'); }
+    var greys = fsvg.append('g').selectAll('path').data(ST).join('path').attr('d', function (d) { return line(d.v); })
+      .style('fill', 'none').style('stroke', 'rgba(15,23,42,.16)').style('stroke-width', '1.2px');
+    fsvg.append('path').attr('d', line(IND.v)).style('fill', 'none').style('stroke', C.ink).style('stroke-width', '2px').style('stroke-dasharray', '2 4');
+    var selLine = fsvg.append('path').style('fill', 'none').style('stroke', C.birth).style('stroke-width', '3px');
+    fsvg.append('path').attr('d', line(ODI.v)).style('fill', 'none').style('stroke', C.coh).style('stroke-width', '3px');
+    fsvg.append('g').selectAll('circle').data(ODI.v).join('circle').attr('r', 4.5).attr('fill', C.coh).style('stroke', '#fff').style('stroke-width', 1.5)
+      .attr('cx', function (v, i) { return fx(PER[i]); }).attr('cy', function (v) { return fy(v); });
     var endLabs = fsvg.append('g');
-    var hover = fsvg.append('g').style('display', 'none');
-    hover.append('line').attr('y1', fM.t).attr('y2', fH - fM.b).style('stroke', 'var(--ink-subtle)').style('stroke-dasharray', '3 3');
-    hover.append('circle').attr('r', 5).attr('fill', C.ink).style('stroke', '#fff').style('stroke-width', 1.5);
-    var STEP_SD = 0.035, MAXP = 400, BATCH = 40, paths = [], batch = 0;
-    function randn(r) { var u = 1 - r(), v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
-    function centralVals() { return FY.map(function (y) { return TF[fdist][String(y)]; }); }
-    function addBatch() {
-      var cv = centralVals(), r = SL.rng(1000 + FNAMES.indexOf(fdist) * 97 + batch * 7919);
-      batch += 1;
-      var fresh = [];
-      for (var k = 0; k < BATCH && paths.length < MAXP; k++) {
-        var e = 0, pts = [];
-        for (var i = 0; i < FY.length; i++) { if (i > 0) e += randn(r) * STEP_SD; pts.push(Math.max(0.6, cv[i] + e)); }
-        paths.push(pts); fresh.push(pts);
-      }
-      return fresh;
-    }
-    var line = d3.line().x(function (v, i) { return fx(FY[i]); }).y(function (v) { return fy(v); });
-    function bandStats() {
-      return FY.map(function (y, i) {
-        var col = paths.map(function (p) { return p[i]; });
-        return { lo: SL.quantile(col, 0.05), hi: SL.quantile(col, 0.95) };
-      });
-    }
-    function drawFan(fresh, reset) {
-      var cv = centralVals(), bs = bandStats();
-      var op = paths.length > 120 ? 0.07 : 0.16;
-      if (reset) pathG.selectAll('*').remove();
-      pathG.selectAll('path').style('stroke-opacity', op);
-      fresh.forEach(function (p) {
-        pathG.append('path').attr('d', line(p)).style('fill', 'none').style('stroke', 'rgba(15,23,42,1)').style('stroke-width', '1px')
-          .style('stroke-opacity', 0).transition().duration(SL.dur(600)).style('stroke-opacity', op);
-      });
-      band.transition().duration(SL.dur(400)).attr('d', d3.area().x(function (d, i) { return fx(FY[i]); }).y0(function (d) { return fy(d.lo); }).y1(function (d) { return fy(d.hi); })(bs));
-      central.attr('d', line(cv));
-      startDot.attr('cx', fx(2020)).attr('cy', fy(cv[0]));
+    fsvg.append('g').selectAll('path').data(ST.concat([IND])).join('path').attr('d', function (d) { return line(d.v); })
+      .style('fill', 'none').style('stroke', 'transparent').style('stroke-width', '10px').style('cursor', 'pointer')
+      .on('pointerenter', function (ev, d) { greys.filter(function (g) { return g === d; }).style('stroke', 'rgba(15,23,42,.5)'); tip.show(ev, tipHtml(d)); })
+      .on('pointermove', function (ev, d) { tip.show(ev, tipHtml(d)); })
+      .on('pointerleave', function () { greys.style('stroke', 'rgba(15,23,42,.16)'); tip.hide(); })
+      .on('click', function (ev, d) { if (d !== ODI && d !== IND) { fstate = d.name; fsel.value = d.name; drawStates(); } });
+    var firstStates = true;
+    function drawStates() {
+      var d = ST.filter(function (x) { return x.name === fstate; })[0];
+      (firstStates ? selLine : selLine.transition().duration(SL.dur(400))).attr('d', line(d.v));
+      firstStates = false;
       endLabs.selectAll('*').remove();
-      var last = bs[bs.length - 1], lx = NARROW ? fx(2036) - 6 : fx(2036) + 8, anc = NARROW ? 'end' : 'start';
-      endLabs.append('text').attr('class', 'ln-dlabel').attr('x', lx).attr('y', fy(cv[cv.length - 1]) + (NARROW ? -12 : 0)).attr('dy', '0.35em').attr('text-anchor', anc).style('font-weight', 600).text('2036: ' + SL.fmt(cv[cv.length - 1], 2));
-      if (!NARROW) {
-        endLabs.append('text').attr('class', 'ln-dlabel').attr('x', lx).attr('y', fy(last.hi)).attr('dy', '0.35em').style('fill', 'var(--ink-subtle)').text('high: ' + SL.fmt(last.hi, 2));
-        endLabs.append('text').attr('class', 'ln-dlabel').attr('x', lx).attr('y', fy(last.lo)).attr('dy', '0.35em').style('fill', 'var(--ink-subtle)').text('low: ' + SL.fmt(last.lo, 2));
-      }
-      endLabs.append('text').attr('class', 'ln-dlabel').attr('x', fx(2020) + 8).attr('y', fy(cv[0]) - 12).text('2020: ' + SL.fmt(cv[0], 2) + ' (NFHS-5)');
-      document.getElementById('fanTitle').textContent = 'Total Fertility Rate in ' + fdist + ', 2020 to 2036';
-      document.getElementById('fanCount').textContent = SL.fmt(paths.length) + ' futures drawn' + (paths.length >= MAXP ? ' (that is plenty)' : '');
-      var more = document.getElementById('fanMore');
-      more.disabled = paths.length >= MAXP; more.style.opacity = more.disabled ? 0.4 : 1;
-      var mid = bs[8];
-      document.getElementById('fanText').innerHTML = 'In <b>' + fdist + '</b>, the published projection goes from <b>' + SL.fmt(cv[0], 2) + '</b> children per woman in 2020 to <b>' + SL.fmt(cv[cv.length - 1], 2) + '</b> in 2036. ' +
-        'In this illustration, most grey paths in 2028 fall between ' + SL.fmt(mid.lo, 2) + ' and ' + SL.fmt(mid.hi, 2) + '. By 2036 the range is wider: ' + SL.fmt(last.lo, 2) + ' to ' + SL.fmt(last.hi, 2) + '. ' +
-        'That widening is the honest part: the further ahead we look, the less sure anyone can be. The real model works the same way, with thousands of paths, and Soochana shows its middle one.';
+      /* end labels, nudged apart so they never sit on top of each other */
+      var labs = [{ t: 'Odisha ' + f2(ODI.v[LAST]), v: ODI.v[LAST], c: C.coh }, { t: (NARROW ? '' : d.name + ' ') + f2(d.v[LAST]), v: d.v[LAST], c: C.birth }, { t: 'India ' + f2(IND.v[LAST]), v: IND.v[LAST], c: C.ink }]
+        .map(function (l) { l.y = fy(l.v); return l; }).sort(function (a, b) { return a.y - b.y; });
+      for (var k = 1; k < labs.length; k++) if (labs[k].y - labs[k - 1].y < 15) labs[k].y = labs[k - 1].y + 15;
+      labs.forEach(function (l) {
+        endLabs.append('text').attr('class', 'ln-dlabel').attr('x', fx(PER[LAST]) + 8).attr('y', l.y).attr('dy', '0.35em').style('font-weight', 600).style('fill', l.c).text(l.t);
+      });
+      document.getElementById('fanTitle').textContent = 'Assumed Total Fertility Rate: Odisha and ' + d.name + ', ' + PER[0] + ' to ' + PER[LAST];
+      document.getElementById('fanStats').innerHTML =
+        '<div class="ln-stat"><div class="ln-stat-v">' + f2(ODI.v[0]) + ' → ' + f2(ODI.v[LAST]) + '</div><div class="ln-stat-l">Odisha, ' + PER[0] + ' to ' + PER[LAST] + '</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + f2(d.v[0]) + ' → ' + f2(d.v[LAST]) + '</div><div class="ln-stat-l">' + d.name.replace('&', '&amp;') + '</div></div>' +
+        '<div class="ln-stat"><div class="ln-stat-v">' + f2(IND.v[0]) + ' → ' + f2(IND.v[LAST]) + '</div><div class="ln-stat-l">India</div></div>';
     }
-    function resetFan() { paths = []; batch = 0; drawFan(addBatch(), true); }
-    fsel.addEventListener('change', function () { fdist = fsel.value; resetFan(); });
-    document.getElementById('fanMore').addEventListener('click', function () { drawFan(addBatch(), false); });
-    fsvg.append('rect').attr('class', 'pj-hit').attr('x', fM.l).attr('y', fM.t).attr('width', fW - fM.l - fM.r).attr('height', fH - fM.t - fM.b)
-      .on('pointermove', function (ev) {
-        var yr = Math.max(2020, Math.min(2036, Math.round(fx.invert(d3.pointer(ev)[0])))), i = yr - 2020, cv = centralVals(), b = bandStats()[i];
-        hover.style('display', null);
-        hover.select('line').attr('x1', fx(yr)).attr('x2', fx(yr));
-        hover.select('circle').attr('cx', fx(yr)).attr('cy', fy(cv[i]));
-        tip.show(ev, '<b>' + fdist + ', ' + yr + '</b><br>Published projection ' + SL.fmt(cv[i], 2) + '<br><span class="muted">Grey paths (illustration): ' + SL.fmt(b.lo, 2) + ' to ' + SL.fmt(b.hi, 2) + '</span>');
-      })
-      .on('pointerleave', function () { hover.style('display', 'none'); tip.hide(); });
-    resetFan();
+    fsel.addEventListener('change', function () { fstate = fsel.value; drawStates(); });
+    drawStates();
+    var below0 = ST.filter(function (d) { return d.v[0] <= 2.1; }).length, belowL = ST.filter(function (d) { return d.v[LAST] <= 2.1; }).length;
+    var lowerOd = ST.filter(function (d) { return d.v[i21] < ODI.v[i21]; }).length;
+    document.getElementById('fanText').innerHTML = 'Odisha is at replacement level in the first period (' + f2(ODI.v[0]) + ' in ' + PER[0] + ') and below it from then on. ' +
+      'In ' + PER[0] + ', <b>' + below0 + ' of ' + ST.length + '</b> states were at or below 2.1. By ' + PER[LAST] + ' the report expects <b>' + belowL + ' of ' + ST.length + '</b> to be there, with India as a whole at ' + f2(IND.v[LAST]) + '. ' +
+      'In 2021–25, ' + lowerOd + ' of the ' + ST.length + ' states have a lower assumed TFR than Odisha. ' +
+      'The report gives one path for each state, not a range. Read the later periods as a likely direction: the further ahead we look, the more a new census or survey can refine the figure.';
 
     /* ── population 1901–2036 ────────────────────── */
     var POP = res[0].population_trends.filter(function (r) { return typeof r.total === 'number' && r.total > 1e6 && r.year % 5 === 1; })
@@ -578,13 +567,13 @@
     function tot(y) { return POP.filter(function (d) { return d.year === y; })[0].total; }
     var g1 = 100 * (tot(2011) / tot(2001) - 1), g2 = 100 * (tot(2031) / tot(2021) - 1);
     document.getElementById('popText').innerHTML = 'Odisha had <b>' + SL.fmt(tot(1901) / 1e7, 2) + ' crore</b> people in 1901 and <b>' + SL.fmt(tot(2011) / 1e7, 2) + ' crore</b> at the 2011 Census. The projection for 2036 is <b>' + SL.fmt(lastP.total / 1e7, 2) + ' crore</b>. ' +
-      'Growth is slowing. The population grew by ' + SL.fmt(g1, 1) + '% between 2001 and 2011, but is projected to grow by only ' + SL.fmt(g2, 1) + '% between 2021 and 2031. That is the result of the falling fertility you saw above. When the next census is published, these numbers will be checked and updated.';
+      'Growth is slowing. The population grew by ' + SL.fmt(g1, 1) + '% between 2001 and 2011, but is projected to grow by only ' + SL.fmt(g2, 1) + '% between 2021 and 2031. That follows from the lower fertility path you saw above. When the next census is published, these numbers will be checked and updated.';
   }).catch(function (err) {
     console.error(err);
     document.querySelector('.ln-hero').insertAdjacentHTML('beforeend', '<p class="ln-callout warn">The data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</p>');
   });
 })();
 </script>
-<script src="../chatbot.js?v=20261006-2"></script>
+<script src="../chatbot.js?v=20261116-1"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 Reads, from the repository root:
   datasets/state_demographics.json        state age pyramids and population 1901-2036
   datasets/district_age_pyramids.json     district age bands 2011-2036
-  datasets/district_fertility_trends.json district TFR, NFHS-4 then projections
+  datasets/orgi_state_projection.json     TFR path for the larger states (ORGI Table 3)
   Orissa.geojson                          district boundaries
 
 Run it again whenever one of those files changes.
@@ -24,7 +24,7 @@ def load(name):
 
 state = load('datasets/state_demographics.json')
 dist_pyr = load('datasets/district_age_pyramids.json')
-dist_tfr = load('datasets/district_fertility_trends.json')
+orgi = load('datasets/orgi_state_projection.json')
 geo = load('Orissa.geojson')
 
 # boundary file spellings -> dataset spellings
@@ -49,7 +49,7 @@ for r in state['population_trends']:
         continue
     if growth and y <= growth[-1][0]:       # the file repeats a few years, with junk
         continue
-    growth.append([y, t, round(r['sex_ratio']) if r['sex_ratio'] else None, 1 if y > 2021 else 0])
+    growth.append([y, t, round(r['sex_ratio']) if r['sex_ratio'] else None, 1 if y > 2011 else 0])
 
 # ── districts: population and share aged 60+ per projection year ──
 DIST_YEARS = ['2011', '2021', '2026', '2031', '2036']
@@ -139,10 +139,11 @@ for i, d in enumerate(districts):
     d['at'] = [round(sum(p[0] for p in mine) / len(mine), 1), round(sum(p[1] for p in mine) / len(mine), 1)]
     d['dots'] = len(mine)
 
-# ── fertility: NFHS-4 (2015-16) then yearly projections ──
-FERT_KEYS = list(next(iter(dist_tfr.values())).keys())
-fert_years = [2016 if k.startswith('2015-16') else int(k) for k in FERT_KEYS]
-fert = [{'name': n, 'v': [dist_tfr[n][k] for k in FERT_KEYS]} for n in sorted(dist_tfr)]
+# ── fertility: the ORGI path for the larger states, five-year periods ──
+tfr = orgi['tfr_states']
+fert_periods = [p.replace('-', '–') for p in tfr['periods']]
+fert_years = [int(p[:4]) + 2 for p in tfr['periods']]      # the middle year of each period
+fert = [{'name': n, 'v': tfr['states'][n]} for n in sorted(tfr['states'])]
 
 out = {
     'pyr': pyr,
@@ -151,7 +152,7 @@ out = {
     'districts': districts,
     'dots': dots,
     'fertYears': fert_years,
-    'fertFirstLabel': '2015-16',
+    'fertPeriods': fert_periods,
     'fert': fert,
 }
 

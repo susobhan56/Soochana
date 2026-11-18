@@ -28,9 +28,11 @@
   /* Chapter grounds, reused by the share cards so an image matches its screen. */
   var GROUND = { ageing: '#7b4f8f', pyramid: '#16587d', fastest: '#0e4c6e', district: '#2a6b54' };
 
-  /* Share of people aged 60+ (per 100). Same source as the home page:
-     Population Projections for India and States 2011–2036, ORGI. */
-  var AGE = { y2021: 11.0, y2036: 15.9 };
+  /* Share of people aged 60+ (per 100) and their number in 2036. Same
+     source as the home page: Population Projections for India and States
+     2011–2036, Report of the Technical Group on Population Projections,
+     National Commission on Population, MoHFW (July 2020), Table 17. */
+  var AGE = { y2021: 11.5, y2036: 17.0, n2036: 8350000 };
 
   /* Districts offered in the "fastest growth" guess. */
   var OPTIONS = ['Cuttack', 'Ganjam', 'Khordha', 'Malkangiri'];
@@ -445,7 +447,7 @@
       ? 'You guessed ' + g + '. That is almost exactly right.'
       : 'You guessed ' + g + '. The real figure is ' + (diff < 0 ? 'higher' : 'lower') + ' than that.';
 
-    var older = data ? AGE.y2036 / 100 * stateAt(2036) : 0;
+    var older = AGE.n2036;
     $('exAgeWhy').textContent = (older ? 'That is about ' + lakh(older, 0) + ' people aged 60 or over. ' : '') +
       'More older people means more demand for pensions, long-term care and health services close to home.';
 
@@ -542,14 +544,21 @@
   });
 
   /* ── extra district data, for the pyramid and district chapters ── */
-  var extra = { age: null, tfr: null, life: null };
+  var extra = { age: null, nfhs: null, life: null };
   var extraReady = Promise.all([
     fetch('datasets/district_age_pyramids.json').then(function (r) { return r.json(); }),
-    fetch('datasets/district_fertility_trends.json').then(function (r) { return r.json(); }),
+    fetch('datasets/nfhs_district_rounds.json').then(function (r) { return r.json(); }),
     fetch('datasets/district_life_expectancy.json').then(function (r) { return r.json(); })
   ]).then(function (res) {
-    extra.age = res[0]; extra.tfr = res[1]; extra.life = res[2];
+    extra.age = res[0]; extra.nfhs = res[1]; extra.life = res[2];
   });
+
+  /* a district's [NFHS-6, NFHS-5] pair for one fact sheet indicator */
+  function nfhsPair(name, indicator) {
+    var row = ((extra.nfhs && extra.nfhs.indicators) || []).filter(function (r) { return r.indicator === indicator; })[0];
+    var v = row && row.districts && row.districts[name];
+    return v && v[0] != null && v[1] != null ? v : null;
+  }
 
   var OLD_FROM = 12;   // index of the 60–64 band: 60 and over from here
   var KIDS_TO = 3;     // bands 0–4, 5–9, 10–14 are under 15
@@ -785,20 +794,25 @@
 
     /* facts */
     var state36 = ageShares(ageRows('', '2036'));
-    var tfr = extra.tfr[name] || {}, life = extra.life[name] || {};
+    var life = extra.life[name] || {};
+    var u15 = nfhsPair(name, 'Population below age 15 years');
+    var early = nfhsPair(name, 'Women age 20-24 years married before age 18 years');
     var facts = [];
     facts.push(['Aged 60 and over, 2036', '<b>' + pct(mix['2036'].old) + '</b>, against ' + pct(state36.old) + ' for Odisha']);
     facts.push(['Under 15, 2036', '<b>' + pct(mix['2036'].kids) + '</b>, against ' + pct(state36.kids) + ' for Odisha']);
-    if (tfr['2015-16 (NFHS-4)'] != null && tfr['2036'] != null) {
-      facts.push(['Children per woman', '<b>' + tfr['2015-16 (NFHS-4)'] + '</b> in 2015–16 (NFHS-4), projected <b>' + tfr['2036'] + '</b> by 2036']);
+    if (u15) {
+      facts.push(['Under 15, surveyed', '<b>' + u15[0].toFixed(1) + '%</b> in NFHS-6 (2023–24, published May 2026), from ' + u15[1].toFixed(1) + '% in NFHS-5 (2019–21)']);
+    }
+    if (early) {
+      facts.push(['Women 20–24 married before 18', '<b>' + early[0].toFixed(1) + '%</b> in NFHS-6 (2023–24), from ' + early[1].toFixed(1) + '% in NFHS-5 (2019–21)']);
     }
     if (life.female && life.male && life.female.nfhs5 != null && life.male.nfhs5 != null) {
-      facts.push(['Life expectancy (NFHS-5)', 'Women <b>' + life.female.nfhs5.toFixed(1) + '</b>, men <b>' + life.male.nfhs5.toFixed(1) + '</b> years']);
+      facts.push(['Life expectancy (computed from NFHS-5, 2019–21)', 'Women <b>' + life.female.nfhs5.toFixed(1) + '</b>, men <b>' + life.male.nfhs5.toFixed(1) + '</b> years']);
     }
     $('exDcFacts').innerHTML = facts.map(function (f) { return '<div><dt>' + f[0] + '</dt><dd>' + f[1] + '</dd></div>'; }).join('');
 
     $('exDcLink').href = 'district.html?id=' + encodeURIComponent(name);
-    dist.card = { name: name, d: d, mix: mix, state36: state36, tfr: tfr };
+    dist.card = { name: name, d: d, mix: mix, state36: state36, u15: u15 };
     reveal($('exDistCard'));
   }
 
@@ -905,13 +919,13 @@
       var g = lastAge;
       return {
         file: 'soochana-ageing-guess.png',
-        text: 'I guessed ' + g + ' of every 100 people in Odisha will be 60 or over by 2036. The answer: 15.9.',
+        text: 'I guessed ' + g + ' of every 100 people in Odisha will be 60 or over by 2036. The answer: ' + AGE.y2036.toFixed(0) + '.',
         spec: {
           bg: GROUND.ageing, kicker: 'Guess the number',
           title: 'How many of every 100 people in Odisha will be 60 or over by 2036?',
-          big: '15.9', bigNote: 'of every 100',
+          big: AGE.y2036.toFixed(0), bigNote: 'of every 100',
           lines: ['I guessed ' + g + '. ' + (Math.abs(g - AGE.y2036) <= 1.5 ? 'Almost exactly right.' : 'The real figure is ' + (g < AGE.y2036 ? 'higher.' : 'lower.')),
-                  'That is about ' + lakh(AGE.y2036 / 100 * stateAt(2036), 0) + ' people aged 60 or over.'],
+                  'That is about ' + lakh(AGE.n2036, 0) + ' people aged 60 or over.'],
           draw: peopleGrid(Math.round(AGE.y2036), g)
         }
       };
@@ -942,7 +956,7 @@
           title: c.name,
           big: (c.d['2036'].total / 1e5).toFixed(1).replace(/\.0$/, ''), bigNote: 'lakh people by 2036',
           lines: [growth(c.name).toFixed(1) + ' times its 1951 size. ' + pct(c.mix['2036'].old) + ' will be 60 or over, against ' + pct(c.state36.old) + ' for Odisha.',
-                  c.tfr['2036'] != null ? 'Projected children per woman by 2036: ' + c.tfr['2036'] + '.' : ''].filter(Boolean),
+                  c.u15 ? 'Under 15: ' + c.u15[0].toFixed(1) + '% in NFHS-6 (2023–24), from ' + c.u15[1].toFixed(1) + '% in NFHS-5.' : ''].filter(Boolean),
           draw: mixPic(c.mix)
         }
       };

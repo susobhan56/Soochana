@@ -2,12 +2,15 @@
    TECTONICS · story 3, "The ageing aftershock" (tectonics-ageing.html)
    The story's numbers and words; tectonics.js draws them.
    - Share aged 60+: NFHS-5 → NFHS-6 for Odisha (household members).
-   - Age pyramid: Census 1991 and 2011, projections 2021–2036, from
-     datasets/Age_wise_Odisha_population_1951-2036.xlsx as listed in the
-     portal data book (state age–sex pyramids), in lakh.
-   - Districts: share aged 60+, Census 2011 and the 2036 projection
-     (datasets/district_age_pyramids.json: UNFPA 2026 grown at the ORGI
-     state rate, age shape from DIU's Bayesian projection).
+   - Age pyramid: Census 1991 and 2011; 2021–2036 from the ORGI
+     Technical Group projections (2020), as held in
+     datasets/state_demographics.json (state age–sex pyramids), in lakh.
+   - Districts: share aged 60+, Census 2011 and 2036
+     (datasets/district_age_pyramids.json: UNFPA district projections
+     (2022) for 2021 and 2026; 2031 and 2036 carried forward with the
+     ORGI state projection).
+   Rebuild the pyramid rows and the district values from those two
+   files when they change; do not type them by hand.
    ═══════════════════════════════════════════════════════════════════ */
 window.TK_STORY = {
   number: 3,
@@ -34,32 +37,32 @@ window.TK_STORY = {
     male: {
       1991: [18.299, 20.967, 17.938, 14.778, 14.177, 13.405, 11.054, 10.634, 8.279, 7.498, 6.603, 4.565, 4.697, 2.582, 2.151, 0.859, 1.242],
       2011: [18.781, 20.853, 22.035, 19.727, 18.709, 17.729, 15.422, 15.287, 13.879, 12.124, 9.575, 7.443, 7.376, 4.878, 3.806, 1.833, 2.049],
-      2021: [18.694, 17.674, 18.372, 20.699, 21.890, 19.621, 18.574, 17.532, 15.165, 14.873, 13.242, 11.184, 8.376, 5.973, 5.212, 2.893, 2.681],
-      2026: [18.909, 18.424, 17.613, 18.327, 20.635, 21.807, 19.528, 18.454, 17.356, 14.918, 14.458, 12.625, 10.327, 7.366, 4.889, 3.853, 3.081],
-      2031: [18.024, 18.673, 18.368, 17.575, 18.277, 20.565, 21.715, 19.415, 18.287, 17.097, 14.530, 13.819, 11.700, 9.129, 6.081, 3.650, 3.880],
-      2036: [16.827, 17.834, 18.625, 18.334, 17.533, 18.223, 20.489, 21.604, 19.257, 18.036, 16.685, 13.927, 12.853, 10.396, 7.591, 4.594, 4.221]
+      2021: [17.85, 18.32, 19.41, 20.27, 20.65, 19.45, 18.13, 16.81, 15.37, 14.31, 12.96, 10.86, 8.38, 6.43, 4.98, 3.26, 2.58],
+      2026: [17.06, 17.58, 18.16, 19.19, 19.94, 20.32, 19.14, 17.82, 16.50, 15.01, 13.83, 12.31, 10.05, 7.49, 5.47, 3.83, 3.21],
+      2031: [16.07, 16.82, 17.43, 17.94, 18.88, 19.63, 20.01, 18.83, 17.51, 16.13, 14.54, 13.17, 11.44, 9.04, 6.43, 4.27, 3.90],
+      2036: [15.09, 15.85, 16.67, 17.22, 17.64, 18.59, 19.34, 19.71, 18.53, 17.14, 15.65, 13.88, 12.29, 10.36, 7.83, 5.08, 4.55]
     },
     female: {
       1991: [17.828, 20.348, 17.794, 15.340, 14.072, 13.332, 10.703, 9.562, 7.672, 6.954, 5.994, 4.407, 4.541, 2.593, 2.188, 0.857, 1.099],
       2011: [17.749, 19.894, 21.451, 19.527, 19.126, 18.012, 15.608, 15.225, 13.036, 11.217, 8.903, 7.394, 7.364, 4.917, 3.874, 1.815, 1.931],
-      2021: [18.465, 17.411, 17.352, 19.718, 21.287, 19.399, 18.962, 17.822, 15.377, 14.905, 12.606, 10.609, 8.095, 6.285, 5.617, 3.191, 2.784],
-      2026: [18.746, 18.223, 17.359, 17.313, 19.665, 21.219, 19.324, 18.864, 17.690, 15.204, 14.630, 12.211, 10.041, 7.373, 5.376, 4.370, 3.353],
-      2031: [17.938, 18.536, 18.179, 17.330, 17.276, 19.614, 21.151, 19.239, 18.742, 17.512, 14.949, 14.205, 11.601, 9.196, 6.366, 4.231, 4.405],
-      2036: [16.769, 17.764, 18.495, 18.150, 17.296, 17.236, 19.557, 21.067, 19.126, 18.569, 17.241, 14.545, 13.539, 10.678, 8.000, 5.077, 4.935]
+      2021: [16.82, 17.24, 18.39, 19.42, 20.02, 19.35, 18.56, 17.35, 15.78, 14.35, 12.54, 10.39, 8.31, 6.69, 5.26, 3.53, 2.94],
+      2026: [16.07, 16.59, 17.12, 18.17, 19.05, 19.79, 19.15, 18.37, 17.16, 15.51, 13.98, 12.11, 9.89, 7.63, 5.84, 4.25, 3.86],
+      2031: [15.18, 15.87, 16.48, 16.91, 17.81, 18.84, 19.60, 18.98, 18.19, 16.88, 15.13, 13.54, 11.57, 9.14, 6.73, 4.80, 4.90],
+      2036: [14.24, 14.99, 15.77, 16.28, 16.56, 17.62, 18.67, 19.43, 18.79, 17.91, 16.50, 14.68, 12.97, 10.76, 8.15, 5.60, 5.92]
     }
   },
 
   /* each age group against its own size in 2011 (= 100) */
   slope: {
-    max: 250,
+    max: 280,
     decimals: 0,
     sameStart: true,
     axis: ['2011 = 100', '2036'],
     rows: [
-      { name: 'Aged 80 and over', short: '80 and over', was: 100, now: 230, color: '#f9dd7f' },
-      { name: 'Aged 60–79', short: '60–79', was: 100, now: 203, color: '#f4c534' },
-      { name: 'Working age, 15–59', short: '15–59', was: 100, now: 127, color: '#9fd3f0' },
-      { name: 'Children, 0–14', short: '0–14', was: 100, now: 88, color: '#f08a4b' }
+      { name: 'Aged 80 and over', short: '80 and over', was: 100, now: 263, color: '#f9dd7f' },
+      { name: 'Aged 60–79', short: '60–79', was: 100, now: 204, color: '#f4c534' },
+      { name: 'Working age, 15–59', short: '15–59', was: 100, now: 122, color: '#9fd3f0' },
+      { name: 'Children, 0–14', short: '0–14', was: 100, now: 77, color: '#f08a4b' }
     ]
   },
 
@@ -68,47 +71,47 @@ window.TK_STORY = {
     svg: 'tkMap', select: 'mapPick', readout: 'mapReadout', key: 'mapKey',
     geo: 'Orissa.geojson', nameField: 'Dist_Name',
     periods: ['2011', '2036'],
-    bigMove: 7,
+    bigMove: 8.5,
     pickHint: 'Tap a district, or choose one from the list.',
     hoverHint: 'Point at a district to see how much older it gets.',
     bins: [
       [14, '#fdf3cf', 'Under 14%'],
-      [15, '#fbe39a', '14–15%'],
-      [16, '#f7cd5e', '15–16%'],
-      [17, '#e8a93a', '16–17%'],
-      [Infinity, '#c47d1e', '17% or more']
+      [16, '#fbe39a', '14–16%'],
+      [18, '#f7cd5e', '16–18%'],
+      [20, '#e8a93a', '18–20%'],
+      [Infinity, '#c47d1e', '20% or more']
     ],
     values: {
-      'Angul': [9.02, 15.92],
-      'Balangir': [10.7, 16.11],
-      'Baleshwar': [9.2, 15.61],
-      'Bargarh': [10.49, 17.14],
-      'Bhadrak': [9.53, 15.35],
-      'Boudh': [9.41, 14.89],
-      'Cuttack': [10.66, 17.48],
-      'Debagarh': [9.23, 15.49],
-      'Dhenkanal': [10.27, 16.72],
-      'Gajapati': [7.7, 14.16],
-      'Ganjam': [9.68, 15.58],
-      'Jagatsinghapur': [11.99, 17.93],
-      'Jajapur': [10.18, 15.79],
-      'Jharsuguda': [9.03, 16.2],
-      'Kalahandi': [9.52, 15.88],
-      'Kandhamal': [8.67, 14.12],
-      'Kendrapara': [11.78, 16.27],
-      'Kendujhar': [8.02, 15.12],
-      'Khordha': [9.13, 17.34],
-      'Koraput': [7.91, 14.46],
-      'Malkangiri': [7.6, 12.86],
+      'Angul': [9.02, 16.22],
+      'Balangir': [10.7, 18.7],
+      'Baleshwar': [9.2, 16.71],
+      'Bargarh': [10.49, 18.82],
+      'Bhadrak': [9.53, 17.39],
+      'Boudh': [9.41, 16.56],
+      'Cuttack': [10.66, 19.29],
+      'Debagarh': [9.23, 16.41],
+      'Dhenkanal': [10.27, 18.15],
+      'Gajapati': [7.7, 13.92],
+      'Ganjam': [9.68, 17.51],
+      'Jagatsinghapur': [11.99, 21.51],
+      'Jajapur': [10.18, 18.39],
+      'Jharsuguda': [9.03, 16.56],
+      'Kalahandi': [9.52, 16.92],
+      'Kandhamal': [8.67, 15.0],
+      'Kendrapara': [11.78, 21.13],
+      'Kendujhar': [8.02, 14.37],
+      'Khordha': [9.13, 16.62],
+      'Koraput': [7.91, 13.68],
+      'Malkangiri': [7.6, 12.99],
       'Mayurbhanj': [8.47, 15.33],
-      'Nabarangapur': [7.38, 13.5],
-      'Nayagarh': [11.83, 17.43],
-      'Nuapada': [10.6, 16.12],
-      'Puri': [10.95, 17.51],
-      'Rayagada': [7.53, 14.4],
-      'Sambalpur': [9.51, 16.68],
-      'Subarnapur': [10.66, 15.31],
-      'Sundargarh': [7.86, 15.73]
+      'Nabarangapur': [7.38, 13.52],
+      'Nayagarh': [11.83, 20.6],
+      'Nuapada': [10.6, 17.84],
+      'Puri': [10.95, 19.7],
+      'Rayagada': [7.53, 13.47],
+      'Sambalpur': [9.51, 17.04],
+      'Subarnapur': [10.66, 18.82],
+      'Sundargarh': [7.86, 14.08]
     }
   },
 

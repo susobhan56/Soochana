@@ -24,6 +24,14 @@
  */
 window.SOOCHANA_UPDATES = [
   {
+    id: 'nfhs6-orgi-refresh',
+    date: '2026-11-15',
+    type: 'data',
+    title: 'NFHS-6 beside NFHS-5, and the official projections',
+    text: 'NFHS-6 (2023–24, published May 2026) now sits beside NFHS-5 across the portal, and state projections follow the official ORGI Technical Group report.',
+    href: 'district-health.html'
+  },
+  {
     id: 'tectonics-story-5',
     date: '2026-10-08',
     type: 'feature',
@@ -93,7 +101,7 @@ window.SOOCHANA_UPDATES = [
     type: 'feature',
     title: 'The state dashboard, as a guided dossier',
     text: 'Twenty modules on Odisha, each with its chart. Click a district on the map to open its profile.',
-    href: 'index.html#dashboard'
+    href: 'state.html#dashboard'
   },
   {
     id: 'assistant-district-data',

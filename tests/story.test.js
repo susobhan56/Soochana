@@ -23,7 +23,8 @@ const F = Story.compute({
   state,
   learn,
   pop: read('datasets/district_population_trends.json'),
-  fert: read('datasets/district_fertility_trends.json'),
+  orgi: read('datasets/orgi_state_projection.json'),
+  nfhs: read('datasets/nfhs6_state_factsheet.json'),
   nat: read('datasets/national_comparisons.json'),
   details: read('datasets/state_details.json'),
   keyStats: keyStats()
@@ -68,10 +69,23 @@ test('the map extremes are the real highest and lowest districts', () => {
   assert.ok(F.T.stLow.startsWith(by('tribal_pct').at(-1).name));
 });
 
-test('fertility counts use the projection years, not the NFHS-4 column', () => {
-  assert.equal(F.tfrA, '2020');
-  assert.equal(F.tfrB, '2036');
-  const fert = read('datasets/district_fertility_trends.json');
-  const above = Object.values(fert).filter(d => d['2020'] > 2.1).length;
-  assert.equal(F.T.tfrAboveA, String(above));
+test('fertility counts come from the ORGI state table', () => {
+  const t = read('datasets/orgi_state_projection.json').tfr_states;
+  assert.equal(F.tfrA, '2011–15');
+  assert.equal(F.tfrB, '2031–35');
+  const above = k => Object.values(t.states).filter(v => v[k] > 2.1).length;
+  assert.equal(F.T.tfrAboveA, String(above(0)));
+  assert.equal(F.T.tfrBelowB, String(Object.keys(t.states).length - above(4)));
+  assert.equal(F.T.tfrOdB, '1.71');
+});
+
+test('the state rate is NFHS-6, with NFHS-5 beside it', () => {
+  assert.equal(F.T.tfrState, '1.7');
+  assert.equal(F.T.tfr5, '1.8');
+});
+
+test('state population follows the ORGI projection', () => {
+  assert.equal(F.series.find(d => d.year === 2021).total, 45696000);
+  assert.equal(F.series.find(d => d.year === 2036).total, 49025000);
+  assert.deepEqual(F.ageB.n, [19, 64, 17]);
 });

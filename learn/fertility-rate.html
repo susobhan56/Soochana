@@ -8,14 +8,14 @@
 <script src="../guard.js?v=20261028"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Total Fertility Rate · Soochana Learn</title>
-<meta name="description" content="What Odisha's Total Fertility Rate of 1.8 means, how it is built from age-specific birth rates, why 2.1 is replacement level, and where each district's fertility is heading to 2036.">
+<meta name="description" content="What Odisha's Total Fertility Rate of 1.7 means, how it is built from age-specific birth rates, why 2.1 is replacement level, and where fertility is heading in the official projections to 2036.">
 <link rel="icon" href="../favicon.ico" type="image/x-icon">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=general-sans@400,500,600&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../style.css?v=20261006-3">
 <link rel="stylesheet" href="learn.css?v=20261005">
-<script src="../ui.js?v=20261006-3"></script>
+<script src="../ui.js?v=20261116-2"></script>
 <script src="../whatsnew.js?v=20261006" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="learn.js?v=20260929"></script>
@@ -32,8 +32,10 @@
   .fr-vs .fr-card p:last-child { margin-bottom: 0; }
   @media (max-width: 860px) { .fr-vs { grid-template-columns: 1fr; } }
 </style>
+<link rel="stylesheet" href="../site.css?v=20261116-2">
+<link rel="stylesheet" href="../nav.css?v=20261116-5">
 </head>
-<body class="ln-page">
+<body class="ln-page site">
 
 <header>
   <div class="nav-group">
@@ -49,21 +51,27 @@
       <img src="../images/logo_odi.png" alt="Odisha Development Initiative" width="181" height="80">
     </a>
   </div>
-  <div class="nav-group flex-wrap" style="gap: 12px;">
+  <nav class="nav-group nav-main" aria-label="Main">
     <a href="../about.html" class="btn-elegant">About Us</a>
     <a href="../themes.html" class="btn-elegant">Themes</a>
     <a href="../repository.html" class="btn-elegant">Repository</a>
-    <a href="index.html" class="btn-elegant" aria-current="page">Learn</a>
-    <a href="../planning.html" class="btn-elegant">Planning</a>
-  </div>
+    <details class="nav-menu is-current">
+      <summary><span data-or="ଅନ୍ୱେଷଣ">Discover</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="nav-pop">
+      <a href="../learn/index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-5 9 5-9 5-9-5z M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Learn<small>Short visual lessons on how the numbers work</small></span></a>
+      <a href="../tectonics.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l4-3 4 2 4-5 6 4 M3 19h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tectonics<small>Illustrated stories on marriage, ageing, health and migration</small></span></a>
+      <a href="../planning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5 M4 19h16 M8 15l3-4 3 2 5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Planning<small>What the outlook means for schools, health and care</small></span></a>
+      </div>
+    </details>
+  </nav>
 </header>
 
 <main>
   <section class="ln-hero">
     <div class="ln-kicker"><a href="index.html">Soochana Learn</a> · <span class="ln-track is-measure">How we measure</span> · M3</div>
     <h2 class="ln-title">Total Fertility Rate <em>(TFR)</em></h2>
-    <p class="ln-dek">Odisha's TFR of 1.8 means a woman would have about 1.8 children in her life if today's birth rates held.</p>
-    <div class="ln-byline">By <b>DIU Team</b> · Data: NFHS-5 (2019–21), DIU fertility projections (Bayesian approach), SRS</div>
+    <p class="ln-dek">Odisha's TFR of 1.7 means a woman would have about 1.7 children in her life if today's birth rates held.</p>
+    <div class="ln-byline">By <b>DIU Team</b> · Data: NFHS-6 (2023–24) and NFHS-5 (2019–21); ORGI Technical Group projections (2020); SRS</div>
   </section>
 
   <section class="ln-gist" aria-label="The idea in one picture">
@@ -79,8 +87,8 @@
           <figcaption><b><span class="ln-gist-n">2</span>Give them all to one woman</b>Imagine one woman living through every age, 15 to 49. Add up her babies at each age.</figcaption>
         </figure>
         <figure class="ln-gist-p">
-          <div class="ln-gist-art"><svg id="gist3" viewBox="0 0 240 180" role="img" aria-label="The total is 1.8 children per woman, shown as one full child and most of a second."></svg></div>
-          <figcaption><b><span class="ln-gist-n">3</span>The total is the TFR</b>Her total is the average number of children per woman. For Odisha it is 1.8.</figcaption>
+          <div class="ln-gist-art"><svg id="gist3" viewBox="0 0 240 180" role="img" aria-label="The total is 1.7 children per woman, shown as one full child and most of a second."></svg></div>
+          <figcaption><b><span class="ln-gist-n">3</span>The total is the TFR</b>Her total is the average number of children per woman. For Odisha it is 1.7.</figcaption>
         </figure>
       </div>
       <p class="ln-gist-sum">TFR adds up this year's birth rates at every age, as if one woman lived through them all.</p>
@@ -94,7 +102,7 @@
   </section>
 
   <div class="ln-prose">
-    <p>You will often read that "Odisha's TFR is 1.8". It sounds like a count of children. It is really a summary of <strong>this year's</strong> birth rates. This page shows how that one number is built, and what it can and cannot tell you.</p>
+    <p>You will often read that "Odisha's TFR is 1.7". It sounds like a count of children. It is really a summary of <strong>this year's</strong> birth rates. This page shows how that one number is built, and what it can and cannot tell you.</p>
     <div class="ln-seeit">Where you see this on Soochana: <a href="../odisha.html">Odisha dashboard</a><a href="../district.html">District pages</a><a href="../district-health.html">District health</a></div>
 
     <h2>One imaginary woman</h2>
@@ -114,7 +122,7 @@
       <svg id="womanSvg" role="img" aria-label="Bar chart of births per 1,000 women in seven age groups, with a marker for the imaginary woman's age and a running total of her children"></svg>
       <p class="fr-narr" id="womanNarr" aria-live="polite"></p>
       <div class="ln-stats" id="womanStats"></div>
-      <div class="ln-source">Illustrative age pattern, scaled to Odisha's TFR of 1.8 (NFHS-5). The shape is typical of Indian states. It is not Odisha's measured age pattern.</div>
+      <div class="ln-source">Illustrative age pattern, scaled to Odisha's TFR of 1.7 in NFHS-6 (2023–24, published May 2026), from 1.8 in NFHS-5 (2019–21). The shape is typical of Indian states. It is not Odisha's measured age pattern.</div>
     </figure>
   </div>
 
@@ -147,55 +155,78 @@
   </div>
 
   <div class="ln-prose">
-    <p>Odisha's TFR of 1.8 is <strong>below</strong> replacement. Most districts are below it too. But not all. The chart shows each district's TFR in 2020.</p>
+    <p>Odisha is <strong>below</strong> replacement level, and has been for some years. The newest survey puts its TFR at 1.7 in NFHS-6 (2023–24, published May 2026), from 1.8 in NFHS-5 (2019–21). India as a whole is at 2.0 in both rounds.</p>
+    <p>NFHS-6 also gives the figure for towns and villages separately. The chart shows all of them against the 2.1 line.</p>
   </div>
 
   <div class="ln-wide">
     <figure class="ln-figure">
-      <p class="ln-figure-t">TFR in Odisha's 30 districts, 2020</p>
-      <p class="ln-figure-s">Each dot is one district, highest at the top. Dots to the right of the dashed line are above replacement level. Hover for the value.</p>
+      <p class="ln-figure-t">TFR in two survey rounds: Odisha and India</p>
+      <p class="ln-figure-s">Ring: NFHS-5 (2019–21). Filled dot: NFHS-6 (2023–24). Urban and rural values are from NFHS-6. Hover a dot for the value.</p>
+      <div class="ln-legend">
+        <span><i style="background:var(--ln-train)"></i>NFHS-6 (2023–24)</span>
+        <span><i style="background:#fff;border:2px solid #64748b;box-sizing:border-box"></i>NFHS-5 (2019–21)</span>
+        <span><i class="line" style="background:var(--ln-test)"></i>Replacement level 2.1</span>
+      </div>
+      <svg id="roundsSvg" role="img" aria-label="Dot chart of the Total Fertility Rate for Odisha and India in NFHS-5 and NFHS-6, with NFHS-6 urban and rural values, against the replacement level of 2.1"></svg>
+      <div class="ln-source">NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026 · NFHS-5 (2019–21), IIPS and MoHFW</div>
+    </figure>
+  </div>
+
+  <div class="ln-prose">
+    <p id="roundsText"></p>
+
+    <h2>Where fertility is heading</h2>
+    <p>The official population projection has to say where the TFR goes next. It is the <i>Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)</i>. For each state it sets a TFR for five periods, from 2011–15 to 2031–35.</p>
+    <p>A <strong>projection</strong> is not a promise. It asks: if recent trends continue, where will this number be? Pick a period and see where Odisha sits among the 22 states in the report.</p>
+  </div>
+
+  <div class="ln-wide">
+    <figure class="ln-figure">
+      <div class="ln-controls">
+        <div class="ln-seg" role="group" aria-label="Period" id="perSeg"></div>
+      </div>
+      <p class="ln-figure-t" id="statesTitle">Assumed TFR in 22 states</p>
+      <p class="ln-figure-s">Each dot is one state, highest at the top. Dots to the right of the dashed line are above replacement level. Hover for the value.</p>
       <div class="ln-legend">
         <span><i style="background:var(--ln-test)"></i>Above 2.1</span>
         <span><i style="background:var(--ln-train)"></i>At or below 2.1</span>
+        <span><i style="background:var(--ln-val)"></i>Odisha</span>
         <span><i class="line" style="background:var(--ln-test)"></i>Replacement level 2.1</span>
       </div>
-      <svg id="distSvg" role="img" aria-label="Dot chart of the Total Fertility Rate in each of Odisha's 30 districts in 2020, with a line at the replacement level of 2.1"></svg>
-      <div class="ln-source">District TFR for 2020, computed from NFHS-5 (2019–21) district data by DIU · Odisha state TFR 1.8: NFHS-5</div>
+      <svg id="statesSvg" role="img" aria-label="Dot chart of the Total Fertility Rate assumed for each of 22 states in the chosen period, with a line at the replacement level of 2.1"></svg>
+      <div class="ln-stats" id="pathStats"></div>
+      <div class="ln-source">ORGI Technical Group projections (2020), Table 3 (projected levels of total fertility rate). Values are averages for five-year periods.</div>
+    </figure>
+  </div>
+
+  <div class="ln-prose">
+    <p id="statesText"></p>
+
+    <h2>What about districts?</h2>
+    <p>The NFHS fact sheets do not publish a TFR for districts, in either round. The district samples are too small for a steady figure.</p>
+    <p>They do publish something close: the share of each district's people who are <strong>under 15</strong>. Where women have had fewer children for some years, that share is smaller. It is a slower signal than TFR, because it also depends on who moves in and out, but it is measured the same way in every district.</p>
+  </div>
+
+  <div class="ln-wide">
+    <figure class="ln-figure">
+      <p class="ln-figure-t">People under 15 as a share of each district, two survey rounds</p>
+      <p class="ln-figure-s">Ring: NFHS-5 (2019–21). Filled dot: NFHS-6 (2023–24). Sorted by the NFHS-6 value. Hover a row for both values.</p>
+      <div class="ln-legend">
+        <span><i style="background:var(--ln-train)"></i>NFHS-6 (2023–24)</span>
+        <span><i style="background:#fff;border:2px solid #64748b;box-sizing:border-box"></i>NFHS-5 (2019–21)</span>
+        <span><i class="line" style="background:#64748b"></i>Odisha, NFHS-6</span>
+      </div>
+      <svg id="distSvg" role="img" aria-label="Dumbbell chart of the share of the population under age 15 in each of Odisha's 30 districts in NFHS-5 and NFHS-6"></svg>
+      <div class="ln-source">Population below age 15 years (%), district fact sheets: NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026 · NFHS-5 (2019–21), IIPS and MoHFW</div>
     </figure>
   </div>
 
   <div class="ln-prose">
     <p id="distText"></p>
 
-    <h2>Where fertility is heading</h2>
-    <p>DIU has projected every district's TFR up to 2036. A <strong>projection</strong> is not a promise. It asks: if recent trends continue, where will this number be?</p>
-    <p>The projections use a Bayesian approach. In plain words, each district's own trend is combined with what happened in places that went through the same change earlier. This keeps the lines sensible even where data are thin.</p>
-    <p>Pick a district. Its line is in colour. The other 29 districts are the faint grey lines.</p>
-  </div>
-
-  <div class="ln-wide">
-    <figure class="ln-figure">
-      <div class="ln-controls">
-        <label>District <select id="distPick" aria-label="Choose a district"></select></label>
-      </div>
-      <p class="ln-figure-t" id="trendTitle">TFR, 2020 to 2036</p>
-      <p class="ln-figure-s">The 2020 dot is computed from NFHS-5. The dashed part, 2021 to 2036, is projected. Click a grey line to pick that district.</p>
-      <div class="ln-legend">
-        <span><i class="line" style="background:var(--ln-train)"></i>Chosen district</span>
-        <span><i class="line" style="background:rgba(15,23,42,.25)"></i>Other districts</span>
-        <span><i class="line" style="background:var(--ln-test)"></i>Replacement level 2.1</span>
-      </div>
-      <svg id="trendSvg" role="img" aria-label="Line chart of the chosen district's TFR from 2020 to 2036 against the replacement level"></svg>
-      <div class="ln-stats" id="trendStats"></div>
-      <div class="ln-source">2020: computed from NFHS-5 · 2021–2036: DIU projection (Bayesian approach)</div>
-    </figure>
-  </div>
-
-  <div class="ln-prose">
-    <p id="trendText"></p>
-
     <h2>TFR is not the birth rate</h2>
-    <p>Odisha's <strong>birth rate</strong> is 15.8. Its TFR is 1.8. They measure different things.</p>
+    <p>Odisha's <strong>birth rate</strong> is 15.8. Its TFR is 1.7. They measure different things.</p>
     <div class="fr-vs">
       <div class="fr-card">
         <h3>Birth rate</h3>
@@ -208,7 +239,7 @@
         <p>It does <strong>not</strong> depend on how many young women there are. That makes it fair for comparing places.</p>
       </div>
     </div>
-    <p>Here are two towns with 100 people each. In both, women have children at exactly the same rates, so both have a TFR of 1.8. Only the age mix differs.</p>
+    <p>Here are two towns with 100 people each. In both, women have children at exactly the same rates, so both have a TFR of 1.7. Only the age mix differs.</p>
   </div>
 
   <div class="ln-wide">
@@ -225,7 +256,7 @@
     <div class="ln-remember"><p class="ln-remember-t">Remember</p><ol>
       <li>TFR is the average number of children per woman, if this year's birth rates at each age stayed the same for her whole life.</li>
       <li>It is built by adding the seven age-group rates and multiplying by 5, because each group covers five years.</li>
-      <li>2.1 is replacement level. Odisha (1.8) and most districts are below it. A few southern districts are still above.</li>
+      <li>2.1 is replacement level. Odisha is below it: 1.7 in NFHS-6 (2023–24), from 1.8 in NFHS-5 (2019–21). India is at 2.0.</li>
       <li>TFR is per woman. The birth rate is per 1,000 people, so it also depends on how many young women there are.</li>
     </ol></div>
   </div>
@@ -233,8 +264,10 @@
   <section class="ln-notes">
     <h2>Data and method</h2>
     <p><b>Definition.</b> TFR = 5 × Σ ASFR<sub>a</sub>, summed over the seven five-year groups 15–19 … 45–49, where ASFR<sub>a</sub> is births in a year to women in group <i>a</i> divided by the number of women in that group. It is a period measure: it describes one year (or survey window), not the completed family size of any real group of women.</p>
-    <p><b>The age pattern.</b> The portal does not hold Odisha's own age-specific rates, so the "imaginary woman" chart uses a typical Indian age shape (peak at 20–24) rescaled so that 5 × the sum equals Odisha's TFR of 1.8 (NFHS-5, 2019–21). Treat the bar heights as an illustration.</p>
-    <p><b>Districts.</b> District TFR for 2020 is computed from NFHS-5 district data; 2021–2036 values are DIU projections using a Bayesian approach (datasets/district_fertility_trends.json). The file's NFHS-4 column is not used, because it is known to be wrong. Projections assume recent trends continue and carry uncertainty that grows with time; the lines show central values only.</p>
+    <p><b>The age pattern.</b> The portal does not hold Odisha's own age-specific rates, so the "imaginary woman" chart uses a typical Indian age shape (peak at 20–24) rescaled so that 5 × the sum equals Odisha's TFR of 1.7 in NFHS-6 (2023–24, published May 2026), from 1.8 in NFHS-5 (2019–21). Treat the bar heights as an illustration.</p>
+    <p><b>Survey figures.</b> State and national TFR, with the NFHS-6 urban and rural values: NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published May 2026, and NFHS-5 (2019–21), IIPS and MoHFW. NFHS-6 fieldwork in Odisha ran from 18 July to 28 November 2024. A survey TFR refers to the three years before the interview.</p>
+    <p><b>Where fertility is heading.</b> <i>Population Projections for India and States 2011–2036, Report of the Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)</i>, Table 3. The values are the TFR levels the Technical Group assumes for each five-year period, starting from the 2011 Census; the last period is 2031–35. They are one stated path for each state, not a range.</p>
+    <p><b>Districts.</b> The NFHS district fact sheets do not publish a district TFR in either round. The district chart uses "Population below age 15 years (%)" from the NFHS-6 and NFHS-5 district fact sheets. It is a share of the household population, not a fertility rate, and it also reflects migration and past births.</p>
     <p><b>Birth rate.</b> Odisha's crude birth rate of 15.8 per 1,000 is from the SRS 2024 report. The two-town picture assumes each woman aged 15–49 has the same chance of a birth in every year, which is a simplification used only to show why the age mix matters.</p>
     <details class="ln-details">
       <summary>Show the district table</summary>
@@ -262,12 +295,13 @@
   'use strict';
   var C = { train: SL.color('train') || '#00899e', val: SL.color('val') || '#7b52c7', test: SL.color('test') || '#d4460f', ink: '#0f172a', ghost: 'rgba(15,23,42,.14)', soft: 'rgba(15,23,42,.06)' };
   var tip = SL.tooltip();
-  var TFR = 1.8, REPL = 2.1;
+  var TFR = 1.7, REPL = 2.1;
   var NARROW = document.querySelector('.ln-wide').clientWidth < 600;
   var uid = 0;
 
   /* Illustrative age pattern: a typical Indian shape (peak at 20–24),
-     rescaled so that 5 × the sum of the rates equals Odisha's TFR of 1.8. */
+     rescaled so that 5 × the sum of the rates equals Odisha's TFR of 1.7
+     (NFHS-6, 2023–24, published May 2026; 1.8 in NFHS-5, 2019–21). */
   var GROUPS = ['15–19', '20–24', '25–29', '30–34', '35–39', '40–44', '45–49'];
   var SHAPE = [43, 136, 113, 60, 22, 6, 2];
   var K = TFR / (5 * SL.sum(SHAPE) / 1000);
@@ -345,10 +379,10 @@
     g2.append('text').attr('x', 204).attr('y', b2 + 15).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('one woman');
 
     var g3 = d3.select('#gist3');
-    g3.append('text').attr('x', 120).attr('y', 70).attr('text-anchor', 'middle').style('font-size', '46px').style('font-weight', 600).style('fill', C.ink).text('1.8');
+    g3.append('text').attr('x', 120).attr('y', 70).attr('text-anchor', 'middle').style('font-size', '46px').style('font-weight', 600).style('fill', C.ink).text(SL.fmt(TFR, 1));
     g3.append('text').attr('x', 120).attr('y', 92).attr('text-anchor', 'middle').style('font-size', '12px').style('fill', '#475569').text('children per woman');
     childFill(g3, 96, 166, 60, C.train).set(1);
-    childFill(g3, 144, 166, 60, C.train).set(0.8);
+    childFill(g3, 144, 166, 60, C.train).set(TFR - 1);
   })();
 
   /* ── one imaginary woman ───────────────────────── */
@@ -446,126 +480,170 @@
     });
   })();
 
-  /* ── district data ─────────────────────────────── */
-  fetch('../datasets/district_fertility_trends.json').then(function (r) {
-    if (!r.ok) throw new Error('district_fertility_trends.json: ' + r.status);
-    return r.json();
-  }).then(function (raw) {
-    var YEARS = d3.range(2020, 2037);
-    var D = Object.keys(raw).map(function (name) {
-      var v = raw[name];
-      return { name: name, tfr: YEARS.map(function (y) { return +v[String(y)]; }) };
-    }).filter(function (d) { return d.tfr.every(function (x) { return !isNaN(x); }); });
+  /* ── published figures: NFHS rounds, ORGI paths, NFHS districts ── */
+  function getJSON(f) {
+    return fetch('../datasets/' + f).then(function (r) { if (!r.ok) throw new Error(f + ': ' + r.status); return r.json(); });
+  }
+  Promise.all([getJSON('nfhs6_state_factsheet.json'), getJSON('orgi_state_projection.json'), getJSON('nfhs_district_rounds.json')]).then(function (res) {
+    function f1(v) { return SL.fmt(v, 1); }
+    function f2(v) { return SL.fmt(v, 2); }
 
-    /* dot chart, 2020 */
-    var sorted = D.slice().sort(function (a, b) { return b.tfr[0] - a.tfr[0]; });
-    var rowH = NARROW ? 23 : 20, dM = NARROW ? { t: 34, r: 20, b: 44, l: 124 } : { t: 34, r: 150, b: 44, l: 130 };
-    var dW = NARROW ? 440 : 760, dH = dM.t + rowH * sorted.length + dM.b;
-    var ds = d3.select('#distSvg').attr('viewBox', [0, 0, dW, dH]);
-    var dx = d3.scaleLinear([1.0, 2.8], [dM.l, dW - dM.r]);
+    /* 1 · NFHS-5 and NFHS-6, Odisha and India */
+    var T = res[0].indicators.filter(function (i) { return /^Total fertility rate/.test(i.indicator); })[0];
+    var ROWS = [];
+    [['Odisha', T.odisha], ['India', T.india]].forEach(function (g) {
+      ROWS.push({ place: g[0], lab: g[0], n6: g[1].nfhs6, n5: g[1].nfhs5, head: true });
+      ROWS.push({ place: g[0], lab: 'Urban', n6: g[1].nfhs6_urban });
+      ROWS.push({ place: g[0], lab: 'Rural', n6: g[1].nfhs6_rural });
+    });
+    (function rounds() {
+      var w = NARROW ? 440 : 760, rh = NARROW ? 34 : 32, m = { t: 34, r: NARROW ? 20 : 120, b: 44, l: NARROW ? 78 : 130 };
+      var h = m.t + rh * ROWS.length + 14 + m.b;
+      var svg = d3.select('#roundsSvg').attr('viewBox', [0, 0, w, h]);
+      var x = d3.scaleLinear([1.2, 2.4], [m.l, w - m.r]);
+      var y = function (i) { return m.t + rh * (i + 0.5) + (i >= 3 ? 14 : 0); };
+      svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(0,' + (h - m.b) + ')').call(d3.axisBottom(x).ticks(6).tickSize(-(h - m.b - m.t + 6)).tickFormat(''));
+      svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (h - m.b) + ')').call(d3.axisBottom(x).ticks(6).tickFormat(d3.format('.1f')));
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', w - m.r).attr('y', h - 8).attr('text-anchor', 'end').text('Children per woman (TFR) →');
+      svg.append('line').attr('x1', x(REPL)).attr('x2', x(REPL)).attr('y1', m.t - 8).attr('y2', h - m.b).style('stroke', C.test).style('stroke-width', 1.5).style('stroke-dasharray', '6 4');
+      svg.append('text').attr('class', 'ln-dlabel').attr('x', x(REPL) + 4).attr('y', m.t - 14).style('fill', C.test).text('Replacement 2.1');
+      var rows = svg.append('g').selectAll('g').data(ROWS).join('g').attr('transform', function (d, i) { return 'translate(0,' + y(i) + ')'; });
+      rows.append('text').attr('class', 'ln-axis-label').attr('x', m.l - 10).attr('dy', '0.35em').attr('text-anchor', 'end')
+        .style('font-weight', function (d) { return d.head ? 700 : null; }).style('fill', function (d) { return d.head ? C.ink : null; })
+        .text(function (d) { return d.lab; });
+      rows.append('line').attr('x1', m.l).attr('x2', function (d) { return x(d.n6); }).style('stroke', 'rgba(15,23,42,.08)').style('stroke-width', 1);
+      var heads = rows.filter(function (d) { return d.head; });
+      heads.append('line').attr('x1', function (d) { return x(d.n5); }).attr('x2', function (d) { return x(d.n6); }).style('stroke', '#64748b').style('stroke-width', 2.5);
+      function tipRow(d) {
+        return '<b>' + d.place + (d.head ? '' : ', ' + d.lab.toLowerCase()) + '</b><br>NFHS-6 (2023–24): ' + f1(d.n6) + (d.head ? '<br>NFHS-5 (2019–21): ' + f1(d.n5) : '') +
+          '<br><span class="muted">' + (d.n6 > REPL ? 'Above' : d.n6 === REPL ? 'At' : 'Below') + ' replacement level</span>';
+      }
+      heads.append('circle').attr('r', NARROW ? 10 : 9).attr('cx', function (d) { return x(d.n5); }).style('fill', '#fff').style('stroke', '#64748b').style('stroke-width', 2);
+      rows.append('circle').attr('class', 'ln-dot').attr('r', function (d) { return d.head ? 6.5 : 5.5; }).attr('cx', function (d) { return x(d.n6); })
+        .attr('fill', function (d) { return d.head ? C.train : 'color-mix(in srgb, ' + C.train + ' 55%, #fff)'; })
+        .on('pointerenter', function (e, d) { d3.select(this).classed('is-hover', true); tip.show(e, tipRow(d)); })
+        .on('pointermove', function (e, d) { tip.show(e, tipRow(d)); })
+        .on('pointerleave', function () { d3.select(this).classed('is-hover', false); tip.hide(); });
+      rows.append('text').attr('class', 'ln-dlabel').attr('dy', '0.35em')
+        .attr('x', function (d) { return x(Math.max(d.n6, d.head ? d.n5 : d.n6)) + 16; })
+        .text(function (d) {
+          if (!d.head) return f1(d.n6);
+          return d.n5 === d.n6 ? f1(d.n6) + ' in both rounds' : f1(d.n5) + ' → ' + f1(d.n6);
+        });
+    })();
+    var O = T.odisha, I = T.india;
+    document.getElementById('roundsText').innerHTML = 'In NFHS-6, a woman in urban Odisha would have <b>' + f1(O.nfhs6_urban) + '</b> children at current rates, and a woman in rural Odisha <b>' + f1(O.nfhs6_rural) + '</b>. ' +
+      'Both are below 2.1. For India the figures are ' + f1(I.nfhs6_urban) + ' in urban areas and ' + f1(I.nfhs6_rural) + ' in rural areas. ' +
+      'A TFR below replacement does not mean the population falls at once. Odisha still has many young adults, so births continue to outnumber deaths for some years. It does mean smaller class sizes ahead, and more room to invest in each child.';
+
+    /* 2 · ORGI assumed TFR, 22 states, by period */
+    var TS = res[1].tfr_states, PER = TS.periods.map(function (q) { return q.replace('-', '–'); });
+    var ST = Object.keys(TS.states).map(function (n) { return { name: n, v: TS.states[n] }; });
+    var per = Math.max(0, TS.periods.indexOf('2021-25'));
+    var seg = document.getElementById('perSeg');
+    seg.innerHTML = PER.map(function (q, i) { return '<button type="button" data-p="' + i + '" aria-pressed="' + (i === per) + '">' + q + '</button>'; }).join('');
+    var rowH = NARROW ? 23 : 20, dM = NARROW ? { t: 34, r: 20, b: 44, l: 132 } : { t: 34, r: 150, b: 44, l: 150 };
+    var dW = NARROW ? 440 : 760, dH = dM.t + rowH * ST.length + dM.b;
+    var ds = d3.select('#statesSvg').attr('viewBox', [0, 0, dW, dH]);
+    var dx = d3.scaleLinear([1.4, 4.0], [dM.l, dW - dM.r]);
     var dy = function (i) { return dM.t + rowH * (i + 0.5); };
     ds.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(0,' + (dH - dM.b) + ')')
       .call(d3.axisBottom(dx).ticks(NARROW ? 5 : 9).tickSize(-(dH - dM.b - dM.t + 6)).tickFormat(''));
     ds.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (dH - dM.b) + ')').call(d3.axisBottom(dx).ticks(NARROW ? 5 : 9).tickFormat(d3.format('.1f')));
     ds.append('text').attr('class', 'ln-axis-label').attr('x', dW - dM.r).attr('y', dH - 8).attr('text-anchor', 'end').text('Children per woman (TFR) →');
-    [[REPL, C.test, 'Replacement 2.1', '6 4', 'start', 4], [TFR, '#64748b', 'Odisha 1.8', '2 4', 'end', -4]].forEach(function (L) {
-      ds.append('line').attr('x1', dx(L[0])).attr('x2', dx(L[0])).attr('y1', dM.t - 8).attr('y2', dH - dM.b).style('stroke', L[1]).style('stroke-width', 1.5).style('stroke-dasharray', L[3]);
-      ds.append('text').attr('class', 'ln-dlabel').attr('x', dx(L[0]) + L[5]).attr('y', dM.t - 14).attr('text-anchor', L[4]).style('fill', L[1]).text(L[2]);
-    });
-    var hi = sorted[0], lo = sorted[sorted.length - 1];
-    var rows = ds.append('g').selectAll('g').data(sorted).join('g').attr('transform', function (d, i) { return 'translate(0,' + dy(i) + ')'; });
-    rows.append('text').attr('class', 'ln-axis-label').attr('x', dM.l - 10).attr('dy', '0.35em').attr('text-anchor', 'end')
-      .style('font-weight', function (d) { return d === hi || d === lo ? 700 : null; })
-      .style('fill', function (d) { return d === hi || d === lo ? C.ink : null; })
-      .text(function (d) { return d.name; });
-    rows.append('line').attr('x1', dM.l).attr('x2', function (d) { return dx(d.tfr[0]); }).style('stroke', 'rgba(15,23,42,.08)').style('stroke-width', 1);
-    rows.append('circle').attr('class', 'ln-dot').attr('r', NARROW ? 7 : 6).attr('cx', function (d) { return dx(d.tfr[0]); })
-      .attr('fill', function (d) { return d.tfr[0] > REPL ? C.test : C.train; })
-      .on('pointerenter', function (e, d) { d3.select(this).classed('is-hover', true); tip.show(e, '<b>' + d.name + '</b><br>TFR ' + SL.fmt(d.tfr[0], 2) + ' (2020)<br><span class="muted">' + (d.tfr[0] > REPL ? 'Above' : 'Below') + ' replacement level</span>'); })
-      .on('pointermove', function (e, d) { tip.show(e, '<b>' + d.name + '</b><br>TFR ' + SL.fmt(d.tfr[0], 2) + ' (2020)'); })
-      .on('pointerleave', function () { d3.select(this).classed('is-hover', false); tip.hide(); });
-    rows.filter(function (d) { return d === hi || d === lo; }).append('text').attr('class', 'ln-dlabel')
-      .attr('x', function (d) { return dx(d.tfr[0]) + (d === hi && NARROW ? -12 : 12); }).attr('dy', '0.35em')
-      .attr('text-anchor', function (d) { return d === hi && NARROW ? 'end' : 'start'; })
-      .text(function (d) { return SL.fmt(d.tfr[0], 2) + (d === hi ? ' highest' : ' lowest'); });
-
-    var above = sorted.filter(function (d) { return d.tfr[0] > REPL; });
-    document.getElementById('distText').innerHTML = '<b>' + above.length + ' of ' + D.length + '</b> districts were above replacement level in 2020: ' +
-      above.map(function (d) { return d.name; }).join(', ').replace(/, ([^,]*)$/, ' and $1') + '. All are in southern Odisha, and all have large tribal populations. ' +
-      '<b>' + hi.name + '</b> had the highest TFR (' + SL.fmt(hi.tfr[0], 2) + '). <b>' + lo.name + '</b> had the lowest (' + SL.fmt(lo.tfr[0], 2) + '), so a woman there would have about one child fewer than in ' + hi.name + '.';
-
-    /* trend chart */
-    var tW = NARROW ? 440 : 900, tH = NARROW ? 360 : 380, tM = { t: 20, r: NARROW ? 46 : 70, b: 40, l: 40 };
-    var ts = d3.select('#trendSvg').attr('viewBox', [0, 0, tW, tH]);
-    var tx = d3.scaleLinear([2020, 2036], [tM.l, tW - tM.r]), ty = d3.scaleLinear([0.8, 2.8], [tH - tM.b, tM.t]);
-    ts.append('rect').attr('x', tx(2020.5)).attr('y', tM.t).attr('width', tx(2036) - tx(2020.5)).attr('height', tH - tM.b - tM.t).style('fill', 'rgba(15,23,42,.035)');
-    ts.append('text').attr('class', 'ln-axis-label').attr('x', tx(2036) - 6).attr('y', tM.t + 16).attr('text-anchor', 'end').text('Projected →');
-    ts.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(' + tM.l + ',0)').call(d3.axisLeft(ty).ticks(5).tickSize(-(tW - tM.l - tM.r)).tickFormat(''));
-    ts.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (tH - tM.b) + ')').call(d3.axisBottom(tx).ticks(NARROW ? 4 : 8).tickFormat(d3.format('d')));
-    ts.append('g').attr('class', 'ln-axis').attr('transform', 'translate(' + tM.l + ',0)').call(d3.axisLeft(ty).ticks(5).tickFormat(d3.format('.1f')));
-    ts.append('line').attr('x1', tM.l).attr('x2', tW - tM.r).attr('y1', ty(REPL)).attr('y2', ty(REPL)).style('stroke', C.test).style('stroke-width', 1.5).style('stroke-dasharray', '6 4');
-    ts.append('text').attr('class', 'ln-dlabel').attr('x', tW - tM.r + 4).attr('y', ty(REPL)).attr('dy', '0.35em').style('fill', C.test).text('2.1');
-    var line = d3.line().x(function (v, i) { return tx(YEARS[i]); }).y(function (v) { return ty(v); });
-    var greys = ts.append('g').selectAll('path').data(D).join('path').attr('d', function (d) { return line(d.tfr); })
-      .style('fill', 'none').style('stroke', 'rgba(15,23,42,.13)').style('stroke-width', 1.2);
-    ts.append('g').selectAll('path').data(D).join('path').attr('d', function (d) { return line(d.tfr); })
-      .style('fill', 'none').style('stroke', 'transparent').style('stroke-width', 10).style('cursor', 'pointer')
-      .on('pointerenter', function (e, d) { greys.filter(function (g) { return g === d; }).style('stroke', 'rgba(15,23,42,.45)'); tip.show(e, '<b>' + d.name + '</b><br>' + SL.fmt(d.tfr[0], 2) + ' in 2020 → ' + SL.fmt(d.tfr[16], 2) + ' in 2036<br><span class="muted">Click to pick</span>'); })
-      .on('pointermove', function (e, d) { tip.show(e, '<b>' + d.name + '</b><br>' + SL.fmt(d.tfr[0], 2) + ' in 2020 → ' + SL.fmt(d.tfr[16], 2) + ' in 2036<br><span class="muted">Click to pick</span>'); })
-      .on('pointerleave', function () { greys.style('stroke', 'rgba(15,23,42,.13)'); tip.hide(); })
-      .on('click', function (e, d) { pick.value = d.name; drawTrend(); });
-    var selLine = ts.append('path').style('fill', 'none').style('stroke', C.train).style('stroke-width', 3).style('stroke-dasharray', '7 5').style('stroke-linecap', 'round');
-    var selDot = ts.append('circle').attr('r', 6.5).attr('fill', C.train).style('stroke', '#fff').style('stroke-width', 2);
-    var endDot = ts.append('circle').attr('r', 5).attr('fill', '#fff').style('stroke', C.train).style('stroke-width', 2.5);
-    var lab20 = ts.append('text').attr('class', 'ln-dlabel'), labEnd = ts.append('text').attr('class', 'ln-dlabel').attr('dy', '0.35em');
-    var lab20b = ts.append('text').attr('class', 'ln-dlabel').style('font-weight', 400);
-
-    var pick = document.getElementById('distPick');
-    D.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (d) {
-      var o = document.createElement('option'); o.value = d.name; o.textContent = d.name; pick.appendChild(o);
-    });
-    pick.value = 'Koraput';
-    var below2036 = D.filter(function (d) { return d.tfr[16] <= REPL; }).length;
-
-    var firstDraw = true;
-    function drawTrend() {
-      var d = D.filter(function (x) { return x.name === pick.value; })[0];
-      var t = d3.transition().duration(firstDraw ? 0 : SL.dur(400));
-      firstDraw = false;
-      selLine.transition(t).attr('d', line(d.tfr));
-      selDot.transition(t).attr('cx', tx(2020)).attr('cy', ty(d.tfr[0]));
-      endDot.transition(t).attr('cx', tx(2036)).attr('cy', ty(d.tfr[16]));
-      var up = d.tfr[0] < 2.45;
-      lab20.attr('x', tx(2020) + 10).attr('y', ty(d.tfr[0]) + (up ? -22 : 26)).text('2020: ' + SL.fmt(d.tfr[0], 2));
-      lab20b.attr('x', tx(2020) + 10).attr('y', ty(d.tfr[0]) + (up ? -8 : 40)).text('computed from NFHS-5');
-      labEnd.attr('x', tx(2036) + 8).attr('y', ty(d.tfr[16])).text(SL.fmt(d.tfr[16], 2));
-      document.getElementById('trendTitle').textContent = d.name + ': TFR, 2020 to 2036';
-      var cross = null;
-      if (d.tfr[0] > REPL) for (var i = 1; i < YEARS.length; i++) if (d.tfr[i] <= REPL) { cross = YEARS[i]; break; }
-      var crossTxt = d.tfr[0] <= REPL ? 'Already below in 2020' : cross ? 'Projected in ' + cross : 'Stays above to 2036';
-      document.getElementById('trendStats').innerHTML =
-        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(d.tfr[0], 2) + '</div><div class="ln-stat-l">TFR in 2020 (from NFHS-5)</div></div>' +
-        '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(d.tfr[16], 2) + '</div><div class="ln-stat-l">Projected TFR in 2036</div></div>' +
-        '<div class="ln-stat"><div class="ln-stat-v" style="font-size:18px">' + crossTxt + '</div><div class="ln-stat-l">Falls below replacement (2.1)</div></div>';
+    ds.append('line').attr('x1', dx(REPL)).attr('x2', dx(REPL)).attr('y1', dM.t - 8).attr('y2', dH - dM.b).style('stroke', C.test).style('stroke-width', 1.5).style('stroke-dasharray', '6 4');
+    ds.append('text').attr('class', 'ln-dlabel').attr('x', dx(REPL) + 4).attr('y', dM.t - 14).style('fill', C.test).text('Replacement 2.1');
+    var indLine = ds.append('line').attr('y1', dM.t - 8).attr('y2', dH - dM.b).style('stroke', '#64748b').style('stroke-width', 1.5).style('stroke-dasharray', '2 4');
+    var indLab = ds.append('text').attr('class', 'ln-dlabel').attr('y', dH - dM.b - 6).style('fill', '#64748b');
+    var rowsG = ds.append('g');
+    function dotCol(d) { return d.name === 'Odisha' ? C.val : d.v[per] > REPL ? C.test : C.train; }
+    function tipState(d) { return '<b>' + d.name + '</b><br>TFR ' + f2(d.v[per]) + ' (' + PER[per] + ')<br><span class="muted">' + (d.v[per] > REPL ? 'Above' : 'At or below') + ' replacement level</span>'; }
+    function drawStates() {
+      var sorted = ST.slice().sort(function (a, b) { return b.v[per] - a.v[per] || a.name.localeCompare(b.name); });
+      indLine.attr('x1', dx(TS.india[per])).attr('x2', dx(TS.india[per]));
+      var right = TS.india[per] > 2.6;
+      indLab.attr('x', dx(TS.india[per]) + (right ? -4 : 4)).attr('text-anchor', right ? 'end' : 'start').text('India ' + f2(TS.india[per]));
+      rowsG.selectAll('*').remove();
+      var rows = rowsG.selectAll('g').data(sorted).join('g').attr('transform', function (d, i) { return 'translate(0,' + dy(i) + ')'; });
+      rows.append('text').attr('class', 'ln-axis-label').attr('x', dM.l - 10).attr('dy', '0.35em').attr('text-anchor', 'end')
+        .style('font-weight', function (d) { return d.name === 'Odisha' ? 700 : null; })
+        .style('fill', function (d) { return d.name === 'Odisha' ? C.ink : null; })
+        .text(function (d) { return d.name; });
+      rows.append('line').attr('x1', dM.l).attr('x2', function (d) { return dx(d.v[per]); }).style('stroke', 'rgba(15,23,42,.08)').style('stroke-width', 1);
+      rows.append('circle').attr('class', 'ln-dot').attr('r', function (d) { return (NARROW ? 7 : 6) + (d.name === 'Odisha' ? 1.5 : 0); }).attr('cx', function (d) { return dx(d.v[per]); })
+        .attr('fill', dotCol)
+        .on('pointerenter', function (e, d) { d3.select(this).classed('is-hover', true); tip.show(e, tipState(d)); })
+        .on('pointermove', function (e, d) { tip.show(e, tipState(d)); })
+        .on('pointerleave', function () { d3.select(this).classed('is-hover', false); tip.hide(); });
+      rows.filter(function (d, i) { return d.name === 'Odisha' || i === 0 || i === sorted.length - 1; }).append('text').attr('class', 'ln-dlabel')
+        .attr('x', function (d, i) { return dx(d.v[per]) + (d === sorted[0] && NARROW ? -12 : 12); }).attr('dy', '0.35em')
+        .attr('text-anchor', function (d) { return d === sorted[0] && NARROW ? 'end' : 'start'; })
+        .text(function (d) { return f2(d.v[per]); });
+      document.getElementById('statesTitle').textContent = 'Assumed TFR in 22 states, ' + PER[per];
+      var above = sorted.filter(function (d) { return d.v[per] > REPL; }), od = sorted.filter(function (d) { return d.name === 'Odisha'; })[0];
+      var lower = sorted.filter(function (d) { return d.v[per] < od.v[per]; }).length;
+      document.getElementById('statesText').innerHTML = 'In ' + PER[per] + ', <b>' + above.length + ' of ' + ST.length + '</b> states are above replacement level' +
+        (above.length ? ' (' + above.map(function (d) { return d.name; }).join(', ').replace(/, ([^,]*)$/, ' and $1') + ')' : '') + '. ' +
+        'Odisha is at <b>' + f2(od.v[per]) + '</b>, with ' + lower + ' states lower and ' + (ST.length - 1 - lower) + ' at the same level or higher. India as a whole is at ' + f2(TS.india[per]) + '. ' +
+        'Across the five periods Odisha eases from ' + f2(od.v[0]) + ' to ' + f2(od.v[PER.length - 1]) + ', a gentle path that settles a little below two children per woman.';
     }
-    pick.addEventListener('change', drawTrend);
-    drawTrend();
-    var drop = D.slice().sort(function (a, b) { return (b.tfr[0] - b.tfr[16]) - (a.tfr[0] - a.tfr[16]); })[0];
-    var stay = D.filter(function (d) { return d.tfr[16] > REPL; }).map(function (d) { return d.name + ' (' + SL.fmt(d.tfr[16], 2) + ')'; });
-    var falling = D.filter(function (d) { return d.tfr[16] < d.tfr[0]; }).length;
-    document.getElementById('trendText').innerHTML = 'TFR is projected to fall in <b>' + falling + ' of ' + D.length + '</b> districts. By 2036, <b>' + below2036 + ' of ' + D.length + '</b> are projected to be at or below replacement level. ' +
-      'The biggest fall is in <b>' + drop.name + '</b>, from ' + SL.fmt(drop.tfr[0], 2) + ' to ' + SL.fmt(drop.tfr[16], 2) + '. ' +
-      (stay.length ? 'Only ' + stay.join(' and ') + (stay.length > 1 ? ' are' : ' is') + ' projected to stay above 2.1 in 2036. ' : '') +
-      'Projections become less certain the further ahead they go. Read the 2036 values as a likely direction, not an exact figure.';
+    seg.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        per = +b.dataset.p;
+        seg.querySelectorAll('button').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        drawStates();
+      });
+    });
+    drawStates();
+    var odPath = TS.states.Odisha;
+    document.getElementById('pathStats').innerHTML = PER.map(function (q, i) {
+      return '<div class="ln-stat"><div class="ln-stat-v">' + f2(odPath[i]) + '</div><div class="ln-stat-l">Odisha, ' + q + '</div></div>';
+    }).join('');
+
+    /* 3 · districts: population under 15, NFHS-6 and NFHS-5 */
+    var U = res[2].indicators.filter(function (i) { return /^Population below age 15/.test(i.indicator); })[0];
+    var D = Object.keys(U.districts).map(function (n) { return { name: n === 'Jajapur' ? 'Jajpur' : n, n6: U.districts[n][0], n5: U.districts[n][1] }; })
+      .filter(function (d) { return d.n6 != null && d.n5 != null; }).sort(function (a, b) { return b.n6 - a.n6; });
+    (function districts() {
+      var rh = NARROW ? 23 : 20, m = NARROW ? { t: 34, r: 20, b: 44, l: 124 } : { t: 34, r: 150, b: 44, l: 130 };
+      var w = NARROW ? 440 : 760, h = m.t + rh * D.length + m.b;
+      var svg = d3.select('#distSvg').attr('viewBox', [0, 0, w, h]);
+      var lo = Math.floor(d3.min(D, function (d) { return Math.min(d.n5, d.n6); }) / 2) * 2, hi = Math.ceil(d3.max(D, function (d) { return Math.max(d.n5, d.n6); }) / 2) * 2;
+      var x = d3.scaleLinear([lo, hi], [m.l, w - m.r]);
+      svg.append('g').attr('class', 'ln-gridlines').attr('transform', 'translate(0,' + (h - m.b) + ')').call(d3.axisBottom(x).ticks(NARROW ? 5 : 8).tickSize(-(h - m.b - m.t + 6)).tickFormat(''));
+      svg.append('g').attr('class', 'ln-axis').attr('transform', 'translate(0,' + (h - m.b) + ')').call(d3.axisBottom(x).ticks(NARROW ? 5 : 8).tickFormat(function (v) { return v + '%'; }));
+      svg.append('text').attr('class', 'ln-axis-label').attr('x', w - m.r).attr('y', h - 8).attr('text-anchor', 'end').text('People under 15 (% of the district) →');
+      svg.append('line').attr('x1', x(U.odisha.nfhs6)).attr('x2', x(U.odisha.nfhs6)).attr('y1', m.t - 8).attr('y2', h - m.b).style('stroke', '#64748b').style('stroke-width', 1.5).style('stroke-dasharray', '2 4');
+      svg.append('text').attr('class', 'ln-dlabel').attr('x', x(U.odisha.nfhs6) + 4).attr('y', m.t - 14).style('fill', '#64748b').text('Odisha ' + f1(U.odisha.nfhs6) + '%');
+      function tipD(d) { return '<b>' + d.name + '</b><br>NFHS-6 (2023–24): ' + f1(d.n6) + '%<br>NFHS-5 (2019–21): ' + f1(d.n5) + '%'; }
+      var rows = svg.append('g').selectAll('g').data(D).join('g').attr('transform', function (d, i) { return 'translate(0,' + (m.t + rh * (i + 0.5)) + ')'; });
+      rows.append('text').attr('class', 'ln-axis-label').attr('x', m.l - 10).attr('dy', '0.35em').attr('text-anchor', 'end').text(function (d) { return d.name; });
+      rows.append('line').attr('x1', function (d) { return x(d.n5); }).attr('x2', function (d) { return x(d.n6); }).style('stroke', '#94a3b8').style('stroke-width', 2);
+      rows.append('circle').attr('r', NARROW ? 6 : 5).attr('cx', function (d) { return x(d.n5); }).style('fill', '#fff').style('stroke', '#64748b').style('stroke-width', 1.8);
+      rows.append('circle').attr('class', 'ln-dot').attr('r', NARROW ? 6.5 : 5.5).attr('cx', function (d) { return x(d.n6); }).attr('fill', C.train);
+      rows.append('rect').attr('x', m.l).attr('y', -rh / 2).attr('width', w - m.l - m.r).attr('height', rh).style('fill', 'transparent')
+        .on('pointerenter', function (e, d) { tip.show(e, tipD(d)); })
+        .on('pointermove', function (e, d) { tip.show(e, tipD(d)); })
+        .on('pointerleave', function () { tip.hide(); });
+      rows.filter(function (d, i) { return i === 0 || i === D.length - 1; }).append('text').attr('class', 'ln-dlabel')
+        .attr('x', function (d) { return x(Math.max(d.n5, d.n6)) + 12; }).attr('dy', '0.35em')
+        .text(function (d) { return f1(d.n5) + ' → ' + f1(d.n6) + '%'; });
+    })();
+    var fell = D.filter(function (d) { return d.n6 < d.n5; }), top = D[0], bot = D[D.length - 1];
+    var big = D.slice().sort(function (a, b) { return (b.n5 - b.n6) - (a.n5 - a.n6); })[0];
+    document.getElementById('distText').innerHTML = 'The share of people under 15 is smaller in NFHS-6 than in NFHS-5 in <b>' + fell.length + ' of ' + D.length + '</b> districts. ' +
+      'For Odisha it is ' + f1(U.odisha.nfhs6) + '% in NFHS-6 (2023–24, published May 2026), from ' + f1(U.odisha.nfhs5) + '% in NFHS-5 (2019–21). ' +
+      '<b>' + top.name + '</b> has the youngest population (' + f1(top.n6) + '% under 15) and <b>' + bot.name + '</b> the smallest share of children (' + f1(bot.n6) + '%). ' +
+      'The largest change is in <b>' + big.name + '</b>, from ' + f1(big.n5) + '% to ' + f1(big.n6) + '%. Districts with more children have the most to gain from schools and child health services today.';
 
     /* table */
-    document.getElementById('dataTable').innerHTML = '<thead><tr><th>District</th><th>2020</th><th>2026</th><th>2031</th><th>2036</th></tr></thead><tbody>' +
+    document.getElementById('dataTable').innerHTML = '<thead><tr><th>District</th><th>Under 15, NFHS-6 (2023–24)</th><th>Under 15, NFHS-5 (2019–21)</th></tr></thead><tbody>' +
       D.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).map(function (d) {
-        return '<tr><td>' + d.name + '</td><td>' + SL.fmt(d.tfr[0], 2) + '</td><td>' + SL.fmt(d.tfr[6], 2) + '</td><td>' + SL.fmt(d.tfr[11], 2) + '</td><td>' + SL.fmt(d.tfr[16], 2) + '</td></tr>';
-      }).join('') + '</tbody>';
+        return '<tr><td>' + d.name + '</td><td>' + f1(d.n6) + '%</td><td>' + f1(d.n5) + '%</td></tr>';
+      }).join('') + '<tr><td><b>Odisha</b></td><td>' + f1(U.odisha.nfhs6) + '%</td><td>' + f1(U.odisha.nfhs5) + '%</td></tr></tbody>';
   }).catch(function (err) {
     console.error(err);
-    document.getElementById('distText').innerHTML = '<span class="ln-callout warn" style="display:block">The district data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</span>';
+    document.getElementById('roundsText').innerHTML = '<span class="ln-callout warn" style="display:block">The data could not be loaded. If you opened this file directly, serve the folder over HTTP instead.</span>';
   });
 
   /* ── two towns ─────────────────────────────────── */
@@ -579,12 +657,12 @@
       return '<div class="fr-card"><h3>' + t.name + '</h3>' +
         '<div class="ln-waffle" style="grid-template-columns:repeat(10,1fr)" role="img" aria-label="' + t.women + ' of 100 people are women aged 15 to 49">' + cells + '</div>' +
         '<p>' + t.women + ' of 100 people are women aged 15–49.</p>' +
-        '<div class="ln-stats"><div class="ln-stat"><div class="ln-stat-v">1.8</div><div class="ln-stat-l">TFR (same)</div></div>' +
+        '<div class="ln-stats"><div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(TFR, 1) + '</div><div class="ln-stat-l">TFR (same)</div></div>' +
         '<div class="ln-stat"><div class="ln-stat-v">' + SL.fmt(br, 1) + '</div><div class="ln-stat-l">Birth rate per 1,000 people</div></div></div></div>';
     }).join('');
   })();
 })();
 </script>
-<script src="../chatbot.js?v=20261006-2"></script>
+<script src="../chatbot.js?v=20261116-1"></script>
 </body>
 </html>

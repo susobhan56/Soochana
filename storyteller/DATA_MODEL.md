@@ -87,8 +87,8 @@ Key fields:
 
 | Story | File / object | Status assumptions | Source shown |
 |---|---|---|---|
-| district-population | `district_population_trends.json` totals, 1951–2036 | ≤2011 observed (Census); 2016+ projected. Growth rate computed from the levels | Census of India / ORGI; Bayesian projections |
-| district-tfr | `district_fertility_trends.json` | 2015-16 and 2020 computed (NFHS-4/5); 2021+ projected | NFHS-4/5 (computed); Bayesian projections |
+| district-population | `district_population_trends.json` totals, 1951–2036 | ≤2011 observed (Census); 2016+ projected. Growth rate computed from the levels | Census of India; UNFPA district projections (2022); ORGI Technical Group projections (2020) |
+| district-tfr | `district_fertility_trends.json` | 2015-16 and 2020 computed (NFHS-4/5); 2021+ projected | Retired series; not shown on the portal |
 | district-age-structure | `district_age_pyramids.json` → 0–14 / 15–59 / 60+ shares | 2011 observed; 2021+ projected | Census 2011; projected age–sex distribution |
 | district-sex-ratio | female ÷ male × 1000 from the population file | ≤2011 observed; later projected | as population |
 | district-pyramid | `district_age_pyramids.json` | as above | as above |

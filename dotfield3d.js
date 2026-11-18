@@ -8,7 +8,8 @@
  *   ageing    the age pyramid year by year, over a dashed outline of 1991
  *   cohort    the children of 1991 climbing the pyramid as they age
  *   waffle    100 dots = 100 people: 0–19, 20–59, 60–69, 70+
- *   fertility district fertility (TFR) lines falling past replacement level
+ *   fertility fertility (TFR) lines for the larger states falling past replacement
+ *             level, Odisha marked (ORGI Technical Group projections, 2020)
  *   pyramid   the plain pyramid, and the default (odisha.html uses it)
  *
  * Every scene draws exact values. Data other than the state pyramid comes
@@ -328,7 +329,7 @@
     if (!HERO || !HERO.fert) return null;
     var F = HERO.fert, FY = HERO.fertYears, PER_LINE = 24;
     var X0 = FY[0], X1 = FY[FY.length - 1], REPL = 2.1;
-    var T0 = 0.9, T1 = 2.9;
+    var T0 = 1.0, T1 = 4.0, PERIODS = HERO.fertPeriods;
     function wx(yr) { return -300 + (yr - X0) / (X1 - X0) * 600; }
     function wy(v) { return -170 + (v - T0) / (T1 - T0) * 340; }
     function valueAt(v, yr) {
@@ -337,10 +338,9 @@
       }
       return v[v.length - 1];
     }
-    function yearLabel(j) { return j === 0 ? HERO.fertFirstLabel + ' (NFHS-4)' : FY[j] + ' (projected)'; }
-    var STEPS = [X0];
-    for (var y = X0 + 4; y <= X1; y += 2) STEPS.push(y);
-    if (STEPS[STEPS.length - 1] !== X1) STEPS.push(X1);
+    function yearLabel(j) { return PERIODS[j] + (j > 1 ? ' (projected)' : ''); }
+    var STEPS = FY.slice();
+    var LAST = PERIODS[PERIODS.length - 1];
     function above(yr) {
       var j = FY.indexOf(yr);
       return F.filter(function (d) { return (j >= 0 ? d.v[j] : valueAt(d.v, yr)) > REPL; });
@@ -354,20 +354,22 @@
 
     return {
       id: 'fertility', title: 'Fertility Falls',
-      caption: 'In ' + HERO.fertFirstLabel + ', ' + startAbove + ' of ' + F.length + ' districts had fertility above ' +
-               'replacement level (2.1 children per woman). By ' + X1 + ' only ' + endAbove.length + ' are projected to: ' +
-               endAbove.map(function (d) { return d.name; }).join(' and ') + '.',
-      legend: [[C.senior, 'Above 2.1 in ' + X1], [C.work, 'Below 2.1 by ' + X1], [C.eldest, 'Replacement level']],
+      caption: 'In ' + PERIODS[0] + ', ' + startAbove + ' of ' + F.length + ' larger states had fertility above ' +
+               'replacement level (2.1 children per woman). By ' + LAST + ' only ' + endAbove.length + ' ' +
+               (endAbove.length === 1 ? 'is' : 'are') + ' projected to: ' +
+               endAbove.map(function (d) { return d.name; }).join(' and ') + '. Odisha moves from 2.10 to 1.71.',
+      legend: [[C.youth, 'Odisha'], [C.senior, 'Above 2.1 in ' + LAST], [C.work, 'Below 2.1 by ' + LAST], [C.eldest, 'Replacement level']],
       steps: STEPS.length, stepDur: 820, hold: 2000, wobble: 0.6, stretch: 1.4,
-      boundsKey: 'fertility', timeline: STEPS, timelineFirst: HERO.fertFirstLabel, links: links,
+      boundsKey: 'fertility', timeline: STEPS, timelineLabels: PERIODS, links: links,
       items: function (k) {
         var out = [], upto = STEPS[k];
         F.forEach(function (d, L) {
-          var hot = d.v[d.v.length - 1] > REPL;
+          var hot = d.v[d.v.length - 1] > REPL, home = d.name === 'Odisha';
           for (var s = 0; s < PER_LINE; s++) {
             var yr = X0 + s / (PER_LINE - 1) * (X1 - X0);
             out.push({ x: wx(yr), y: wy(valueAt(d.v, yr)), z: 0,
-                       a: yr <= upto + 0.01 ? (hot ? 0.95 : 0.6) : 0, c: hot ? C.senior : C.work, s: hot ? 1.1 : 0.9, g: L });
+                       a: yr <= upto + 0.01 ? (hot || home ? 0.95 : 0.55) : 0,
+                       c: home ? C.youth : hot ? C.senior : C.work, s: home ? 1.5 : hot ? 1.1 : 0.9, g: L });
           }
         });
         return out;
@@ -375,7 +377,7 @@
       labels: function () {
         return [['CHILDREN PER WOMAN (TFR)', -300, 195, 0, 'left'],
                 ['REPLACEMENT 2.1', 300, wy(REPL) + 7, 0, 'right'],
-                ['3', -312, wy(3) - 4, 0, 'right'], ['2', -312, wy(2) - 4, 0, 'right'], ['1', -312, wy(1) - 4, 0, 'right']];
+                ['4', -312, wy(4) - 4, 0, 'right'], ['3', -312, wy(3) - 4, 0, 'right'], ['2', -312, wy(2) - 4, 0, 'right'], ['1', -312, wy(1) - 4, 0, 'right']];
       },
       overlay: function (g, project, alpha) {
         var a = project(-300, wy(REPL), 0), b = project(300, wy(REPL), 0);
@@ -395,8 +397,8 @@
       },
       stats: function (k) {
         var yr = STEPS[k];
-        return [['YEAR', k === 0 ? HERO.fertFirstLabel : String(yr)],
-                ['DISTRICTS ABOVE 2.1', above(yr).length + ' of ' + F.length]];
+        return [['PERIOD', PERIODS[k]],
+                ['STATES ABOVE 2.1', above(yr).length + ' of ' + F.length]];
       }
     };
   }
@@ -579,10 +581,10 @@
         var bw = box.right - box.left - 2 * PAD.x, bh = bottom - box.top - PAD.top;
         /* the margins leave room for the damped mouse tilt and the wobble;
            the tilt swings the sides in depth, so width needs the larger one */
-        var fx = 0.88 * bw / (b.x1 - b.x0), fy = 0.94 * bh / (b.y1 - b.y0);
+        var fx = 0.94 * bw / (b.x1 - b.x0), fy = 0.97 * bh / (b.y1 - b.y0);
         var base = Math.min(fx, fy), k = sc.stretch || 1;
-        sx = Math.min(fx, base * k, 1.3);
-        sy = Math.min(fy, base * k, 1.3);
+        sx = Math.min(fx, base * k, 2);
+        sy = Math.min(fy, base * k, 2);
         cx = (box.left + box.right) / 2 - sx * (b.x0 + b.x1) / 2;
         cy = (box.top + PAD.top + bottom) / 2 - sy * (b.y0 + b.y1) / 2;
       }
@@ -863,14 +865,16 @@
       }
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      var firstTxt = sc.timelineFirst || String(T[0]);
+      var TL = sc.timelineLabels;
+      function lab(i) { return TL ? TL[i] : String(T[i]); }
+      var firstTxt = sc.timelineFirst || lab(0);
       if (Math.abs(curX - at(0)) > 34) ctx.fillText(firstTxt, at(0), y + 16);
-      if (Math.abs(curX - at(T.length - 1)) > 34) ctx.fillText(String(T[T.length - 1]), at(T.length - 1), y + 16);
+      if (Math.abs(curX - at(T.length - 1)) > 34) ctx.fillText(lab(T.length - 1), at(T.length - 1), y + 16);
       ctx.globalAlpha = alpha;
       ctx.fillStyle = C.hover;
       ctx.beginPath(); ctx.arc(curX, y, 4, 0, Math.PI * 2); ctx.fill();
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.fillText(cur === 0 && sc.timelineFirst ? sc.timelineFirst : String(T[cur]), curX, y + 17);
+      ctx.fillText(cur === 0 && sc.timelineFirst ? sc.timelineFirst : lab(cur), curX, y + 17);
       ctx.textAlign = 'left';
     }
 
@@ -890,11 +894,11 @@
        every dot. Once the hero has scrolled away nobody can see it, but it
        would keep the main thread busy and make the rest of the page scroll
        unevenly, so it sleeps while it is off screen. */
-    var onScreen = true, pausedAt = null;
+    var onScreen = true, pausedAt = null, userPaused = false;
 
     function frame(ts) {
       if (stopped) return;
-      if (!onScreen) { raf = 0; pausedAt = ts; return; }
+      if (!onScreen || userPaused) { raf = 0; pausedAt = ts; return; }
       if (pausedAt !== null) {
         if (sceneStart !== null) sceneStart += ts - pausedAt;
         pausedAt = null;
@@ -914,7 +918,7 @@
     if (global.IntersectionObserver) {
       new global.IntersectionObserver(function (entries) {
         onScreen = entries[0].isIntersecting;
-        if (onScreen && !raf && !stopped) raf = global.requestAnimationFrame(frame);
+        if (onScreen && !raf && !stopped && !userPaused) raf = global.requestAnimationFrame(frame);
       }).observe(canvas);
     }
 
@@ -922,6 +926,25 @@
 
     return {
       scenes: scenes.map(function (s) { return s.id; }),
+      /* the reader's controls: hold the picture, carry on, or change scene */
+      pause: function () { userPaused = true; },
+      play: function () {
+        userPaused = false;
+        if (onScreen && !raf && !stopped) raf = global.requestAnimationFrame(frame);
+      },
+      paused: function () { return userPaused; },
+      index: function () { return sceneIdx; },
+      step: function (d) {
+        var i = (sceneIdx + d + scenes.length) % scenes.length;
+        var now = global.performance.now();
+        if (!userPaused) { startScene(i, now); return i; }
+        /* while paused, show the scene finished rather than mid-flight */
+        var sc = scenes[i];
+        startScene(i, now - (MORPH + sc.stepDur * (sc.steps - 1) + 1));
+        pausedAt = now;
+        render(now, true);
+        return i;
+      },
       stop: function () {
         stopped = true;
         if (raf) global.cancelAnimationFrame(raf);

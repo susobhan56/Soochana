@@ -6,10 +6,10 @@ Reads only what the portal already ships:
   datasets/districts_detail.json        census + UDISE + land + infra stats
   datasets/district_mortality.json      NMR / IMR / U5MR (NFHS-4, NFHS-5), MMR
   datasets/district_life_expectancy.json
-  datasets/district_fertility_trends.json
+  datasets/nfhs_district_rounds.json   NFHS-6 and NFHS-5 district fact sheets
   datasets/district_population_trends.json
   datasets/district_age_pyramids.json
-  excel/Health.xlsx                     NFHS-5 district fact sheets, nutrition, TFR
+  excel/Health.xlsx                     NFHS-5 district fact sheets, nutrition
   excel/Migration and Urbanization.xlsx district urbanisation (Census 2011)
 
 Run from the repo root:  python learn/tools/build_learn_data.py
@@ -89,7 +89,7 @@ def r1(x, d=1):
 detail = load('datasets/districts_detail.json')
 mort = load('datasets/district_mortality.json')
 life = load('datasets/district_life_expectancy.json')
-tfr_tr = load('datasets/district_fertility_trends.json')
+rounds = load('datasets/nfhs_district_rounds.json')
 pop = load('datasets/district_population_trends.json')
 pyr = load('datasets/district_age_pyramids.json')
 NAMES = sorted(detail)
@@ -110,7 +110,32 @@ def sheet_by_district(rows, name_col):
 
 urban = sheet_by_district(migr['District Wise Urbanization Rate'], 3)
 nutri = sheet_by_district(health['Nutrition'], 1)
-tfr4 = sheet_by_district(health['District-wise TFR'], 1)
+
+# NFHS-6 (2023-24, fact sheets published May 2026) district indicators, with the
+# NFHS-5 value printed beside them. Each district value is [NFHS-6, NFHS-5].
+# Neither round publishes a district total fertility rate.
+R6 = {
+    'child_pct':      'Population below age 15 years',   # also f.child_pct_nfhs6
+    'teen_mothers':   'Women age 15-19 years who were already mothers or pregnant at the time of the survey',
+    'stunted':        'Children under 5 years who are stunted (height-for-age)',
+    'wasted':         'Children under 5 years who are wasted (weight-for-height)',
+    'underweight':    'Children under 5 years who are underweight (weight-for-age)',
+    'insurance':      'Households with any usual member covered under a health insurance/financing scheme',
+    'child_marriage': 'Women age 20-24 years married before age 18 years',
+    'fp_any':         'Any method',
+    'unmet_need':     'Total unmet need',
+    'anc4':           'Mothers who had at least 4 antenatal care visits',
+    'inst_births':    'Institutional births',
+    'full_vax':       "Children age 12-23 months fully vaccinated based on information from either vaccination card or mother's recall",
+    'adequate_diet':  'Total children age 6-23 months receiving an adequate diet',
+}
+_by_name = {i['indicator']: i for i in rounds['indicators']}
+r6 = {}
+for key, label in R6.items():
+    ind = _by_name[label]
+    r6[key] = {'state': ind['odisha'],
+               'districts': {canon(k, NAMES): v for k, v in ind['districts'].items()}}
+    assert None not in r6[key]['districts'], label
 nfhs5 = {}
 for r in health['Other Health Indicators']:
     if len(r) > 4 and r[2] and str(r[4]).strip().startswith('NFHS 5') and 'Total' in str(r[4]):
@@ -157,7 +182,7 @@ for n in NAMES:
             'elderly_pct': r1(share(pyr[n]['2011'], OLD)),
             'child_pct': r1(share(pyr[n]['2011'], YOUNG)),
             'elderly_pct_2036': r1(share(pyr[n]['2036'], OLD)),
-            'tfr_2020': tfr_tr[n].get('2020'),
+            'child_pct_nfhs6': r6['child_pct']['districts'][n][0],
             'beds_per_100k': num(hs.get('beds_per_100k')),
             'mmr': num(hs.get('mmr')) or m.get('maternal_mortality_ratio_2017_19'),
             'forest_pct': r1(100 * geo['Forest Area (2024)'] * 1000 / (area * 100)) if geo.get('Forest Area (2024)') else None,
@@ -179,7 +204,6 @@ for n in NAMES:
             'wasted': nu[4] if nu else None,
             'underweight': nu[8] if nu else None,
             'anaemic_child': nu[12] if nu else None,
-            'tfr': tfr4[n][2] if n in tfr4 else None,
             'le_female': life[n]['female']['nfhs4'],
             'le_male': life[n]['male']['nfhs4'],
         },
@@ -204,6 +228,8 @@ for n in NAMES:
             'full_vax': num(h5[15]) if h5 else None,
             'adequate_diet': num(h5[16]) if h5 else None,
         },
+        # NFHS-6 (2023-24) district fact sheet, published May 2026.
+        'nfhs6': {k: r6[k]['districts'][n][0] for k in R6},
     })
 
 FEATURES = {
@@ -217,8 +243,8 @@ FEATURES = {
     'growth_01_11':    ['Population growth 2001–11', '%', 'Census 2001, 2011'],
     'elderly_pct':     ['Population aged 60+', '%', 'Census 2011'],
     'child_pct':       ['Population aged 0–14', '%', 'Census 2011'],
-    'elderly_pct_2036':['Population aged 60+ (2036)', '%', 'Projection'],
-    'tfr_2020':        ['Total fertility rate', 'births per woman', 'Bayesian estimate, 2020'],
+    'elderly_pct_2036':['Population aged 60+ (2036)', '%', 'UNFPA 2026 carried forward with the ORGI state projection'],
+    'child_pct_nfhs6': ['Population below age 15', '%', 'NFHS-6 (2023–24), published May 2026'],
     'beds_per_100k':   ['Hospital beds', 'per 1,00,000', 'District health profile'],
     'mmr':             ['Maternal mortality ratio', 'per 1,00,000 births', '2017–19'],
     'forest_pct':      ['Forest cover', '% of area', 'Land use 2024'],
@@ -237,7 +263,7 @@ FEATURES = {
     'wasted':          ['Children under 5 wasted', '%', 'NFHS'],
     'underweight':     ['Children under 5 underweight', '%', 'NFHS'],
     'anaemic_child':   ['Children 6–59 months anaemic', '%', 'NFHS'],
-    'tfr':             ['Total fertility rate', 'births per woman', 'NFHS-4'],
+    'teen_mothers':    ['Women 15–19 already mothers or pregnant', '%', 'NFHS-6 (2023–24)'],
     'le_female':       ['Female life expectancy', 'years', 'NFHS-based estimate'],
     'le_male':         ['Male life expectancy', 'years', 'NFHS-based estimate'],
     'srb':             ['Sex ratio at birth', 'F per 1,000 M', 'NFHS-5'],
@@ -261,7 +287,7 @@ for r in health['Other Health Indicators']:
         state_ref.update(inst_births=r[14], full_vax=r[15], child_marriage=r[8], women_lit=r[7])
 
 # Report anything missing so a silent gap never reaches a model.
-missing = [(d['name'], blk, k) for d in districts for blk in ('f', 'nfhs4', 'nfhs5')
+missing = [(d['name'], blk, k) for d in districts for blk in ('f', 'nfhs4', 'nfhs5', 'nfhs6')
            for k, v in d[blk].items() if v is None]
 for m in missing:
     print('missing:', *m)
@@ -274,11 +300,13 @@ out = {
         # Odisha NFHS-5 totals, read from the same Health.xlsx sheets; the
         # explainers use these as the "above the state average" class line.
         'state_nfhs5': state_ref,
+        # Odisha totals from the NFHS-6 state fact sheet (2023-24, published May 2026).
+        'state_nfhs6': {k: r6[k]['state']['nfhs6'] for k in R6 if r6[k]['state']['nfhs6'] is not None},
         'groups': {'division': 'Revenue Divisional Commissioner division',
                    'kbk': 'Koraput–Bolangir–Kalahandi region (8 districts)',
                    'coastal': 'District with a sea coast'},
         'built_from': ['datasets/districts_detail.json', 'datasets/district_mortality.json',
-                       'datasets/district_life_expectancy.json', 'datasets/district_fertility_trends.json',
+                       'datasets/district_life_expectancy.json', 'datasets/nfhs_district_rounds.json',
                        'datasets/district_population_trends.json', 'datasets/district_age_pyramids.json',
                        'excel/Health.xlsx', 'excel/Migration and Urbanization.xlsx'],
     },

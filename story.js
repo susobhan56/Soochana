@@ -14,7 +14,7 @@
    only what shows before this script runs.
 
    Data: datasets/state_demographics.json, district_population_trends.json,
-   district_fertility_trends.json, national_comparisons.json,
+   orgi_state_projection.json, nfhs6_state_factsheet.json, national_comparisons.json,
    state_details.json, learn/data/districts.json, Orissa.geojson and
    data/key_stats.js. Styles: story.css.
    ───────────────────────────────────────────────────────────────────── */
@@ -109,7 +109,8 @@
     var first = trends[0], last = trends[trends.length - 1];
     var p51 = at(1951), p11 = at(2011), p21 = at(2021);
     F.first = first; F.last = last;
-    var SRC_POP = 'Census of India 1901–2011; population projection using the Bayesian approach (DIU), 2021–' + last.year;
+    var ORGI = 'Population Projections for India and States 2011–2036, Technical Group on Population Projections, National Commission on Population, MoHFW (July 2020)';
+    var SRC_POP = 'Census of India 1901–2011; ' + ORGI + ', 2021–' + last.year;
     put('pop21', crore(p21.total), 'Population, 2021 (projected)', SRC_POP);
     put('dotLakh', fix(p21.total / N / 1e5, 1) + ' lakh');
     put('pop1901', crore(first.total), 'Population, ' + first.year, SRC_POP);
@@ -152,7 +153,7 @@
     var years = Object.keys(D.state.pyramids).sort();
     F.ageA = ages('2021');
     F.ageB = ages(years[years.length - 1]);
-    var SRC_AGE = 'Population projection using the Bayesian approach (DIU)';
+    var SRC_AGE = ORGI;
     put('ch21', String(F.ageA.n[0]), 'Children under 15 in every 100, 2021', SRC_AGE);
     put('wk21', String(F.ageA.n[1]), 'Aged 15–59 in every 100, 2021', SRC_AGE);
     put('el21', String(F.ageA.n[2]), 'Aged 60+ in every 100, 2021', SRC_AGE);
@@ -167,11 +168,9 @@
     /* districts */
     F.districts = D.learn.districts.map(function (d) {
       var pop = pick(D.pop, d.name);
-      var tfr = pick(D.fert, d.name) || {};
       return {
         name: canon(d.name), f: d.f,
-        pop11: pop && pop['2011'] ? pop['2011'].total : 0,
-        tfr: tfr
+        pop11: pop && pop['2011'] ? pop['2011'].total : 0
       };
     }).sort(function (a, b) { return a.name < b.name ? -1 : 1; });
     var byName = {};
@@ -211,32 +210,39 @@
     if (tribes != null) put('stComm', String(tribes), 'Tribal communities', 'Government of Odisha');
     if (pvtg != null) put('pvtg', String(pvtg), 'Particularly vulnerable tribal groups (PVTGs)', 'Government of Odisha');
 
-    /* fertility, district projections */
-    var fy = Object.keys(D.fert[Object.keys(D.fert)[0]]).filter(function (k) { return /^\d{4}$/.test(k); }).sort();
-    F.tfrA = fy.indexOf('2020') !== -1 ? '2020' : fy[0];
-    F.tfrB = fy[fy.length - 1];
-    var SRC_TFR = 'District fertility projection using the Bayesian approach (DIU)';
-    function tfrAt(y) {
-      var v = F.districts.filter(function (d) { return d.tfr[y] != null; })
-        .map(function (d) { return { name: d.name, v: d.tfr[y] }; })
+    /* fertility: the ORGI path for the larger states (Table 3), and the
+       state's own rate in the last two NFHS rounds */
+    var ts = D.orgi.tfr_states, per = ts.periods;
+    F.tfrA = per[0].replace('-', '–');
+    F.tfrB = per[per.length - 1].replace('-', '–');
+    F.tfrNames = Object.keys(ts.states).sort();
+    var SRC_TFR = ORGI + ', Table 3';
+    function tfrAt(k) {
+      var v = F.tfrNames.map(function (n) { return { name: n, v: ts.states[n][k] }; })
         .sort(function (a, b) { return b.v - a.v; });
-      return { list: v, above: v.filter(function (x) { return x.v > REPLACEMENT; }), hi: v[0], lo: v[v.length - 1] };
+      return { list: v, above: v.filter(function (x) { return x.v > REPLACEMENT; }), hi: v[0], lo: v[v.length - 1],
+               odisha: ts.states.Odisha[k], india: ts.india[k] };
     }
-    var ta = tfrAt(F.tfrA), tb = tfrAt(F.tfrB);
+    var ta = tfrAt(0), tb = tfrAt(per.length - 1);
     F.tfrStats = {}; F.tfrStats[F.tfrA] = ta; F.tfrStats[F.tfrB] = tb;
     put('tfrYearA', F.tfrA); put('tfrYearB', F.tfrB);
-    put('tfrAboveA', String(ta.above.length), 'Districts above replacement fertility, ' + F.tfrA, SRC_TFR);
+    put('tfrAboveA', String(ta.above.length), 'Larger states above replacement fertility, ' + F.tfrA, SRC_TFR);
     put('tfrN', String(ta.list.length));
-    put('tfrHiA', ta.hi.name + ' (' + fix(ta.hi.v, 2) + ')', 'Highest district fertility, ' + F.tfrA, SRC_TFR);
-    put('tfrLoA', ta.lo.name + ' (' + fix(ta.lo.v, 2) + ')', 'Lowest district fertility, ' + F.tfrA, SRC_TFR);
-    put('tfrBelowB', String(tb.list.length - tb.above.length), 'Districts below replacement fertility, ' + F.tfrB + ' (projected)', SRC_TFR);
+    put('tfrHiA', ta.hi.name + ' (' + fix(ta.hi.v, 2) + ')', 'Highest state fertility, ' + F.tfrA, SRC_TFR);
+    put('tfrLoA', ta.lo.name + ' (' + fix(ta.lo.v, 2) + ')', 'Lowest state fertility, ' + F.tfrA, SRC_TFR);
+    put('tfrOdA', fix(ta.odisha, 2), 'Total fertility rate, Odisha, ' + F.tfrA, SRC_TFR);
+    put('tfrOdB', fix(tb.odisha, 2), 'Total fertility rate, Odisha, ' + F.tfrB + ' (projected)', SRC_TFR);
+    put('tfrInB', fix(tb.india, 2), 'Total fertility rate, India, ' + F.tfrB + ' (projected)', SRC_TFR);
+    put('tfrBelowB', String(tb.list.length - tb.above.length), 'Larger states below replacement fertility, ' + F.tfrB + ' (projected)', SRC_TFR);
     put('tfrAboveB', listAnd(tb.above.map(function (x) { return x.name + ' (' + fix(x.v, 2) + ')'; })) || 'none');
     put('tfrLoB', fix(tb.lo.v, 1));
-    var ks = D.keyStats, tfrTile = null;
-    (ks && ks.groups || []).forEach(function (g) {
-      (g.tiles || []).forEach(function (t) { if (/fertility/i.test(t.label || '')) tfrTile = t; });
-    });
-    if (tfrTile) put('tfrState', tfrTile.value, 'Total fertility rate, Odisha', tfrTile.source);
+    /* NFHS-6 beside NFHS-5, from the state fact sheet */
+    var nf = D.nfhs.indicators.filter(function (r) { return /^Total fertility rate/i.test(r.indicator); })[0].odisha;
+    var SRC_NFHS = 'NFHS-6 (2023–24), IIPS and MoHFW, fact sheets published ' + D.nfhs.meta.published + '; NFHS-5 (2019–21)';
+    put('tfrState', fix(nf.nfhs6, 1), 'Total fertility rate, Odisha, NFHS-6 (2023–24)', SRC_NFHS);
+    put('tfr5', fix(nf.nfhs5, 1), 'Total fertility rate, Odisha, NFHS-5 (2019–21)', SRC_NFHS);
+    put('tfrUrban', fix(nf.nfhs6_urban, 1), 'Total fertility rate, urban Odisha, NFHS-6', SRC_NFHS);
+    put('tfrRural', fix(nf.nfhs6_rural, 1), 'Total fertility rate, rural Odisha, NFHS-6', SRC_NFHS);
 
     /* the three maps */
     var t = ends('tribal_pct', 0);
@@ -247,7 +253,7 @@
     put('litMin', l.one(l.lo), 'Lowest literacy', 'Census of India 2011');
     put('litGap', String(Math.round(l.hi.f.literacy - l.lo.f.literacy)));
     var o = ends('elderly_pct_2036', 1);
-    var SRC_DIST_AGE = 'UNFPA district projections, grown from 2026 at the ORGI state rate';
+    var SRC_DIST_AGE = 'UNFPA India, District Level Population Projections in Selected States of India, 2021 & 2026 (2022), carried forward to ' + F.ageB.year + ' with the ORGI state projection';
     put('oldMax', o.one(o.hi), 'Oldest district, ' + F.ageB.year + ' (share aged 60+)', SRC_DIST_AGE);
     put('oldMin', o.one(o.lo), 'Youngest district, ' + F.ageB.year + ' (share aged 60+)', SRC_DIST_AGE);
 
@@ -274,13 +280,16 @@
   var stage = root.querySelector('.story-stage');
   var tipEl = root.querySelector('.story-tip');
   var steps = [].slice.call(root.querySelectorAll('.story-step'));
+  /* Panel mode (the home page): the picture sits in its own box and the
+     cards are stepped through with buttons instead of scrolling. */
+  var panel = root.getAttribute('data-mode') === 'panel';
 
   /* Each card wears its chapter's icon. A chapter's first card gets the
      icon as a badge beside its kicker; the cards after it get a small
      line naming the chapter, so a reader who jumps in knows where they are. */
   (function decorate() {
     var I = window.SoochanaIcons;
-    if (!I) return;
+    if (!I || panel) return;
     root.querySelectorAll('.sc-tip').forEach(function (t) { t.insertBefore(I.svg('pointer', 'sc-ic-sm'), t.firstChild); });
     steps.forEach(function (st) {
       var ch = CHAPTERS[st.getAttribute('data-ch')], card = st.querySelector('.story-card');
@@ -322,7 +331,10 @@
     W = r.width; H = r.height;
     wide = W >= 900;
     svg.attr('viewBox', '0 0 ' + W + ' ' + H);
-    if (wide) {
+    if (panel) {
+      wide = W >= 560;
+      B = { x: W * 0.07, y: H * 0.12, w: W * 0.86, h: H * 0.76 };
+    } else if (wide) {
       /* right of the cards, left of the chapter rail */
       var card = root.querySelector('.story-card');
       var left = card ? card.getBoundingClientRect().right - r.left + 56 : W * 0.42;
@@ -336,6 +348,9 @@
     } else {
       B = { x: 16, y: H * 0.07, w: W - 32, h: H * 0.48 };
     }
+    /* before first layout the stage can measure 0 wide; never let the box
+       (and so every radius drawn from it) go negative */
+    B.w = Math.max(0, B.w); B.h = Math.max(0, B.h);
   }
 
   function fade(g, on, dur) {
@@ -617,6 +632,12 @@
     });
   }
 
+  /* a short sentence on the chart itself: the point the reader should take */
+  function note(a, x, y, str, anchor) {
+    var w = Math.max(B.x + 4, Math.min(x, B.x + B.w - 4));
+    text(a, w, y, str, 's-note s-halo', anchor || 'middle');
+  }
+
   function callout(a, year, value, str, side) {
     var x = X.lx(year), y = X.ly(value), up = side !== 'below';
     a.append('line').attr('class', 's-lead').attr('x1', x).attr('x2', x).attr('y1', y + (up ? -8 : 8)).attr('y2', y + (up ? -30 : 30));
@@ -630,25 +651,27 @@
   function tfrDots(year) {
     var pos = swarm(year);
     return d3.range(N).map(function (i) {
-      var d = F.districts[i];
-      if (!d || !pos[d.name]) return gone(null, null);
-      var p = pos[d.name], hi = p[2] > REPLACEMENT;
-      return D(p[0], p[1], X.tr, hi ? C.elder : C.work, 1,
-               [d.name, 'Fertility ' + fix(p[2], 2) + ' children per woman', year === F.tfrB ? 'Projected ' + year : year]);
+      var name = F.tfrNames[i];
+      if (!name || !pos[name]) return gone(null, null);
+      var p = pos[name], hi = p[2] > REPLACEMENT;
+      return D(p[0], p[1], name === 'Odisha' ? X.tr + 2.5 : X.tr, hi ? C.elder : C.work, 1,
+               [name, 'Fertility ' + fix(p[2], 2) + ' children per woman', year === F.tfrB ? 'Projected, ' + year : year]);
     });
   }
   function tfrAnn(a, year) {
     var st = F.tfrStats[year], pos = swarm(year);
     text(a, B.x + 18, B.y + B.h * 0.16 + 4, String(year), 's-year');
-    /* name the two ends, above the top of their column of dots */
-    [st.hi, st.lo].forEach(function (d) {
+    /* name the highest state and Odisha; several states share the lowest value */
+    var named = [st.hi];
+    if (st.hi.name !== 'Odisha') named.push({ name: 'Odisha' });
+    named.forEach(function (d) {
       var p = pos[d.name], top = p[1];
       Object.keys(pos).forEach(function (k) {
         if (Math.abs(pos[k][0] - p[0]) < X.tr * 2.2) top = Math.min(top, pos[k][1]);
       });
       a.append('line').attr('class', 's-lead').attr('x1', p[0]).attr('x2', p[0])
         .attr('y1', top - X.tr - 3).attr('y2', top - X.tr - 14);
-      text(a, p[0], top - X.tr - 20, d.name, 's-lab s-halo', 'middle');
+      text(a, p[0], top - X.tr - 20, d.name === 'Odisha' ? 'Odisha ' + fix(p[2], 2) : d.name, 's-lab s-halo', 'middle');
     });
     var right = X.tx.range()[1];
     text(a, right, B.y + B.h * 0.16 + 12, st.above.length + ' of ' + st.list.length, 's-lab', 'end');
@@ -754,8 +777,9 @@
         }),
         ann: function (a) {
           text(a, x.range()[0], B.y + 6, 'Average growth per year, by period', 's-lab');
-          [F.peak, F.tail].forEach(function (p) {
+          [F.peak, F.tail].forEach(function (p, k) {
             var cx = x(p.to) + x.bandwidth() / 2;
+            note(a, cx, y(p.rate) - 34, k ? 'Settling' : 'Fastest growth', k ? 'end' : 'middle');
             text(a, cx, y(p.rate) - 14, fix(p.rate, 2) + '%', 's-lab', 'middle');
             text(a, cx, y(0) + 20, period(p.from, p.to), 's-tick', 'middle');
           });
@@ -806,15 +830,18 @@
           F.series.forEach(function (d) { s[d.year] = d.total; });
           if (c === 1951) {
             callout(a, F.first.year, s[F.first.year], crore(F.first.total) + '\n' + F.first.year);
-            if (s[1921]) callout(a, 1921, s[1921], 'Shrank\n1911–21', 'below');
+            if (s[1921]) callout(a, 1921, s[1921], 'Dipped\n1911–21', 'below');
             callout(a, 1951, s[1951], crore(s[1951]) + '\n1951');
           } else if (c === 2011) {
             callout(a, 1951, s[1951], crore(s[1951]) + '\n1951', 'below');
             callout(a, 2011, s[2011], crore(s[2011]) + '\nCensus 2011');
+            /* the finding, written on the line itself */
+            note(a, X.lx(1981), X.ly(s[1981] || (s[1951] + s[2011]) / 2) - 54, '×' + F.T.mult5111 + ' in sixty years', 'middle');
           } else {
             callout(a, 1951, s[1951], crore(s[1951]) + '\n1951', 'below');
             callout(a, F.last.year, F.last.total, crore(F.last.total) + '\nprojected ' + F.last.year);
             text(a, X.lx(2011) + 10, X.ly(s[2011]) + 24, 'projected from here', 's-tick', 'start');
+            note(a, X.lx(F.last.year), X.ly(F.last.total) + 54, '+' + F.T.add1136 + ' after 2011', 'end');
           }
         }
       };
@@ -871,7 +898,12 @@
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) { if (e.isIntersecting) activate(e.target.getAttribute('data-step')); });
   }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
-  steps.forEach(function (s) { io.observe(s); });
+  if (!panel) steps.forEach(function (s) { io.observe(s); });
+  window.SoochanaStory = {
+    go: activate,
+    steps: steps.map(function (s) { return s.getAttribute('data-step'); }),
+    layout: function () { if (F) layout(); }
+  };
 
   function fillText() {
     root.querySelectorAll('[data-f]').forEach(function (el) {
@@ -893,12 +925,13 @@
     DataLoader.getStateDemographics(),
     DataLoader.loadJSON('learn/data/districts.json'),
     DataLoader.getDistrictPopulationTrends(),
-    DataLoader.getDistrictFertilityTrends(),
+    DataLoader.loadJSON('datasets/orgi_state_projection.json'),
     DataLoader.getNationalComparisons(),
     DataLoader.loadJSON('./Orissa.geojson'),
-    DataLoader.getStateDetails().catch(function () { return null; })
+    DataLoader.getStateDetails().catch(function () { return null; }),
+    DataLoader.loadJSON('datasets/nfhs6_state_factsheet.json')
   ]).then(function (r) {
-    F = compute({ state: r[0], learn: r[1], pop: r[2], fert: r[3], nat: r[4], details: r[6],
+    F = compute({ state: r[0], learn: r[1], pop: r[2], orgi: r[3], nat: r[4], details: r[6], nfhs: r[7],
                  keyStats: window.SOOCHANA_KEY_STATS });
     geo = r[5];
     fillText();
