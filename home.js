@@ -2,7 +2,7 @@
    home.js — the home page (index.html)
 
      1. theme and language switches
-     2. the population clock (needs soochana_live.js, data/key_stats.js)
+     2. live data and headline figures (soochana_live.js, data/key_stats.js)
      3. the story's chapter bar (story.js draws and follows the scroll)
      +  the hero dot field and the welcome screen
      4. topic tabs            (TOPICS below)
@@ -65,7 +65,7 @@
   });
   function T(en, or) { return lang === 'or' && or ? or : en; }
 
-  /* ── 2. the population clock ───────────────────────────── */
+  /* ── 2. live data and the headline figures ────────────── */
   var L = window.SoochanaLive;
   var KS = window.SOOCHANA_KEY_STATS;
   function keyStat(re) {
@@ -74,87 +74,6 @@
       (g.tiles || []).forEach(function (t) { if (t.label && re.test(t.label)) out = t; });
     });
     return out;
-  }
-  var CBR = parseFloat((keyStat(/^birth rate/i) || {}).value) || 15.8;
-  var CDR = parseFloat((keyStat(/^death rate/i) || {}).value) || 7.9;
-  $('mCbr').textContent = CBR; $('mCdr').textContent = CDR;
-
-  var period = 'day';
-  var arrived = Date.now();
-  function every(perYear) {
-    var secs = Math.max(1, Math.round(L.YEAR_MS / 1000 / perYear));
-    var m = Math.floor(secs / 60), s = secs % 60;
-    return (m ? m + ' min ' : '') + (s || !m ? s + ' sec' : '');
-  }
-  function periodStart() {
-    var d = new Date();
-    if (period === 'visit') return arrived;
-    if (period === 'year') return new Date(d.getFullYear(), 0, 1).getTime();
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-  }
-
-  function startClock() {
-    var numEl = $('clockNum'), barEl = $('clockBar');
-    var shown = -1, counting = true;
-
-    function rates() {
-      var y = L.yearNow(), dt = 1 / 12, pop = L.statePop(y);
-      return {
-        pop: pop,
-        net: (L.statePop(y + dt) - L.statePop(y - dt)) / (2 * dt),
-        births: pop * CBR / 1000,
-        deaths: pop * CDR / 1000
-      };
-    }
-
-    function paint() {
-      var r = rates();
-      if (!counting) {
-        var whole = Math.floor(r.pop);
-        if (whole !== shown) {
-          if (shown !== -1 && !reduced) {
-            numEl.classList.remove('tick'); void numEl.offsetWidth; numEl.classList.add('tick');
-          }
-          shown = whole;
-          numEl.textContent = fmt(whole);
-        }
-        barEl.style.width = ((r.pop - whole) * 100).toFixed(1) + '%';
-      }
-      var frac = (Date.now() - periodStart()) / L.YEAR_MS;
-      $('vBirths').textContent = fmt(Math.floor(r.births * frac));
-      $('vDeaths').textContent = fmt(Math.floor(r.deaths * frac));
-      $('vNet').textContent = fmt(Math.floor(r.net * frac));
-    }
-
-    function words() {
-      var r = rates();
-      $('clockCrore').textContent = T('About ' + (r.pop / 1e7).toFixed(2) + ' crore people.',
-        'ପ୍ରାୟ ' + (r.pop / 1e7).toFixed(2) + ' କୋଟି ଲୋକ।');
-      $('clockPace').textContent = T('The bar fills as the next person is added, about once every ' + every(r.net) + '.',
-        'ପ୍ରତି ' + every(r.net) + ' ରେ ପ୍ରାୟ ଜଣେ ଲେଖାଏଁ ବଢ଼ୁଛନ୍ତି।');
-      $('vBirthsEvery').textContent = T('about one every ' + every(r.births), 'ପ୍ରତି ' + every(r.births) + ' ରେ ପ୍ରାୟ ଜଣେ');
-      $('vDeathsEvery').textContent = T('about one every ' + every(r.deaths), 'ପ୍ରତି ' + every(r.deaths) + ' ରେ ପ୍ରାୟ ଜଣେ');
-      $('vNetEvery').textContent = T('about ' + fmt(Math.round(r.net / 365.2425 / 10) * 10) + ' a day',
-        'ଦିନକୁ ପ୍ରାୟ ' + fmt(Math.round(r.net / 365.2425 / 10) * 10));
-    }
-    langListeners.push(words);
-    words();
-
-    document.querySelectorAll('[data-period]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        period = b.dataset.period;
-        document.querySelectorAll('[data-period]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
-        paint();
-      });
-    });
-
-    /* one opening moment: the count climbs from 1951 to this second */
-    L.tween(L.stateAt(L.years[0]), L.statePop(L.yearNow()), 2600, function (v) {
-      numEl.textContent = fmt(v);
-    }, function () { counting = false; paint(); }, L.easeInOut);
-
-    paint();
-    setInterval(paint, 250);
   }
 
   /* ── 3. the story stepper ──────────────────────────────── */
@@ -729,8 +648,7 @@
   })();
 
   if (L) {
-    L.load().then(function () { startClock(); startDistricts(); }).catch(function (err) {
-      $('clockPace').textContent = 'The live estimate could not load. The figure shown is the 2026 projection, rounded.';
+    L.load().then(function () { startDistricts(); }).catch(function (err) {
       if (window.console) console.warn('Home: live data did not load', err);
     });
   }
@@ -833,37 +751,90 @@
       shiftList.querySelectorAll('.shift-row').forEach(function (r) { io.observe(r); });
     }
 
-    /* the dial: pivot at (120, 200); all districts better turns the arrow
-       60° up, none turns it 60° down, an even split leaves it level */
+    /* the dial: pivot at (120, 200); all districts improving turns the
+       arrow 60° up, none turns it 60° down, an even split leaves it level.
+       On the arc: coloured zones, one dot per district (improving ones
+       from the top, so the arrow points at the boundary), and a marker
+       for each of the six measures. The arrow carries a count badge,
+       leaves a fading ghost where it was, settles with a small wobble,
+       and its hatch fills from the pivot out. Odisha's own change sits in
+       a badge by the pivot. */
     var PX = 120, PY = 200, R = 230, SWING = 60;
     function angleFor(k, n) { return -((k / n) - 0.5) * 2 * SWING; }
     function polar(a, r) { var t = a * Math.PI / 180; return [PX + r * Math.cos(t), PY + r * Math.sin(t)]; }
+    function arcPath(a1, a2, r) {
+      var p = polar(a1, r), q = polar(a2, r);
+      return 'M' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + 'A' + r + ' ' + r + ' 0 0 1 ' + q[0].toFixed(1) + ' ' + q[1].toFixed(1);
+    }
     function verdict(p) {
       return p >= 0.8 ? ['up', 'Improving widely'] : p >= 0.6 ? ['up', 'Improving'] :
              p > 0.4 ? ['mid', 'Mixed progress'] : p > 0.2 ? ['down', 'Focus area'] : ['down', 'Shared focus'];
     }
+    var SHORT = { 14: 'Women online', 70: 'Stunting', 16: 'Marriage <18', 71: 'Wasting', 31: '4 check-ups', 81: 'Blood sugar' };
+    var ARROW = 'M' + PX + ' 184H288V156L350 200L288 244V216H' + PX + 'Z';
 
     function buildBearing(byN, src) {
       var dial = $('brDial');
-      var p0 = polar(-SWING, R), p1 = polar(SWING, R);
-      svgEl('path', { 'class': 'br-arc', d: 'M' + p0 + 'A' + R + ' ' + R + ' 0 0 1 ' + p1 }, dial);
+      dial.setAttribute('viewBox', '0 -50 500 500');
+      var defs = svgEl('defs', {}, dial);
+
+      /* 1. zones: focus, even, improving */
+      [[0, 12, 'down'], [12, 18, 'mid'], [18, 30, 'up']].forEach(function (z) {
+        svgEl('path', { 'class': 'br-zone is-' + z[2], d: arcPath(angleFor(z[1], 30), angleFor(z[0], 30), R) }, dial);
+      });
+      svgEl('path', { 'class': 'br-arc', d: arcPath(-SWING, SWING, R) }, dial);
       svgEl('line', { 'class': 'br-level', x1: PX, y1: PY, x2: PX + R, y2: PY }, dial);
-      for (var k = 0; k <= 30; k++) {
-        var a = angleFor(k, 30), major = k % 15 === 0, q = polar(a, R), w = polar(a, R + (major ? 22 : k % 5 === 0 ? 14 : 8));
-        svgEl('line', { 'class': major ? 'br-tick br-major' : 'br-tick', x1: q[0], y1: q[1], x2: w[0], y2: w[1] }, dial);
-      }
-      [[30, 'All 30 improving'], [15, 'Even split'], [0, 'Focus in all 30']].forEach(function (l) {
-        var q = polar(angleFor(l[0], 30), R + 32);
-        var t = svgEl('text', { 'class': 'br-lab', x: q[0], y: q[1] + 6 }, dial);
+      [0, 15, 30].forEach(function (k) {
+        var a = angleFor(k, 30), q = polar(a, R + 12), w = polar(a, R + 26);
+        svgEl('line', { 'class': 'br-tick br-major', x1: q[0], y1: q[1], x2: w[0], y2: w[1] }, dial);
+      });
+      /* end labels sit inside the arc, clear of the measure markers */
+      [[30, 'All 30 improving', -18], [0, 'Focus in all 30', 30]].forEach(function (l) {
+        var q = polar(angleFor(l[0], 30), R);
+        var t = svgEl('text', { 'class': 'br-lab', x: q[0] - 12, y: q[1] + l[2], 'text-anchor': 'end' }, dial);
         t.textContent = l[1];
       });
-      /* the dial's own hatch, so the stripes take the arrow's colour */
-      var pat = svgEl('pattern', { id: 'brHatch', width: 8, height: 8, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(40)' },
-        svgEl('defs', {}, dial));
+      var even = polar(0, R + 34);
+      svgEl('text', { 'class': 'br-lab', x: even[0], y: even[1] + 6 }, dial).textContent = 'Even split';
+
+      /* 2. one dot per district along the arc */
+      var dots = [];
+      for (var i = 0; i < 30; i++) {
+        var q = polar(angleFor(30 - i - 0.5, 30), R);
+        var d = svgEl('circle', { 'class': 'br-ddot', cx: q[0].toFixed(1), cy: q[1].toFixed(1), r: 7 }, dial);
+        d.style.transitionDelay = (i * 22) + 'ms';
+        d.appendChild(svgEl('title', {}));
+        dots.push(d);
+      }
+
+      /* 4. a marker for each of the six measures, filled in once items exist */
+      var marks = svgEl('g', { 'class': 'br-marks' }, dial);
+
+      /* the hatch, and a clip that lets it fill from the pivot out (6) */
+      var pat = svgEl('pattern', { id: 'brHatch', width: 8, height: 8, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(40)' }, defs);
       svgEl('line', { 'class': 'br-hatch', x1: 0, y1: 0, x2: 0, y2: 8 }, pat);
+      var clip = svgEl('clipPath', { id: 'brFillClip', clipPathUnits: 'userSpaceOnUse' }, defs);
+      var clipRect = svgEl('rect', { 'class': 'br-cliprect', x: PX - 20, y: 140, width: 260, height: 120 }, clip);
+
+      /* 5. the ghost of the last position */
+      var ghost = svgEl('g', { 'class': 'br-ghost' }, dial);
+      svgEl('path', { d: ARROW }, ghost);
+
+      /* the arrow, with its count badge (3) */
       var arrow = svgEl('g', { 'class': 'br-arrow' }, dial);
-      svgEl('path', { 'class': 'br-arrow-fill', d: 'M' + PX + ' 184H288V156L350 200L288 244V216H' + PX + 'Z', fill: 'url(#brHatch)' }, arrow);
-      svgEl('path', { 'class': 'br-arrow-line', d: 'M' + PX + ' 184H288V156L350 200L288 244V216H' + PX + 'Z' }, arrow);
+      var wob = svgEl('g', { 'class': 'br-wob' }, arrow);
+      svgEl('path', { 'class': 'br-arrow-fill', d: ARROW, fill: 'url(#brHatch)', 'clip-path': 'url(#brFillClip)' }, wob);
+      svgEl('path', { 'class': 'br-arrow-line', d: ARROW }, wob);
+      var badge = svgEl('g', { 'class': 'br-badge' }, wob);
+      svgEl('rect', { x: 268, y: 181, width: 58, height: 38, rx: 19 }, badge);
+      var bNum = svgEl('text', { 'class': 'br-badge-n', x: 297, y: 200 }, badge);
+      var bSub = svgEl('text', { 'class': 'br-badge-s', x: 297, y: 212 }, badge);
+      bSub.textContent = 'improving';
+
+      /* 7. Odisha's own change, by the pivot */
+      var state = svgEl('g', { 'class': 'br-state' }, dial);
+      var sRect = svgEl('rect', { x: PX - 86, y: -19, width: 172, height: 28, rx: 14 }, state);
+      var sText = svgEl('text', { x: PX, y: 0 }, state);
       svgEl('circle', { 'class': 'br-pivot', cx: PX, cy: PY, r: 14 }, dial);
 
       var items = BEAR.map(function (b) {
@@ -891,30 +862,99 @@
         var step = el('div', 'br-step');
         step.appendChild(card);
         brSteps.appendChild(step);
-        return { step: step, t: t, ind: ind, dir: v[0] };
+        return { step: step, t: t, ind: ind, dir: v[0], short: SHORT[b.n] || b.name };
       }).filter(Boolean);
       if (!items.length) return;
 
-      var dotsEl = $('brDots');
+      /* 4. the six markers: dot on the outside of the arc, label beside it */
+      items.forEach(function (it, j) {
+        var a = angleFor(it.t.better.length, it.t.n), p = polar(a, R + 30), lp = polar(a, R + 44);
+        var g = svgEl('g', { 'class': 'br-mark', tabindex: 0, role: 'button' }, marks);
+        svgEl('circle', { cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: 6 }, g);
+        var tx = svgEl('text', { x: lp[0].toFixed(1), y: (lp[1] + 5).toFixed(1) }, g);
+        tx.textContent = it.short;
+        g.appendChild(svgEl('title', {})).textContent = it.short + ': ' + it.t.better.length + ' of ' + it.t.n + ' districts improving';
+        function go() { it.step.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' }); show(j); }
+        g.addEventListener('click', go);
+        g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+        it.mark = g;
+        it.markText = tx;
+      });
+      /* keep neighbouring labels at least 17 units apart */
+      items.slice().sort(function (a, b) { return +a.markText.getAttribute('y') - +b.markText.getAttribute('y'); })
+        .reduce(function (prev, it) {
+          var y = +it.markText.getAttribute('y');
+          if (prev != null && y - prev < 17) { y = prev + 17; it.markText.setAttribute('y', y.toFixed(1)); }
+          return y;
+        }, null);
+
+      var lastAngle = null;
       function show(j) {
-        var it = items[j];
-        items.forEach(function (x, i) { x.step.classList.toggle('on', i === j); });
+        if (j === cur && lastAngle !== null) return;
+        var it = items[j], t = it.t, n = t.n, k = t.better.length;
+        var angle = angleFor(k, n);
+        items.forEach(function (x, i) { x.step.classList.toggle('on', i === j); x.mark.classList.toggle('on', i === j); });
         dial.setAttribute('data-dir', it.dir);
-        arrow.style.transform = 'rotate(' + angleFor(it.t.better.length, it.t.n) + 'deg)';
-        var focus = it.dir === 'down';
-        $('brCount').textContent = focus ? it.t.n - it.t.better.length : it.t.better.length;
-        $('brCountText').textContent = 'of ' + it.t.n + (focus ? ' districts where this is a focus' : ' districts improving');
-        dotsEl.textContent = '';
-        it.t.better.concat(it.t.same, it.t.worse).forEach(function (d) {
-          var good = it.t.better.indexOf(d) !== -1, bad = it.t.worse.indexOf(d) !== -1;
-          var i = el('i', good ? 'up' : bad ? 'down' : 'flat');
-          i.title = d.name + ': ' + num(d.was, it.ind.unit) + ' → ' + num(d.now, it.ind.unit);
-          dotsEl.appendChild(i);
+
+        /* 5. ghost: snap to the old angle, then fade */
+        if (lastAngle !== null && !reduced && lastAngle !== angle) {
+          ghost.style.transition = 'none';
+          ghost.style.transform = 'rotate(' + lastAngle + 'deg)';
+          ghost.style.opacity = '0.4';
+          void ghost.getBoundingClientRect();
+          ghost.style.transition = '';
+          ghost.style.opacity = '0';
+        }
+        arrow.style.transform = 'rotate(' + angle + 'deg)';
+        lastAngle = angle;
+
+        /* 6. hatch fills from the pivot out, and a wobble as it lands */
+        if (!reduced) {
+          dial.classList.remove('is-filling', 'is-settling');
+          void dial.getBoundingClientRect();
+          dial.classList.add('is-filling');
+          clearTimeout(show.t);
+          show.t = setTimeout(function () { dial.classList.add('is-settling'); }, 950);
+        }
+
+        /* 3. the count on the arrowhead, kept upright as the arrow turns */
+        bNum.textContent = k + '/' + n;
+        badge.style.transform = 'rotate(' + (-angle) + 'deg)';
+
+        /* 2. the dots: improving from the top, the rest below */
+        var gain = function (d) { return (d.now - d.was) * it.ind.polarity; };
+        var order = t.better.slice().sort(function (a, b) { return gain(b) - gain(a); })
+          .concat(t.same, t.worse.slice().sort(function (a, b) { return gain(b) - gain(a); }));
+        dots.forEach(function (dot, i) {
+          var d = order[i];
+          var cls = !d ? 'none' : t.better.indexOf(d) !== -1 ? 'up' : t.same.indexOf(d) !== -1 ? 'flat' : 'down';
+          dot.setAttribute('class', 'br-ddot is-' + cls);
+          dot.firstChild.textContent = d ? d.name + ': ' + num(d.was, it.ind.unit) + ' → ' + num(d.now, it.ind.unit) : '';
         });
+
+        /* 7. Odisha's change, on the side away from the arrow */
+        var y = angle > 0 ? PY - 62 : PY + 32;
+        state.style.transform = 'translateY(' + y + 'px)';
+        sText.textContent = 'Odisha ' + num(it.ind.odisha.nfhs5, it.ind.unit) + ' → ' + num(it.ind.odisha.nfhs6, it.ind.unit);
+
+        var focus = it.dir === 'down';
+        $('brCount').textContent = focus ? n - k : k;
+        $('brCountText').textContent = 'of ' + n + (focus ? ' districts where this is a focus' : ' districts improving');
+        var lead = t.better.slice().sort(function (a, b) { return gain(b) - gain(a); })[0];
+        $('brLead').textContent = lead
+          ? 'Biggest gain: ' + lead.name + ', ' + num(lead.was, it.ind.unit) + ' → ' + num(lead.now, it.ind.unit)
+          : 'A shared focus across all ' + n + ' districts.';
         cur = j;
       }
-      var cur = 0;
+      var cur = -1;
       show(0);
+      /* the dots sweep in the first time the dial is seen */
+      if ('IntersectionObserver' in window && !reduced) {
+        var dio = new IntersectionObserver(function (es) {
+          if (es[0].isIntersecting) { dial.classList.add('in'); dio.disconnect(); }
+        }, { threshold: 0.2 });
+        dio.observe(dial);
+      } else { dial.classList.add('in'); }
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (es) {
           es.forEach(function (e) {

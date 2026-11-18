@@ -31,7 +31,7 @@
 })();
 </script>
 <link rel="stylesheet" href="site.css?v=20261116-2">
-<link rel="stylesheet" href="home.css?v=20261118-9">
+<link rel="stylesheet" href="home.css?v=20261118-19">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="soochana_live.js?v=20260925-2"></script>
 <script src="data_loader.js?v=20260925-2"></script>
@@ -155,7 +155,6 @@
     </p>
     <div class="lander-cta">
       <a href="#story" class="btn btn-turmeric" data-or="କାହାଣୀ ପଢ଼ନ୍ତୁ">Read the story</a>
-      <a href="#now" class="btn" data-or="ଜନସଂଖ୍ୟା ଘଡ଼ି">See the live clock</a>
       <a href="#districts" class="btn" data-or="ନିଜ ଜିଲ୍ଲା ଖୋଜନ୍ତୁ">Find your district</a>
     </div>
     <p class="lander-facts facts-label">30 districts · Census 1901–2011 · NFHS-6 (2023–24) · Projections to 2036</p>
@@ -171,62 +170,6 @@
     <div class="df-hint" id="dfHint"></div>
     <div class="df-legend" id="dfLegend"></div>
     <div class="df-stats"><span id="dfStat1">Year</span> <b id="dfYear">2021</b> <span id="dfStat2">Share aged 60+</span> <b id="dfShare">11.5%</b></div>
-  </div>
-</section>
-
-<!-- ═══════════════ NOW — the population clock ═══════════════
-     The estimate comes from soochana_live.js (district projections,
-     interpolated to this second). Births and deaths apply the SRS rates
-     in data/key_stats.js to that estimate. -->
-<section class="now" id="now" data-nav="Right now" data-nav-or="ଏହି ମୁହୂର୍ତ୍ତ">
-  <div class="now-in">
-    <p class="now-lead"><span class="live" aria-hidden="true"></span><span data-or="ଏହି ମୁହୂର୍ତ୍ତରେ ଓଡ଼ିଶାର ଜନସଂଖ୍ୟା">Odisha's population right now</span></p>
-    <div class="clock" id="clock" role="heading" aria-level="2"><span class="clock-num" id="clockNum">4,70,00,000</span></div>
-    <div class="clock-bar" aria-hidden="true"><i id="clockBar"></i></div>
-    <p class="now-sub">
-      <span id="clockCrore">About 4.7 crore people.</span>
-      <span id="clockPace"></span>
-    </p>
-
-    <div class="vitals">
-      <div class="vitals-head">
-        <div class="seg seg-onblock" role="group" aria-label="Period">
-          <button type="button" data-period="day" aria-pressed="true" data-or="ଆଜି">Today</button>
-          <button type="button" data-period="year" aria-pressed="false" data-or="ଏହି ବର୍ଷ">This year</button>
-          <button type="button" data-period="visit" aria-pressed="false" data-or="ଆପଣ ଆସିବା ପରଠାରୁ">Since you arrived</button>
-        </div>
-      </div>
-      <dl class="vitals-row">
-        <div class="vital">
-          <dt><i data-ic="sprout"></i><span data-or="ଜନ୍ମ">Births</span></dt>
-          <dd id="vBirths">0</dd>
-          <p id="vBirthsEvery"></p>
-        </div>
-        <div class="vital">
-          <dt><i data-ic="hourglass"></i><span data-or="ମୃତ୍ୟୁ">Deaths</span></dt>
-          <dd id="vDeaths">0</dd>
-          <p id="vDeathsEvery"></p>
-        </div>
-        <div class="vital vital-net">
-          <dt><i data-ic="users"></i><span data-or="ବଢ଼ିଥିବା ଜନସଂଖ୍ୟା">People added</span></dt>
-          <dd id="vNet">0</dd>
-          <p id="vNetEvery"></p>
-        </div>
-      </dl>
-    </div>
-
-    <details class="method">
-      <summary data-or="ଏହି ଆକଳନ କିପରି କରାଯାଏ">How this is estimated</summary>
-      <p>
-        These are estimates, not a count. The population figure comes from district population projections
-        on the Census of India 2011 base: UNFPA India's district projections for 2021 and 2026 (published 2022),
-        carried forward with the state projection of the Technical Group on Population Projections
-        (National Commission on Population, MoHFW, July 2020), and interpolated to the present second. Births and deaths apply the Sample Registration System rates for Odisha
-        (<span id="mCbr">15.8</span> births and <span id="mCdr">7.9</span> deaths per 1,000 people a year, SRS 2024)
-        to that estimate. "People added" is the change in the projected population, which also reflects migration,
-        so it need not equal births minus deaths.
-      </p>
-    </details>
   </div>
 </section>
 
@@ -475,9 +418,10 @@
   </div>
   <div class="br-body">
     <div class="br-stage" aria-hidden="true">
-      <svg class="br-dial" id="brDial" viewBox="0 -40 470 480"></svg>
+      <svg class="br-dial" id="brDial" viewBox="0 -50 500 500"></svg>
       <p class="br-count"><b id="brCount">–</b> <span id="brCountText">of 30 districts improving</span></p>
-      <div class="br-dots" id="brDots"></div>
+      <p class="br-lead br-note" id="brLead"></p>
+      <p class="br-key br-label"><i></i>Improving <i class="down"></i>Focus area · Each dot on the arc is a district; hover for its figures. Click a measure on the dial to jump to it.</p>
     </div>
     <div class="br-steps" id="brSteps"></div>
   </div>
@@ -499,26 +443,6 @@
   </ol>
   <div class="win-stats" id="winStats"></div>
   <p class="shift-src" id="winSrc"></p>
-</section>
-
-<!-- ═══════════════ SEVEN PATHWAYS TO 2047 ═══════════════
-     The sectoral pathway of the same paper, in short. -->
-<section class="sec paths" id="paths" data-nav="Pathways to 2047" data-nav-or="୨୦୪୭ ପାଇଁ ପଥ" aria-labelledby="pathTitle">
-  <div class="sec-head">
-    <p class="st-kicker">From the CYSD and UNFPA roadmap</p>
-    <h2 id="pathTitle" data-or="୨୦୪୭ ପାଇଁ ସାତଟି ପଥ">Seven pathways to 2047</h2>
-    <p class="sec-deck">Odisha's transition is an opportunity to build development around a healthier, highly skilled and productive population. Seven ways to get there.</p>
-  </div>
-  <ol class="path-list">
-    <li><b>01</b><h3>Grow during the window</h3><p>Front-load investment and job creation to 2036: manufacturing, services, mineral-based value addition, modern agriculture and micro-irrigation, so more young people find good work close to home.</p></li>
-    <li><b>02</b><h3>Prepare for a smaller, older workforce</h3><p>Raise productivity through skills, technology and capital. Lifelong skilling for youth, returning migrants and older workers, flexible age-friendly work, and childcare, safe transport and flexible hours so more women can work.</p></li>
-    <li><b>03</b><h3>Make education quality- and skills-led</h3><p>Use smaller school cohorts to invest more in every child. Hostels, residential schools and stipends in tribal, PVTG and migration-prone areas, and vocational learning within secondary schooling.</p></li>
-    <li><b>04</b><h3>Build a health system for an ageing Odisha</h3><p>Keep mother and child care strong, give nutrition and anaemia their own pathway, screen early for diabetes and blood pressure in primary care, and add geriatric and long-term care, with an eldercare facility in every district by 2036.</p></li>
-    <li><b>05</b><h3>Strengthen social protection and family well-being</h3><p>Rights-based, choice-driven reproductive health services, support for healthy family formation, and community care for older persons and people with disabilities.</p></li>
-    <li><b>06</b><h3>Build a stronger demographic data system</h3><p>Timely registration of every birth and death, and tracking of fertility, migration, ageing and work district by district, so planning fits each place.</p></li>
-    <li><b>07</b><h3>Make migration part of the development strategy</h3><p>Portable social protection, skill recognition and services for migrant workers, and ways to bring return migrants' skills, experience and savings into the local economy.</p></li>
-  </ol>
-  <p class="shift-src">Source: Mohanty, S. K., Kundu, A. and Jagadananda (2026), Population Dynamics and Development Prospects of Odisha: A Roadmap to 2036 and 2047, CYSD and UNFPA, section 6.c.</p>
 </section>
 
 <!-- ═══════════════ DISTRICTS ═══════════════ -->
@@ -676,7 +600,7 @@
 
 <script src="icons.js?v=20261005-2"></script>
 <script src="story.js?v=20261118-1"></script>
-<script src="home.js?v=20261118-8"></script>
+<script src="home.js?v=20261118-17"></script>
 <script src="chatbot.js?v=20261116-1"></script>
 </body>
 </html>

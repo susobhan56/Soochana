@@ -1007,31 +1007,71 @@ body.present header.site-nav { display: none !important; }
   height: calc(100svh - var(--top-h, 74px) - 32px); max-height: 640px;
   display: flex; flex-direction: column; justify-content: center; gap: 10px;
 }
-.br-dial { width: 100%; max-height: 72%; overflow: visible; }
+.br-dial { width: 100%; max-height: 78%; overflow: visible; --c: var(--mid); }
+.br-dial[data-dir="up"] { --c: var(--up); }
+.br-dial[data-dir="down"] { --c: var(--down); }
+/* 1. zones behind the arc */
+.br-zone { fill: none; stroke-width: 30; stroke-linecap: butt; opacity: 0.16; }
+.br-zone.is-up { stroke: var(--up); }
+.br-zone.is-mid { stroke: var(--mid); opacity: 0.08; }
+.br-zone.is-down { stroke: var(--down); }
 .br-arc, .br-level { fill: none; stroke: var(--soft); stroke-width: 1.5; }
-.br-arc { filter: url(#sketch); }
+.br-arc { filter: url(#sketch); opacity: 0.7; }
 .br-level { stroke-dasharray: 4 6; opacity: 0.6; }
 .br-tick { stroke: var(--soft); stroke-width: 1.5; }
 .br-major { stroke: var(--ink); stroke-width: 3; }
-.br-lab { font: 700 21px var(--hand); fill: var(--soft); }
-.br-arrow {
-  --c: var(--mid); color: var(--c);
+.br-lab { font: 700 20px var(--hand); fill: var(--soft); }
+/* 2. a dot for every district, lit in a sweep */
+.br-ddot { fill: var(--bg); stroke: var(--line); stroke-width: 2; cursor: help;
+  transition: fill 0.45s ease, stroke 0.45s ease, opacity 0.5s ease, r 0.2s ease; }
+.br-ddot:hover { r: 10; }
+.br-ddot.is-up { fill: var(--up); stroke: var(--up); }
+.br-ddot.is-down { fill: var(--bg); stroke: var(--down); stroke-width: 2.5; }
+.br-ddot.is-flat { fill: var(--mid); stroke: var(--mid); }
+.br-ddot.is-none { opacity: 0; }
+.br-dial:not(.in) .br-ddot { opacity: 0; }
+/* 4. the six measures, outside the arc */
+.br-mark { cursor: pointer; }
+.br-mark circle { fill: var(--bg); stroke: var(--soft); stroke-width: 2; transition: fill 0.3s, stroke 0.3s, r 0.3s; }
+.br-mark text { font: 600 13px var(--text); fill: var(--soft); transition: fill 0.3s; }
+.br-mark:hover circle, .br-mark:focus-visible circle { stroke: var(--ink); }
+.br-mark:hover text, .br-mark:focus-visible text { fill: var(--ink); }
+.br-mark.on circle { fill: var(--c); stroke: var(--ink); r: 8; }
+.br-mark.on text { fill: var(--ink); font-weight: 700; }
+.br-mark:focus { outline: none; }
+/* the arrow */
+.br-arrow, .br-ghost, .br-wob {
   transform-box: view-box; transform-origin: 120px 200px;
-  transition: transform 1.1s cubic-bezier(0.34, 1.45, 0.64, 1);
 }
-.br-dial[data-dir="up"] .br-arrow { --c: var(--up); }
-.br-dial[data-dir="down"] .br-arrow { --c: var(--down); }
-.br-hatch { stroke: var(--mid); stroke-width: 3; transition: stroke 0.6s; }
-.br-dial[data-dir="up"] .br-hatch { stroke: var(--up); }
-.br-dial[data-dir="down"] .br-hatch { stroke: var(--down); }
-.br-arrow-line { fill: none; stroke: var(--c); stroke-width: 4; stroke-linejoin: round; filter: url(#sketch); transition: stroke 0.6s, fill 0.6s; }
+.br-arrow { color: var(--c); transition: transform 1.1s cubic-bezier(0.34, 1.45, 0.64, 1); }
+.br-hatch { stroke: var(--c); stroke-width: 3; transition: stroke 0.6s; }
+.br-arrow-line { fill: none; stroke: var(--c); stroke-width: 4; stroke-linejoin: round; filter: url(#sketch); transition: stroke 0.6s; }
 .br-pivot { fill: var(--bg); stroke: var(--ink); stroke-width: 4; }
+/* 3. the count badge rides on the head and stays upright */
+.br-badge { transform-box: fill-box; transform-origin: center; transition: transform 1.1s cubic-bezier(0.34, 1.45, 0.64, 1); }
+.br-badge rect { fill: var(--ink); stroke: var(--bg); stroke-width: 2.5; }
+.br-badge-n { font: 400 17px var(--display); fill: #fff; text-anchor: middle; }
+.br-badge-s { font: 600 7.5px var(--text); fill: #fff; text-anchor: middle; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+/* 5. a fading ghost where the arrow was */
+.br-ghost { opacity: 0; transition: opacity 1.6s ease 0.25s; pointer-events: none; }
+.br-ghost path { fill: none; stroke: var(--soft); stroke-width: 2.5; stroke-dasharray: 6 6; }
+/* 6. the hatch fills from the pivot out, then a small wobble */
+.br-cliprect { transform-box: fill-box; transform-origin: left center; }
+.br-dial.is-filling .br-cliprect { animation: brFill 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both; }
+@keyframes brFill { from { transform: scaleX(0.08); } to { transform: scaleX(1); } }
+.br-dial.is-settling .br-wob { animation: brWobble 0.7s ease-out; }
+@keyframes brWobble { 0% { transform: rotate(0); } 30% { transform: rotate(-2.4deg); } 60% { transform: rotate(1.3deg); } 100% { transform: rotate(0); } }
+/* 7. Odisha's change by the pivot */
+.br-state { transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.br-state rect { fill: var(--bg); stroke: var(--c); stroke-width: 2; transition: stroke 0.6s; }
+.br-state text { font: 600 13px var(--text); fill: var(--ink); text-anchor: middle; font-variant-numeric: tabular-nums; }
+/* readout under the dial */
 .br-count { font-size: 15px; color: var(--soft); }
 .br-count b { font: 400 clamp(36px, 3.4vw, 50px)/1 var(--display); color: var(--ink); margin-right: 4px; vertical-align: -4px; }
-.br-dots { display: grid; grid-template-columns: repeat(15, 14px); gap: 6px; }
-.br-dots i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--soft); box-sizing: border-box; }
-.br-dots i.up { background: var(--up); border-color: var(--up); }
-.br-dots i.down { background: transparent; border-color: var(--down); }
+.br-lead { font: 700 20px/1.25 var(--hand); color: var(--up); }
+.br-key { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font: 500 12.5px var(--text); color: var(--soft); }
+.br-key i { width: 12px; height: 12px; border-radius: 50%; background: var(--up); border: 2px solid var(--up); }
+.br-key i.down { background: transparent; border-color: var(--down); margin-left: 6px; }
 
 .br-steps { padding: 12vh 0 30vh; }
 .br-step { min-height: 72vh; display: flex; align-items: center; }
@@ -1062,15 +1102,18 @@ body.present header.site-nav { display: none !important; }
     background-size: 900px 900px, 220px 220px; background-blend-mode: soft-light;
     flex-direction: row; align-items: center; flex-wrap: wrap;
   }
-  .br-dial { width: 46%; max-height: 30vh; }
+  .br-dial { width: 58%; max-height: 34vh; }
   .br-count { flex: 1; }
-  .br-dots { flex-basis: 100%; grid-template-columns: repeat(15, 1fr); gap: 4px; }
-  .br-dots i { width: auto; aspect-ratio: 1; height: auto; }
+  .br-lead { flex-basis: 100%; font-size: 17px; }
+  .br-key { display: none; }
+  .br-mark text { font-size: 15px; }
   .br-steps { padding: 4vh 0 20vh; }
   .br-step { min-height: 64vh; }
 }
 @media (prefers-reduced-motion: reduce) {
   .br-arrow, .shift-from s::after, .br-fig s::after, .shift-row .shift-arrow svg, .shift-row .shift-to { transition: none; }
+  .br-badge, .br-ghost, .br-state, .br-ddot { transition: none; }
+  .br-dial .br-cliprect, .br-dial .br-wob { animation: none !important; }
 }
 
 
@@ -1177,15 +1220,14 @@ body.present header.site-nav { display: none !important; }
 
 
 /* ═══════════════ FROM THE CYSD AND UNFPA ROADMAP (2026) ═══════════════
-   A generation of gains (reuses the .shift rows), the window to 2036,
-   and seven pathways to 2047. */
+   A generation of gains (reuses the .shift rows) and the window to 2036. */
 .gains .gain-src { display: block; margin-top: 4px; font: 500 12px/1.4 var(--text); color: var(--soft); opacity: 0.85; }
 .gains .shift-to em { font-size: 17px; }
 
 /* the window: one large statement over a three-part timeline */
 .window { --win: #0879ad; }
 .window .st-kicker { color: var(--win); }
-.win-title { font: 400 clamp(40px, 6.4vw, 92px)/0.98 var(--display); text-transform: uppercase; letter-spacing: 0.005em; max-width: 22ch; margin: 6px 0 22px; text-wrap: balance; }
+.win-title { font: 400 clamp(30px, 3.6vw, 52px)/1.04 var(--display); text-transform: uppercase; letter-spacing: 0.005em; max-width: 22ch; margin: 6px 0 22px; text-wrap: balance; }
 .win-lede { font: 300 clamp(17px, 1.4vw, 21px)/1.7 var(--read); max-width: 52ch; }
 .win-lede b { font: 400 1.25em var(--display); color: var(--win); }
 .win-line {
@@ -1200,7 +1242,10 @@ body.present header.site-nav { display: none !important; }
 .win-line li.is-now::before { background: var(--turmeric); border-color: var(--ink); }
 .win-line li.is-now::after { content: ''; position: absolute; top: -4px; left: 0; right: 0; height: 4px; background: var(--turmeric); }
 .win-yr { font: 600 12px var(--text); letter-spacing: 0.14em; text-transform: uppercase; color: var(--win); }
-.win-line b { font: 400 clamp(20px, 1.8vw, 26px)/1.1 var(--display); text-transform: uppercase; }
+/* the phase titles in the reading sans, not the condensed display face:
+   the site-wide rule bolds <b> inside list items, which fakes a bold
+   condensed face and squashes it */
+.window .win-line li > b { font: 700 clamp(18px, 1.5vw, 21px)/1.3 var(--text); text-transform: none; letter-spacing: 0; color: var(--ink); }
 .win-line li > span:last-child { font: 400 14.5px/1.55 var(--text); color: var(--soft); max-width: 34ch; }
 .win-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); margin-top: clamp(28px, 4vh, 44px); }
 .win-stat { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border: 2px solid var(--ink); border-radius: 14px; background: color-mix(in srgb, var(--bg) 70%, #fff); }
@@ -1212,18 +1257,10 @@ body.present header.site-nav { display: none !important; }
 .win-stat-y { font: 500 12px var(--text); color: var(--soft); }
 .win-stat-n { font: 700 19px/1.2 var(--hand); color: #0b6b50; }
 
-/* seven pathways: large numerals, two columns */
-.path-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(24px, 4vw, 64px); counter-reset: none; }
-.path-list li { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 18px; padding: 22px 0; border-top: 1px solid var(--line); }
-.path-list li > b { grid-row: span 2; font: 400 clamp(40px, 3.6vw, 56px)/0.9 var(--display); color: var(--turmeric); -webkit-text-stroke: 1.5px var(--ink); }
-.path-list h3 { margin: 2px 0 8px; font: 400 clamp(20px, 1.7vw, 25px)/1.12 var(--display); text-transform: uppercase; }
-.path-list li p { font: 300 15.5px/1.65 var(--read); color: var(--soft); }
-.path-list li:last-child { grid-column: 1 / -1; }
-
 @media (max-width: 900px) {
   .win-line { grid-template-columns: minmax(0, 1fr); border-top: 0; border-left: 4px solid var(--line); margin-left: 8px; }
   .win-line li { padding: 4px 0 22px 26px; }
   .win-line li::before { top: 4px; left: -12px; }
   .win-line li.is-now::after { top: 0; bottom: 0; left: -4px; right: auto; width: 4px; height: auto; }
-  .win-stats, .path-list { grid-template-columns: minmax(0, 1fr); }
+  .win-stats { grid-template-columns: minmax(0, 1fr); }
 }
