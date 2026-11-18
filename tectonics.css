@@ -654,3 +654,29 @@
   .tk-body, .tk-scene, .tk-rise, .tk-plates *, .tk-island .dot, .tk-slope *, .tk-scatter *, .tk-quad { transition: none !important; animation: none !important; }
   .tk-slope .series .line { stroke-dasharray: none; }
 }
+
+/* ── the tremor, until the search data arrives: four survey signals ──
+   tectonics.js swaps the empty traces for these when no export exists. */
+.tk-seismo.tk-survey { max-width: 760px; gap: 16px; }
+.tk-survey-head { margin: 0; font: 500 15px/1.5 var(--tk-ui); color: var(--tk-soft); }
+.tk-survey-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.tk-sig {
+  --c: var(--tk-record);
+  display: flex; flex-direction: column; gap: 6px; margin: 0;
+  padding: 16px 18px 14px; border: 1px solid var(--tk-line); border-radius: 14px;
+  background: rgba(0, 0, 0, 0.18); border-top: 4px solid var(--c);
+}
+.tk-sig.is-focus { --c: var(--tk-signal); }
+.tk-sig.is-flat { --c: var(--tk-faint); }
+.tk-sig-k { margin: 0; font: 600 11.5px var(--tk-ui); letter-spacing: 0.12em; text-transform: uppercase; color: var(--c); }
+.tk-sig-name { margin: 0; font: 400 clamp(20px, 1.8vw, 26px)/1.05 var(--tk-display); text-transform: uppercase; letter-spacing: 0.01em; color: var(--tk-white); }
+.tk-sig-fig { display: flex; align-items: center; gap: 10px; margin: 4px 0 2px; }
+.tk-sig-fig s { font: 400 20px var(--tk-display); color: var(--tk-faint); text-decoration-thickness: 2px; text-decoration-color: var(--tk-faint); }
+.tk-sig-fig svg { width: 40px; height: 16px; color: var(--c); flex: none; }
+.tk-sig-fig b { font: 400 clamp(28px, 2.6vw, 36px)/1 var(--tk-display); color: var(--c); font-variant-numeric: tabular-nums; }
+.tk-sig-strip { position: relative; height: 16px; margin: 4px 4px 2px; }
+.tk-sig-strip::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--tk-line); }
+.tk-sig-strip i { position: absolute; top: 50%; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%; background: var(--tk-white); opacity: 0.35; }
+.tk-sig-strip i.od { width: 4px; height: 16px; margin: -8px 0 0 -2px; border-radius: 2px; background: var(--c); opacity: 1; }
+.tk-sig-say { margin: 0; font: 300 13.5px/1.55 var(--tk-read); color: var(--tk-soft); }
+@media (max-width: 720px) { .tk-survey-grid { grid-template-columns: minmax(0, 1fr); } }

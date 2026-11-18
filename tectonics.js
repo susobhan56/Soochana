@@ -371,10 +371,121 @@
         });
     });
     Promise.all(jobs).then(() => {
-      status.textContent = loaded
-        ? loaded + ' of ' + SIGNALS.length + ' traces are in. The rest fill in as the data arrives.'
-        : 'The search data is being gathered. These traces fill in as it arrives; until then nothing is drawn, so nothing here is guessed.';
+      if (loaded) {
+        status.textContent = loaded + ' of ' + SIGNALS.length + ' traces are in. The rest fill in as the data arrives.';
+        return;
+      }
+      /* no search export yet: show what the surveys say on the same theme */
+      surveySignals(wrap, status);
     });
+  }
+
+  /* ═══ until the search data arrives: four survey signals ══════
+     Same questions, answered by the record. NFHS indicator numbers from
+     datasets/nfhs_district_rounds.json, chosen per story; the figures and
+     district counts are all computed from that file. */
+  const SURVEY_SIGNALS = {
+    s1: [
+      { n: 14, name: 'Women online', say: 'More women can now search privately on a phone of their own.' },
+      { n: 94, name: 'A phone of her own', say: 'The private screen where these questions get asked.' },
+      { n: 22, name: 'Modern contraception', say: 'Use of a modern method, among currently married women.' },
+      { n: 26, name: 'Unmet need', say: 'Women who would like to space or limit births and are not yet using a method.' }
+    ],
+    s2: [
+      { n: 16, name: 'Married before 18', say: 'Women aged 20 to 24 who married before 18.' },
+      { n: 12, name: 'Ten years of school', say: 'Women with ten or more years of schooling.' },
+      { n: 19, name: 'Teenage motherhood', say: 'Women aged 15 to 19 who were already mothers or pregnant.' },
+      { n: 14, name: 'Women online', say: 'Where a generation now looks for a match, and for advice.' }
+    ],
+    s3: [
+      { n: 3, name: 'People aged 60 and over', say: 'Share of the household population aged 60 or more.' },
+      { n: 81, name: 'Blood sugar, women', say: 'High or very high, or on medicine for it.' },
+      { n: 84, name: 'Blood sugar, men', say: 'High or very high, or on medicine for it.' },
+      { n: 7, name: 'Health cover', say: 'Households where someone is covered by a health scheme.' }
+    ],
+    s4: [
+      { n: 7, name: 'Health cover', say: 'Households where someone is covered by a health scheme.' },
+      { n: 36, name: 'Births in a facility', say: 'Births in a hospital or health centre.' },
+      { n: 39, name: 'Caesarean births', say: 'Births delivered by caesarean section.' },
+      { n: 81, name: 'Blood sugar, women', say: 'High or very high, or on medicine for it.' }
+    ],
+    s5: [
+      { n: 93, name: 'Her own bank account', say: 'Women with a bank or savings account they use themselves.' },
+      { n: 94, name: 'A phone of her own', say: 'How families keep in touch across states.' },
+      { n: 15, name: 'Men online', say: 'Where work far away is found, and trains are booked.' },
+      { n: 8, name: 'A bank account at home', say: 'Households with a bank or post-office account.' }
+    ]
+  };
+
+  function surveySignals(wrap, status) {
+    const first = SIGNALS[0] && SIGNALS[0].file.match(/\/(s\d)-/);
+    const list = first && SURVEY_SIGNALS[first[1]];
+    if (!list) {
+      status.textContent = 'The search data is being gathered. These traces fill in as it arrives; until then nothing is drawn, so nothing here is guessed.';
+      return;
+    }
+    fetch('datasets/nfhs_district_rounds.json')
+      .then(r => (r.ok ? r.json() : null))
+      .then(data => {
+        if (!data) throw new Error('no data');
+        const byN = {};
+        data.indicators.forEach(i => { byN[i.n] = i; });
+        wrap.textContent = '';
+        wrap.classList.add('tk-survey');
+        wrap.setAttribute('aria-label', 'What the surveys say on the same questions, NFHS-5 to NFHS-6');
+        const head = document.createElement('p');
+        head.className = 'tk-survey-head';
+        head.textContent = 'While the search data is gathered: what the surveys say on the same questions, Odisha, NFHS-5 (2019–21) to NFHS-6 (2023–24).';
+        wrap.appendChild(head);
+        const grid = document.createElement('div');
+        grid.className = 'tk-survey-grid';
+        wrap.appendChild(grid);
+        const fix = v => (Math.round(v * 10) / 10).toFixed(1) + '%';
+        list.forEach((s, k) => {
+          const ind = byN[s.n];
+          if (!ind || ind.odisha.nfhs5 == null || ind.odisha.nfhs6 == null) return;
+          const a = ind.odisha.nfhs5, b = ind.odisha.nfhs6, pol = ind.polarity;
+          let up = 0, n = 0;
+          const vals = [];
+          Object.keys(ind.districts).forEach(d => {
+            const v = ind.districts[d];
+            if (!v || v[0] == null || v[1] == null) return;
+            n++; vals.push(v[0]);
+            if (pol && (v[0] - v[1]) * pol > 0) up++;
+          });
+          const card = document.createElement('article');
+          card.className = 'tk-sig tk-rise';
+          card.style.setProperty('--i', k + 1);
+          const dir = !pol ? 'flat' : (b - a) * pol > 0 ? 'up' : 'focus';
+          card.classList.add('is-' + dir);
+          card.innerHTML =
+            '<p class="tk-sig-k"></p><h3 class="tk-sig-name"></h3>' +
+            '<p class="tk-sig-fig"><s></s><svg viewBox="0 0 46 18" aria-hidden="true"><path d="M2 9h38M32 3l9 6-9 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><b></b></p>' +
+            '<div class="tk-sig-strip" aria-hidden="true"></div>' +
+            '<p class="tk-sig-say"></p>';
+          card.querySelector('.tk-sig-k').textContent = !pol ? (b > a ? 'Rising across Odisha' : b < a ? 'Easing across Odisha' : 'Steady across Odisha')
+            : dir === 'up' ? 'Improving in ' + up + ' of ' + n + ' districts'
+            : 'A focus in ' + (n - up) + ' of ' + n + ' districts';
+          card.querySelector('.tk-sig-name').textContent = s.name;
+          card.querySelector('.tk-sig-fig s').textContent = fix(a);
+          card.querySelector('.tk-sig-fig b').textContent = fix(b);
+          card.querySelector('.tk-sig-say').textContent = s.say;
+          /* every district's latest value, with Odisha marked */
+          const strip = card.querySelector('.tk-sig-strip');
+          const lo = Math.min.apply(null, vals.concat(b)), hi = Math.max.apply(null, vals.concat(b));
+          const pos = v => (hi > lo ? (v - lo) / (hi - lo) * 100 : 50).toFixed(1) + '%';
+          vals.forEach(v => { const i = document.createElement('i'); i.style.left = pos(v); strip.appendChild(i); });
+          const od = document.createElement('i');
+          od.className = 'od'; od.style.left = pos(b); od.title = 'Odisha ' + fix(b);
+          strip.appendChild(od);
+          grid.appendChild(card);
+          requestAnimationFrame(() => card.classList.add('is-in'));
+        });
+        status.textContent = 'Each strip shows all 30 districts in NFHS-6, with Odisha marked. The search traces for this chapter will appear here once the Google Trends exports are added; until then nothing about search is drawn, so nothing is guessed. Source: ' + (data.meta && data.meta.short ? data.meta.short.replace(/�/g, '–') : 'NFHS-5 and NFHS-6, IIPS and MoHFW') + '.';
+      })
+      .catch(() => {
+        status.textContent = 'The search data is being gathered. These traces fill in as it arrives; until then nothing is drawn, so nothing here is guessed.';
+      });
   }
 
   /* ═══ the collision: four kinds, and your call ════ */
