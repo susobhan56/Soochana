@@ -1174,3 +1174,56 @@ body.present header.site-nav { display: none !important; }
   .lander-facts, .rpt-cover, .faq-list summary::after { transition: none; }
   .faq-list details > p { animation: none; }
 }
+
+
+/* ═══════════════ FROM THE CYSD AND UNFPA ROADMAP (2026) ═══════════════
+   A generation of gains (reuses the .shift rows), the window to 2036,
+   and seven pathways to 2047. */
+.gains .gain-src { display: block; margin-top: 4px; font: 500 12px/1.4 var(--text); color: var(--soft); opacity: 0.85; }
+.gains .shift-to em { font-size: 17px; }
+
+/* the window: one large statement over a three-part timeline */
+.window { --win: #0879ad; }
+.window .st-kicker { color: var(--win); }
+.win-title { font: 400 clamp(40px, 6.4vw, 92px)/0.98 var(--display); text-transform: uppercase; letter-spacing: 0.005em; max-width: 22ch; margin: 6px 0 22px; text-wrap: balance; }
+.win-lede { font: 300 clamp(17px, 1.4vw, 21px)/1.7 var(--read); max-width: 52ch; }
+.win-lede b { font: 400 1.25em var(--display); color: var(--win); }
+.win-line {
+  list-style: none; margin: clamp(32px, 5vh, 56px) 0 0; padding: 0;
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr; border-top: 4px solid var(--line);
+}
+.win-line li { position: relative; padding: 22px 22px 6px 0; display: flex; flex-direction: column; gap: 6px; }
+.win-line li::before {
+  content: ''; position: absolute; top: -12px; left: 0; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--bg); border: 4px solid var(--soft);
+}
+.win-line li.is-now::before { background: var(--turmeric); border-color: var(--ink); }
+.win-line li.is-now::after { content: ''; position: absolute; top: -4px; left: 0; right: 0; height: 4px; background: var(--turmeric); }
+.win-yr { font: 600 12px var(--text); letter-spacing: 0.14em; text-transform: uppercase; color: var(--win); }
+.win-line b { font: 400 clamp(20px, 1.8vw, 26px)/1.1 var(--display); text-transform: uppercase; }
+.win-line li > span:last-child { font: 400 14.5px/1.55 var(--text); color: var(--soft); max-width: 34ch; }
+.win-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); margin-top: clamp(28px, 4vh, 44px); }
+.win-stat { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border: 2px solid var(--ink); border-radius: 14px; background: color-mix(in srgb, var(--bg) 70%, #fff); }
+.win-stat-k { font: 600 12px var(--text); letter-spacing: 0.12em; text-transform: uppercase; color: var(--soft); }
+.win-stat-f { display: flex; align-items: center; gap: 12px; }
+.win-stat-f b { font: 400 clamp(28px, 2.6vw, 38px)/1 var(--display); font-variant-numeric: tabular-nums; }
+.win-stat-f b:last-child { color: var(--win); }
+.win-stat-f .shift-arrow { width: 42px; color: var(--win); }
+.win-stat-y { font: 500 12px var(--text); color: var(--soft); }
+.win-stat-n { font: 700 19px/1.2 var(--hand); color: #0b6b50; }
+
+/* seven pathways: large numerals, two columns */
+.path-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(24px, 4vw, 64px); counter-reset: none; }
+.path-list li { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 18px; padding: 22px 0; border-top: 1px solid var(--line); }
+.path-list li > b { grid-row: span 2; font: 400 clamp(40px, 3.6vw, 56px)/0.9 var(--display); color: var(--turmeric); -webkit-text-stroke: 1.5px var(--ink); }
+.path-list h3 { margin: 2px 0 8px; font: 400 clamp(20px, 1.7vw, 25px)/1.12 var(--display); text-transform: uppercase; }
+.path-list li p { font: 300 15.5px/1.65 var(--read); color: var(--soft); }
+.path-list li:last-child { grid-column: 1 / -1; }
+
+@media (max-width: 900px) {
+  .win-line { grid-template-columns: minmax(0, 1fr); border-top: 0; border-left: 4px solid var(--line); margin-left: 8px; }
+  .win-line li { padding: 4px 0 22px 26px; }
+  .win-line li::before { top: 4px; left: -12px; }
+  .win-line li.is-now::after { top: 0; bottom: 0; left: -4px; right: auto; width: 4px; height: auto; }
+  .win-stats, .path-list { grid-template-columns: minmax(0, 1fr); }
+}

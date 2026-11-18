@@ -1054,6 +1054,89 @@
     });
   })();
 
+  /* ── 9. a generation of gains, and the window to 2036 ─────
+     Long-run gains come from datasets/odisha_long_run.json, which records
+     each figure as reported in the CYSD and UNFPA roadmap (2026) with the
+     primary source it cites. The window's shares and the FAQ growth rates
+     are computed from the ORGI projection, the portal's headline series. */
+  (function () {
+    var list = $('gainsList');
+    var arrowSvg = '<svg viewBox="0 0 64 24" aria-hidden="true"><path d="M2 12h54M44 3l14 9-14 9" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    function show(v, unit) {
+      var s = (Math.round(v * 10) / 10).toLocaleString('en-IN');
+      return unit === '%' ? s + '%' : s;
+    }
+    function reveal(rows) {
+      if (!('IntersectionObserver' in window) || reduced) { rows.forEach(function (r) { r.classList.add('in'); }); return; }
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -15% 0px' });
+      rows.forEach(function (r) { io.observe(r); });
+    }
+
+    if (list) {
+      fetch('datasets/odisha_long_run.json').then(function (r) { return r.json(); }).then(function (data) {
+        var rows = data.gains.map(function (g) {
+          var a = g.from.value, b = g.to.value;
+          var dir = g.polarity === 0 ? 'flat' : (b - a) * g.polarity > 0 ? 'better' : 'worse';
+          var li = el('li', 'shift-row is-' + dir);
+          li.appendChild(el('div', 'shift-what', g.name));
+          var from = el('div', 'shift-from');
+          from.appendChild(el('span', null, g.from.year));
+          from.appendChild(el('s', null, show(a, g.unit)));
+          li.appendChild(from);
+          var ar = el('span', 'shift-arrow'); ar.innerHTML = arrowSvg; li.appendChild(ar);
+          var to = el('div', 'shift-to');
+          to.appendChild(el('span', null, g.to.year));
+          to.appendChild(el('b', null, show(b, g.unit)));
+          to.appendChild(el('em', null, g.unit && g.unit !== '%' ? g.unit : dir === 'better' ? 'Better' : 'Lower'));
+          li.appendChild(to);
+          var say = el('p', 'shift-say', g.say + ' ');
+          say.appendChild(el('span', 'gain-src', g.source + '.'));
+          li.appendChild(say);
+          list.appendChild(li);
+          return li;
+        });
+        $('gainsSrc').textContent = 'Figures as reported in ' + data.meta.short + ', with the primary source named on each row.';
+        reveal(rows);
+      }).catch(function (err) { if (window.console) console.warn('Home: long-run gains did not load', err); });
+    }
+
+    fetch('datasets/orgi_state_projection.json').then(function (r) { return r.json(); }).then(function (data) {
+      var O = data.odisha, Y = O.years, at = function (k, y) { return O.age_pct[k][Y.indexOf(y)]; };
+      var P = function (y) { return O.population_000.total[Y.indexOf(y)]; };
+      var src = (data.meta.short || 'ORGI Technical Group projections (2020)').replace(/�/g, '–');
+      /* the FAQ: average yearly growth over each period */
+      if ($('faqGrowA')) {
+        $('faqGrowA').textContent = ((P(2021) - P(2011)) / P(2011) / 10 * 100).toFixed(1);
+        $('faqGrowB').textContent = ((P(2036) - P(2031)) / P(2031) / 5 * 100).toFixed(1);
+      }
+      var stats = $('winStats');
+      if (!stats) return;
+      var wa = [2021, 2026, 2031, 2036].map(function (y) { return at('15_59', y); });
+      $('winWa').textContent = Math.round(Math.max.apply(null, wa));
+      var e21 = O.age_000['60_plus'][Y.indexOf(2021)], e36 = O.age_000['60_plus'][Y.indexOf(2036)];
+      [
+        { k: 'Working age, 15 to 59', a: at('15_59', 2021), b: at('15_59', 2036), note: 'About two in every three people, through 2036.' },
+        { k: 'Children under 15', a: at('0_14', 2021), b: at('0_14', 2036), note: 'Fewer children, and more to invest in each one.' },
+        { k: 'People aged 60 and over', a: at('60_plus', 2021), b: at('60_plus', 2036),
+          note: 'Longer lives: from about ' + Math.round(e21 / 100) + ' lakh to ' + Math.round(e36 / 100) + ' lakh people.' }
+      ].forEach(function (s) {
+        var c = el('div', 'win-stat');
+        c.appendChild(el('span', 'win-stat-k', s.k));
+        var f = el('div', 'win-stat-f');
+        f.appendChild(el('b', null, s.a.toFixed(1) + '%'));
+        var ar = el('span', 'shift-arrow'); ar.innerHTML = arrowSvg; f.appendChild(ar);
+        f.appendChild(el('b', null, s.b.toFixed(1) + '%'));
+        c.appendChild(f);
+        c.appendChild(el('span', 'win-stat-y', '2021 to 2036'));
+        c.appendChild(el('span', 'win-stat-n', s.note));
+        stats.appendChild(c);
+      });
+      $('winSrc').textContent = 'Shares: ' + src + '. Framing: Mohanty, Kundu and Jagadananda (2026), Population Dynamics and Development Prospects of Odisha: A Roadmap to 2036 and 2047, CYSD and UNFPA.';
+    }).catch(function (err) { if (window.console) console.warn('Home: ORGI projection did not load', err); });
+  })();
+
   /* ── 6. page dots and presentation mode ────────────────── */
   var sections = [].slice.call(document.querySelectorAll('[data-nav]'));
   var dots = $('dots');

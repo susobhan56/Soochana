@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "title": "Odisha's long-run gains in survival, care and living standards",
+    "reference": "Mohanty, S. K., Kundu, A. and Jagadananda (2026). Population Dynamics and Development Prospects of Odisha: A Roadmap to 2036 and 2047. CYSD and UNFPA (revised paper, 13 November 2026).",
+    "short": "CYSD and UNFPA, Population Dynamics and Development Prospects of Odisha: A Roadmap to 2036 and 2047 (2026)",
+    "notes": [
+      "Each row gives the earlier and the latest value as reported in the paper, with the primary source the paper cites.",
+      "polarity: 1 higher is better, -1 lower is better."
+    ]
+  },
+  "gains": [
+    { "id": "imr", "name": "Infant deaths", "unit": "per 1,000 live births", "polarity": -1,
+      "from": { "year": "1981", "value": 132 }, "to": { "year": "2024", "value": 28 },
+      "say": "Far fewer babies die before their first birthday than a generation ago.",
+      "source": "Sample Registration System, Statistical Reports 1982–2024" },
+    { "id": "mmr", "name": "Maternal deaths", "unit": "per 100,000 live births", "polarity": -1,
+      "from": { "year": "1999–2001", "value": 424 }, "to": { "year": "2022–24", "value": 124 },
+      "say": "Childbirth is far safer for mothers, and the pace of the last two decades points to further gains.",
+      "source": "Sample Registration System, 1997–2024" },
+    { "id": "e0", "name": "Life expectancy at birth", "unit": "years", "polarity": 1,
+      "from": { "year": "1981–85", "value": 53 }, "to": { "year": "2020–24", "value": 70.4 },
+      "say": "People in Odisha now live about seventeen years longer, with gains at every age.",
+      "source": "Sample Registration System, Abridged Life Tables" },
+    { "id": "inst", "name": "Births in a health facility", "unit": "%", "polarity": 1,
+      "from": { "year": "2004–05", "value": 34.6 }, "to": { "year": "2023–24", "value": 94 },
+      "say": "Almost every birth now takes place with care at hand, a strong base for mothers and newborns.",
+      "source": "As reported in CYSD and UNFPA (2026); 2023–24 from NFHS-6" },
+    { "id": "mpi", "name": "People in multidimensional poverty", "unit": "%", "polarity": -1,
+      "from": { "year": "2005–06", "value": 64 }, "to": { "year": "2019–21", "value": 15.7 },
+      "say": "Fewer than one in six people are now poor across health, education and living standards, from nearly two in three.",
+      "source": "Alkire et al. (2021); NITI Aayog, National Multidimensional Poverty Index 2023" },
+    { "id": "tfr", "name": "Children per woman", "unit": "", "polarity": 0,
+      "from": { "year": "NFHS-4, 2015–16", "value": 2.05 }, "to": { "year": "SRS 2024", "value": 1.6 },
+      "say": "Odisha reached the replacement level of 2.1 around 2013, about six years ahead of India as a whole.",
+      "source": "NFHS-4; Sample Registration System 2024" }
+  ]
+}

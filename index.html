@@ -31,7 +31,7 @@
 })();
 </script>
 <link rel="stylesheet" href="site.css?v=20261116-2">
-<link rel="stylesheet" href="home.css?v=20261118-7">
+<link rel="stylesheet" href="home.css?v=20261118-9">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="soochana_live.js?v=20260925-2"></script>
 <script src="data_loader.js?v=20260925-2"></script>
@@ -149,8 +149,9 @@
       <span class="reveal"><span class="hl">When it moves, everything moves.</span></span>
     </h1>
     <p class="lander-sub">
-      Families in Odisha are smaller, people are living longer and the age structure is changing.
-      Soochana shows how the state has changed over seven decades and how each of its thirty districts is moving.
+      Odisha reached replacement-level fertility around 2013, years ahead of India as a whole. Families are smaller,
+      people are living longer and healthier lives, and the years to 2036 are a window to invest in people.
+      Soochana shows how the state and each of its thirty districts are moving.
     </p>
     <div class="lander-cta">
       <a href="#story" class="btn btn-turmeric" data-or="କାହାଣୀ ପଢ଼ନ୍ତୁ">Read the story</a>
@@ -437,6 +438,19 @@
   <p class="shift-src" id="shiftSrc"></p>
 </section>
 
+<!-- ═══════════════ A GENERATION OF GAINS — the same From → to rows, over decades ═══════════════
+     Rows built by home.js (section 9) from datasets/odisha_long_run.json,
+     which carries each figure's year and primary source. -->
+<section class="sec shift gains" id="gains" data-nav="A generation of gains" data-nav-or="ଦୀର୍ଘ ପ୍ରଗତି" aria-labelledby="gainsTitle">
+  <div class="sec-head">
+    <p class="st-kicker">Four decades, measured</p>
+    <h2 id="gainsTitle" data-or="ଏକ ପିଢ଼ିର ପ୍ରଗତି">A generation of gains</h2>
+    <p class="sec-deck">Odisha's demographic transition has come with longer, healthier lives. Survival, care and living standards, then and now.</p>
+  </div>
+  <ol class="shift-list" id="gainsList"></ol>
+  <p class="shift-src" id="gainsSrc"></p>
+</section>
+
 <!-- ═══════════════ BY TOPIC — tabs swap one panel in place ═══════════════
      Built by home.js from TOPICS; figures shared with data/key_stats.js
      are read from that file. -->
@@ -470,11 +484,48 @@
   <p class="shift-src" id="brSrc"></p>
 </section>
 
+<!-- ═══════════════ THE WINDOW TO 2036 — one statement, one timeline ═══════════════
+     Wording follows CYSD and UNFPA, "Population Dynamics and Development
+     Prospects of Odisha: A Roadmap to 2036 and 2047" (2026). The shares are
+     read from the ORGI projection by home.js (section 9). -->
+<section class="sec window" id="window" data-nav="The window to 2036" data-nav-or="୨୦୩୬ ପର୍ଯ୍ୟନ୍ତ ସୁଯୋଗ" aria-labelledby="winTitle">
+  <p class="st-kicker">A roadmap to 2036 and 2047</p>
+  <h2 class="win-title" id="winTitle" data-or="୨୦୩୬ ପର୍ଯ୍ୟନ୍ତ ବର୍ଷଗୁଡ଼ିକ ଓଡ଼ିଶାର ସୁଯୋଗ">The years to 2036 are Odisha's window.</h2>
+  <p class="win-lede">With about <b id="winWa">65</b> in every 100 people of working age, Odisha has more people in their working years for each child and elder than in earlier decades. This is the moment to turn that into jobs, skills and savings, and to prepare well for a smaller, older and healthier population.</p>
+  <ol class="win-line" id="winLine">
+    <li class="is-now"><span class="win-yr">2021–2036</span><b>The dividend window</b><span>Front-load investment in jobs, skills and capital while the working-age share is at its highest.</span></li>
+    <li><span class="win-yr">2036–2047</span><b>Growth led by productivity</b><span>Skills, technology, longer working lives and the contribution of healthy older people, the silver economy.</span></li>
+    <li><span class="win-yr">2047</span><b>A smaller, healthier, skilled Odisha</b><span>Development built around human capital, healthy ageing, women's work and resilient livelihoods.</span></li>
+  </ol>
+  <div class="win-stats" id="winStats"></div>
+  <p class="shift-src" id="winSrc"></p>
+</section>
+
+<!-- ═══════════════ SEVEN PATHWAYS TO 2047 ═══════════════
+     The sectoral pathway of the same paper, in short. -->
+<section class="sec paths" id="paths" data-nav="Pathways to 2047" data-nav-or="୨୦୪୭ ପାଇଁ ପଥ" aria-labelledby="pathTitle">
+  <div class="sec-head">
+    <p class="st-kicker">From the CYSD and UNFPA roadmap</p>
+    <h2 id="pathTitle" data-or="୨୦୪୭ ପାଇଁ ସାତଟି ପଥ">Seven pathways to 2047</h2>
+    <p class="sec-deck">Odisha's transition is an opportunity to build development around a healthier, highly skilled and productive population. Seven ways to get there.</p>
+  </div>
+  <ol class="path-list">
+    <li><b>01</b><h3>Grow during the window</h3><p>Front-load investment and job creation to 2036: manufacturing, services, mineral-based value addition, modern agriculture and micro-irrigation, so more young people find good work close to home.</p></li>
+    <li><b>02</b><h3>Prepare for a smaller, older workforce</h3><p>Raise productivity through skills, technology and capital. Lifelong skilling for youth, returning migrants and older workers, flexible age-friendly work, and childcare, safe transport and flexible hours so more women can work.</p></li>
+    <li><b>03</b><h3>Make education quality- and skills-led</h3><p>Use smaller school cohorts to invest more in every child. Hostels, residential schools and stipends in tribal, PVTG and migration-prone areas, and vocational learning within secondary schooling.</p></li>
+    <li><b>04</b><h3>Build a health system for an ageing Odisha</h3><p>Keep mother and child care strong, give nutrition and anaemia their own pathway, screen early for diabetes and blood pressure in primary care, and add geriatric and long-term care, with an eldercare facility in every district by 2036.</p></li>
+    <li><b>05</b><h3>Strengthen social protection and family well-being</h3><p>Rights-based, choice-driven reproductive health services, support for healthy family formation, and community care for older persons and people with disabilities.</p></li>
+    <li><b>06</b><h3>Build a stronger demographic data system</h3><p>Timely registration of every birth and death, and tracking of fertility, migration, ageing and work district by district, so planning fits each place.</p></li>
+    <li><b>07</b><h3>Make migration part of the development strategy</h3><p>Portable social protection, skill recognition and services for migrant workers, and ways to bring return migrants' skills, experience and savings into the local economy.</p></li>
+  </ol>
+  <p class="shift-src">Source: Mohanty, S. K., Kundu, A. and Jagadananda (2026), Population Dynamics and Development Prospects of Odisha: A Roadmap to 2036 and 2047, CYSD and UNFPA, section 6.c.</p>
+</section>
+
 <!-- ═══════════════ DISTRICTS ═══════════════ -->
 <section class="sec districts" id="districts" data-nav="Districts" data-nav-or="ଜିଲ୍ଲା" aria-labelledby="distTitle">
   <div class="sec-head">
     <h2 id="distTitle" data-or="ନିଜ ଜିଲ୍ଲା ଖୋଜନ୍ତୁ">Find your district</h2>
-    <p class="sec-deck">Thirty districts, each with its own profile of population, health and schools.</p>
+    <p class="sec-deck">Thirty districts, each moving through the transition at its own pace. Open a profile for population, health and schools, so planning can fit each place.</p>
   </div>
   <div class="ds-body">
     <div class="ds-map-wrap">
@@ -568,12 +619,12 @@
   <div class="faq-body">
     <div class="faq-head">
       <h2 id="faqTitle" data-or="ପଚାରିବା ପୂର୍ବରୁ">Before you ask</h2>
-      <p class="faq-k faq-kicker">Six straight answers</p>
+      <p class="faq-k faq-kicker">Eight straight answers</p>
     </div>
     <div class="faq-list" id="faqList">
       <details>
         <summary>Where do the numbers come from?</summary>
-        <p>From official sources, named beside every figure: the Census of India (1901–2011), the National Family Health Survey (NFHS-5, 2019–21, and NFHS-6, 2023–24), the population projections of the Technical Group on Population Projections (National Commission on Population, MoHFW, 2020), UNFPA India's district projections (2022), and surveys such as the Sample Registration System, PLFS and UDISE+.</p>
+        <p>From official sources, named beside every figure: the Census of India (1901–2011), the National Family Health Survey (NFHS-5, 2019–21, and NFHS-6, 2023–24), the population projections of the Technical Group on Population Projections (National Commission on Population, MoHFW, 2020), UNFPA India's district projections (2022), and surveys such as the Sample Registration System, the Longitudinal Ageing Study in India (LASI), PLFS and UDISE+.</p>
       </details>
       <details>
         <summary>Why does the population count change every second?</summary>
@@ -582,6 +633,14 @@
       <details>
         <summary>How are projections different from the Census?</summary>
         <p>The Census counts everyone. The last completed one is 2011, so figures for later years are projections: careful estimates of births, deaths and movement built on that count. Each projected figure is marked as such.</p>
+      </details>
+      <details>
+        <summary>What is the demographic dividend?</summary>
+        <p>When fertility falls, the share of people of working age rises for a while, and each earner supports fewer children and elders. That can speed up economic growth, but only with timely investment in health, education, skills and jobs. A second dividend follows as working adults save and invest, and healthy, active older people add a third, the silver economy. For Odisha the years from about 2021 to 2036 are this window.</p>
+      </details>
+      <details>
+        <summary>When will Odisha's population stop growing?</summary>
+        <p>Growth is slowing steadily. The official projections have it easing from <span id="faqGrowA">0.9</span>% a year in 2011–21 to <span id="faqGrowB">0.3</span>% a year by 2031–36. Because Odisha's fertility fell earlier than India's, its population is expected to level off sooner too: the 2026 CYSD and UNFPA roadmap puts the peak in the early 2040s, several years before India's.</p>
       </details>
       <details>
         <summary>How current is the data?</summary>
@@ -617,7 +676,7 @@
 
 <script src="icons.js?v=20261005-2"></script>
 <script src="story.js?v=20261118-1"></script>
-<script src="home.js?v=20261118-7"></script>
+<script src="home.js?v=20261118-8"></script>
 <script src="chatbot.js?v=20261116-1"></script>
 </body>
 </html>
