@@ -1,0 +1,169 @@
+{
+ "note": "Voiceover script. at/until: seconds in the promo where the line may play. file: the clip in public/audio/vo/ (final voice) or public/audio/vo-guide/ (guide voice). dur is filled in by tools/vo_durations.js.",
+ "character": "Mitali is an illustrative character, not a real person. Change the name in every line and in src/scenes (People.tsx, Themes.tsx) together.",
+ "cues": [
+  {
+   "id": "01",
+   "scene": "Opening",
+   "at": 0.4,
+   "file": "01.wav",
+   "text": "Today, in a village in Odisha, a girl named Mitali was born. One of four point seven crore.",
+   "until": 8.53,
+   "dur": 6.59
+  },
+  {
+   "id": "02",
+   "scene": "Narrative",
+   "at": 8.63,
+   "file": "02.wav",
+   "text": "She is a number. But numbers tell stories.",
+   "until": 12.87,
+   "dur": 3.67
+  },
+  {
+   "id": "03",
+   "scene": "People",
+   "at": 12.97,
+   "file": "03.wav",
+   "text": "If Odisha were a hundred people, Mitali is one of eighty-three in villages. Her family will be smaller, and her life longer.",
+   "until": 23.08,
+   "dur": 8
+  },
+  {
+   "id": "04",
+   "scene": "Themes 1",
+   "at": 23.18,
+   "file": "04.wav",
+   "text": "Born safely, in a hospital.",
+   "until": 25.88,
+   "dur": 2.47
+  },
+  {
+   "id": "05",
+   "scene": "Themes 2",
+   "at": 25.98,
+   "file": "05.wav",
+   "text": "She grows up healthy.",
+   "until": 28.68,
+   "dur": 1.97
+  },
+  {
+   "id": "06",
+   "scene": "Themes 3",
+   "at": 28.78,
+   "file": "06.wav",
+   "text": "More school than her mother had.",
+   "until": 31.48,
+   "dur": 2.16
+  },
+  {
+   "id": "07",
+   "scene": "Themes 4",
+   "at": 31.58,
+   "file": "07.wav",
+   "text": "In the city, the world opens up.",
+   "until": 34.28,
+   "dur": 2.64
+  },
+  {
+   "id": "08",
+   "scene": "Themes 5",
+   "at": 34.38,
+   "file": "08.wav",
+   "text": "Her own job, her own money.",
+   "until": 37.08,
+   "dur": 2.3
+  },
+  {
+   "id": "09",
+   "scene": "Themes 6",
+   "at": 37.18,
+   "file": "09.wav",
+   "text": "Like many, she comes home.",
+   "until": 39.88,
+   "dur": 2.36
+  },
+  {
+   "id": "10",
+   "scene": "Themes 7",
+   "at": 39.98,
+   "file": "10.wav",
+   "text": "And one day, she grows old here.",
+   "until": 42.93,
+   "dur": 2.53
+  },
+  {
+   "id": "11",
+   "scene": "Districts",
+   "at": 43.03,
+   "file": "11.wav",
+   "text": "Where she lives shapes her future. Each district has its own path.",
+   "until": 48.87,
+   "dur": 4.8
+  },
+  {
+   "id": "12",
+   "scene": "Health",
+   "at": 48.97,
+   "file": "12.wav",
+   "text": "Health data shows what is improving for her, and what still needs care.",
+   "until": 54.2,
+   "dur": 4.28
+  },
+  {
+   "id": "13",
+   "scene": "Tectonics",
+   "at": 54.3,
+   "file": "13.wav",
+   "text": "What she searches online may show change before any survey does.",
+   "until": 59.53,
+   "dur": 4.25
+  },
+  {
+   "id": "14",
+   "scene": "Assistant & Learn",
+   "at": 59.63,
+   "file": "14.wav",
+   "text": "Anyone can ask about her district, and get a sourced answer.",
+   "until": 64.37,
+   "dur": 3.87
+  },
+  {
+   "id": "15",
+   "scene": "And more",
+   "at": 64.47,
+   "file": "15.wav",
+   "text": "All of it, open to everyone.",
+   "until": 68.7,
+   "dur": 2.38
+  },
+  {
+   "id": "16",
+   "scene": "Bigger picture",
+   "at": 68.8,
+   "file": "16.wav",
+   "text": "Understand the numbers, and we can plan the Odisha she deserves.",
+   "until": 74.03,
+   "dur": 4.19
+  },
+  {
+   "id": "17",
+   "scene": "End card",
+   "at": 74.13,
+   "file": "17.wav",
+   "text": "Soochana. Find your story in the numbers.",
+   "until": 77.8,
+   "dur": 3.54
+  },
+  {
+   "id": "18",
+   "scene": "Coming soon",
+   "at": 77.9,
+   "file": "18.wav",
+   "text": "Her story's just beginning. More, coming soon.",
+   "until": 81.95,
+   "dur": 3.98
+  }
+ ],
+ "set": "guide"
+}

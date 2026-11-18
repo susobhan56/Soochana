@@ -1,0 +1,26 @@
+{
+  "name": "soochana-promo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "60-second promotional video for the Soochana portal, built with Remotion",
+  "scripts": {
+    "data": "python tools/build_data.py",
+    "studio": "remotion studio",
+    "render": "remotion render Promo out/soochana-promo.mp4",
+    "render:opening": "remotion render Opening out/opening-preview.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.530",
+    "@remotion/gif": "^4.0.530",
+    "@remotion/google-fonts": "4.0.530",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.530"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.3",
+    "puppeteer-core": "^24.43.1",
+    "qrcode": "^1.5.4",
+    "typescript": "5.4.5"
+  }
+}
