@@ -113,6 +113,52 @@
     Subarnapur: ['sonepur', 'sonapur', 'subarnpur']
   };
 
+  // Towns people name instead of their district: [town, district, other spellings].
+  const CITIES = [
+    ['Bhubaneswar', 'Khordha', 'bhubaneshwar', 'bhubneswar', 'bbsr'],
+    ['Jatni', 'Khordha'],
+    ['Rourkela', 'Sundargarh', 'raurkela', 'rurkela'],
+    ['Berhampur', 'Ganjam', 'brahmapur', 'behrampur', 'baharampur'],
+    ['Gopalpur', 'Ganjam'],
+    ['Chhatrapur', 'Ganjam'],
+    ['Baripada', 'Mayurbhanj'],
+    ['Jeypore', 'Koraput', 'jaypur', 'jeypur'],
+    ['Sunabeda', 'Koraput'],
+    ['Paradip', 'Jagatsinghapur', 'paradeep'],
+    ['Talcher', 'Angul'],
+    ['Konark', 'Puri', 'konarak'],
+    ['Bhawanipatna', 'Kalahandi'],
+    ['Titlagarh', 'Bolangir'],
+    ['Paralakhemundi', 'Gajapati', 'parlakhemundi'],
+    ['Umerkote', 'Nabarangpur'],
+    ['Burla', 'Sambalpur'],
+    ['Brajrajnagar', 'Jharsuguda'],
+    ['Barbil', 'Kendujhar'],
+    ['Joda', 'Kendujhar'],
+    ['Gunupur', 'Rayagada'],
+    ['Chandipur', 'Baleshwar'],
+    ['Kamakhyanagar', 'Dhenkanal']
+  ];
+
+  // Topics people ask about that the portal holds no district figures on, so
+  // the answer can say so instead of quietly answering something else.
+  const UNCOVERED = [
+    ['poverty', ['poverty', 'bpl', 'below poverty line', 'multidimensional poverty']],
+    ['income', ['income', 'per capita income', 'salary', 'wage', 'earning']],
+    ['GDP and the economy', ['gdp', 'gsdp', 'gddp', 'economy', 'economic growth', 'domestic product']],
+    ['crime', ['crime', 'criminal', 'theft', 'murder', 'police']],
+    ['electricity', ['electricity', 'electrification', 'power supply', 'power cut']],
+    ['drinking water', ['drinking water', 'water supply', 'tap water', 'piped water']],
+    ['sanitation', ['sanitation', 'toilet', 'open defecation']],
+    ['roads', ['road', 'highway']],
+    ['elections and politics', ['election', 'vote', 'voting', 'voter', 'mla', 'chief minister', 'minister', 'politics', 'political']],
+    ['weather', ['temperature', 'weather', 'heatwave', 'heat wave', 'cyclone', 'flood']]
+  ];
+
+  // Words never "corrected" into an indicator name, though they sit one
+  // letter away from one.
+  const KEEP = new Set(['rank', 'ranked', 'ranking', 'ratio', 'rates', 'radio', 'water', 'birth', 'women', 'woman', 'where', 'there', 'their', 'other', 'under', 'older', 'large', 'larger', 'change', 'changes', 'trend', 'about', 'doing', 'focus', 'since', 'today', 'total', 'young', 'youth', 'deaths', 'death', 'dying', 'class', 'rural', 'area', 'areas', 'compare', 'improve', 'improved', 'better', 'worse', 'level', 'state', 'states', 'children', 'child', 'mother', 'mothers', 'district', 'average', 'median', 'number', 'people', 'person', 'reason', 'teacher', 'school', 'schools']);
+
   const REGIONS = {
     india: { name: 'India', say: ['india', 'national', 'nationally', 'country', 'all india'] },
     odisha: { name: 'Odisha', say: ['odisha', 'orissa'] },
@@ -304,6 +350,30 @@
       const allow = token.length >= 8 ? 2 : 1;
       return best && bestD <= allow ? dLookup[best] : null;
     }
+    /* towns: exact spellings, then near-misses of the longer names */
+    const cLookup = {};
+    CITIES.forEach(([town, district, ...alt]) => {
+      if (!byName[district]) return;
+      [town.toLowerCase()].concat(alt).forEach(a => { cLookup[a] = { town, district }; });
+    });
+    const cKeys = Object.keys(cLookup);
+    function cityOf(token) {
+      if (cLookup[token]) return cLookup[token];
+      if (token.length < 6 || STOP.has(token)) return null;
+      let best = null, bestD = 9;
+      cKeys.forEach(k => {
+        if (k.length < 6) return;
+        const d = lev(token, k);
+        if (d < bestD) { bestD = d; best = k; }
+      });
+      return best && bestD <= (token.length >= 9 ? 2 : 1) ? cLookup[best] : null;
+    }
+
+    // Districts left out of rankings for the question being answered
+    // ("lowest IMR excluding Khordha"); set and cleared by respond().
+    let EXCLUDE = null;
+    const inPlay = n => !EXCLUDE || !EXCLUDE.has(n);
+
     function resolveKey(name, obj) {
       if (!obj) return null;
       const keys = Object.keys(obj);
@@ -500,7 +570,7 @@
     function val(ind, name, p) { return ind.raw(name, p || ind.def); }
     function periodOf(ind, id) { return ind.periods.find(x => x.id === (id || ind.def)) || { id: id, label: ind.source }; }
     function series(ind, p) {
-      return names.map(n => ({ name: n, v: val(ind, n, p) })).filter(x => x.v != null);
+      return names.filter(inPlay).map(n => ({ name: n, v: val(ind, n, p) })).filter(x => x.v != null);
     }
     function position(ind, name, p) {
       const all = series(ind, p), me = val(ind, name, p);
@@ -590,6 +660,38 @@
 
     /* ── parse ─────────────────────────────────────────── */
 
+    // Every word stem used in an indicator phrase, for catching misspellings.
+    let VOCAB = null;
+    function vocab() {
+      if (VOCAB) return VOCAB;
+      const set = new Set();
+      IND.forEach(ind => ind.phrases.forEach(ph => ph.forEach(s => set.add(s))));
+      const list = Array.from(set).filter(s => s.length >= 5 && !STOP.has(s));
+      VOCAB = { set, list };
+      return VOCAB;
+    }
+    const UNC = UNCOVERED.map(([label, say]) => ({ label, phrases: say.map(stems) }));
+    UNC.forEach(u => u.phrases.forEach(ph => ph.forEach(s => KEEP.add(s))));
+    // The indicator word a misspelt token most likely meant, or null.
+    function correction(tok, s) {
+      const V = vocab();
+      if (tok.length < 5 || STOP.has(tok) || KEEP.has(tok) || KEEP.has(s) || V.set.has(s)) return null;
+      if (dLookup[tok] || districtOf(tok) || cityOf(tok)) return null;
+      const allow = s.length >= 8 ? 2 : 1;
+      let best = null, bestD = 9, tie = false;
+      V.list.forEach(v => {
+        const d = lev(s, v);
+        if (d < bestD) { bestD = d; best = v; tie = false; } else if (d === bestD && v !== best) tie = true;
+      });
+      return best && bestD <= allow && !tie ? best : null;
+    }
+    // Where phrase ph starts at position i of st, on words not yet used.
+    function phraseAt(st, used, ph, i) {
+      if (i + ph.length > st.length) return false;
+      for (let j = 0; j < ph.length; j++) if (used[i + j] || st[i + j] !== ph[j]) return false;
+      return true;
+    }
+
     function parse(query, ctx) {
       ctx = ctx || {};
       const last = ctx.last || {};
@@ -597,7 +699,13 @@
       const w = words(query);
       const st = w.map(stem);
       const text = ' ' + w.join(' ') + ' ';
-      const p = { query, text, words: w, stems: st, districts: [], indicators: [], groups: [], regions: [], themes: [], flags: {} };
+      const p = { query, text, words: w, stems: st, districts: [], indicators: [], groups: [], regions: [], themes: [], flags: {},
+        corrected: [], cities: [], exclude: [], gaps: [] };
+
+      // Misspelt indicator words ("marrige", "stuntng"): try the nearest one,
+      // and keep the change only if it completes an indicator phrase.
+      const orig = st.slice(), fixed = {};
+      st.forEach((s, i) => { const c = correction(w[i], s); if (c) { st[i] = c; fixed[i] = c; } });
 
       // indicators: longest phrase at each position
       const used = new Array(st.length).fill(false);
@@ -616,15 +724,34 @@
           i += bestLen - 1;
         }
       }
+      Object.keys(fixed).forEach(i => {
+        if (used[i]) p.corrected.push({ from: w[i], to: fixed[i] });
+        else st[i] = orig[i];
+      });
       // "elderly ... 2036" means the projection
       if (/\b(2036|future|projected)\b/.test(text) && p.indicators.indexOf(byKey.elderly_pct) !== -1 && byKey.elderly_pct_2036) {
         p.indicators[p.indicators.indexOf(byKey.elderly_pct)] = byKey.elderly_pct_2036;
       }
 
+      // "excluding Khordha", "except Puri and Cuttack": districts named after
+      // such a word are left out rather than asked about.
+      const ex = text.match(/ (excluding|exclude|except|other than|apart from|besides|leaving out|leave out|not counting|barring|ignoring|omitting) /);
+      const exAt = ex ? text.slice(0, ex.index + ex[0].length).trim().split(' ').length : Infinity;
       w.forEach((tok, i) => {
         if (used[i]) return;
-        const d = districtOf(tok);
-        if (d && p.districts.indexOf(d) === -1) p.districts.push(d);
+        let d = districtOf(tok);
+        if (!d) {
+          const c = cityOf(tok);
+          if (c) { d = c.district; if (!p.cities.some(x => x.town === c.town)) p.cities.push(c); }
+        }
+        if (!d) return;
+        const list = i >= exAt ? p.exclude : p.districts;
+        if (list.indexOf(d) === -1) list.push(d);
+      });
+      p.districts = p.districts.filter(d => p.exclude.indexOf(d) === -1);
+      p.cities = p.cities.filter(c => p.districts.indexOf(c.district) !== -1);
+      UNC.forEach(u => {
+        if (u.phrases.some(ph => st.some((_, i) => phraseAt(st, used, ph, i)))) p.gaps.push(u.label);
       });
       Object.keys(REGIONS).forEach(k => {
         if (REGIONS[k].say.some(s => text.indexOf(' ' + s + ' ') !== -1)) p.regions.push(k);
@@ -874,9 +1001,9 @@
       const ind = p.indicators.find(hasPrev);
       const f = p.flags;
       const worse = f.worst || /\b(worsen\w*|deteriorat\w*|got worse|least improv\w*)\b/.test(p.text);
-      let pool = names;
+      let pool = names.filter(inPlay);
       let scope = '';
-      if (p.groups.length) { const g = GROUPS[p.groups[0]]; pool = names.filter(n => g.test(byName[n])); scope = ' among ' + g.label; }
+      if (p.groups.length) { const g = GROUPS[p.groups[0]]; pool = pool.filter(n => g.test(byName[n])); scope = ' among ' + g.label; }
       const ch = pool.map(n => ({ n, a: val(ind, n, ind.prev), b: val(ind, n, ind.cur) })).filter(x => x.a != null && x.b != null)
         .map(x => Object.assign(x, { g: ind.pol * (x.b - x.a) }));
       ch.sort((x, y) => (worse ? x.g - y.g : y.g - x.g));
@@ -1281,6 +1408,27 @@
       return answer(blocks, found.map(docLink).concat([LINK.themes, LINK.repo]), suggestFor(p), { intent: 'fallback', needsLLM: true });
     }
 
+    function gapLabel(p) { return listJoin(p.gaps); }
+    // A question only about a topic the portal holds no figures on.
+    function gapAnswer(p) {
+      const found = searchDocs(p.stems, p.themes[0], 4);
+      const blocks = [para('The portal doesn’t carry district figures on ' + gapLabel(p) + '. It covers population, health, nutrition, education, ageing and migration for Odisha’s 30 districts.'),
+        found.length ? para('These pages on the portal may still help:') : null];
+      return answer(blocks, found.map(docLink).concat([LINK.themes, LINK.repo]), suggestFor(p), { intent: 'gap', needsLLM: true });
+    }
+    // One-line notes saying how the question was read, shown above the answer.
+    function readingNotes(p, a) {
+      const out = [];
+      if (p.corrected.length) out.push('Reading ' + listJoin(p.corrected.map(c => '“' + c.from + '” as “' + c.to + '”')) + '.');
+      p.cities.forEach(c => out.push(c.town + ' is in ' + c.district + ' district, so these are ' + c.district + '’s district-wide figures.'));
+      if (p.exclude.length && ['rank', 'overview', 'improve', 'value'].indexOf(a.intent) !== -1) out.push('Leaving out ' + listJoin(p.exclude) + ', as asked.');
+      if (p.gaps.length && a.intent !== 'gap') {
+        const d = p.districts[0] || (p.state ? 'Odisha' : '');
+        out.push('The portal doesn’t carry figures on ' + gapLabel(p) + (p.indicators.length ? '; here is the rest of your question.' : ', so here is what it does have' + (d ? ' for ' + d : '') + '.'));
+      }
+      return out.map(text => ({ type: 'note', text }));
+    }
+
     /* ── routing ───────────────────────────────────────── */
 
     /* Total fertility rate: the NFHS fact sheets give it for the state, not
@@ -1309,11 +1457,23 @@
       const q = String(query || '').trim();
       if (!q) return help();
       const p = parse(q, ctx);
+      EXCLUDE = p.exclude.length ? new Set(p.exclude) : null;
+      try {
+        const a = route(p, ctx);
+        a.blocks = readingNotes(p, a).concat(a.blocks);
+        return a;
+      } finally {
+        EXCLUDE = null;
+      }
+    }
+
+    function route(p, ctx) {
       const f = p.flags;
       const hasData = p.districts.length || p.indicators.length || p.groups.length || p.regions.length || p.themes.length;
       let a;
 
-      if (f.greet && !hasData && p.words.length <= 4) a = greet();
+      if (p.gaps.length && !hasData) a = gapAnswer(p);
+      else if (f.greet && !hasData && p.words.length <= 4) a = greet();
       else if (f.thanks && !hasData) a = answer([para('Glad to help. Ask me anything else about the districts.')], [], suggestFor(p), { intent: 'thanks' });
       else if (f.help && !hasData) a = help();
       else if (f.policy && !p.indicators.length && !p.districts.length) a = policyAnswer(p);

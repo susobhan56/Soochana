@@ -157,3 +157,50 @@ test('fertility questions answer from the state figures, not a district projecti
   assert.match(text(a), /1\.7/);
   assert.match(text(a), /do not publish a fertility rate for each district/);
 });
+
+test('misspelt indicator names are corrected, and the answer says so', () => {
+  for (const [q, key, typo] of [['child marrige in koraput', 'child_marriage', 'marrige'], ['stuntng in ganjam', 'stunted', 'stuntng'],
+    ['litracy in puri', 'literacy', 'litracy'], ['infnt mortalty in rayagada', 'imr', 'mortalty']]) {
+    const a = engine.answer(q);
+    assert.equal(a.intent, 'value', q);
+    assert.deepEqual(engine.parse(q).indicators.map(i => i.key), [key], q);
+    assert.match(text(a), new RegExp('Reading .*' + typo), q);
+  }
+  // ordinary words stay as typed
+  for (const q of ['rankings for literacy', 'where is the lowest sex ratio', 'compare koraput and ganjam', 'women working in odisha']) {
+    assert.deepEqual(engine.parse(q).corrected, [], q);
+  }
+});
+
+test('topics the portal has no figures on are named, not quietly swapped', () => {
+  const p = engine.answer('what is the poverty rate in koraput');
+  assert.match(text(p), /doesn’t carry figures on poverty/);
+  assert.match(text(p), /Koraput/);
+  const c = engine.answer('who is the chief minister');
+  assert.equal(c.intent, 'gap');
+  assert.match(text(c), /elections and politics/);
+  const mix = engine.answer('poverty and literacy in koraput');
+  assert.equal(mix.intent, 'value');
+  assert.match(text(mix), /rest of your question/);
+  assert.equal(engine.parse('literacy in koraput').gaps.length, 0);
+});
+
+test('towns resolve to their district, with a note', () => {
+  const a = engine.answer('literacy in bhubaneswar');
+  assert.equal(a.intent, 'value');
+  assert.match(text(a), /Bhubaneswar is in Khordha district/);
+  assert.deepEqual(engine.parse('compare rourkela and berhampur').districts, ['Sundargarh', 'Ganjam']);
+  assert.deepEqual(engine.parse('stunting in bhubaneshwar').districts, ['Khordha']);
+});
+
+test('"excluding" leaves districts out of a ranking', () => {
+  const a = engine.answer('which district has the lowest literacy excluding nabarangpur');
+  assert.equal(a.intent, 'rank');
+  const second = D.slice().sort((x, y) => x.f.literacy - y.f.literacy).filter(d => d.name !== 'Nabarangpur')[0];
+  assert.match(a.blocks.find(b => b.type === 'p').text, new RegExp('^\\*\\*' + second.name + '\\*\\*.* of 29 districts'));
+  assert.match(text(a), /Leaving out Nabarangpur/);
+  const two = engine.answer('top 5 literacy except khordha and cuttack');
+  assert.ok(!two.blocks.find(b => b.type === 'bars').items.some(i => /Khordha|Cuttack/.test(i.label)));
+  // the exclusion lasts for that question only
+  assert.match(engine.answer('which district has the highest literacy').blocks[0].text, /of 30 districts/);
+});
