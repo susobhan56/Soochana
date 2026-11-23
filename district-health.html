@@ -282,6 +282,73 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
 @media (prefers-reduced-motion:no-preference){
   .tally div{transition:flex-grow .9s cubic-bezier(.2,.7,.2,1)}
 }
+/* ── a walk through care (care-path.js) ──────────────────────
+   Terraced landings in the page's blues; mothers' dots in --up blue,
+   children's in teal. Dots not counted at a stop step onto the dashed
+   ledge as open rings. Amber marks only where the chosen path is ahead
+   of the one set beside it (a tint, not the page's orange for concerns). */
+:root{--cp-top:#FFFFFF;--cp-edge:#B7C4D1;--cp-l:#8DB0D6;--cp-r:#5F8DBE;--cp-kid:#1F8A7A;--cp-amber:#E3A21A;--cp-amber-ink:#8A5A00;--cp-amber-bg:rgba(227,162,26,.18)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--cp-top:#26313C;--cp-edge:#3C4A58;--cp-l:#2F5A86;--cp-r:#22425F;--cp-kid:#5CC0B4;--cp-amber-ink:#F2B544;--cp-amber-bg:rgba(242,181,68,.16)}}
+:root[data-theme="dark"]{--cp-top:#26313C;--cp-edge:#3C4A58;--cp-l:#2F5A86;--cp-r:#22425F;--cp-kid:#5CC0B4;--cp-amber-ink:#F2B544;--cp-amber-bg:rgba(242,181,68,.16)}
+.cp-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,1fr);gap:22px;align-items:start}
+.cp-grid>*{min-width:0}
+.cp-stage{position:sticky;top:var(--cp-pin,66px);padding:8px;overflow:hidden}
+.cpviz{display:block;width:100%;height:auto;max-height:calc(100vh - 110px)}
+.cpviz .world{transform-origin:0 0;transition:transform 1.3s cubic-bezier(.45,.05,.2,1)}
+.cpviz .path-group{transition:opacity .8s ease}
+.cpviz .path-group.is-dim{opacity:.28}
+.cpviz .landing .top{fill:var(--cp-top);stroke:var(--cp-edge);stroke-width:1;transition:stroke .5s ease}
+.cpviz .landing .top.is-here{stroke:var(--ink);stroke-width:1.6}
+.cpviz .landing .side-l{fill:var(--cp-l)} .cpviz .landing .side-r{fill:var(--cp-r)}
+.cpviz .ledge .top{fill:none;stroke:var(--cp-edge);stroke-width:1;stroke-dasharray:3 3}
+.cpviz .ledge .side-l,.cpviz .ledge .side-r{fill:var(--cp-l);opacity:.3}
+.cpviz .seam{fill:none;stroke:rgba(255,255,255,.28);stroke-width:1}
+.cpviz .ramp{fill:var(--track)} .cpviz .tread{stroke:var(--cp-edge);stroke-width:1}
+.cpviz text{font-family:Hind,Outfit,var(--sans)}
+.cpviz .path-title{font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;fill:var(--ink)}
+.cpviz .plabel{opacity:0;transition:opacity .6s ease .4s} .cpviz .plabel.is-shown{opacity:1}
+.cpviz .pl-short{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;fill:var(--muted)}
+.cpviz .pl-n{font-family:Anton,Oswald,'Arial Narrow',Impact,sans-serif;font-size:26px;font-weight:400;fill:var(--ink)}
+.cpviz .pl-of{font-size:12px;font-weight:500;fill:var(--muted)}
+.cpviz .pl-cmp{font-size:11px;fill:var(--muted)} .cpviz .pl-cmp.is-ahead{fill:var(--cp-amber-ink);font-weight:700}
+.cpviz .pd{transition:transform 1.1s cubic-bezier(.45,.05,.2,1),fill .5s ease,stroke .5s ease}
+.cpviz .path-mother .pd{fill:var(--up)} .cpviz .path-child .pd{fill:var(--cp-kid)}
+.cpviz .pd.is-aside{fill:transparent;stroke:var(--muted);stroke-width:1}
+.cp-copy{display:flex;flex-direction:column}
+.cp-chip{align-self:flex-start}
+.cp-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px;margin-bottom:16px}
+.cp-controls label{display:flex;flex-direction:column;align-items:stretch;text-align:left;gap:5px;font-family:Hind,Outfit,var(--sans);font-size:12px;font-weight:700;color:var(--muted)}
+.cp-controls select{width:100%;font-weight:400;color:var(--ink)}
+.cp-stop{margin:0 0 4px;font-family:Hind,Outfit,var(--sans);font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.cp-count{margin-left:6px;color:var(--muted);font-weight:600}
+.cp-big{margin:0 0 6px;font-family:Anton,Oswald,'Arial Narrow',Impact,sans-serif;font-size:clamp(36px,4vw,50px);font-weight:400;line-height:1.05;color:var(--muted)}
+.cp-big b{color:var(--ink);font-weight:400}
+.cp-lead{margin:0 0 12px;font-family:var(--serif);font-size:16.5px;line-height:1.65}
+.cp-chip{display:table;font-family:Hind,Outfit,var(--sans);margin:0 0 12px;padding:4px 12px;border-radius:999px;border:1px solid var(--rule);font-size:14px}
+.cp-chip[hidden],.cp-table[hidden],.cp-big[hidden]{display:none}
+.cp-chip.is-ahead{background:var(--cp-amber-bg);border-color:var(--cp-amber);font-weight:600}
+.cp-chip.is-focus{background:var(--track)}
+.cp-table{width:100%;border-collapse:collapse;margin:4px 0 14px;font-size:14px;font-family:Hind,Outfit,var(--sans)}
+.cp-table th,.cp-table td{padding:4px 8px 3px 0;text-align:left;border-bottom:1px solid var(--rule);font-weight:400}
+.cp-table thead th{font-size:12px;font-weight:700;color:var(--muted)}
+.cp-table th[scope="rowgroup"]{padding-top:10px;font-weight:800}
+.cp-table td{text-align:right}
+.cp-table td.is-ahead{background:var(--cp-amber-bg);font-weight:700;padding-right:8px}
+.cp-nav{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 4px}
+.cp-nav .btn{min-height:40px;padding:8px 16px}
+.cp-nav .btn:disabled{opacity:.45;cursor:not-allowed}
+.cp-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:900px){
+  .cp-grid{grid-template-columns:minmax(0,1fr)}
+  /* the picture stays pinned under the section nav; the words scroll beneath it */
+  .cp-stage{z-index:2;padding:4px;box-shadow:0 6px 14px -10px rgba(0,0,0,.35)}
+  .cpviz{max-height:36vh;margin:0 auto}
+  /* the stop, its number and the buttons sit right under the pinned picture */
+  .cp-stop{order:1} .cp-big{order:2} .cp-chip{order:3} .cp-nav{order:4;margin-bottom:12px}
+  .cp-lead{order:5} .cp-table{order:6} .cp-controls{order:7;margin:8px 0 0} .cp-copy .note{order:8}
+}
+@media (max-width:420px){.cp-controls{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.cpviz *,.cpviz .world{transition:none!important}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="site.css?v=20261116-2">
@@ -293,7 +360,7 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
 <nav class="top" aria-label="Sections"><div class="in">
   <a href="index.html" class="back-to-portal" aria-label="Back to Soochana">Soochana</a>
   <b>Odisha NFHS</b>
-  <a href="#simple">In pictures</a><a href="#h2hsec">Compare two places</a><a href="#swarm">Overview</a><a href="#findings">Findings</a><a href="#state">State trends</a><a href="#themes">By theme</a><a href="#gap">Urban–rural</a><a href="#regions">Regions</a><a href="#gender">Women vs men</a><a href="#explore">District explorer</a><a href="#rel">What moves together</a><a href="#score">Scorecard</a><a href="#profile">District profile</a><a href="#heat">Heatmap</a><a href="#xtheme">District × theme</a><a href="#data">All data</a>
+  <a href="#simple">In pictures</a><a href="#carewalk">A walk through care</a><a href="#h2hsec">Compare two places</a><a href="#swarm">Overview</a><a href="#findings">Findings</a><a href="#state">State trends</a><a href="#themes">By theme</a><a href="#gap">Urban–rural</a><a href="#regions">Regions</a><a href="#gender">Women vs men</a><a href="#explore">District explorer</a><a href="#rel">What moves together</a><a href="#score">Scorecard</a><a href="#profile">District profile</a><a href="#heat">Heatmap</a><a href="#xtheme">District × theme</a><a href="#data">All data</a>
 </div></nav>
 
 <div class="wrap">
@@ -354,6 +421,34 @@ svg.ic-l{width:28px;height:28px;margin:0;color:var(--ink);background:var(--track
   <h3 class="h3big">Report card by topic</h3>
   <p class="sub">A simple grade for each area of health, based on how many of its measures got better (A) or worse (E) since 2019–21.</p>
   <div class="report" id="report"></div>
+</section>
+
+<section id="carewalk">
+  <h2>A walk through care</h2>
+  <p class="sub">Follow 100 mothers through pregnancy and birth, and 100 children through their first two years. At each stop of care the survey counts, the ones it reaches stay on the path; the rest step aside, and many rejoin at the next stop. Pick any district, or set two places side by side.</p>
+  <div class="cp-grid">
+    <div class="panel cp-stage">
+      <svg class="cpviz" id="cpPath" viewBox="0 0 800 660" role="img" aria-label="Two terraced paths, one for 100 mothers and one for 100 children, with six stops of care on each."></svg>
+    </div>
+    <div class="panel cp-copy">
+      <div class="cp-controls">
+        <label>Whose path<select data-path="who"></select></label>
+        <label>Set beside<select data-path="beside"></select></label>
+      </div>
+      <div class="cp-stop"><span data-path="stop">Two paths · six stops each</span><span class="cp-count" data-path="count"></span></div>
+      <div class="cp-big" data-path="big" hidden></div>
+      <p class="cp-lead" data-path="lead">Picture 100 mothers in Odisha setting out on a pregnancy, and 100 children setting out on their first two years. At each stop, the national health survey counts how many get that care. Walk on to follow them.</p>
+      <div class="cp-chip" data-path="chip" hidden></div>
+      <table class="cp-table" data-path="table" hidden></table>
+      <div class="cp-nav">
+        <button type="button" class="btn ghost" data-path-step="-1">Back</button>
+        <button type="button" class="btn" data-path-step="1">Start walking</button>
+      </div>
+      <p class="note" data-path="status" hidden></p>
+      <p class="note">Each dot is 1 in 100. The survey counts every stop on its own, so a dot is a share, not the same mother or child all the way: that is why some rejoin the path. The arrow keys also walk, while you are in this panel. Source: NFHS-6 (2023–24) and NFHS-5 (2019–21) state and district fact sheets, IIPS and MoHFW.</p>
+      <p class="cp-live" data-path="live" aria-live="polite"></p>
+    </div>
+  </div>
 </section>
 
 <section id="h2hsec">
@@ -1301,6 +1396,28 @@ sideList($("#expList"),indSel); sideList($("#regList"),regSel);
 renderExp(); renderScore(); renderProf(); swarm();
 onView($("#pic"),renderPic); onResize($("#pic"),renderPic); onView($("#h2h"),renderH2H);
 document.querySelectorAll(".fc").forEach(c=>onView(c,()=>c.querySelectorAll(".mt span[data-w]").forEach((s,k)=>setTimeout(()=>s.style.width=s.dataset.w+"%",RM?0:k*90))));
+</script>
+<script src="care-path.js?v=20261123-3"></script>
+<script>
+window.CarePath && CarePath({ scene: "carewalk", svg: "cpPath", keys: true });
+/* pin the walk's picture just under the site header, whatever its height */
+(function () {
+  var head = document.querySelector('header.site-nav'), sec = document.getElementById('carewalk');
+  if (!sec) return;
+  /* the header's bottom edge once it has stuck: it is read on scroll,
+     since the header settles in height after its logo and fonts load */
+  var queued = false;
+  function fit() {
+    queued = false;
+    var b = head && getComputedStyle(head).position === 'sticky' ? head.getBoundingClientRect().bottom : 58;
+    sec.style.setProperty('--cp-pin', Math.round(Math.max(58, b) + 8) + 'px');
+  }
+  function soon() { if (!queued) { queued = true; requestAnimationFrame(fit); } }
+  fit();
+  addEventListener('resize', soon);
+  addEventListener('scroll', soon, { passive: true });
+  if (head) head.addEventListener('transitionend', soon);   /* it animates as it shrinks */
+})();
 </script>
 <script src="chart-download.js?v=20260928-2" defer></script>
 <script src="chatbot.js?v=20261116-1"></script>
