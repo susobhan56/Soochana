@@ -272,6 +272,7 @@
   </div>
 </footer>
 
+<script src="article-charts.js?v=20261123-3"></script>
 <script>
     /* ── underline the figures in the prose ──
        Numbers are wrapped, then their stroke is drawn as each paragraph
@@ -297,6 +298,8 @@
                     // inline SVG charts: an HTML span inside SVG text would not draw
                     if (p.namespaceURI === 'http://www.w3.org/2000/svg') return NodeFilter.FILTER_REJECT;
                     if (p.classList.contains('stat-num')) return NodeFilter.FILTER_REJECT;
+                    // animated article charts (article-charts.js) and their captions
+                    if (p.classList.contains('soo-chart')) return NodeFilter.FILTER_REJECT;
                     // the 16:9 box holding a Flourish embed
                     if (p.tagName === 'DIV' && (p.getAttribute('style') || '').includes('padding-bottom')) {
                         return NodeFilter.FILTER_REJECT;
@@ -380,6 +383,7 @@
             document.getElementById('artDate').textContent = `Last Updated: ${article.lastUpdated}`;
             document.getElementById('artContent').innerHTML = article.article;
             document.title = `${article.title} · Brief Reader`;
+            if (window.SoochanaArticleCharts) SoochanaArticleCharts.render(document.getElementById('artContent'));
             markNumbers(document.getElementById('artContent'));
 
             // Adjust back button path if possible
